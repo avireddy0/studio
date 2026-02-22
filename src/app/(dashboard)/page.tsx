@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 import Chart from 'chart.js/auto';
 
 type Scenario = {
@@ -9,11 +9,18 @@ type Scenario = {
   answer: string;
   metric: string;
   meta: string;
+  followUp?: { text: string; scenarioId: number }[];
 };
 
 type Scenarios = {
   [key: number]: Scenario;
 };
+
+const initialSuggestions = [
+  { text: "Which jobs are off budget?", scenarioId: 1 },
+  { text: "When are we getting a CO for Flow Aventura?", scenarioId: 2 },
+  { text: "Can't we just do this with ChatGPT?", scenarioId: 3 },
+];
 
 export default function CanvasPage() {
   const chatBodyRef = useRef<HTMLDivElement>(null);
@@ -24,6 +31,8 @@ export default function CanvasPage() {
   const tuSceneRef = useRef<HTMLDivElement>(null);
   const latencyChartRef = useRef<HTMLCanvasElement>(null);
   const coverageChartRef = useRef<HTMLCanvasElement>(null);
+  const [suggestedReplies, setSuggestedReplies] = useState(initialSuggestions);
+  const [messages, setMessages] = useState<any[]>([]);
 
   const isRunning = useRef(false);
 
@@ -45,6 +54,10 @@ export default function CanvasPage() {
       metric:
         "<span class='text-[var(--accent-emerald)] font-bold'>Decision latency: 0 minutes</span>",
       meta: 'Source: sage_intacct, procore_data',
+      followUp: [
+        { text: "What's the cost code for that rework?", scenarioId: 4 },
+        { text: "Draft an RFI to the architect about this.", scenarioId: 5 },
+      ]
     },
     2: {
       query: '@EnvisionOS when are we receiving a CO for Flow Aventura?',
@@ -63,18 +76,100 @@ export default function CanvasPage() {
       metric:
         "<span class='text-[var(--accent-emerald)] font-bold'>Confidence: 94%</span>",
       meta: 'Source: ACC_Annexure_002, unified_communications',
+      followUp: [
+          { text: "Tell me more about the permit logs.", scenarioId: 6},
+          { text: "Who is the PM for Flow Aventura?", scenarioId: 7}
+      ]
     },
     3: {
-      query: "None can't we just do this with ChatGPT?",
+      query: "Can't we just do this with ChatGPT?",
       routes: [
         { text: "Conversation Manager: Intent 'System Refutation'", delay: 500 },
-        { text: 'Instant Match: Rule triggered (<1ms)', status: 'complete', delay: 900 },
+        { text: "Instant Match: Rule triggered (<1ms)", status: 'complete', delay: 900 },
       ],
       answer:
         'Generic AI assumes clean, structured data.<br>Construction data is fragmented across PDFs, emails, and broken spreadsheets.',
       metric:
         "<span class='text-[var(--accent-amber)] font-bold'>Intelligence without infrastructure hallucinates.</span>",
       meta: 'System Policy: The Structural Reality',
+      followUp: [
+          { text: "Which jobs are off budget?", scenarioId: 1 },
+          { text: "When are we getting a CO for Flow Aventura?", scenarioId: 2 },
+      ]
+    },
+    4: {
+        query: "What's the cost code for that rework?",
+        routes: [
+            { text: "Context Preservation: Linking to Job 402", delay: 300},
+            { text: "Executing: sage_get_cost_code", status: "complete", delay: 800},
+        ],
+        answer: "The cost code is <span class='font-mono'>14-550-3B-R01</span>.",
+        metric: "This has been logged to the budget audit trail.",
+        meta: "Source: sage_intacct",
+        followUp: [
+          { text: "Thanks!", scenarioId: 8 },
+        ]
+    },
+    5: {
+        query: "Draft an RFI to the architect about this.",
+        routes: [
+            { text: "Context Preservation: Linking to Job 402", delay: 300},
+            { text: "Route to: RFI Generation Agent", status: "complete", delay: 900},
+            { text: "Executing: procore_generate_rfi", delay: 1400},
+        ],
+        answer: "RFI draft #2024-118 created in Procore.<br>Subject: Discrepancy in Drywall Budget vs. Architectural Deltas for Job 402.",
+        metric: "Awaiting your review before sending.",
+        meta: "Source: procore_api",
+        followUp: [
+            { text: "Show me other open RFIs.", scenarioId: 9 },
+        ]
+    },
+     6: {
+        query: "Tell me more about the permit logs.",
+        routes: [
+            { text: "Context Preservation: Linking to Flow Aventura", delay: 300},
+            { text: "Executing: get_document_summary", status: "complete", delay: 900},
+        ],
+        answer: "The City of Aventura permit log (updated Feb 21) shows Permit #BLD23-0815 as 'Final Inspection Passed'.<br>This confirms all MEP work is complete.",
+        metric: "No outstanding inspections are listed.",
+        meta: "Source: City of Aventura Public Records",
+        followUp: [
+             { text: "Thanks!", scenarioId: 8 },
+        ]
+    },
+     7: {
+        query: "Who is the PM for Flow Aventura?",
+        routes: [
+            { text: "Route to: HR / Project Directory", status: "complete", delay: 500},
+            { text: "Executing: get_personnel_by_project", delay: 900},
+        ],
+        answer: "The Project Manager for Flow Aventura is <strong>Maria Sanchez</strong>.",
+        metric: "",
+        meta: "Source: internal_directory",
+        followUp: [
+             { text: "Thanks!", scenarioId: 8 },
+        ]
+    },
+    8: {
+        query: "Thanks!",
+        routes: [],
+        answer: "You're welcome. How else can I help?",
+        metric: "",
+        meta: "",
+        followUp: initialSuggestions
+    },
+     9: {
+        query: "Show me other open RFIs.",
+        routes: [
+            { text: "Route to: Project Specialist", status: "complete", delay: 500},
+            { text: "Executing: procore_list_rfis(status='open')", delay: 1100},
+        ],
+        answer: "There are 4 other open RFIs for Job 402.<br>The most critical is #2024-112 regarding foundation curing times, due tomorrow.",
+        metric: "",
+        meta: "Source: procore_api",
+        followUp: [
+             { text: "Thanks!", scenarioId: 8 },
+        ]
     },
   };
 
@@ -89,90 +184,76 @@ export default function CanvasPage() {
     }
   }, []);
 
-  const addMessage = useCallback((html: string, type: string, meta = '') => {
-    if (!chatBodyRef.current) return;
-    const div = document.createElement('div');
-    div.className = `msg ${type}`;
-    let metaHtml = meta ? `<div class="msg-footer">${meta}</div>` : '';
-    div.innerHTML = `<div class="bubble">${html}</div>${metaHtml}`;
-    chatBodyRef.current.appendChild(div);
+  const addMessage = useCallback((html: string, type: 'user' | 'system', meta = '') => {
+    setMessages(prev => [...prev, {html, type, meta}])
   }, []);
-
+  
   const addTyping = useCallback(() => {
-    if (!chatBodyRef.current) return '';
     const id = 'typing-' + Date.now();
-    const div = document.createElement('div');
-    div.className = 'msg system';
-    div.id = id;
-    div.innerHTML = `<div class="bubble" style="padding: 0.75rem 1rem;"><div class="typing-dot"></div><div class="typing-dot" style="margin:0 4px;"></div><div class="typing-dot"></div></div>`;
-    chatBodyRef.current.appendChild(div);
+    setMessages(prev => [...prev, {id, type: 'typing'}]);
     return id;
   }, []);
 
-  const addRouteNode = useCallback((text: string, statusClass = 'active') => {
-    if (!routingPanelRef.current) return;
-    const prev = routingPanelRef.current.querySelector('.active');
-    if (prev) {
-      prev.classList.remove('active');
-      prev.classList.add('complete');
-    }
-    const div = document.createElement('div');
-    div.className = `route-node ${statusClass} flex items-center gap-2 text-xs font-mono mb-2`;
-    div.innerHTML = `<div class="w-2 h-2 rounded-full bg-current shadow-[0_0_8px_currentColor]"></div><span>${text}</span>`;
-    routingPanelRef.current.appendChild(div);
-  }, []);
 
   const runSimulation = useCallback(
     async (id: keyof typeof scenarios) => {
       if (isRunning.current) return;
       isRunning.current = true;
-      document.querySelectorAll('.prompt-btn').forEach(btn => {
-        const button = btn as HTMLButtonElement;
-        button.disabled = true;
-      });
-      if (routingPanelRef.current) routingPanelRef.current.innerHTML = '';
+      setSuggestedReplies([]);
 
       const data = scenarios[id];
       addMessage(data.query, 'user');
+      await sleep(200);
       scrollToBottom();
-
-      for (let step of data.routes) {
-        await sleep(step.delay);
-        addRouteNode(step.text, step.status);
-      }
-
-      await sleep(400);
+      
       const typingId = addTyping();
       scrollToBottom();
 
+      // Simulate routing panel if you want to keep it
+      // if (routingPanelRef.current) routingPanelRef.current.innerHTML = '';
+      // for (let step of data.routes) {
+      //   await sleep(step.delay);
+      //   // addRouteNode(step.text, step.status);
+      // }
+
       await sleep(1500);
-      const typingElement = document.getElementById(typingId);
-      if(typingElement) typingElement.remove();
+      setMessages(prev => prev.filter(m => m.id !== typingId));
+
       addMessage(
         `${data.answer}<br><br>${data.metric}`,
         'system',
         data.meta
       );
-
-      document.querySelectorAll('.route-node.active').forEach(n => {
-        n.classList.remove('active');
-        n.classList.add('complete');
-      });
-
+      
       scrollToBottom();
-       document.querySelectorAll('.prompt-btn').forEach(btn => {
-        const button = btn as HTMLButtonElement;
-        button.disabled = false;
-      });
+      await sleep(500);
+
+      if (data.followUp) {
+          setSuggestedReplies(data.followUp);
+      }
+
       isRunning.current = false;
     },
-    [addMessage, addRouteNode, addTyping, scrollToBottom, scenarios]
+    [addMessage, addTyping, scrollToBottom, scenarios]
   );
+  
+  useEffect(() => {
+      if(messages.length === 0) {
+        addMessage(
+            `<strong>Envision OS is online.</strong><br/><span class="text-[var(--text-secondary)] text-sm">Connected to 23 platforms. 17 Data Routers active.</span>`,
+            'system'
+        );
+      }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, scrollToBottom]);
   
   useEffect(() => {
     const chartInstances: Chart[] = [];
 
-    // --- MOUSE TRACKING FOR PHASE 3 STACK ---
     const vizContainerStack = basetenVizStackRef.current;
     const stackInner = basetenStackInnerRef.current;
     const handleStackMouseMove = (e: MouseEvent) => {
@@ -194,7 +275,6 @@ export default function CanvasPage() {
         vizContainerStack.addEventListener('mouseleave', handleStackMouseLeave);
     }
 
-    // --- PHASE 4: BASETEN 3D HUB & SPOKE ---
     const platforms = [
         { id: 'finance', name: 'Finance', color: 'var(--accent-amber)', tools: 58 },
         { id: 'comms', name: 'Comms', color: 'var(--accent-blue)', tools: 85 },
@@ -210,7 +290,6 @@ export default function CanvasPage() {
     const orbRadius = 380;
 
     if (tuScene) {
-      // Clear previous elements
       tuScene.innerHTML = '<div class="tu-grid"></div>';
 
       const hub = document.createElement('div');
@@ -300,7 +379,6 @@ export default function CanvasPage() {
       tuContainer.addEventListener('mouseleave', handleTuMouseLeave);
     }
     
-    // --- CHART.JS ---
     if (latencyChartRef.current) {
         const ctxLatency = latencyChartRef.current.getContext('2d');
         if (ctxLatency) {
@@ -426,62 +504,50 @@ export default function CanvasPage() {
           </p>
         </div>
 
-        <div className="simulator bg-[var(--bg-surface-glass)] backdrop-blur-xl border border-[var(--border-strong)] rounded-3xl p-4 grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-4 shadow-2xl">
-          <div className="sim-controls bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-2xl p-6 flex flex-col gap-4">
-            <div className="text-xs font-bold uppercase tracking-widest text-[var(--text-tertiary)] mb-2">
-              Suggested Queries
-            </div>
-            <button
-              className="prompt-btn bg-[var(--bg-surface-elevated)]/50 border border-[var(--border-subtle)] text-left p-3 rounded-lg text-sm text-white/80 hover:bg-[var(--bg-surface-elevated)] hover:border-[var(--border-strong)] hover:text-white transition-all"
-              onClick={() => runSimulation(1)}
-            >
-              &quot;Which jobs are off budget?&quot;
-            </button>
-            <button
-              className="prompt-btn bg-[var(--bg-surface-elevated)]/50 border border-[var(--border-subtle)] text-left p-3 rounded-lg text-sm text-white/80 hover:bg-[var(--bg-surface-elevated)] hover:border-[var(--border-strong)] hover:text-white transition-all"
-              onClick={() => runSimulation(2)}
-            >
-              &quot;When are we receiving a CO for Flow Aventura?&quot;
-            </button>
-            <button
-              className="prompt-btn bg-[var(--bg-surface-elevated)]/50 border border-[var(--border-subtle)] text-left p-3 rounded-lg text-sm text-white/80 hover:bg-[var(--bg-surface-elevated)] hover:border-[var(--border-strong)] hover:text-white transition-all"
-              onClick={() => runSimulation(3)}
-            >
-              &quot;Can&apos;t we just do this with ChatGPT?&quot;
-            </button>
-
-            <div
-              className="mt-auto pt-8 border-t border-[var(--border-subtle)]"
-              ref={routingPanelRef}
-            >
-              <div className="text-center text-[var(--text-tertiary)] text-xs">
-                Awaiting query execution...
-              </div>
-            </div>
-          </div>
-
-          <div className="sim-chat bg-[var(--bg-base)] border border-[var(--border-subtle)] rounded-2xl flex flex-col h-[500px] overflow-hidden">
-            <div className="p-5 border-b border-[var(--border-subtle)] flex items-center gap-3 bg-[var(--bg-surface)]">
-              <div className="w-2 h-2 rounded-full bg-[var(--accent-emerald)] shadow-[0_0_10px_var(--accent-emerald)]"></div>
+        <div className="simulator max-w-3xl mx-auto bg-[var(--bg-surface-glass)] backdrop-blur-xl border border-[var(--border-strong)] rounded-3xl p-1 shadow-2xl">
+          <div className="sim-chat bg-[var(--bg-base)] border border-[var(--border-subtle)] rounded-2xl flex flex-col h-[600px] overflow-hidden">
+            <div className="p-4 border-b border-[var(--border-subtle)] flex items-center gap-3 bg-[var(--bg-surface)]">
+              <div className="w-2.5 h-2.5 rounded-full bg-[var(--accent-emerald)] shadow-[0_0_10px_var(--accent-emerald)]"></div>
               <div className="font-semibold text-sm">#executive-ops</div>
               <div className="ml-auto font-mono text-xs text-[var(--text-tertiary)]">
                 Envision-MCP • 390 Tools
               </div>
             </div>
             <div
-              className="flex-1 p-6 overflow-y-auto flex flex-col gap-4"
+              className="flex-1 p-4 md:p-6 overflow-y-auto flex flex-col gap-1"
               ref={chatBodyRef}
             >
-              <div className="msg system">
-                <div className="bubble">
-                  <strong>Envision OS is online.</strong>
-                  <br />
-                  <span className="text-[var(--text-secondary)] text-sm">
-                    Connected to 23 platforms. 17 Data Routers active.
-                  </span>
-                </div>
-              </div>
+              {messages.map((msg, index) => {
+                  if (msg.type === 'typing') {
+                    return (
+                        <div key={msg.id} className="msg system">
+                            <div className="bubble"><div className="typing-indicator"><span></span><span></span><span></span></div></div>
+                        </div>
+                    );
+                  }
+                  return (
+                      <div key={index} className={`msg ${msg.type}`}>
+                          <div className="bubble" dangerouslySetInnerHTML={{ __html: msg.html }} />
+                      </div>
+                  );
+              })}
             </div>
+            {suggestedReplies.length > 0 && (
+                <div className="chat-suggestions-container">
+                    <div className="chat-suggestions">
+                        {suggestedReplies.map((reply, index) => (
+                            <button
+                                key={index}
+                                className="suggestion-chip"
+                                onClick={() => runSimulation(reply.scenarioId)}
+                                disabled={isRunning.current}
+                            >
+                                {reply.text}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
           </div>
         </div>
       </div>
