@@ -295,27 +295,19 @@ export default function CanvasPage() {
       const hub = document.createElement('div');
       hub.className = 'tu-hub';
       hub.innerHTML = `
-          <div class="tu-hub-flipper">
-              <div class="tu-hub-front">
-                  <div class="tu-hub-layer" style="transform: translateZ(0px)"></div>
-                  <div class="tu-hub-layer" style="transform: translateZ(20px)"></div>
-                  <div class="tu-hub-layer" style="transform: translateZ(40px); border-color: var(--accent-blue); box-shadow: 0 0 50px var(--accent-blue-dim), inset 0 0 30px var(--accent-blue-dim)"></div>
-                  <div class="tu-billboard-container" style="transform: translateZ(100px)">
-                      <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
-                          <div class="tu-billboard" style="border-top-color: var(--accent-blue)">
-                              <h3>Envision OS</h3>
-                              <p style="color: var(--accent-blue)">Core Router</p>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="tu-hub-back">
-                  <h4 class="text-base font-bold" style="color: var(--accent-blue); margin-bottom: 0.5rem;">Core Orchestrator</h4>
-                  <p class="text-xs text-zinc-400">Status: <span class="text-emerald-400">Online</span></p>
-                  <p class="text-xs text-zinc-400 mt-1">Avg. Latency: <strong>&lt;10ms</strong></p>
-                  <p class="text-xs text-zinc-400 mt-1"><strong>7</strong> Platform Streams</p>
-              </div>
-          </div>
+        <div class="tu-hub-front">
+            <div class="tu-hub-layer" style="transform: translateZ(0px)"></div>
+            <div class="tu-hub-layer" style="transform: translateZ(20px)"></div>
+            <div class="tu-hub-layer" style="transform: translateZ(40px); border-color: var(--accent-blue); box-shadow: 0 0 50px var(--accent-blue-dim), inset 0 0 30px var(--accent-blue-dim)"></div>
+            <div class="tu-billboard-container" style="transform: translateZ(100px)">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+                    <div class="tu-billboard" style="border-top-color: var(--accent-blue)">
+                        <h3>Envision OS</h3>
+                        <p style="color: var(--accent-blue)">Orchestrator</p>
+                    </div>
+                </div>
+            </div>
+        </div>
       `;
       tuScene.appendChild(hub);
 
@@ -916,10 +908,7 @@ export default function CanvasPage() {
             390 Tools. 7 Platforms.
           </h2>
           <p className="text-lg text-[var(--text-secondary)]">
-            The true measure of Envision OS is the scale of its execution. The
-            entire architectural topology is rendered below as a massive 3D Hub
-            & Spoke environment. The central Envision OS router acts as the hub,
-            streaming live execution data out to 7 glowing domain datastacks.
+            See how our multimodal agentic AI orchestrates complex data flows across your entire software ecosystem in real-time.
           </p>
         </div>
         <div className="tu-container" ref={tuContainerRef}>
