@@ -504,9 +504,9 @@ export default function CanvasPage() {
           </p>
         </div>
 
-        <div className="max-w-3xl mx-auto rounded-3xl border border-white/10 bg-zinc-900/50 p-1 shadow-2xl backdrop-blur-2xl">
-          <div className="bg-zinc-950/70 rounded-2xl border border-white/5 flex h-[600px] flex-col overflow-hidden">
-            <div className="p-4 border-b border-white/10 flex items-center gap-3 bg-transparent">
+        <div className="max-w-3xl mx-auto rounded-3xl border border-zinc-700 bg-zinc-900/40 p-1 shadow-2xl backdrop-blur-3xl">
+          <div className="bg-black/20 rounded-2xl border border-zinc-800 flex h-[600px] flex-col overflow-hidden">
+            <div className="p-4 border-b border-zinc-800 flex items-center gap-3 bg-transparent">
               <div className="w-2.5 h-2.5 rounded-full bg-[var(--accent-emerald)] shadow-[0_0_10px_var(--accent-emerald)]"></div>
               <div className="font-semibold text-sm">#executive-ops</div>
               <div className="ml-auto font-mono text-xs text-[var(--text-tertiary)]">
@@ -976,5 +976,7 @@ export default function CanvasPage() {
     </>
   );
 }
+
+    
 
     
