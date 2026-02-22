@@ -480,9 +480,6 @@ export default function CanvasPage() {
       </nav>
 
       <section className="hero container mx-auto px-6 pt-48 pb-32 text-center relative">
-        <div className="inline-flex items-center gap-2 bg-[var(--bg-surface-elevated)] border border-[var(--border-strong)] px-5 py-2 rounded-full text-sm font-semibold text-[var(--accent-blue)] mb-8 shadow-[0_0_30px_var(--accent-blue-dim)] uppercase tracking-wider fade-in-up">
-          System Update v4.13.0 Active
-        </div>
         <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-none mb-8 bg-gradient-to-b from-white to-[#94A3B8] text-transparent bg-clip-text drop-shadow-2xl fade-in-up delay-100">
           Where Development meets Data
         </h1>
