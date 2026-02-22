@@ -409,7 +409,7 @@ export default function CanvasPage() {
         </h1>
         <div className="text-xl md:text-3xl text-[var(--text-secondary)] max-w-4xl mx-auto leading-relaxed mb-4 fade-in-up delay-200">
           <strong className="text-white block mb-2 font-bold">
-            Truth shouldn't depend on who's online.
+            Construction is no longer a black box.
           </strong>
           Envision OS turns the black box → glass box through{' '}
           <span className="bg-gradient-to-r from-[var(--accent-emerald)] to-[var(--accent-cyan)] text-transparent bg-clip-text font-bold">
@@ -422,33 +422,29 @@ export default function CanvasPage() {
       <div className="container mx-auto px-6 mb-32" id="control-plane">
         <div className="max-w-3xl mx-auto text-center mb-10">
           <p className="text-lg text-[var(--text-secondary)]">
-            This section provides a live simulation of the Envision OS
-            interface. It demonstrates the zero-latency decision intelligence
-            powered by the underlying multi-agent architecture. Select a query
-            below to see how the system routes complex questions across 23
-            platforms in real-time.
+            Experience Envision OS deliver instant intelligence through its multimodal agentic AI across 23 software platforms in real-time
           </p>
         </div>
 
         <div className="simulator bg-[var(--bg-surface-glass)] backdrop-blur-xl border border-[var(--border-strong)] rounded-3xl p-4 grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-4 shadow-2xl">
           <div className="sim-controls bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-2xl p-6 flex flex-col gap-4">
             <div className="text-xs font-bold uppercase tracking-widest text-[var(--text-tertiary)] mb-2">
-              Test Real-World Queries
+              Suggested Queries
             </div>
             <button
-              className="prompt-btn bg-[var(--bg-surface-elevated)] border border-[var(--border-strong)] text-left p-4 rounded-xl text-sm hover:border-[var(--accent-blue)] hover:translate-y-[-2px] transition-all shadow-lg active:scale-95"
+              className="prompt-btn bg-[var(--bg-surface-elevated)]/50 border border-[var(--border-subtle)] text-left p-3 rounded-lg text-sm text-white/80 hover:bg-[var(--bg-surface-elevated)] hover:border-[var(--border-strong)] hover:text-white transition-all"
               onClick={() => runSimulation(1)}
             >
               &quot;Which jobs are off budget?&quot;
             </button>
             <button
-              className="prompt-btn bg-[var(--bg-surface-elevated)] border border-[var(--border-strong)] text-left p-4 rounded-xl text-sm hover:border-[var(--accent-blue)] hover:translate-y-[-2px] transition-all shadow-lg active:scale-95"
+              className="prompt-btn bg-[var(--bg-surface-elevated)]/50 border border-[var(--border-subtle)] text-left p-3 rounded-lg text-sm text-white/80 hover:bg-[var(--bg-surface-elevated)] hover:border-[var(--border-strong)] hover:text-white transition-all"
               onClick={() => runSimulation(2)}
             >
               &quot;When are we receiving a CO for Flow Aventura?&quot;
             </button>
             <button
-              className="prompt-btn bg-[var(--bg-surface-elevated)] border border-[var(--border-strong)] text-left p-4 rounded-xl text-sm hover:border-[var(--accent-blue)] hover:translate-y-[-2px] transition-all shadow-lg active:scale-95"
+              className="prompt-btn bg-[var(--bg-surface-elevated)]/50 border border-[var(--border-subtle)] text-left p-3 rounded-lg text-sm text-white/80 hover:bg-[var(--bg-surface-elevated)] hover:border-[var(--border-strong)] hover:text-white transition-all"
               onClick={() => runSimulation(3)}
             >
               &quot;Can&apos;t we just do this with ChatGPT?&quot;
