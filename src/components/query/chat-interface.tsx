@@ -5,7 +5,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { handleQuery } from "@/lib/actions";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, MessageSquare } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage, type Message } from "@/components/query/chat-message";
 import { useToast } from "@/hooks/use-toast";
