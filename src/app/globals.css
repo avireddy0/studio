@@ -1168,38 +1168,37 @@ body::before {
   100% { opacity: 0.4; }
 }
 
-.chat-suggestions-container {
-  padding: 0.5rem 1rem 1rem;
-  width: 100%;
-}
-.chat-suggestions {
+/* Vertical Suggested Replies */
+.suggestions-wrapper {
   display: flex;
-  overflow-x: auto;
+  flex-direction: column;
+  align-items: flex-end;
   gap: 0.5rem;
-  padding-bottom: 0.5rem; /* For scrollbar */
-  scrollbar-width: none; /* Firefox */
-}
-.chat-suggestions::-webkit-scrollbar {
-    display: none; /* Safari and Chrome */
+  width: 100%;
+  margin-top: 0.5rem;
+  animation: slideUp 0.4s cubic-bezier(.2,.8,.2,1.2) forwards;
 }
 
-.suggestion-chip {
-  flex-shrink: 0;
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
+.suggestion-item {
+  background-color: transparent;
   border: 1px solid #007aff;
   color: #007aff;
-  background-color: transparent;
-  font-size: 0.85rem;
-  font-weight: 500;
+  padding: 0.75rem 1rem;
+  border-radius: 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition: all 0.2s ease;
+  max-width: 85%;
+  text-align: right;
+  width: fit-content;
 }
 
-.suggestion-chip:hover {
-  background-color: rgba(0, 122, 255, 0.1);
+.suggestion-item:hover {
+  background-color: rgba(0, 122, 255, 0.2);
 }
-.suggestion-chip:disabled {
+
+.suggestion-item:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }

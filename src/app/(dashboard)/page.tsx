@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect, useRef, useCallback, useState } from 'react';
@@ -249,7 +250,7 @@ export default function CanvasPage() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, scrollToBottom]);
+  }, [messages, scrollToBottom, suggestedReplies]);
   
   useEffect(() => {
     const chartInstances: Chart[] = [];
@@ -531,23 +532,21 @@ export default function CanvasPage() {
                       </div>
                   );
               })}
-            </div>
-            {suggestedReplies.length > 0 && (
-                <div className="chat-suggestions-container">
-                    <div className="chat-suggestions">
-                        {suggestedReplies.map((reply, index) => (
-                            <button
-                                key={index}
-                                className="suggestion-chip"
-                                onClick={() => runSimulation(reply.scenarioId)}
-                                disabled={isRunning.current}
-                            >
-                                {reply.text}
-                            </button>
-                        ))}
-                    </div>
+              {suggestedReplies.length > 0 && (
+                <div className="suggestions-wrapper">
+                    {suggestedReplies.map((reply, index) => (
+                        <button
+                            key={index}
+                            className="suggestion-item"
+                            onClick={() => runSimulation(reply.scenarioId)}
+                            disabled={isRunning.current}
+                        >
+                            {reply.text}
+                        </button>
+                    ))}
                 </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
