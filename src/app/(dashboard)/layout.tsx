@@ -1,3 +1,6 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
 import {
   SidebarProvider,
   Sidebar,
@@ -14,6 +17,14 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
+  // Render the new landing page without the sidebar for the root path
+  if (pathname === '/') {
+    return <>{children}</>;
+  }
+
+  // Render other dashboard pages with the sidebar
   return (
     <SidebarProvider>
       <Sidebar>
