@@ -408,7 +408,14 @@ export default function CanvasPage() {
           Where Development meets Data
         </h1>
         <div className="text-xl md:text-3xl text-[var(--text-secondary)] max-w-4xl mx-auto leading-relaxed mb-4 fade-in-up delay-200">
-          Construction is no longer a black box.
+          <strong className="text-white block mb-2 font-bold">
+            Truth shouldn't depend on who's online.
+          </strong>
+          Envision OS turns the black box → glass box through{' '}
+          <span className="bg-gradient-to-r from-[var(--accent-emerald)] to-[var(--accent-cyan)] text-transparent bg-clip-text font-bold">
+            continuous data verification across all platforms
+          </span>
+          .
         </div>
       </section>
 
