@@ -2,7 +2,6 @@
 'use client';
 
 import React, { useEffect, useRef, useCallback } from 'react';
-import Chart from 'chart.js/auto';
 
 type Scenario = {
   query: string;
@@ -22,12 +21,9 @@ export default function CanvasPage() {
   const routingPanelRef = useRef<HTMLDivElement>(null);
   const basetenVizRef = useRef<HTMLDivElement>(null);
   const basetenStackRef = useRef<HTMLDivElement>(null);
+  const toolVizRef = useRef<HTMLDivElement>(null);
+  const toolStackRef = useRef<HTMLDivElement>(null);
   const promptButtonsRef = useRef<NodeListOf<HTMLButtonElement> | null>(null);
-
-  const latencyChartRef = useRef<HTMLCanvasElement>(null);
-  const coverageChartRef = useRef<HTMLCanvasElement>(null);
-  const chartInstances = useRef<{latency?: Chart, coverage?: Chart}>({});
-
 
   const isRunning = useRef(false);
 
@@ -144,102 +140,43 @@ export default function CanvasPage() {
   useEffect(() => {
     promptButtonsRef.current = document.querySelectorAll('.prompt-btn');
 
-    // Mouse move effect for 3D stack
-    const vizContainer = basetenVizRef.current;
-    const stack = basetenStackRef.current;
+    const setupStackAnimation = (vizRef: React.RefObject<HTMLDivElement>, stackRef: React.RefObject<HTMLDivElement>) => {
+      const vizContainer = vizRef.current;
+      const stack = stackRef.current;
 
-    const handleMouseMove = (e: MouseEvent) => {
-        if (!vizContainer || !stack) return;
-        const rect = vizContainer.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const xNorm = (x / rect.width) * 2 - 1;
-        const yNorm = (y / rect.height) * 2 - 1;
-        stack.style.transform = `rotateX(${60 - (yNorm * 8)}deg) rotateZ(${-40 + (xNorm * 12)}deg)`;
-    };
+      const handleMouseMove = (e: MouseEvent) => {
+          if (!vizContainer || !stack) return;
+          const rect = vizContainer.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const xNorm = (x / rect.width) * 2 - 1;
+          const yNorm = (y / rect.height) * 2 - 1;
+          stack.style.transform = `rotateX(${60 - (yNorm * 8)}deg) rotateZ(${-40 + (xNorm * 12)}deg)`;
+      };
 
-    const handleMouseLeave = () => {
-        if (stack) {
-            stack.style.transform = `rotateX(60deg) rotateZ(-40deg)`;
-        }
-    };
-
-    if (vizContainer) {
-        vizContainer.addEventListener('mousemove', handleMouseMove);
-        vizContainer.addEventListener('mouseleave', handleMouseLeave);
-    }
-    
-    if (latencyChartRef.current) {
-        if (chartInstances.current.latency) {
-            chartInstances.current.latency.destroy();
-        }
-        const ctxLatency = latencyChartRef.current.getContext('2d');
-        if (ctxLatency) {
-            chartInstances.current.latency = new Chart(ctxLatency, {
-                type: 'bar',
-                data: {
-                  labels: ['RFI Cycle', 'Change Order', 'Budget Audit', 'Envision OS'],
-                  datasets: [{
-                    label: 'Hours to Resolution',
-                    data: [72, 120, 48, 0.1], 
-                    backgroundColor: ['#334155', '#334155', '#334155', '#10B981'],
-                    borderRadius: 6,
-                    borderSkipped: false
-                  }]
-                },
-                options: {
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  plugins: { legend: { display: false }, tooltip: { bodyFont: { family: 'Inter' } } },
-                  scales: {
-                    y: { beginAtZero: true, grid: { color: '#232733' }, ticks: { color: '#94A3B8', font: { family: 'Inter' as any, weight: '500' } } },
-                    x: { grid: { display: false }, ticks: { color: '#94A3B8', font: { family: 'Inter' as any, weight: '600' } } }
-                  }
-                }
-            });
-        }
-    }
-
-    if (coverageChartRef.current) {
-        if (chartInstances.current.coverage) {
-            chartInstances.current.coverage.destroy();
-        }
-        const ctxCoverage = coverageChartRef.current.getContext('2d');
-        if (ctxCoverage) {
-            chartInstances.current.coverage = new Chart(ctxCoverage, {
-                type: 'doughnut',
-                data: {
-                  labels: ['Finance (58)', 'Comms (85)', 'Project (53)', 'HR (42)', 'Sales (40)', 'Research (50)', 'Infra (62)'],
-                  datasets: [{
-                    data: [58, 85, 53, 42, 40, 50, 62],
-                    backgroundColor: ['#F59E0B', '#3B82F6', '#10B981', '#8B5CF6', '#EC4899', '#06B6D4', '#64748B'],
-                    borderWidth: 0
-                  }]
-                },
-                options: {
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  cutout: '65%',
-                  plugins: { 
-                    legend: { position: 'right', labels: { color: '#94A3B8', font: { family: 'JetBrains Mono' as any, size: 11, weight: '600' } } },
-                    tooltip: { bodyFont: { family: 'Inter' } }
-                  }
-                }
-            });
-        }
-    }
-
-    return () => {
+      const handleMouseLeave = () => {
+          if (stack) {
+              stack.style.transform = `rotateX(60deg) rotateZ(-40deg)`;
+          }
+      };
+      if (vizContainer) {
+          vizContainer.addEventListener('mousemove', handleMouseMove);
+          vizContainer.addEventListener('mouseleave', handleMouseLeave);
+      }
+      return () => {
         if (vizContainer) {
             vizContainer.removeEventListener('mousemove', handleMouseMove);
             vizContainer.removeEventListener('mouseleave', handleMouseLeave);
         }
-        if (chartInstances.current.latency) {
-            chartInstances.current.latency.destroy();
-        }
-        if (chartInstances.current.coverage) {
-            chartInstances.current.coverage.destroy();
-        }
+      }
+    }
+
+    const cleanupArchitectureStack = setupStackAnimation(basetenVizRef, basetenStackRef);
+    const cleanupToolStack = setupStackAnimation(toolVizRef, toolStackRef);
+    
+    return () => {
+      cleanupArchitectureStack();
+      cleanupToolStack();
     };
   }, []);
 
@@ -257,7 +194,7 @@ export default function CanvasPage() {
           <a href="#ingestion" className="hover:text-white transition-colors">Ingestion</a>
           <a href="#context" className="hover:text-white transition-colors">Context Fusion</a>
           <a href="#architecture" className="hover:text-white transition-colors">Infrastructure</a>
-          <a href="#metrics" className="hover:text-white transition-colors">Metrics</a>
+          <a href="#tool-coverage" className="hover:text-white transition-colors">Tool Coverage</a>
         </div>
       </div>
     </nav>
@@ -440,7 +377,7 @@ export default function CanvasPage() {
         </p>
       </div>
 
-      <div className="context-viz-container" ref={basetenVizRef}>
+      <div className="context-viz-container" id="architecture-viz" ref={basetenVizRef}>
         <div className="baseten-stack" ref={basetenStackRef}>
           <div className="baseten-layer bl-1">
             <div className="layer-head"><h4>Data Layer</h4><span className="tag">L1</span></div>
@@ -469,31 +406,50 @@ export default function CanvasPage() {
         </div>
       </div>
     </section>
-
-    <section id="metrics" className="container mx-auto px-6 py-24 border-t border-[var(--border-strong)]">
-      <div className="max-w-3xl mx-auto text-center mb-16">
-        <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Quantitative Impact</span>
-        <h2 className="text-4xl font-bold tracking-tight mb-6">Measuring the Glass Box.</h2>
+    
+    <section id="tool-coverage" className="container mx-auto px-6 py-24 border-t border-[var(--border-strong)]">
+      <div className="text-center max-w-3xl mx-auto mb-16">
+        <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Specialist Tool Coverage</span>
+        <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">A Tool for Every Task.</h2>
         <p className="text-lg text-[var(--text-secondary)]">
-          This section quantifies the operational impact of the Envision OS system, comparing traditional workflow latencies against instant resolution, backed by our extensive domain-specific tool catalog.
+          Envision OS comes equipped with 390 specialized tools, organized into domain-specific layers. This allows the AI to select the perfect instrument for any query, from financial analysis to project management.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-        <div className="bg-[var(--bg-surface)] p-8 rounded-2xl border border-[var(--border-strong)]">
-          <h3 className="text-2xl font-bold mb-2">Decision Latency Collapse</h3>
-          <p className="text-[var(--text-secondary)] mb-6 text-sm">Traditional cycles vs. Envision OS instant resolution.</p>
-          <div className="chart-container relative h-64">
-            <canvas id="latencyChart" ref={latencyChartRef}></canvas>
+      <div className="context-viz-container" id="tool-viz" ref={toolVizRef}>
+        <div className="baseten-stack" ref={toolStackRef}>
+          <div className="baseten-layer bl-1">
+            <div className="layer-head"><h4>Sales</h4><span className="tag">40 Tools</span></div>
+            <p>CRM Connectors, Proposal Generators</p>
           </div>
-        </div>
-        
-        <div className="bg-[var(--bg-surface)] p-8 rounded-2xl border border-[var(--border-strong)]">
-          <h3 className="text-2xl font-bold mb-2">Specialist Tool Coverage</h3>
-          <p className="text-[var(--text-secondary)] mb-6 text-sm">390 Active Tools distributed across domain specialists.</p>
-          <div className="chart-container relative h-64">
-            <canvas id="coverageChart" ref={coverageChartRef}></canvas>
+          <div className="baseten-layer bl-2">
+            <div className="layer-head"><h4>HR</h4><span className="tag">42 Tools</span></div>
+            <p>HRIS APIs, Onboarding Workflows</p>
           </div>
+          <div className="baseten-layer bl-3">
+            <div className="layer-head"><h4>Research</h4><span className="tag">50 Tools</span></div>
+            <p>Market Data, Document Analysis</p>
+          </div>
+          <div className="baseten-layer bl-4">
+            <div className="layer-head"><h4>Project</h4><span className="tag">53 Tools</span></div>
+            <p>Procore, Autodesk, Scheduling APIs</p>
+          </div>
+          <div className="baseten-layer bl-5">
+            <div className="layer-head"><h4>Finance</h4><span className="tag">58 Tools</span></div>
+            <p>Sage, SAP, Budget & GL Connectors</p>
+          </div>
+          <div className="baseten-layer bl-6">
+            <div className="layer-head"><h4>Infrastructure</h4><span className="tag">62 Tools</span></div>
+            <p>GCP, CI/CD, System Monitors</p>
+          </div>
+          <div className="baseten-layer bl-7">
+            <div className="layer-head"><h4>Communications</h4><span className="tag">85 Tools</span></div>
+            <p>Slack, Zoom, Email, Unified Comms</p>
+          </div>
+
+          <div className="data-stream ds-1"></div>
+          <div className="data-stream ds-2"></div>
+          <div className="data-stream ds-3"></div>
         </div>
       </div>
     </section>
