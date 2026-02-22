@@ -301,7 +301,7 @@ export default function CanvasPage() {
                   <div class="tu-hub-layer" style="transform: translateZ(20px)"></div>
                   <div class="tu-hub-layer" style="transform: translateZ(40px); border-color: var(--accent-blue); box-shadow: 0 0 50px var(--accent-blue-dim), inset 0 0 30px var(--accent-blue-dim)"></div>
                   <div class="tu-billboard-container" style="transform: translateZ(100px)">
-                      <div style="transform: translate(-50%, -50%)">
+                      <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
                           <div class="tu-billboard" style="border-top-color: var(--accent-blue)">
                               <h3>Envision OS</h3>
                               <p style="color: var(--accent-blue)">Core Router</p>
@@ -340,7 +340,7 @@ export default function CanvasPage() {
             <div class="tu-sat-layer" style="transform: translateZ(15px); border-color: ${p.color}80; background: ${p.color}20"></div>
             <div class="tu-sat-layer" style="transform: translateZ(30px); border-color: ${p.color}; background: ${p.color}40; box-shadow: 0 0 30px ${p.color}40"></div>
             <div class="tu-billboard-container" style="transform: translateZ(70px)">
-                <div style="transform: translate(-50%, -50%)">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
                     <div class="tu-billboard" style="border-top-color: ${p.color}">
                         <h3 style="color: ${p.color}">${p.name}</h3>
                         <p>${p.tools} Tools Executing</p>
