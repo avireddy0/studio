@@ -3,7 +3,6 @@
 
 import React, { useEffect, useRef, useCallback } from 'react';
 import Chart from 'chart.js/auto';
-import { Landmark, MessageCircle, HardHat, Users, TrendingUp, FlaskConical, Server } from 'lucide-react';
 
 type Scenario = {
   query: string;
@@ -24,6 +23,11 @@ export default function CanvasPage() {
   const basetenVizRef = useRef<HTMLDivElement>(null);
   const basetenStackRef = useRef<HTMLDivElement>(null);
   const promptButtonsRef = useRef<NodeListOf<HTMLButtonElement> | null>(null);
+
+  const latencyChartRef = useRef<HTMLCanvasElement>(null);
+  const coverageChartRef = useRef<HTMLCanvasElement>(null);
+  const chartInstances = useRef<{latency?: Chart, coverage?: Chart}>({});
+
 
   const isRunning = useRef(false);
 
@@ -64,58 +68,6 @@ export default function CanvasPage() {
     }
   };
   
-  const toolCategories = [
-    {
-      name: "Finance",
-      count: 58,
-      description: "Tools for budget tracking, cost analysis, and financial reporting across platforms like Sage and Procore.",
-      icon: Landmark,
-      color: "#F59E0B"
-    },
-    {
-      name: "Communications",
-      count: 85,
-      description: "Connectors for Slack, email, and meeting transcripts to extract qualitative context and decisions.",
-      icon: MessageCircle,
-      color: "#3B82F6"
-    },
-    {
-      name: "Project Management",
-      count: 53,
-      description: "Integrations for project scheduling, RFI management, and progress tracking with Procore and Autodesk.",
-      icon: HardHat,
-      color: "#10B981"
-    },
-    {
-      name: "Human Resources",
-      count: 42,
-      description: "Tools for workforce management, payroll data sync, and safety compliance reporting.",
-      icon: Users,
-      color: "#8B5CF6"
-    },
-    {
-      name: "Sales & CRM",
-      count: 40,
-      description: "Connectors for Salesforce and other CRMs to align project delivery with client expectations.",
-      icon: TrendingUp,
-      color: "#EC4899"
-    },
-    {
-      name: "Research & Analytics",
-      count: 50,
-      description: "Tools for market analysis, material science lookups, and historical project data mining.",
-      icon: FlaskConical,
-      color: "#06B6D4"
-    },
-    {
-      name: "Infrastructure & IT",
-      count: 62,
-      description: "Utilities for managing data pipelines, system monitoring, and cloud resource provisioning.",
-      icon: Server,
-      color: "#64748B"
-    }
-  ];
-
   const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
   const scrollToBottom = useCallback(() => {
@@ -217,10 +169,76 @@ export default function CanvasPage() {
         vizContainer.addEventListener('mouseleave', handleMouseLeave);
     }
     
+    if (latencyChartRef.current) {
+        if (chartInstances.current.latency) {
+            chartInstances.current.latency.destroy();
+        }
+        const ctxLatency = latencyChartRef.current.getContext('2d');
+        if (ctxLatency) {
+            chartInstances.current.latency = new Chart(ctxLatency, {
+                type: 'bar',
+                data: {
+                  labels: ['RFI Cycle', 'Change Order', 'Budget Audit', 'Envision OS'],
+                  datasets: [{
+                    label: 'Hours to Resolution',
+                    data: [72, 120, 48, 0.1], 
+                    backgroundColor: ['#334155', '#334155', '#334155', '#10B981'],
+                    borderRadius: 6,
+                    borderSkipped: false
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: { legend: { display: false }, tooltip: { bodyFont: { family: 'Inter' } } },
+                  scales: {
+                    y: { beginAtZero: true, grid: { color: '#232733' }, ticks: { color: '#94A3B8', font: { family: 'Inter' as any, weight: '500' } } },
+                    x: { grid: { display: false }, ticks: { color: '#94A3B8', font: { family: 'Inter' as any, weight: '600' } } }
+                  }
+                }
+            });
+        }
+    }
+
+    if (coverageChartRef.current) {
+        if (chartInstances.current.coverage) {
+            chartInstances.current.coverage.destroy();
+        }
+        const ctxCoverage = coverageChartRef.current.getContext('2d');
+        if (ctxCoverage) {
+            chartInstances.current.coverage = new Chart(ctxCoverage, {
+                type: 'doughnut',
+                data: {
+                  labels: ['Finance (58)', 'Comms (85)', 'Project (53)', 'HR (42)', 'Sales (40)', 'Research (50)', 'Infra (62)'],
+                  datasets: [{
+                    data: [58, 85, 53, 42, 40, 50, 62],
+                    backgroundColor: ['#F59E0B', '#3B82F6', '#10B981', '#8B5CF6', '#EC4899', '#06B6D4', '#64748B'],
+                    borderWidth: 0
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  cutout: '65%',
+                  plugins: { 
+                    legend: { position: 'right', labels: { color: '#94A3B8', font: { family: 'JetBrains Mono' as any, size: 11, weight: '600' } } },
+                    tooltip: { bodyFont: { family: 'Inter' } }
+                  }
+                }
+            });
+        }
+    }
+
     return () => {
         if (vizContainer) {
             vizContainer.removeEventListener('mousemove', handleMouseMove);
             vizContainer.removeEventListener('mouseleave', handleMouseLeave);
+        }
+        if (chartInstances.current.latency) {
+            chartInstances.current.latency.destroy();
+        }
+        if (chartInstances.current.coverage) {
+            chartInstances.current.coverage.destroy();
         }
     };
   }, []);
@@ -454,28 +472,29 @@ export default function CanvasPage() {
 
     <section id="metrics" className="container mx-auto px-6 py-24 border-t border-[var(--border-strong)]">
       <div className="max-w-3xl mx-auto text-center mb-16">
-        <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">The Envision OS Toolset</span>
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">390+ Autonomous Tools</h2>
+        <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Quantitative Impact</span>
+        <h2 className="text-4xl font-bold tracking-tight mb-6">Measuring the Glass Box.</h2>
         <p className="text-lg text-[var(--text-secondary)]">
-          Envision OS comes equipped with a vast library of specialized tools, enabling it to connect to any data source and perform complex, domain-specific tasks autonomously.
+          This section quantifies the operational impact of the Envision OS system, comparing traditional workflow latencies against instant resolution, backed by our extensive domain-specific tool catalog.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {toolCategories.map((category) => (
-          <div key={category.name} className="bg-[var(--bg-surface)] p-6 rounded-2xl border border-[var(--border-strong)] flex flex-col hover:border-[var(--accent-violet)] transition-colors duration-300">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg" style={{backgroundColor: `${category.color}20`, color: category.color}}>
-                <category.icon className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold">{category.name}</h3>
-                <p className="font-mono text-xs text-[var(--text-tertiary)]">{category.count} Tools</p>
-              </div>
-            </div>
-            <p className="text-sm text-[var(--text-secondary)] flex-grow mt-2">{category.description}</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+        <div className="bg-[var(--bg-surface)] p-8 rounded-2xl border border-[var(--border-strong)]">
+          <h3 className="text-2xl font-bold mb-2">Decision Latency Collapse</h3>
+          <p className="text-[var(--text-secondary)] mb-6 text-sm">Traditional cycles vs. Envision OS instant resolution.</p>
+          <div className="chart-container relative h-64">
+            <canvas id="latencyChart" ref={latencyChartRef}></canvas>
           </div>
-        ))}
+        </div>
+        
+        <div className="bg-[var(--bg-surface)] p-8 rounded-2xl border border-[var(--border-strong)]">
+          <h3 className="text-2xl font-bold mb-2">Specialist Tool Coverage</h3>
+          <p className="text-[var(--text-secondary)] mb-6 text-sm">390 Active Tools distributed across domain specialists.</p>
+          <div className="chart-container relative h-64">
+            <canvas id="coverageChart" ref={coverageChartRef}></canvas>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -488,5 +507,3 @@ export default function CanvasPage() {
   </>
   );
 }
-
-    
