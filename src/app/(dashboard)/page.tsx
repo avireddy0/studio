@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useEffect, useRef, useCallback, useState } from 'react';
@@ -324,16 +323,44 @@ export default function CanvasPage() {
           sat.className = 'tu-sat';
           sat.style.transform = `translate3d(${x}px, ${y}px, 0)`;
 
+          const frontLayers = `
+            <div class="tu-sat-layer" style="transform: translateZ(0px); border-color: ${p.color}40; background: ${p.color}10"></div>
+            <div class="tu-sat-layer" style="transform: translateZ(15px); border-color: ${p.color}80; background: ${p.color}20"></div>
+            <div class="tu-sat-layer" style="transform: translateZ(30px); border-color: ${p.color}; background: ${p.color}40; box-shadow: 0 0 30px ${p.color}40"></div>
+          `;
+
+          const backDetails = `
+            <h4 class="text-base font-bold" style="color: ${p.color}; margin-bottom: 0.5rem;">${p.name}</h4>
+            <p class="text-xs text-zinc-400">
+                <strong>${p.tools}</strong> tools integrated
+            </p>
+            <p class="text-xs text-zinc-400 mt-1">
+                Real-time data sync
+            </p>
+            <p class="text-xs text-zinc-400 mt-1">
+                Avg. Latency: <strong>150ms</strong>
+            </p>
+          `;
+
+          const billboard = `
+            <div class="tu-billboard" style="border-top-color: ${p.color}">
+                <h3 style="color: ${p.color}">${p.name}</h3>
+                <p>${p.tools} Tools Executing</p>
+            </div>
+          `;
+
           sat.innerHTML = `
-              <div class="tu-sat-layer" style="transform: translateZ(0px); border-color: ${p.color}40; background: ${p.color}10"></div>
-              <div class="tu-sat-layer" style="transform: translateZ(15px); border-color: ${p.color}80; background: ${p.color}20"></div>
-              <div class="tu-sat-layer" style="transform: translateZ(30px); border-color: ${p.color}; background: ${p.color}40; box-shadow: 0 0 30px ${p.color}40"></div>
-              <div class="tu-billboard-container" style="transform: translateZ(70px)">
-                  <div class="tu-billboard" style="border-top-color: ${p.color}">
-                      <h3 style="color: ${p.color}">${p.name}</h3>
-                      <p>${p.tools} Tools Executing</p>
-                  </div>
+            <div class="tu-sat-flipper">
+              <div class="tu-sat-front">
+                ${frontLayers}
               </div>
+              <div class="tu-sat-back">
+                ${backDetails}
+              </div>
+            </div>
+            <div class="tu-billboard-container" style="transform: translateZ(70px)">
+              ${billboard}
+            </div>
           `;
           tuScene.appendChild(sat);
       });

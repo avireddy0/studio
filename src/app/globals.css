@@ -1057,24 +1057,63 @@ body::before {
   top: 0;
   left: 0;
   transform-style: preserve-3d;
-  transition: transform 0.3s ease;
+  width: 120px; /* Hitbox for hover */
+  height: 120px;
+  margin-left: -60px;
+  margin-top: -60px;
 }
 
-.tu-sat:hover {
-  transform: translateZ(30px) scale(1.1) !important; /* Temporarily scale up */
+.tu-sat-flipper {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.tu-sat:hover .tu-sat-flipper {
+  transform: rotateY(180deg);
+}
+
+.tu-sat-front, .tu-sat-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.tu-sat-back {
+  transform: rotateY(180deg);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.tu-sat:hover .tu-billboard-container {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in;
 }
 
 .tu-sat-layer {
   position: absolute;
   width: 100px;
   height: 100px;
-  top: -50px;
-  left: -50px;
+  top: 10px; /* (120 - 100) / 2 */
+  left: 10px;
   border-radius: 16px;
   border: 1px solid;
   backdrop-filter: blur(8px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
+
 
 /* Billboarding Container to always face the user */
 .tu-billboard-container {
@@ -1083,6 +1122,7 @@ body::before {
   left: 0;
   transform-style: preserve-3d;
   pointer-events: none;
+  transition: opacity 0.4s 0.2s;
 }
 
 .tu-billboard {
