@@ -405,17 +405,10 @@ export default function CanvasPage() {
           System Update v4.13.0 Active
         </div>
         <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-none mb-8 bg-gradient-to-b from-white to-[#94A3B8] text-transparent bg-clip-text drop-shadow-2xl fade-in-up delay-100">
-          The Black Box is Dead.
+          Where Development meets Data
         </h1>
         <div className="text-xl md:text-3xl text-[var(--text-secondary)] max-w-4xl mx-auto leading-relaxed mb-4 fade-in-up delay-200">
-          <strong className="text-white block mb-2 font-bold">
-            Truth shouldn&apos;t depend on who&apos;s online.
-          </strong>
-          Envision OS collapses the human phone tree, replacing faith-based
-          execution with{' '}
-          <span className="bg-gradient-to-r from-[var(--accent-emerald)] to-[var(--accent-cyan)] text-transparent bg-clip-text font-bold">
-            continuous, multi-platform verification.
-          </span>
+          Construction is no longer a black box.
         </div>
       </section>
 
