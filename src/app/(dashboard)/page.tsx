@@ -346,9 +346,9 @@ export default function CanvasPage() {
 
     function animateTuScene() {
         if (!tuIsHovered) {
-            tuTargetRotation += 0.05;
+            tuTargetRotation += 0.02;
         }
-        tuGlobalRotation += (tuTargetRotation - tuGlobalRotation) * 0.1;
+        tuGlobalRotation += (tuTargetRotation - tuGlobalRotation) * 0.05;
         
         if (tuScene) {
           tuScene.style.transform = `rotateX(60deg) rotateZ(${tuGlobalRotation}deg)`;
@@ -369,7 +369,7 @@ export default function CanvasPage() {
         tuIsHovered = true;
         const rect = tuContainer.getBoundingClientRect();
         const xNorm = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-        tuTargetRotation += (xNorm * 1.5); 
+        tuTargetRotation += (xNorm * 1.0); 
     };
     const handleTuMouseLeave = () => {
         tuIsHovered = false;
@@ -972,6 +972,8 @@ export default function CanvasPage() {
     </>
   );
 }
+
+    
 
     
 
