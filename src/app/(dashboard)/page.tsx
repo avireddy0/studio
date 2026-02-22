@@ -295,14 +295,26 @@ export default function CanvasPage() {
       const hub = document.createElement('div');
       hub.className = 'tu-hub';
       hub.innerHTML = `
-          <div class="tu-hub-layer" style="transform: translateZ(0px)"></div>
-          <div class="tu-hub-layer" style="transform: translateZ(20px)"></div>
-          <div class="tu-hub-layer" style="transform: translateZ(40px); border-color: var(--accent-blue); box-shadow: 0 0 50px var(--accent-blue-dim), inset 0 0 30px var(--accent-blue-dim)"></div>
-          <div class="tu-billboard-container" style="transform: translateZ(100px)">
-               <div class="tu-billboard" style="border-top-color: var(--accent-blue)">
-                   <h3>Envision OS</h3>
-                   <p style="color: var(--accent-blue)">Core Router</p>
-               </div>
+          <div class="tu-hub-flipper">
+              <div class="tu-hub-front">
+                  <div class="tu-hub-layer" style="transform: translateZ(0px)"></div>
+                  <div class="tu-hub-layer" style="transform: translateZ(20px)"></div>
+                  <div class="tu-hub-layer" style="transform: translateZ(40px); border-color: var(--accent-blue); box-shadow: 0 0 50px var(--accent-blue-dim), inset 0 0 30px var(--accent-blue-dim)"></div>
+                  <div class="tu-billboard-container" style="transform: translateZ(100px)">
+                      <div style="transform: translate(-50%, -50%)">
+                          <div class="tu-billboard" style="border-top-color: var(--accent-blue)">
+                              <h3>Envision OS</h3>
+                              <p style="color: var(--accent-blue)">Core Router</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="tu-hub-back">
+                  <h4 class="text-base font-bold" style="color: var(--accent-blue); margin-bottom: 0.5rem;">Core Orchestrator</h4>
+                  <p class="text-xs text-zinc-400">Status: <span class="text-emerald-400">Online</span></p>
+                  <p class="text-xs text-zinc-400 mt-1">Avg. Latency: <strong>&lt;10ms</strong></p>
+                  <p class="text-xs text-zinc-400 mt-1"><strong>7</strong> Platform Streams</p>
+              </div>
           </div>
       `;
       tuScene.appendChild(hub);
@@ -323,43 +335,17 @@ export default function CanvasPage() {
           sat.className = 'tu-sat';
           sat.style.transform = `translate3d(${x}px, ${y}px, 0)`;
 
-          const frontLayers = `
+          sat.innerHTML = `
             <div class="tu-sat-layer" style="transform: translateZ(0px); border-color: ${p.color}40; background: ${p.color}10"></div>
             <div class="tu-sat-layer" style="transform: translateZ(15px); border-color: ${p.color}80; background: ${p.color}20"></div>
             <div class="tu-sat-layer" style="transform: translateZ(30px); border-color: ${p.color}; background: ${p.color}40; box-shadow: 0 0 30px ${p.color}40"></div>
-          `;
-
-          const backDetails = `
-            <h4 class="text-base font-bold" style="color: ${p.color}; margin-bottom: 0.5rem;">${p.name}</h4>
-            <p class="text-xs text-zinc-400">
-                <strong>${p.tools}</strong> tools integrated
-            </p>
-            <p class="text-xs text-zinc-400 mt-1">
-                Real-time data sync
-            </p>
-            <p class="text-xs text-zinc-400 mt-1">
-                Avg. Latency: <strong>150ms</strong>
-            </p>
-          `;
-
-          const billboard = `
-            <div class="tu-billboard" style="border-top-color: ${p.color}">
-                <h3 style="color: ${p.color}">${p.name}</h3>
-                <p>${p.tools} Tools Executing</p>
-            </div>
-          `;
-
-          sat.innerHTML = `
-            <div class="tu-sat-flipper">
-              <div class="tu-sat-front">
-                ${frontLayers}
-              </div>
-              <div class="tu-sat-back">
-                ${backDetails}
-              </div>
-            </div>
             <div class="tu-billboard-container" style="transform: translateZ(70px)">
-              ${billboard}
+                <div style="transform: translate(-50%, -50%)">
+                    <div class="tu-billboard" style="border-top-color: ${p.color}">
+                        <h3 style="color: ${p.color}">${p.name}</h3>
+                        <p>${p.tools} Tools Executing</p>
+                    </div>
+                </div>
             </div>
           `;
           tuScene.appendChild(sat);
@@ -529,8 +515,8 @@ export default function CanvasPage() {
           </p>
         </div>
 
-        <div className="max-w-3xl mx-auto rounded-3xl border border-zinc-700 bg-zinc-900/40 p-1 shadow-2xl backdrop-blur-3xl">
-          <div className="bg-black/20 rounded-2xl border border-zinc-800 flex h-[600px] flex-col overflow-hidden">
+        <div className="max-w-3xl mx-auto rounded-3xl border border-zinc-700/60 bg-zinc-900/30 p-1 shadow-2xl backdrop-blur-3xl">
+          <div className="bg-black/40 rounded-2xl border border-zinc-800/80 flex h-[600px] flex-col overflow-hidden backdrop-blur-xl">
             <div className="p-4 border-b border-zinc-800 flex items-center gap-3 bg-transparent">
               <div className="w-2.5 h-2.5 rounded-full bg-[var(--accent-emerald)] shadow-[0_0_10px_var(--accent-emerald)]"></div>
               <div className="font-semibold text-sm">#executive-ops</div>
@@ -999,9 +985,3 @@ export default function CanvasPage() {
     </>
   );
 }
-
-    
-
-    
-
-    
