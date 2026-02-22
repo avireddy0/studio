@@ -24,7 +24,6 @@ export default function CanvasPage() {
   const tuSceneRef = useRef<HTMLDivElement>(null);
   const latencyChartRef = useRef<HTMLCanvasElement>(null);
   const coverageChartRef = useRef<HTMLCanvasElement>(null);
-  const promptButtonsRef = useRef<NodeListOf<HTMLButtonElement> | null>(null);
 
   const isRunning = useRef(false);
 
@@ -127,7 +126,10 @@ export default function CanvasPage() {
     async (id: keyof typeof scenarios) => {
       if (isRunning.current) return;
       isRunning.current = true;
-      document.querySelectorAll('.prompt-btn').forEach(b => (b.disabled = true));
+      document.querySelectorAll('.prompt-btn').forEach(btn => {
+        const button = btn as HTMLButtonElement;
+        button.disabled = true;
+      });
       if (routingPanelRef.current) routingPanelRef.current.innerHTML = '';
 
       const data = scenarios[id];
@@ -158,7 +160,10 @@ export default function CanvasPage() {
       });
 
       scrollToBottom();
-      document.querySelectorAll('.prompt-btn').forEach(b => (b.disabled = false));
+       document.querySelectorAll('.prompt-btn').forEach(btn => {
+        const button = btn as HTMLButtonElement;
+        button.disabled = false;
+      });
       isRunning.current = false;
     },
     [addMessage, addRouteNode, addTyping, scrollToBottom, scenarios]
@@ -270,7 +275,8 @@ export default function CanvasPage() {
           const billboards = tuScene.querySelectorAll('.tu-billboard-container');
           billboards.forEach(b => {
               const htmlB = b as HTMLElement;
-              const currentZ = htmlB.style.transform.match(/translateZ\((.*?)\)/)?.[0] || 'translateZ(0px)';
+              const currentZMatch = htmlB.style.transform.match(/translateZ\((.*?)\)/);
+              const currentZ = currentZMatch ? currentZMatch[0] : 'translateZ(0px)';
               htmlB.style.transform = `${currentZ} rotateZ(${-tuGlobalRotation}deg) rotateX(-60deg)`;
           });
         }
@@ -361,7 +367,7 @@ export default function CanvasPage() {
         cancelAnimationFrame(animationFrameId);
         chartInstances.forEach(chart => chart.destroy());
     };
-  }, []);
+  }, [runSimulation]);
 
   return (
     <>
@@ -386,6 +392,9 @@ export default function CanvasPage() {
             </a>
             <a href="#ecosystem" className="hover:text-white transition-colors">
               Ecosystem
+            </a>
+            <a href="#metrics" className="hover:text-white transition-colors">
+              Metrics
             </a>
           </div>
         </div>
