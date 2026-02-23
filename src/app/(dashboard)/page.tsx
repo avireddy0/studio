@@ -395,18 +395,19 @@ export default function CanvasPage() {
                     datasets: [{
                         label: 'Hours to Resolution',
                         data: [72, 120, 48, 0.1], 
-                        backgroundColor: ['#334155', '#334155', '#334155', '#10B981'],
+                        backgroundColor: ['#475569', '#475569', '#475569', '#10B981'],
                         borderRadius: 6,
                         borderSkipped: false
                     }]
                 },
                 options: {
+                    indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false }, tooltip: { bodyFont: { family: 'Inter' } } },
                     scales: {
-                        y: { beginAtZero: true, grid: { color: '#232733' }, ticks: { color: '#94A3B8', font: { family: 'Inter', weight: '500' } } },
-                        x: { grid: { display: false }, ticks: { color: '#94A3B8', font: { family: 'Inter', weight: '600' } } }
+                        x: { beginAtZero: true, grid: { color: '#232733' }, ticks: { color: '#94A3B8', font: { family: 'Inter', weight: '500' } } },
+                        y: { grid: { display: false }, ticks: { color: '#94A3B8', font: { family: 'Inter', weight: '600' } } }
                     }
                 }
             }));
