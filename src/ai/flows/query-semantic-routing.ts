@@ -9,7 +9,7 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import { z } from 'zod';
 
 /**
  * Input schema for the querySemanticRouting flow.
@@ -167,7 +167,7 @@ const querySemanticRoutingFlow = ai.defineFlow(
       // If the model proposed a tool call, return its name and parameters.
       return {
         toolName: toolCall.name,
-        parameters: toolCall.input as Record<string, any>,
+        parameters: JSON.parse(JSON.stringify(toolCall.input)),
       };
     } else {
       // If no tool was called, return an 'unknown' tool along with the model's textual response as a reason.
