@@ -253,6 +253,8 @@ export default function CanvasPage() {
   
   useEffect(() => {
     const chartInstances: Chart[] = [];
+    const isMobile = window.innerWidth < 768;
+
 
     const vizContainerStack = basetenVizStackRef.current;
     const stackInner = basetenStackInnerRef.current;
@@ -287,7 +289,7 @@ export default function CanvasPage() {
 
     const tuScene = tuSceneRef.current;
     const tuContainer = tuContainerRef.current;
-    const orbRadius = 380;
+    const orbRadius = isMobile ? 240 : 380;
 
     if (tuScene) {
       tuScene.innerHTML = '<div class="tu-grid"></div>';
@@ -493,7 +495,7 @@ export default function CanvasPage() {
         </div>
       </nav>
 
-      <section className="hero container mx-auto px-6 pt-40 pb-16 text-center relative">
+      <section className="hero container mx-auto px-4 md:px-6 pt-32 md:pt-40 pb-16 text-center relative">
         <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight mb-6 bg-gradient-to-b from-white to-[#A8B2C1] text-transparent bg-clip-text drop-shadow-lg fade-in-up delay-100">
           Where Development<br/>meets Data
         </h1>
@@ -509,7 +511,7 @@ export default function CanvasPage() {
         </div>
       </section>
 
-      <div className="container mx-auto px-6 mb-32" id="control-plane">
+      <div className="container mx-auto px-4 md:px-6 mb-24 md:mb-32" id="control-plane">
         <div className="max-w-3xl mx-auto text-center mb-10">
           <p className="text-lg text-[var(--text-secondary)]">
             Experience Envision OS deliver instant intelligence through its multimodal agentic AI across 23 software platforms in real-time
@@ -517,7 +519,7 @@ export default function CanvasPage() {
         </div>
 
         <div className="max-w-3xl mx-auto rounded-3xl border border-zinc-700/60 bg-zinc-900/30 p-1 shadow-2xl backdrop-blur-3xl">
-          <div className="bg-black/40 rounded-2xl border border-zinc-800/80 flex h-[600px] flex-col overflow-hidden backdrop-blur-xl">
+          <div className="bg-black/40 rounded-2xl border border-zinc-800/80 flex h-[500px] md:h-[600px] flex-col overflow-hidden backdrop-blur-xl">
             <div className="p-4 border-b border-zinc-800 flex items-center gap-3 bg-transparent">
               <div className="w-2.5 h-2.5 rounded-full bg-[var(--accent-emerald)] shadow-[0_0_10px_var(--accent-emerald)]"></div>
               <div className="font-semibold text-sm">#executive-ops</div>
@@ -564,8 +566,8 @@ export default function CanvasPage() {
 
       <div className="w-full h-px bg-gradient-to-r from-transparent via-[var(--border-strong)] to-transparent my-16"></div>
 
-      <section id="ingestion" className="container mx-auto px-6 py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 items-center">
+      <section id="ingestion" className="container mx-auto px-4 md:px-6 py-16 md:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-16 items-center">
           <div>
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">
               Phase 1: Ingestion
@@ -741,9 +743,9 @@ export default function CanvasPage() {
         </div>
       </section>
 
-      <section id="context" className="container mx-auto px-6 py-24">
+      <section id="context" className="container mx-auto px-4 md:px-6 py-16 md:py-24">
         <div
-          className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 items-center"
+          className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-16 items-center"
           dir="rtl"
         >
           <div dir="ltr">
@@ -844,8 +846,8 @@ export default function CanvasPage() {
         </div>
       </section>
 
-      <section id="architecture" className="container mx-auto px-6 py-24">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+      <section id="architecture" className="container mx-auto px-4 md:px-6 py-16 md:py-24">
+        <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
           <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">
             Phase 3: Execution
           </span>
@@ -907,9 +909,9 @@ export default function CanvasPage() {
 
       <section
         id="ecosystem"
-        className="container mx-auto px-6 py-32 border-t border-[var(--border-strong)]"
+        className="container mx-auto px-4 md:px-6 py-24 md:py-32 border-t border-[var(--border-strong)]"
       >
-        <div className="max-w-4xl mx-auto text-center mb-16 relative z-20">
+        <div className="max-w-4xl mx-auto text-center mb-12 md:mb-16 relative z-20">
           <span className="block font-mono text-xs text-[var(--accent-emerald)] uppercase tracking-widest mb-4">
             Phase 4: The Tool Universe
           </span>
@@ -929,9 +931,9 @@ export default function CanvasPage() {
 
       <section
         id="metrics"
-        className="container mx-auto px-6 py-24 border-t border-[var(--border-strong)]"
+        className="container mx-auto px-4 md:px-6 py-16 md:py-24 border-t border-[var(--border-strong)]"
       >
-        <div className="max-w-3xl mx-auto text-center mb-16">
+        <div className="max-w-3xl mx-auto text-center mb-12 md:mb-16">
           <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">
             Quantitative Impact
           </span>
@@ -945,8 +947,8 @@ export default function CanvasPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 bg-zinc-900/30 backdrop-blur-3xl p-8 rounded-2xl border border-zinc-700/60">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
+            <div className="lg:col-span-2 bg-zinc-900/30 backdrop-blur-3xl p-6 md:p-8 rounded-2xl border border-zinc-700/60">
                 <div className="flex justify-between items-start">
                     <div>
                         <h3 className="text-2xl font-bold mb-2">
@@ -965,7 +967,7 @@ export default function CanvasPage() {
                     <canvas ref={latencyChartRef}></canvas>
                 </div>
             </div>
-            <div className="bg-zinc-900/30 backdrop-blur-3xl p-8 rounded-2xl border border-zinc-700/60 flex flex-col">
+            <div className="bg-zinc-900/30 backdrop-blur-3xl p-6 md:p-8 rounded-2xl border border-zinc-700/60 flex flex-col">
                 <div>
                     <h3 className="text-2xl font-bold mb-2">
                         Tool Universe

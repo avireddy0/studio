@@ -1270,3 +1270,74 @@ body::before {
   height: 300px;
   max-height: 400px;
 }
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 768px) {
+  .hero {
+    padding-top: 8rem;
+    padding-bottom: 3rem;
+  }
+  .hero h1 {
+    font-size: 2.75rem; /* ~44px */
+    line-height: 1.1;
+  }
+  .hero .text-lg {
+    font-size: 1rem;
+  }
+
+  /* Ingestion Viz */
+  .ingestion-viz {
+    height: 320px;
+    transform: scale(0.75);
+    transform-origin: center;
+  }
+  .ingestion-viz .json-node {
+    font-size: 0.65rem;
+    padding: 8px 12px;
+  }
+
+  /* Context Dovetail Viz */
+  .context-dovetail-viz {
+    flex-direction: column;
+    height: auto;
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+  .dt-sources, .dt-insight {
+    width: 100%;
+  }
+  .dt-particle {
+    display: none;
+  }
+  
+  /* Architecture Stack */
+  .context-viz-container {
+    height: 500px;
+    perspective: 1000px;
+  }
+  .baseten-stack {
+    transform: rotateX(55deg) rotateZ(-30deg) scale(0.8);
+  }
+  .context-viz-container:hover .baseten-stack {
+      transform: rotateX(55deg) rotateZ(-30deg) scale(0.85);
+  }
+
+  /* Tool Universe */
+  .tu-container {
+    height: 600px;
+  }
+
+  /* Metrics */
+  #metrics .grid {
+    gap: 1rem;
+  }
+  #metrics .text-2xl {
+    font-size: 1.25rem;
+  }
+  #metrics .text-5xl {
+    font-size: 3rem; /* 48px */
+  }
+   #metrics .text-7xl {
+    font-size: 4rem; /* 64px */
+  }
+}
