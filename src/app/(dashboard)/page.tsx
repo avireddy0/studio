@@ -938,7 +938,7 @@ export default function CanvasPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-          <div className="bg-[var(--bg-surface)] p-8 rounded-2xl border border-[var(--border-strong)]">
+          <div className="bg-card/60 backdrop-blur-xl p-8 rounded-2xl border border-[var(--border-strong)]">
             <h3 className="text-2xl font-bold mb-2">
               Decision Latency Collapse
             </h3>
@@ -950,7 +950,7 @@ export default function CanvasPage() {
             </div>
           </div>
 
-          <div className="bg-[var(--bg-surface)] p-8 rounded-2xl border border-[var(--border-strong)]">
+          <div className="bg-card/60 backdrop-blur-xl p-8 rounded-2xl border border-[var(--border-strong)]">
             <h3 className="text-2xl font-bold mb-2">
               Specialist Tool Coverage
             </h3>
