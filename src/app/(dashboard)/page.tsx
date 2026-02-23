@@ -395,7 +395,7 @@ export default function CanvasPage() {
                     datasets: [{
                         label: 'Hours to Resolution',
                         data: [72, 120, 48, 0.1], 
-                        backgroundColor: ['#475569', '#475569', '#475569', '#10B981'],
+                        backgroundColor: ['#F59E0B', '#3B82F6', '#8B5CF6', '#10B981'],
                         borderRadius: 6,
                         borderSkipped: false
                     }]
@@ -432,7 +432,7 @@ export default function CanvasPage() {
                     maintainAspectRatio: false,
                     cutout: '65%',
                     plugins: { 
-                        legend: { position: 'right', labels: { color: '#94A3B8', font: { family: 'JetBrains Mono', size: 11, weight: '600' } } },
+                        legend: { position: 'right', labels: { color: '#94A3B8', font: { family: 'Inter', size: 12, weight: '600' } } },
                         tooltip: { bodyFont: { family: 'Inter' } }
                     }
                 }
