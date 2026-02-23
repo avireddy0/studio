@@ -420,20 +420,28 @@ export default function CanvasPage() {
             chartInstances.push(new Chart(ctxCoverage, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Finance (58)', 'Comms (85)', 'Project (53)', 'HR (42)', 'Sales (40)', 'Research (50)', 'Infra (62)'],
+                    labels: ['Finance', 'Comms', 'Project', 'HR/Ops', 'Sales', 'Research', 'Infra'],
                     datasets: [{
                         data: [58, 85, 53, 42, 40, 50, 62],
                         backgroundColor: ['#F59E0B', '#3B82F6', '#10B981', '#8B5CF6', '#EC4899', '#06B6D4', '#64748B'],
-                        borderWidth: 0
+                        borderWidth: 2,
+                        borderColor: '#121212'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: '65%',
+                    cutout: '80%',
                     plugins: { 
-                        legend: { position: 'right', labels: { color: '#94A3B8', font: { family: 'Inter', size: 12, weight: '600' } } },
-                        tooltip: { bodyFont: { family: 'Inter' } }
+                        legend: { display: false },
+                        tooltip: { 
+                            bodyFont: { family: 'Inter' },
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${context.label}: ${context.parsed}`;
+                                }
+                            }
+                        }
                     }
                 }
             }));
@@ -937,30 +945,43 @@ export default function CanvasPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-          <div className="bg-zinc-900/30 backdrop-blur-3xl p-8 rounded-2xl border border-zinc-700/60">
-            <h3 className="text-2xl font-bold mb-2">
-              Decision Latency Collapse
-            </h3>
-            <p className="text-[var(--text-secondary)] mb-6 text-sm">
-              Traditional cycles vs. Envision OS instant resolution.
-            </p>
-            <div className="chart-container">
-              <canvas ref={latencyChartRef}></canvas>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 bg-zinc-900/30 backdrop-blur-3xl p-8 rounded-2xl border border-zinc-700/60">
+                <div className="flex justify-between items-start">
+                    <div>
+                        <h3 className="text-2xl font-bold mb-2">
+                            Decision Latency Collapse
+                        </h3>
+                        <p className="text-[var(--text-secondary)] mb-6 text-sm">
+                            Traditional cycles vs. Envision OS instant resolution.
+                        </p>
+                    </div>
+                    <div className="text-right flex-shrink-0 ml-4">
+                        <p className="text-5xl md:text-6xl font-bold text-emerald-400 leading-tight">1200x</p>
+                        <p className="text-[var(--text-secondary)]">Faster Resolution</p>
+                    </div>
+                </div>
+                <div className="chart-container h-[250px] mt-4">
+                    <canvas ref={latencyChartRef}></canvas>
+                </div>
             </div>
-          </div>
-
-          <div className="bg-zinc-900/30 backdrop-blur-3xl p-8 rounded-2xl border border-zinc-700/60">
-            <h3 className="text-2xl font-bold mb-2">
-              Specialist Tool Coverage
-            </h3>
-            <p className="text-[var(--text-secondary)] mb-6 text-sm">
-              390 Active Tools distributed across domain specialists.
-            </p>
-            <div className="chart-container">
-              <canvas ref={coverageChartRef}></canvas>
+            <div className="bg-zinc-900/30 backdrop-blur-3xl p-8 rounded-2xl border border-zinc-700/60 flex flex-col">
+                <div>
+                    <h3 className="text-2xl font-bold mb-2">
+                        Tool Universe
+                    </h3>
+                    <p className="text-[var(--text-secondary)] text-sm">
+                        Active tools across domain specialists.
+                    </p>
+                </div>
+                <div className="flex-1 flex flex-col items-center justify-center text-center my-4">
+                    <p className="text-7xl lg:text-8xl font-bold bg-gradient-to-br from-slate-200 to-slate-500 text-transparent bg-clip-text">390</p>
+                    <p className="text-[var(--text-secondary)] font-medium mt-1">Tools Executing</p>
+                </div>
+                <div className="h-[120px] -mt-8">
+                    <canvas ref={coverageChartRef}></canvas>
+                </div>
             </div>
-          </div>
         </div>
       </section>
 
