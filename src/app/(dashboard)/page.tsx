@@ -374,7 +374,7 @@ export default function CanvasPage() {
         tuIsHovered = true;
         const rect = tuContainer.getBoundingClientRect();
         const xNorm = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-        tuTargetRotation += (xNorm * 1.0); 
+        tuTargetRotation += (xNorm * 0.2); 
     };
     const handleTuMouseLeave = () => {
         tuIsHovered = false;
@@ -938,7 +938,7 @@ export default function CanvasPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-          <div className="bg-card/60 backdrop-blur-xl p-8 rounded-2xl border border-[var(--border-strong)]">
+          <div className="bg-zinc-900/30 backdrop-blur-3xl p-8 rounded-2xl border border-zinc-700/60">
             <h3 className="text-2xl font-bold mb-2">
               Decision Latency Collapse
             </h3>
@@ -950,7 +950,7 @@ export default function CanvasPage() {
             </div>
           </div>
 
-          <div className="bg-card/60 backdrop-blur-xl p-8 rounded-2xl border border-[var(--border-strong)]">
+          <div className="bg-zinc-900/30 backdrop-blur-3xl p-8 rounded-2xl border border-zinc-700/60">
             <h3 className="text-2xl font-bold mb-2">
               Specialist Tool Coverage
             </h3>
@@ -975,3 +975,5 @@ export default function CanvasPage() {
     </>
   );
 }
+
+    
