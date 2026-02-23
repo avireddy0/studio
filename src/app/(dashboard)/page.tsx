@@ -495,7 +495,7 @@ export default function CanvasPage() {
         </div>
       </nav>
 
-      <section className="hero container mx-auto px-4 md:px-6 pt-32 md:pt-40 pb-16 text-center relative">
+      <section className="hero container mx-auto px-4 md:px-6 pt-32 md:pt-40 pb-16 text-center relative scroll-snap-section">
         <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight mb-6 bg-gradient-to-b from-white to-[#A8B2C1] text-transparent bg-clip-text drop-shadow-lg fade-in-up delay-100">
           Where Development<br/>meets Data
         </h1>
@@ -511,7 +511,7 @@ export default function CanvasPage() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 md:px-6 mb-24 md:mb-32" id="control-plane">
+      <div className="container mx-auto px-4 md:px-6 scroll-snap-section" id="control-plane">
         <div className="max-w-3xl mx-auto text-center mb-10">
           <p className="text-lg text-[var(--text-secondary)]">
             Experience Envision OS deliver instant intelligence through its multimodal agentic AI across 23 software platforms in real-time
@@ -564,9 +564,9 @@ export default function CanvasPage() {
         </div>
       </div>
 
-      <div className="w-full h-px bg-gradient-to-r from-transparent via-[var(--border-strong)] to-transparent my-16"></div>
+      <div className="w-full h-px bg-gradient-to-r from-transparent via-[var(--border-strong)] to-transparent separator-line"></div>
 
-      <section id="ingestion" className="container mx-auto px-4 md:px-6 py-16 md:py-24">
+      <section id="ingestion" className="container mx-auto px-4 md:px-6 py-16 md:py-24 scroll-snap-section">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-16 items-center">
           <div>
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">
@@ -743,7 +743,7 @@ export default function CanvasPage() {
         </div>
       </section>
 
-      <section id="context" className="container mx-auto px-4 md:px-6 py-16 md:py-24">
+      <section id="context" className="container mx-auto px-4 md:px-6 py-16 md:py-24 scroll-snap-section">
         <div
           className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-16 items-center"
           dir="rtl"
@@ -846,7 +846,7 @@ export default function CanvasPage() {
         </div>
       </section>
 
-      <section id="architecture" className="container mx-auto px-4 md:px-6 py-16 md:py-24">
+      <section id="architecture" className="container mx-auto px-4 md:px-6 py-16 md:py-24 scroll-snap-section">
         <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
           <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">
             Phase 3: Execution
@@ -909,7 +909,7 @@ export default function CanvasPage() {
 
       <section
         id="ecosystem"
-        className="container mx-auto px-4 md:px-6 py-24 md:py-32 border-t border-[var(--border-strong)]"
+        className="container mx-auto px-4 md:px-6 py-24 md:py-32 border-t border-[var(--border-strong)] scroll-snap-section"
       >
         <div className="max-w-4xl mx-auto text-center mb-12 md:mb-16 relative z-20">
           <span className="block font-mono text-xs text-[var(--accent-emerald)] uppercase tracking-widest mb-4">
@@ -931,7 +931,7 @@ export default function CanvasPage() {
 
       <section
         id="metrics"
-        className="container mx-auto px-4 md:px-6 py-16 md:py-24 border-t border-[var(--border-strong)]"
+        className="container mx-auto px-4 md:px-6 py-16 md:py-24 border-t border-[var(--border-strong)] scroll-snap-section"
       >
         <div className="max-w-3xl mx-auto text-center mb-12 md:mb-16">
           <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">
@@ -987,7 +987,7 @@ export default function CanvasPage() {
         </div>
       </section>
 
-      <footer className="bg-[var(--bg-surface)] border-t border-[var(--border-strong)] py-12 text-center text-sm text-[var(--text-tertiary)]">
+      <footer className="bg-[var(--bg-surface)] border-t border-[var(--border-strong)] py-12 text-center text-sm text-[var(--text-tertiary)] scroll-snap-section">
         <div className="container mx-auto">
           <p>Envision OS Demo — Version 4.13.0 — Glass Box Architecture</p>
           <p className="mt-2 font-mono text-[var(--text-secondary)]">

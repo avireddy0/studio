@@ -1273,10 +1273,37 @@ body::before {
 
 /* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 768px) {
-  .hero {
+  /* Scroll Snap Pagination on Mobile */
+  html {
+    scroll-snap-type: y mandatory;
+  }
+  .scroll-snap-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+  .separator-line {
+    display: none;
+  }
+  /* Adjustments for specific sections */
+  .hero.scroll-snap-section {
     padding-top: 8rem;
     padding-bottom: 3rem;
   }
+  #control-plane.scroll-snap-section {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+  }
+  footer.scroll-snap-section {
+    min-height: auto;
+    justify-content: flex-end;
+  }
+  
   .hero h1 {
     font-size: 2.75rem; /* ~44px */
     line-height: 1.1;
