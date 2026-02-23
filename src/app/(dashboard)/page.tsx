@@ -563,7 +563,7 @@ export default function CanvasPage() {
               Phase 1: Ingestion
             </span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">
-              Structuring the Chaos.
+              From Chaos to Control
             </h2>
             <p className="text-lg text-[var(--text-secondary)] mb-6">
               Generic AI assumes clean data; construction data is fragmented
@@ -975,5 +975,3 @@ export default function CanvasPage() {
     </>
   );
 }
-
-    
