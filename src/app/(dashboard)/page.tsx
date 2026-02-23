@@ -485,7 +485,7 @@ export default function CanvasPage() {
         </div>
       </nav>
 
-      <section className="hero container mx-auto px-6 pt-40 pb-24 text-center relative">
+      <section className="hero container mx-auto px-6 pt-40 pb-16 text-center relative">
         <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight mb-6 bg-gradient-to-b from-white to-[#A8B2C1] text-transparent bg-clip-text drop-shadow-lg fade-in-up delay-100">
           Where Development<br/>meets Data
         </h1>
