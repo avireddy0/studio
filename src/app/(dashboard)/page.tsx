@@ -485,16 +485,16 @@ export default function CanvasPage() {
         </div>
       </nav>
 
-      <section className="hero container mx-auto px-6 pt-48 pb-32 text-center relative">
-        <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-none mb-8 bg-gradient-to-b from-white to-[#94A3B8] text-transparent bg-clip-text drop-shadow-2xl fade-in-up delay-100">
-          Where Development meets Data
+      <section className="hero container mx-auto px-6 pt-40 pb-24 text-center relative">
+        <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight mb-6 bg-gradient-to-b from-white to-[#A8B2C1] text-transparent bg-clip-text drop-shadow-lg fade-in-up delay-100">
+          Where Development<br/>meets Data
         </h1>
-        <div className="text-xl md:text-3xl text-[var(--text-secondary)] max-w-4xl mx-auto leading-relaxed mb-4 fade-in-up delay-200">
-          <strong className="text-white block mb-2 font-bold">
+        <div className="text-lg md:text-2xl text-[var(--text-secondary)] max-w-4xl mx-auto leading-relaxed mb-12 fade-in-up delay-200">
+          <strong className="text-white block font-semibold mb-2">
             Construction is no longer a black box.
           </strong>
           Envision OS turns the black box → glass box through{' '}
-          <span className="bg-gradient-to-r from-[var(--accent-emerald)] to-[var(--accent-cyan)] text-transparent bg-clip-text font-bold">
+          <span className="bg-gradient-to-r from-[var(--accent-emerald)] to-[var(--accent-cyan)] text-transparent bg-clip-text font-semibold">
             continuous data verification across all platforms
           </span>
           .
