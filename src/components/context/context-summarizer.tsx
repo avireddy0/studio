@@ -79,7 +79,7 @@ export function ContextSummarizer() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <CardHeader>
-              <CardTitle>Context Fusion</CardTitle>
+              <CardTitle>Context</CardTitle>
               <CardDescription>
                 Input qualitative data to extract, highlight, and verify critical context.
               </CardDescription>

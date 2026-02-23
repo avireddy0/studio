@@ -10,7 +10,7 @@ import { ArrowRight } from "lucide-react";
 const flowSteps = [
   { name: "External Platforms" },
   { name: "Data Ingestion" },
-  { name: "Context Fusion" },
+  { name: "Context" },
   { name: "AI Orchestrator" },
   { name: "UI Display" },
 ];

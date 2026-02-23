@@ -470,7 +470,7 @@ export default function CanvasPage() {
               Ingestion
             </a>
             <a href="#context" className="hover:text-white transition-colors">
-              Context Fusion
+              Context
             </a>
             <a href="#architecture" className="hover:text-white transition-colors">
               Infrastructure
