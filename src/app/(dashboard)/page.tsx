@@ -566,9 +566,9 @@ export default function CanvasPage() {
 
       <div className="w-full h-px bg-gradient-to-r from-transparent via-[var(--border-strong)] to-transparent separator-line"></div>
 
-      <section id="ingestion" className="container mx-auto px-4 md:px-6 py-16 md:py-24 scroll-snap-section">
+      <section id="ingestion" className="container mx-auto px-4 md:px-6 py-16 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-16 items-center">
-          <div>
+          <div className="scroll-snap-section">
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">
               Phase 1: Ingestion
             </span>
@@ -589,7 +589,7 @@ export default function CanvasPage() {
             </p>
           </div>
 
-          <div className="ingestion-viz">
+          <div className="ingestion-viz scroll-snap-section">
             <div className="pipeline-line-right"></div>
 
             <div className="ingest-engine-core">
@@ -743,12 +743,12 @@ export default function CanvasPage() {
         </div>
       </section>
 
-      <section id="context" className="container mx-auto px-4 md:px-6 py-16 md:py-24 scroll-snap-section">
+      <section id="context" className="container mx-auto px-4 md:px-6 py-16 md:py-24">
         <div
           className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-16 items-center"
           dir="rtl"
         >
-          <div dir="ltr">
+          <div dir="ltr" className="scroll-snap-section">
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">
               Phase 2: Project Intelligence
             </span>
@@ -768,7 +768,7 @@ export default function CanvasPage() {
             </p>
           </div>
 
-          <div className="context-dovetail-viz" dir="ltr">
+          <div className="context-dovetail-viz scroll-snap-section" dir="ltr">
             <div className="dt-sources">
               <div className="dt-card dt-card-1">
                 <div
@@ -846,8 +846,8 @@ export default function CanvasPage() {
         </div>
       </section>
 
-      <section id="architecture" className="container mx-auto px-4 md:px-6 py-16 md:py-24 scroll-snap-section">
-        <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+      <section id="architecture" className="container mx-auto px-4 md:px-6 py-16 md:py-24">
+        <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16 scroll-snap-section">
           <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">
             Phase 3: Execution
           </span>
@@ -862,7 +862,7 @@ export default function CanvasPage() {
           </p>
         </div>
 
-        <div className="context-viz-container" ref={basetenVizStackRef}>
+        <div className="context-viz-container scroll-snap-section" ref={basetenVizStackRef}>
           <div className="baseten-stack" ref={basetenStackInnerRef}>
             <div className="baseten-layer bl-1">
               <div className="layer-head">
@@ -909,9 +909,9 @@ export default function CanvasPage() {
 
       <section
         id="ecosystem"
-        className="container mx-auto px-4 md:px-6 py-24 md:py-32 border-t border-[var(--border-strong)] scroll-snap-section"
+        className="container mx-auto px-4 md:px-6 py-24 md:py-32 border-t border-[var(--border-strong)]"
       >
-        <div className="max-w-4xl mx-auto text-center mb-12 md:mb-16 relative z-20">
+        <div className="max-w-4xl mx-auto text-center mb-12 md:mb-16 relative z-20 scroll-snap-section">
           <span className="block font-mono text-xs text-[var(--accent-emerald)] uppercase tracking-widest mb-4">
             Phase 4: The Tool Universe
           </span>
@@ -922,7 +922,7 @@ export default function CanvasPage() {
             See how our multimodal agentic AI orchestrates complex data flows across your entire software ecosystem in real-time.
           </p>
         </div>
-        <div className="tu-container" ref={tuContainerRef}>
+        <div className="tu-container scroll-snap-section" ref={tuContainerRef}>
           <div className="tu-scene" ref={tuSceneRef}>
             <div className="tu-grid"></div>
           </div>
@@ -931,9 +931,9 @@ export default function CanvasPage() {
 
       <section
         id="metrics"
-        className="container mx-auto px-4 md:px-6 py-16 md:py-24 border-t border-[var(--border-strong)] scroll-snap-section"
+        className="container mx-auto px-4 md:px-6 py-16 md:py-24 border-t border-[var(--border-strong)]"
       >
-        <div className="max-w-3xl mx-auto text-center mb-12 md:mb-16">
+        <div className="max-w-3xl mx-auto text-center mb-12 md:mb-16 scroll-snap-section">
           <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">
             Quantitative Impact
           </span>
@@ -947,7 +947,7 @@ export default function CanvasPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8 scroll-snap-section">
             <div className="lg:col-span-2 bg-zinc-900/30 backdrop-blur-3xl p-6 md:p-8 rounded-2xl border border-zinc-700/60">
                 <div className="flex justify-between items-start">
                     <div>
