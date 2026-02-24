@@ -253,8 +253,8 @@ body::before {
 .doc-file {
   width: 70px;
   height: 90px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   padding: 8px;
   display: flex;
@@ -268,7 +268,7 @@ body::before {
 .doc-file .skeleton {
   width: 100%;
   height: 4px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 2px;
 }
 .doc-file .skeleton.short {
@@ -1284,6 +1284,18 @@ body::before {
     padding-top: 5rem;
     padding-bottom: 5rem;
   }
+
+  .ingestion-viz.scroll-snap-section,
+  .context-dovetail-viz.scroll-snap-section,
+  .context-viz-container.scroll-snap-section,
+  .tu-container.scroll-snap-section,
+  #metrics .scroll-snap-section {
+    height: 80vh;
+    min-height: 80vh;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
   .separator-line {
     display: none;
   }
