@@ -1265,10 +1265,7 @@ body::before {
 .chart-container {
   position: relative;
   width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  height: 300px;
-  max-height: 400px;
+  max-width: 100%;
 }
 
 /* --- MOBILE RESPONSIVENESS --- */
