@@ -457,7 +457,7 @@ export default function CanvasPage() {
   }, [runSimulation]);
 
   return (
-    <>
+    <div className="flex flex-col w-full">
       <nav className="fixed top-0 w-full z-50 bg-[rgba(3,3,3,0.85)] backdrop-blur-md border-b border-[var(--border-subtle)]">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2 font-bold text-lg tracking-tight">
@@ -475,7 +475,8 @@ export default function CanvasPage() {
         </div>
       </nav>
 
-      <section className="hero container mx-auto px-4 md:px-6 pt-32 md:pt-40 pb-16 text-center relative scroll-snap-section">
+      {/* 1. HERO SECTION */}
+      <section className="scroll-snap-section pt-32 md:pt-40 pb-16 text-center relative">
         <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight mb-6 bg-gradient-to-b from-white to-[#A8B2C1] text-transparent bg-clip-text drop-shadow-lg fade-in-up delay-100">
           Where Development<br/>meets Data
         </h1>
@@ -489,73 +490,82 @@ export default function CanvasPage() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 md:px-6 py-12 scroll-snap-section" id="control-plane">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-lg text-[var(--text-secondary)]">
+      {/* 2. CONTROL PLANE - TEXT */}
+      <section id="control-plane" className="scroll-snap-section py-12 md:py-24">
+        <div className="container mx-auto px-4 md:px-6 text-center">
+          <span className="block font-mono text-xs text-[var(--accent-emerald)] uppercase tracking-widest mb-4">Phase 0: The Interface</span>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">Orchestrator Control Plane</h2>
+          <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
             Experience Envision OS deliver instant intelligence through its multimodal agentic AI across 23 software platforms in real-time.
           </p>
         </div>
-      </div>
+      </section>
 
-      <div className="container mx-auto px-4 md:px-6 pb-24 scroll-snap-section">
-        <div className="max-w-3xl mx-auto rounded-3xl border border-zinc-700/60 bg-zinc-900/30 p-1 shadow-2xl backdrop-blur-3xl">
-          <div className="bg-black/40 rounded-2xl border border-zinc-800/80 flex h-[500px] md:h-[600px] flex-col overflow-hidden backdrop-blur-xl">
-            <div className="p-4 border-b border-zinc-800 flex items-center gap-3 bg-transparent">
-              <div className="w-2.5 h-2.5 rounded-full bg-[var(--accent-emerald)] shadow-[0_0_10px_var(--accent-emerald)]"></div>
-              <div className="font-semibold text-sm">#executive-ops</div>
-              <div className="ml-auto font-mono text-xs text-[var(--text-tertiary)]">Envision-MCP • 390 Tools</div>
-            </div>
-            <div className="flex-1 p-4 md:p-6 overflow-y-auto flex flex-col gap-1" ref={chatBodyRef}>
-              {messages.map((msg, index) => {
-                  if (msg.type === 'typing') {
+      {/* 3. CONTROL PLANE - VISUAL */}
+      <section className="visual-snap-section pb-24">
+        <div className="container mx-auto px-4 md:px-6 w-full h-full flex items-center justify-center">
+          <div className="w-full max-w-3xl h-full max-h-[600px] rounded-3xl border border-zinc-700/60 bg-zinc-900/30 p-1 shadow-2xl backdrop-blur-3xl overflow-hidden">
+            <div className="bg-black/40 rounded-2xl border border-zinc-800/80 flex h-full flex-col overflow-hidden backdrop-blur-xl">
+              <div className="p-4 border-b border-zinc-800 flex items-center gap-3 bg-transparent">
+                <div className="w-2.5 h-2.5 rounded-full bg-[var(--accent-emerald)] shadow-[0_0_10px_var(--accent-emerald)]"></div>
+                <div className="font-semibold text-sm">#executive-ops</div>
+                <div className="ml-auto font-mono text-xs text-[var(--text-tertiary)]">Envision-MCP • 390 Tools</div>
+              </div>
+              <div className="flex-1 p-4 md:p-6 overflow-y-auto flex flex-col gap-1" ref={chatBodyRef}>
+                {messages.map((msg, index) => {
+                    if (msg.type === 'typing') {
+                      return (
+                          <div key={msg.id} className="msg system">
+                              <div className="bubble"><div className="typing-indicator"><span></span><span></span><span></span></div></div>
+                          </div>
+                      );
+                    }
                     return (
-                        <div key={msg.id} className="msg system">
-                            <div className="bubble"><div className="typing-indicator"><span></span><span></span><span></span></div></div>
+                        <div key={index} className={`msg ${msg.type}`}>
+                            <div className="bubble" dangerouslySetInnerHTML={{ __html: msg.html }} />
                         </div>
                     );
-                  }
-                  return (
-                      <div key={index} className={`msg ${msg.type}`}>
-                          <div className="bubble" dangerouslySetInnerHTML={{ __html: msg.html }} />
-                      </div>
-                  );
-              })}
-              {suggestedReplies.length > 0 && (
-                <div className="suggestions-wrapper">
-                    {suggestedReplies.map((reply, index) => (
-                        <button
-                            key={index}
-                            className="suggestion-item"
-                            onClick={() => runSimulation(reply.scenarioId)}
-                            disabled={isRunning.current}
-                        >
-                            {reply.text}
-                        </button>
-                    ))}
-                </div>
-              )}
+                })}
+                {suggestedReplies.length > 0 && (
+                  <div className="suggestions-wrapper">
+                      {suggestedReplies.map((reply, index) => (
+                          <button
+                              key={index}
+                              className="suggestion-item"
+                              onClick={() => runSimulation(reply.scenarioId)}
+                              disabled={isRunning.current}
+                          >
+                              {reply.text}
+                          </button>
+                      ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="w-full h-px bg-gradient-to-r from-transparent via-[var(--border-strong)] to-transparent separator-line"></div>
-
-      <section id="ingestion" className="container mx-auto px-4 md:px-6 py-16 md:py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-16 items-center">
-          <div className="scroll-snap-section">
+      {/* 4. INGESTION - TEXT */}
+      <section id="ingestion" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)]">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="max-w-2xl">
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 1: Ingestion</span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">From Chaos to Control</h2>
             <p className="text-lg text-[var(--text-secondary)] mb-6">
               Generic AI assumes clean data; construction data is fragmented across PDFs, emails, and spreadsheets. Intelligence without infrastructure hallucinates.
             </p>
             <p className="text-lg text-[var(--text-secondary)]">
-              Envision OS acts as an ingestion engine first. Before an LLM ever sees a prompt,{' '}
-              <span className="text-white font-semibold">390 specific tools</span> parse, normalize, and structure reality into a deterministic JSON graph.
+              Envision OS acts as an ingestion engine first. Before an LLM ever sees a prompt, <strong className="text-white">390 specific tools</strong> parse, normalize, and structure reality.
             </p>
           </div>
+        </div>
+      </section>
 
-          <div className="ingestion-viz scroll-snap-section">
+      {/* 5. INGESTION - VISUAL */}
+      <section className="visual-snap-section">
+        <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center">
+          <div className="ingestion-viz w-full">
             <div className="pipeline-line-right"></div>
             <div className="ingest-engine-core">
               <div className="event-horizon"></div>
@@ -589,62 +599,47 @@ export default function CanvasPage() {
         </div>
       </section>
 
-      <section id="context" className="container mx-auto px-4 md:px-6 py-16 md:py-24 border-t border-[var(--border-strong)]">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-16 items-center">
-          <div className="scroll-snap-section lg:order-last">
+      {/* 6. CONTEXT - TEXT */}
+      <section id="context" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)]">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="max-w-2xl ml-auto text-right">
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 2: Project Intelligence</span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">Context is Everything.</h2>
             <p className="text-lg text-[var(--text-secondary)] mb-6">
-              Clean data requires context. A $50,000 budget variance is just an alarming number until you know the owner verbally approved the rework in a meeting yesterday.
+              A $50,000 budget variance is just an alarming number until you know the owner verbally approved the rework in a meeting yesterday.
             </p>
             <p className="text-lg text-[var(--text-secondary)]">
-              This is the <strong>Context Fusion Engine</strong>. It automatically parses qualitative data—Slack threads, meeting transcripts, and RFIs—highlights the critical intent, and tags it to your project timeline.
+              This is the <strong>Context Fusion Engine</strong>. It automatically parses qualitative data—Slack, Zoom, and RFIs—to tag project reality.
             </p>
           </div>
+        </div>
+      </section>
 
-          <div className="context-dovetail-viz scroll-snap-section lg:order-first">
+      {/* 7. CONTEXT - VISUAL */}
+      <section className="visual-snap-section">
+        <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center">
+          <div className="context-dovetail-viz w-full">
             <div className="dt-sources">
-              <div className="dt-card dt-card-1">
+              <div className="dt-card">
                 <div className="dt-card-head" style={{ '--c': 'var(--accent-blue)' } as any}>Project Manager: #exec-ops</div>
                 <div className="dt-card-body">
-                  "Just confirmed with the owner, we're swapping to the {' '}
-                  <span className="dt-highlight dt-hl-1">energy-efficient glazing</span>. {' '}
-                  He's aware of the lead time shift."
+                  "Just confirmed with the owner, we're swapping to the <span className="text-white font-semibold">energy-efficient glazing</span>."
                 </div>
               </div>
-              <div className="dt-card dt-card-2">
+              <div className="dt-card">
                 <div className="dt-card-head" style={{ '--c': 'var(--accent-emerald)' } as any}>Field Lead: Zoom Transcript</div>
                 <div className="dt-card-body">
-                  "Soil conditions at the {' '}
-                  <span className="dt-highlight dt-hl-2">North Wall are softer than expected</span>. {' '}
-                  Moving the drill rig to the South Wing now."
-                </div>
-              </div>
-              <div className="dt-card dt-card-3">
-                <div className="dt-card-head" style={{ '--c': 'var(--accent-violet)' } as any}>Architect: RFI-224</div>
-                <div className="dt-card-body">
-                  "Approved the {' '}
-                  <span className="dt-highlight dt-hl-3">revised staircase clearance</span>. {' '}
-                  Update the shop drawings for immediate fabrication."
+                  "Soil conditions at the North Wall are softer. Moving the rig now."
                 </div>
               </div>
             </div>
-
-            <div className="dt-particle dt-p-1"></div>
-            <div className="dt-particle dt-p-2"></div>
-            <div className="dt-particle dt-p-3"></div>
-
             <div className="dt-insight">
               <div className="dt-insight-card">
                 <div className="dt-insight-head"><div className="css-checkmark"></div><span className="ml-2">Verified Truth</span></div>
-                <div className="dt-tags">
-                  <div className="dt-tag dt-tag-1">Design Change Approved</div>
-                  <div className="dt-tag dt-tag-2">Field Redirection</div>
-                  <div className="dt-tag dt-tag-3">Shop Dwg Update</div>
-                </div>
-                <div className="dt-conclusion">
-                  <h4>Context Verified</h4>
-                  <p>Decision Latency: 0 Minutes</p>
+                <div className="dt-tag" style={{ '--c': 'var(--accent-blue)' } as any}>Design Change Approved</div>
+                <div className="dt-conclusion mt-4">
+                  <h4 className="font-bold">Context Verified</h4>
+                  <p className="text-xs text-[var(--text-secondary)]">Decision Latency: 0 Minutes</p>
                 </div>
               </div>
             </div>
@@ -652,84 +647,88 @@ export default function CanvasPage() {
         </div>
       </section>
 
-      <section id="architecture" className="container mx-auto px-4 md:px-6 py-16 md:py-24 border-t border-[var(--border-strong)]">
-        <div className="scroll-snap-section text-center max-w-3xl mx-auto mb-12">
+      {/* 8. ARCHITECTURE - TEXT */}
+      <section id="architecture" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)]">
+        <div className="container mx-auto px-4 md:px-6 text-center">
           <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 3: Execution</span>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">Intelligence Requires Infrastructure.</h2>
-          <p className="text-lg text-[var(--text-secondary)]">
+          <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
             Our architectural stack maps queries from plain English through LLM agents down to 390 specific MCP tools in under 200 milliseconds.
           </p>
         </div>
+      </section>
 
-        <div className="context-viz-container scroll-snap-section" ref={basetenVizStackRef}>
-          <div className="baseten-stack" ref={basetenStackInnerRef}>
-            <div className="baseten-layer bl-1"><div className="layer-head"><h4>Data Layer</h4><span className="tag">L1</span></div><p>BigQuery • Vertex AI Search</p></div>
-            <div className="baseten-layer bl-2"><div className="layer-head"><h4>Compute Layer</h4><span className="tag">L2</span></div><p>GKE Clusters • BIM • LiDAR</p></div>
-            <div className="baseten-layer bl-3"><div className="layer-head"><h4>Agent Layer</h4><span className="tag">L3</span></div><p>Vertex AI • 7 Domain LLMs</p></div>
-            <div className="baseten-layer bl-4"><div className="layer-head"><h4>Gateway Layer</h4><span className="tag">L4</span></div><p>Cloud Run • FastMCP • 390 Tools</p></div>
-            <div className="baseten-layer bl-5"><div className="layer-head"><h4>Context Layer</h4><span className="tag">L5</span></div><p>Colab Enterprise • Live Sync</p></div>
-            <div className="data-stream ds-1"></div>
-            <div className="data-stream ds-2"></div>
+      {/* 9. ARCHITECTURE - VISUAL */}
+      <section className="visual-snap-section">
+        <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center">
+          <div className="context-viz-container w-full" ref={basetenVizStackRef}>
+            <div className="baseten-stack" ref={basetenStackInnerRef}>
+              <div className="baseten-layer bl-1"><div className="layer-head"><h4>Data Layer</h4><span className="tag">L1</span></div><p>BigQuery • Vertex AI</p></div>
+              <div className="baseten-layer bl-2"><div className="layer-head"><h4>Compute Layer</h4><span className="tag">L2</span></div><p>GKE Clusters • LiDAR</p></div>
+              <div className="baseten-layer bl-3"><div className="layer-head"><h4>Agent Layer</h4><span className="tag">L3</span></div><p>7 Domain LLMs</p></div>
+              <div className="baseten-layer bl-4"><div className="layer-head"><h4>Gateway Layer</h4><span className="tag">L4</span></div><p>Cloud Run • 390 Tools</p></div>
+              <div className="baseten-layer bl-5"><div className="layer-head"><h4>Context Layer</h4><span className="tag">L5</span></div><p>Live Sync Engine</p></div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="ecosystem" className="container mx-auto px-4 md:px-6 py-24 md:py-32 border-t border-[var(--border-strong)]">
-        <div className="max-w-4xl mx-auto text-center mb-12 scroll-snap-section">
+      {/* 10. ECOSYSTEM - TEXT */}
+      <section id="ecosystem" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)]">
+        <div className="container mx-auto px-4 md:px-6 text-center">
           <span className="block font-mono text-xs text-[var(--accent-emerald)] uppercase tracking-widest mb-4">Phase 4: The Tool Universe</span>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">390 Tools. 7 Platforms.</h2>
-          <p className="text-lg text-[var(--text-secondary)]">
-            See how our multimodal agentic AI orchestrates complex data flows across your entire software ecosystem in real-time.
+          <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
+            Orchestrating complex data flows across your entire software ecosystem in real-time.
           </p>
-        </div>
-        <div className="tu-container scroll-snap-section" ref={tuContainerRef}>
-          <div className="tu-scene" ref={tuSceneRef}><div className="tu-grid"></div></div>
         </div>
       </section>
 
-      <section id="metrics" className="container mx-auto px-4 md:px-6 py-16 md:py-24 border-t border-[var(--border-strong)]">
-        <div className="max-w-3xl mx-auto text-center mb-12 scroll-snap-section">
-          <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Quantitative Impact</span>
-          <h2 className="text-4xl font-bold tracking-tight mb-6">Measuring the Glass Box.</h2>
-          <p className="text-lg text-[var(--text-secondary)]">
-            This section quantifies the operational impact of the Envision OS system, comparing traditional workflow latencies against instant resolution.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8 scroll-snap-section">
-            <div className="lg:col-span-2 bg-zinc-900/30 backdrop-blur-3xl p-6 md:p-8 rounded-2xl border border-zinc-700/60">
-                <div className="flex justify-between items-start">
-                    <div>
-                        <h3 className="text-2xl font-bold mb-2">Decision Latency Collapse</h3>
-                        <p className="text-[var(--text-secondary)] mb-6 text-sm">Traditional cycles vs. Envision OS instant resolution.</p>
-                    </div>
-                    <div className="text-right flex-shrink-0 ml-4">
-                        <p className="text-5xl md:text-6xl font-bold text-emerald-400 leading-tight">1200x</p>
-                        <p className="text-[var(--text-secondary)]">Faster Resolution</p>
-                    </div>
-                </div>
-                <div className="chart-container h-[250px] mt-4"><canvas ref={latencyChartRef}></canvas></div>
-            </div>
-            <div className="bg-zinc-900/30 backdrop-blur-3xl p-6 md:p-8 rounded-2xl border border-zinc-700/60 flex flex-col">
-                <div>
-                    <h3 className="text-2xl font-bold mb-2">Tool Universe</h3>
-                    <p className="text-[var(--text-secondary)] text-sm">Active tools across domain specialists.</p>
-                </div>
-                <div className="flex-1 flex flex-col items-center justify-center text-center my-4">
-                    <p className="text-7xl lg:text-8xl font-bold bg-gradient-to-br from-slate-200 to-slate-500 text-transparent bg-clip-text">390</p>
-                    <p className="text-[var(--text-secondary)] font-medium mt-1">Tools Executing</p>
-                </div>
-                <div className="h-[120px] -mt-8"><canvas ref={coverageChartRef}></canvas></div>
-            </div>
+      {/* 11. ECOSYSTEM - VISUAL */}
+      <section className="visual-snap-section">
+        <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center">
+          <div className="tu-container w-full" ref={tuContainerRef}>
+            <div className="tu-scene" ref={tuSceneRef}><div className="tu-grid"></div></div>
+          </div>
         </div>
       </section>
 
-      <footer className="bg-[var(--bg-surface)] border-t border-[var(--border-strong)] py-12 text-center text-sm text-[var(--text-tertiary)] scroll-snap-section">
+      {/* 12. METRICS - TEXT & VISUALS (Combined for finale) */}
+      <section id="metrics" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)]">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="text-center mb-12">
+            <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Quantitative Impact</span>
+            <h2 className="text-4xl font-bold tracking-tight mb-6">Measuring the Glass Box.</h2>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
+              <div className="lg:col-span-2 bg-zinc-900/30 backdrop-blur-3xl p-6 md:p-8 rounded-2xl border border-zinc-700/60">
+                  <div className="flex justify-between items-start">
+                      <div>
+                          <h3 className="text-2xl font-bold mb-2">Decision Latency Collapse</h3>
+                          <p className="text-[var(--text-secondary)] mb-6 text-sm">Traditional cycles vs. Envision OS instant resolution.</p>
+                      </div>
+                      <div className="text-right flex-shrink-0 ml-4">
+                          <p className="text-5xl md:text-6xl font-bold text-emerald-400 leading-tight">1200x</p>
+                          <p className="text-[var(--text-secondary)] text-sm">Faster Resolution</p>
+                      </div>
+                  </div>
+                  <div className="chart-container h-[250px] mt-4"><canvas ref={latencyChartRef}></canvas></div>
+              </div>
+              <div className="bg-zinc-900/30 backdrop-blur-3xl p-6 md:p-8 rounded-2xl border border-zinc-700/60 flex flex-col items-center justify-center text-center">
+                  <p className="text-7xl lg:text-8xl font-bold bg-gradient-to-br from-slate-200 to-slate-500 text-transparent bg-clip-text">390</p>
+                  <p className="text-[var(--text-secondary)] font-medium mt-1">Tools Executing</p>
+                  <div className="h-[120px] w-full mt-4"><canvas ref={coverageChartRef}></canvas></div>
+              </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="bg-[var(--bg-surface)] border-t border-[var(--border-strong)] py-12 text-center text-sm text-[var(--text-tertiary)]">
         <div className="container mx-auto">
           <p>Envision OS Demo — Version 4.13.0 — Glass Box Architecture</p>
           <p className="mt-2 font-mono text-[var(--text-secondary)]">Truth Always On.</p>
         </div>
       </footer>
-    </>
+    </div>
   );
 }
