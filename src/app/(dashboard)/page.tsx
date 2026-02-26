@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import Chart from 'chart.js/auto';
+import { Database, Layers, GitPullRequestArrow, Mail, MessageSquare, FileText, Phone, Zap, Target, ShieldCheck, Share2, BrainCircuit } from 'lucide-react';
 
 type Scenario = {
   query: string;
@@ -738,5 +739,3 @@ export default function CanvasPage() {
     </div>
   );
 }
-
-import { Database, Layers, GitPullRequestArrow } from 'lucide-react';
