@@ -209,13 +209,6 @@ export default function CanvasPage() {
       const typingId = addTyping();
       scrollToBottom();
 
-      // Simulate routing panel if you want to keep it
-      // if (routingPanelRef.current) routingPanelRef.current.innerHTML = '';
-      // for (let step of data.routes) {
-      //   await sleep(step.delay);
-      //   // addRouteNode(step.text, step.status);
-      // }
-
       await sleep(1500);
       setMessages(prev => prev.filter(m => m.id !== typingId));
 
@@ -778,11 +771,11 @@ export default function CanvasPage() {
                   Slack: #exec-ops
                 </div>
                 <div className="dt-card-body">
-                  &quot;We reviewed the budget. The VP{' '}
+                  &quot;Hey team, just got off with the PM. They're okay with the {' '}
                   <span className="dt-highlight dt-hl-1">
-                    approved the $50k overrun
+                    $50k variance on the drywall scope
                   </span>{' '}
-                  on drywall.&quot;
+                  for the West Wing.&quot;
                 </div>
               </div>
               <div className="dt-card dt-card-2">
@@ -795,11 +788,11 @@ export default function CanvasPage() {
                   Zoom Transcript (S2S API)
                 </div>
                 <div className="dt-card-body">
-                  &quot;Architectural delta is fine.{' '}
+                  &quot;The Architect confirmed the {' '}
                   <span className="dt-highlight dt-hl-2">
-                    Proceed with the rework.
+                    slab tolerance is fine.
                   </span>
-                  &quot;
+                  {' '} No need to rip it out.&quot;
                 </div>
               </div>
               <div className="dt-card dt-card-3">
@@ -814,9 +807,9 @@ export default function CanvasPage() {
                 <div className="dt-card-body">
                   &quot;
                   <span className="dt-highlight dt-hl-3">
-                    Architectural delta confirmed.
+                    Structural steel conflicts resolved.
                   </span>{' '}
-                  Pending owner execution.&quot;
+                  Design docs are updated and ready for field use.&quot;
                 </div>
               </div>
             </div>

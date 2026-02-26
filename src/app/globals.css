@@ -253,7 +253,7 @@ body::before {
 .doc-file {
   width: 70px;
   height: 90px;
-  background: rgba(255, 255, 255, 0.95); /* Solid white feel */
+  background: rgba(255, 255, 255, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 8px;
   padding: 8px;
@@ -268,7 +268,7 @@ body::before {
 .doc-file .skeleton {
   width: 100%;
   height: 4px;
-  background: rgba(0, 0, 0, 0.15); /* Dark skeleton for contrast on white */
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 2px;
 }
 .doc-file .skeleton.short {
@@ -443,6 +443,7 @@ body::before {
   align-items: stretch;
   position: relative;
   box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
 }
 .dt-sources {
   width: 45%;
@@ -729,7 +730,7 @@ body::before {
     transform: translateX(0);
   }
 }
-@keyframes dtCard3 {
+@keyframes dtCard2 {
   0%,
   40%,
   95%,
@@ -1211,10 +1212,31 @@ body::before {
   .context-viz-container.scroll-snap-section,
   .tu-container.scroll-snap-section,
   #metrics .scroll-snap-section {
-    height: 80vh !important; /* Force 80vh for visuals */
+    height: 80vh !important;
     min-height: 80vh !important;
     padding-top: 0;
     padding-bottom: 0;
+  }
+
+  .context-dovetail-viz {
+    flex-direction: column;
+    height: 80vh !important;
+    gap: 1.5rem;
+    padding: 1rem;
+    justify-content: center;
+  }
+
+  .dt-sources, .dt-insight {
+    width: 100% !important;
+    transform: scale(0.85);
+  }
+
+  .dt-card {
+    padding: 0.75rem;
+  }
+
+  .dt-card-body {
+    font-size: 0.8rem;
   }
 
   .separator-line {
@@ -1238,13 +1260,6 @@ body::before {
     height: 320px;
     transform: scale(0.75);
     transform-origin: center;
-  }
-
-  .context-dovetail-viz {
-    flex-direction: column;
-    height: auto;
-    gap: 2rem;
-    padding: 1.5rem;
   }
   
   .context-viz-container {
