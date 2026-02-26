@@ -257,11 +257,11 @@ export default function CanvasPage() {
         const y = e.clientY - rect.top;
         const xNorm = (x / rect.width) * 2 - 1;
         const yNorm = (y / rect.height) * 2 - 1;
-        stackInner.style.transform = `rotateX(${60 - (yNorm * 8)}deg) rotateZ(${-40 + (xNorm * 12)}deg)`;
+        stackInner.style.transform = `rotateX(${55 - (yNorm * 8)}deg) rotateZ(${-30 + (xNorm * 10)}deg)`;
     };
     const handleStackMouseLeave = () => {
         if (stackInner) {
-            stackInner.style.transform = `rotateX(60deg) rotateZ(-40deg)`;
+            stackInner.style.transform = `rotateX(55deg) rotateZ(-30deg)`;
         }
     };
     if (vizContainerStack) {
@@ -476,7 +476,7 @@ export default function CanvasPage() {
       </nav>
 
       {/* 1. HERO SECTION */}
-      <div className="scroll-snap-section pt-96 md:pt-[24rem] pb-24 text-center relative">
+      <div className="scroll-snap-section pt-[28rem] md:pt-[36rem] pb-24 text-center relative">
         <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight mb-8 bg-gradient-to-b from-white to-[#A8B2C1] text-transparent bg-clip-text drop-shadow-lg fade-in-up delay-100">
           Where Development meets Data
         </h1>
@@ -491,16 +491,16 @@ export default function CanvasPage() {
       </div>
 
       {/* 2. CONTROL PLANE */}
-      <div id="control-plane" className="scroll-snap-section py-12 md:py-24 scroll-mt-16">
+      <div id="control-plane" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-24">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <span className="block font-mono text-xs text-[var(--accent-emerald)] uppercase tracking-widest mb-4">Phase 0: The Interface</span>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">Orchestrator Control Plane</h2>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">Orchestrator Control Plane</h2>
           <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
             Experience Envision OS deliver instant intelligence through its multimodal agentic AI across 23 software platforms in real-time.
           </p>
         </div>
       </div>
-      <div className="visual-snap-section pb-24 scroll-mt-16">
+      <div className="visual-snap-section">
         <div className="container mx-auto px-4 md:px-6 w-full h-full flex items-center justify-center">
           <div className="w-full max-w-3xl h-full max-h-[600px] rounded-3xl border border-zinc-700/60 bg-zinc-900/30 p-1 shadow-2xl backdrop-blur-3xl overflow-hidden">
             <div className="bg-black/40 rounded-2xl border border-zinc-800/80 flex h-full flex-col overflow-hidden backdrop-blur-xl">
@@ -545,7 +545,7 @@ export default function CanvasPage() {
       </div>
 
       {/* 3. INGESTION */}
-      <div id="ingestion" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-16">
+      <div id="ingestion" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-24">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-2xl text-left">
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 1: Ingestion</span>
@@ -559,12 +559,10 @@ export default function CanvasPage() {
           </div>
         </div>
       </div>
-      <div className="visual-snap-section scroll-mt-16">
+      <div className="visual-snap-section">
         <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center">
           <div className="ingestion-viz w-full">
-            <div className="pipeline-line-right"></div>
             <div className="ingest-engine-core">
-              <div className="event-horizon"></div>
               <div className="engine-box">
                 <div className="css-icon-parser">{'{ }'}</div>
                 <span className="text-[0.7rem] font-bold tracking-widest">PARSER</span>
@@ -578,22 +576,19 @@ export default function CanvasPage() {
                 <div className="json-node data-out-stream" style={{'--d': '2s'} as any}>{'{ "type": "BUDGET", "variance": 0.12 }'}</div>
             </div>
 
-            <div className="speed-line" style={{ '--d': '0.0s', '--y': '20%' } as any}></div>
-            <div className="speed-line" style={{ '--d': '0.7s', '--y': '50%' } as any}></div>
-            <div className="speed-line" style={{ '--d': '1.4s', '--y': '80%' } as any}></div>
-
-            {[...Array(15)].map((_, i) => (
+            {[...Array(16)].map((_, i) => (
                 <div key={i} className="flow-item" style={{ 
-                    '--d': `${i * 0.25}s`, 
-                    '--y': `${10 + (i * 7)%80}%`, 
-                    '--r': `${-30 + (i*10)%60}deg`, 
-                    '--s': '1.0', 
-                    '--c': i % 3 === 0 ? 'var(--accent-pink)' : i % 3 === 1 ? 'var(--accent-emerald)' : 'var(--accent-blue)' 
+                    '--d': `${i * 0.15}s`, 
+                    '--y': `${10 + (i * 12)%80}%`, 
+                    '--r': `${-30 + (i*15)%60}deg`, 
+                    '--c': i % 4 === 0 ? 'var(--accent-pink)' : i % 4 === 1 ? 'var(--accent-emerald)' : i % 4 === 2 ? 'var(--accent-blue)' : 'var(--accent-amber)' 
                 } as any}>
-                    <div className="doc-file-solid" style={{ background: '#FFFFFF' } as any}>
+                    <div className="flurry-item">
                         <div className="skeleton"></div>
-                        <div className="skeleton short"></div>
-                        <div className="doc-tag">DOC</div>
+                        <div className="skeleton" style={{ width: '60%' }}></div>
+                        <div className="icon-box">
+                            {i % 4 === 0 ? 'DOC' : i % 4 === 1 ? 'MSG' : i % 4 === 2 ? 'CALL' : 'EMAIL'}
+                        </div>
                     </div>
                 </div>
             ))}
@@ -602,9 +597,9 @@ export default function CanvasPage() {
       </div>
 
       {/* 4. CONTEXT */}
-      <div id="context" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-16">
+      <div id="context" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-24">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-2xl text-left text-left-aligned">
+          <div className="max-w-2xl text-left">
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 2: Project Intelligence</span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">Context is Everything.</h2>
             <p className="text-lg text-[var(--text-secondary)] mb-6">
@@ -616,7 +611,7 @@ export default function CanvasPage() {
           </div>
         </div>
       </div>
-      <div className="visual-snap-section scroll-mt-16">
+      <div className="visual-snap-section">
         <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center">
           <div className="context-fusion-viz w-full">
             <div className="fusion-sources">
@@ -634,11 +629,14 @@ export default function CanvasPage() {
             </div>
             <div className="fusion-result">
                 <div className="result-card">
-                    <div className="result-head"><div className="css-checkmark"></div><span>Context Verified</span></div>
-                    <div className="result-tag">Lobby Finish Upgrade</div>
-                    <div className="result-detail">
-                        <p>Confidence Score: 98%</p>
-                        <p>Variance: Approved by Owner</p>
+                    <div className="result-head flex items-center gap-2 mb-3">
+                        <div className="w-4 h-4 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+                        <span className="font-bold text-emerald-400 text-xs tracking-widest uppercase">Context Verified</span>
+                    </div>
+                    <div className="text-xl font-bold mb-2">Lobby Finish Upgrade</div>
+                    <div className="space-y-2">
+                        <p className="text-sm text-[var(--text-secondary)]">Confidence Score: <span className="text-white">98%</span></p>
+                        <p className="text-sm text-[var(--text-secondary)]">Variance Status: <span className="text-emerald-400">Approved by Owner</span></p>
                     </div>
                 </div>
             </div>
@@ -647,7 +645,7 @@ export default function CanvasPage() {
       </div>
 
       {/* 5. ARCHITECTURE */}
-      <div id="architecture" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-16">
+      <div id="architecture" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-24">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 3: Execution</span>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">Intelligence Requires Infrastructure.</h2>
@@ -656,22 +654,22 @@ export default function CanvasPage() {
           </p>
         </div>
       </div>
-      <div className="visual-snap-section scroll-mt-16">
+      <div className="visual-snap-section">
         <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center">
           <div className="arch-viz-container w-full" ref={basetenVizStackRef}>
             <div className="arch-stack" ref={basetenStackInnerRef}>
-              <div className="arch-layer al-1"><div className="layer-head"><h4>Data Core</h4><span className="tag">L1</span></div><p>BigQuery & Vertex AI storing normalized construction truth.</p></div>
-              <div className="arch-layer al-2"><div className="layer-head"><h4>Compute Hub</h4><span className="tag">L2</span></div><p>GKE Clusters processing real-time telemetry and LiDAR feeds.</p></div>
-              <div className="arch-layer al-3"><div className="layer-head"><h4>Reasoning Agent</h4><span className="tag">L3</span></div><p>7 specialized LLMs determining intent and orchestrating tools.</p></div>
-              <div className="arch-layer al-4"><div className="layer-head"><h4>Tool Gateway</h4><span className="tag">L4</span></div><p>Cloud Run managing 390 specific platform-sync tools.</p></div>
-              <div className="arch-layer al-5"><div className="layer-head"><h4>Live Context</h4><span className="tag">L5</span></div><p>Persistent state layer syncing multi-platform communications.</p></div>
+              <div className="arch-layer al-1"><div className="layer-head"><h4>Field Data Core</h4><span className="tag">L1</span></div><p>BigQuery & Vertex AI storing normalized construction truth across all platform silos.</p></div>
+              <div className="arch-layer al-2"><div className="layer-head"><h4>Compute Hub</h4><span className="tag">L2</span></div><p>GKE Clusters processing real-time telemetry, LiDAR feeds, and schedule deltas.</p></div>
+              <div className="arch-layer al-3"><div className="layer-head"><h4>Reasoning Agent</h4><span className="tag">L3</span></div><p>7 specialized LLMs determining project intent and orchestrating specialized tools.</p></div>
+              <div className="arch-layer al-4"><div className="layer-head"><h4>Tool Gateway</h4><span className="tag">L4</span></div><p>Cloud Run instances managing 390 specific platform-sync tools for Procore, Sage, etc.</p></div>
+              <div className="arch-layer al-5"><div className="layer-head"><h4>Multi-Platform Memory</h4><span className="tag">L5</span></div><p>Persistent state layer syncing communications into a verified living history.</p></div>
             </div>
           </div>
         </div>
       </div>
 
       {/* 6. ECOSYSTEM */}
-      <div id="ecosystem" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-16">
+      <div id="ecosystem" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-24">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <span className="block font-mono text-xs text-[var(--accent-emerald)] uppercase tracking-widest mb-4">Phase 4: The Tool Universe</span>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">390 Tools. 7 Platforms.</h2>
@@ -680,8 +678,8 @@ export default function CanvasPage() {
           </p>
         </div>
       </div>
-      <div className="visual-snap-section scroll-mt-16">
-        <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center relative overflow-visible">
+      <div className="visual-snap-section">
+        <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center">
           <div className="tu-container w-full flex items-center justify-center" ref={tuContainerRef}>
             <div className="tu-scene flex items-center justify-center" ref={tuSceneRef}>
                 <div className="tu-grid"></div>
@@ -691,43 +689,48 @@ export default function CanvasPage() {
       </div>
 
       {/* 7. METRICS */}
-      <div id="metrics" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-16">
-        <div className="container mx-auto px-4 md:px-6 text-center mb-12">
+      <div id="metrics" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-24">
+        <div className="container mx-auto px-4 md:px-6 text-center">
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Quantitative Impact</span>
             <h2 className="text-4xl font-bold tracking-tight mb-6">Executive Command Metrics</h2>
+            <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto mb-12">
+                Envision OS delivers a "glass box" view into project reality, shifting the needle on risk and audit integrity.
+            </p>
         </div>
       </div>
 
-      <div className="visual-snap-section pb-24 scroll-mt-16">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
-              <div className="lg:col-span-2 bg-zinc-900/40 backdrop-blur-3xl p-6 md:p-10 rounded-3xl border border-zinc-700/60 shadow-2xl">
+      <div className="visual-snap-section">
+        <div className="container mx-auto px-4 md:px-6 h-full">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full py-8">
+              <div className="lg:col-span-2 bg-zinc-900/40 backdrop-blur-3xl p-8 rounded-3xl border border-zinc-700/60 shadow-2xl flex flex-col">
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
                       <div>
-                          <h3 className="text-3xl font-bold mb-2">Risk Discovery Acceleration</h3>
-                          <p className="text-[var(--text-secondary)] text-base">Time to identify budget & schedule risks.</p>
+                          <h3 className="text-2xl font-bold mb-1">Risk Discovery Acceleration</h3>
+                          <p className="text-[var(--text-secondary)] text-sm">Time to identify budget & schedule risks.</p>
                       </div>
                       <div className="text-right mt-4 md:mt-0">
-                          <p className="text-6xl font-bold text-emerald-400">99%</p>
-                          <p className="text-[var(--text-secondary)] text-sm font-mono uppercase tracking-widest">Latency Reduction</p>
+                          <p className="text-5xl font-bold text-emerald-400">99%</p>
+                          <p className="text-[var(--text-secondary)] text-[10px] font-mono uppercase tracking-widest">Latency Reduction</p>
                       </div>
                   </div>
-                  <div className="chart-container h-[300px]"><canvas ref={latencyChartRef}></canvas></div>
+                  <div className="flex-1 min-h-[250px]"><canvas ref={latencyChartRef}></canvas></div>
               </div>
               
               <div className="bg-zinc-900/40 backdrop-blur-3xl p-8 rounded-3xl border border-zinc-700/60 shadow-2xl flex flex-col">
-                  <h3 className="text-2xl font-bold mb-4">System Coverage</h3>
+                  <h3 className="text-xl font-bold mb-4">Continuous Compliance & Audit</h3>
                   <div className="flex-1 flex flex-col items-center justify-center">
-                    <div className="relative w-full aspect-square max-w-[200px] mb-8">
+                    <div className="relative w-full aspect-square max-w-[180px] mb-6">
                         <canvas ref={coverageChartRef}></canvas>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span className="text-3xl font-bold">23</span>
-                            <span className="text-[10px] text-[var(--text-tertiary)] uppercase font-mono">Platforms</span>
+                            <span className="text-3xl font-bold">98%</span>
+                            <span className="text-[8px] text-[var(--text-tertiary)] uppercase font-mono text-center px-4">Automatic Verification</span>
                         </div>
                     </div>
                     <div className="text-center">
-                        <p className="text-5xl font-bold bg-gradient-to-br from-white to-slate-500 text-transparent bg-clip-text">Glass Box</p>
-                        <p className="text-[var(--text-secondary)] font-medium mt-2">Verification Score: 9.8/10</p>
+                        <p className="text-3xl font-bold bg-gradient-to-br from-white to-slate-500 text-transparent bg-clip-text">Verified Truth</p>
+                        <p className="text-[var(--text-secondary)] text-xs font-medium mt-2 leading-relaxed">
+                            Every project communication is automatically cross-referenced against field reality and the master schedule.
+                        </p>
                     </div>
                   </div>
               </div>
