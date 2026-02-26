@@ -281,7 +281,7 @@ export default function CanvasPage() {
 
     const tuScene = tuSceneRef.current;
     const tuContainer = tuContainerRef.current;
-    const orbRadius = isMobile ? 240 : 380;
+    const orbRadius = isMobile ? 180 : 320;
 
     if (tuScene) {
       tuScene.innerHTML = '<div class="tu-grid"></div>';
@@ -385,10 +385,10 @@ export default function CanvasPage() {
             chartInstances.push(new Chart(ctxLatency, {
                 type: 'bar',
                 data: {
-                    labels: ['RFI Cycle', 'Change Order', 'Budget Audit', 'Envision OS'],
+                    labels: ['Risk Detection', 'Variance Discovery', 'Audit Time', 'Envision OS'],
                     datasets: [{
-                        label: 'Hours to Resolution',
-                        data: [72, 120, 48, 0.1], 
+                        label: 'Hours to Intelligence',
+                        data: [168, 720, 48, 0.01], 
                         backgroundColor: ['#F59E0B', '#3B82F6', '#8B5CF6', '#10B981'],
                         borderRadius: 6,
                         borderSkipped: false
@@ -432,7 +432,7 @@ export default function CanvasPage() {
                             bodyFont: { family: 'Inter' },
                             callbacks: {
                                 label: function(context) {
-                                    return ` ${context.label}: ${context.parsed}`;
+                                    return ` ${context.label}: ${context.parsed}%`;
                                 }
                             }
                         }
@@ -476,8 +476,8 @@ export default function CanvasPage() {
       </nav>
 
       {/* 1. HERO SECTION */}
-      <section className="scroll-snap-section pt-32 md:pt-40 pb-16 text-center relative">
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight mb-6 bg-gradient-to-b from-white to-[#A8B2C1] text-transparent bg-clip-text drop-shadow-lg fade-in-up delay-100">
+      <section className="scroll-snap-section pt-48 md:pt-56 pb-24 text-center relative">
+        <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight mb-8 bg-gradient-to-b from-white to-[#A8B2C1] text-transparent bg-clip-text drop-shadow-lg fade-in-up delay-100">
           Where Development<br/>meets Data
         </h1>
         <div className="text-lg md:text-2xl text-[var(--text-secondary)] max-w-4xl mx-auto leading-relaxed mb-12 fade-in-up delay-200">
@@ -527,11 +527,11 @@ export default function CanvasPage() {
                     );
                 })}
                 {suggestedReplies.length > 0 && (
-                  <div className="suggestions-wrapper">
+                  <div className="suggestions-wrapper flex flex-col items-end">
                       {suggestedReplies.map((reply, index) => (
                           <button
                               key={index}
-                              className="suggestion-item"
+                              className="suggestion-item text-right"
                               onClick={() => runSimulation(reply.scenarioId)}
                               disabled={isRunning.current}
                           >
@@ -575,26 +575,30 @@ export default function CanvasPage() {
                 <div className="engine-laser"></div>
               </div>
             </div>
-            <div className="json-node data-out-1">{'{ "id": "co_04", "status": "approved" }'}</div>
-            <div className="json-node data-out-2">{'{ "intent": "schedule_shift" }'}</div>
-            <div className="json-node data-out-3">{'{ "variance": 0.12, "src": "sage" }'}</div>
+            
+            {/* Organized Singular Flow Out */}
+            <div className="organized-stream">
+                <div className="json-node data-out-stream" style={{'--d': '0s'} as any}>{'{ "type": "CO", "status": "approved" }'}</div>
+                <div className="json-node data-out-stream" style={{'--d': '1s'} as any}>{'{ "type": "RFI", "id": "2024-118" }'}</div>
+                <div className="json-node data-out-stream" style={{'--d': '2s'} as any}>{'{ "type": "BUDGET", "variance": 0.12 }'}</div>
+            </div>
 
             <div className="speed-line" style={{ '--d': '0.0s', '--y': '20%' } as any}></div>
             <div className="speed-line" style={{ '--d': '0.7s', '--y': '50%' } as any}></div>
             <div className="speed-line" style={{ '--d': '1.4s', '--y': '80%' } as any}></div>
 
-            <div className="flow-item" style={{ '--d': '0.0s', '--y': '10%', '--r': '-25deg', '--s': '1.2', '--c': '#EF4444' } as any}>
-              <div className="doc-file"><div className="skeleton"></div><div className="skeleton short"></div><div className="doc-tag">.PDF</div></div>
-            </div>
-            <div className="flow-item" style={{ '--d': '0.3s', '--y': '85%', '--r': '45deg', '--s': '0.8', '--c': '#10B981' } as any}>
-              <div className="doc-file"><div className="skeleton"></div><div className="skeleton"></div><div className="doc-tag">.XLSX</div></div>
-            </div>
-            <div className="flow-item" style={{ '--d': '0.6s', '--y': '30%', '--r': '-15deg', '--s': '1.0', '--c': '#3B82F6' } as any}>
-              <div className="doc-file"><div className="skeleton"></div><div className="doc-tag">.EML</div></div>
-            </div>
-            <div className="flow-item" style={{ '--d': '0.9s', '--y': '70%', '--r': '30deg', '--s': '1.1', '--c': '#F59E0B' } as any}>
-              <div className="doc-file"><div className="skeleton short"></div><div className="doc-tag">RFI</div></div>
-            </div>
+            {/* High Volume Document Flow In */}
+            {[...Array(12)].map((_, i) => (
+                <div key={i} className="flow-item" style={{ 
+                    '--d': `${i * 0.3}s`, 
+                    '--y': `${10 + (i * 7)%80}%`, 
+                    '--r': `${-30 + (i*10)%60}deg`, 
+                    '--s': '1.0', 
+                    '--c': i % 3 === 0 ? '#EF4444' : i % 3 === 1 ? '#10B981' : '#3B82F6' 
+                } as any}>
+                    <div className="doc-file-solid"><div className="skeleton"></div><div className="skeleton short"></div><div className="doc-tag">DOC</div></div>
+                </div>
+            ))}
           </div>
         </div>
       </section>
@@ -602,7 +606,7 @@ export default function CanvasPage() {
       {/* 6. CONTEXT - TEXT */}
       <section id="context" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)]">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-2xl ml-auto text-right">
+          <div className="max-w-2xl text-left">
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 2: Project Intelligence</span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">Context is Everything.</h2>
             <p className="text-lg text-[var(--text-secondary)] mb-6">
@@ -618,30 +622,29 @@ export default function CanvasPage() {
       {/* 7. CONTEXT - VISUAL */}
       <section className="visual-snap-section">
         <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center">
-          <div className="context-dovetail-viz w-full">
-            <div className="dt-sources">
-              <div className="dt-card">
-                <div className="dt-card-head" style={{ '--c': 'var(--accent-blue)' } as any}>Project Manager: #exec-ops</div>
-                <div className="dt-card-body">
-                  "Just confirmed with the owner, we're swapping to the <span className="text-white font-semibold">energy-efficient glazing</span>."
-                </div>
+          <div className="context-fusion-viz w-full">
+            <div className="fusion-sources">
+              <div className="fusion-card fc-1">
+                <div className="fc-head" style={{ '--c': 'var(--accent-blue)' } as any}>Owner Meeting Notes</div>
+                <div className="fc-body">"Authorized the upgrade to Italian marble for the lobby. Impact already discussed."</div>
               </div>
-              <div className="dt-card">
-                <div className="dt-card-head" style={{ '--c': 'var(--accent-emerald)' } as any}>Field Lead: Zoom Transcript</div>
-                <div className="dt-card-body">
-                  "Soil conditions at the North Wall are softer. Moving the rig now."
-                </div>
+              <div className="fusion-card fc-2">
+                <div className="fc-head" style={{ '--c': 'var(--accent-emerald)' } as any}>PM Slack Thread</div>
+                <div className="fc-body">"Marble lead time is 4 weeks. Adjusting procurement schedule now."</div>
               </div>
             </div>
-            <div className="dt-insight">
-              <div className="dt-insight-card">
-                <div className="dt-insight-head"><div className="css-checkmark"></div><span className="ml-2">Verified Truth</span></div>
-                <div className="dt-tag" style={{ '--c': 'var(--accent-blue)' } as any}>Design Change Approved</div>
-                <div className="dt-conclusion mt-4">
-                  <h4 className="font-bold">Context Verified</h4>
-                  <p className="text-xs text-[var(--text-secondary)]">Decision Latency: 0 Minutes</p>
+            <div className="fusion-core">
+                <div className="fusion-pulse"></div>
+            </div>
+            <div className="fusion-result">
+                <div className="result-card">
+                    <div className="result-head"><div className="css-checkmark"></div><span>Context Verified</span></div>
+                    <div className="result-tag">Lobby Finish Upgrade</div>
+                    <div className="result-detail">
+                        <p>Confidence Score: 98%</p>
+                        <p>Variance: Approved by Owner</p>
+                    </div>
                 </div>
-              </div>
             </div>
           </div>
         </div>
@@ -661,13 +664,13 @@ export default function CanvasPage() {
       {/* 9. ARCHITECTURE - VISUAL */}
       <section className="visual-snap-section">
         <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center">
-          <div className="context-viz-container w-full" ref={basetenVizStackRef}>
-            <div className="baseten-stack" ref={basetenStackInnerRef}>
-              <div className="baseten-layer bl-1"><div className="layer-head"><h4>Data Layer</h4><span className="tag">L1</span></div><p>BigQuery • Vertex AI</p></div>
-              <div className="baseten-layer bl-2"><div className="layer-head"><h4>Compute Layer</h4><span className="tag">L2</span></div><p>GKE Clusters • LiDAR</p></div>
-              <div className="baseten-layer bl-3"><div className="layer-head"><h4>Agent Layer</h4><span className="tag">L3</span></div><p>7 Domain LLMs</p></div>
-              <div className="baseten-layer bl-4"><div className="layer-head"><h4>Gateway Layer</h4><span className="tag">L4</span></div><p>Cloud Run • 390 Tools</p></div>
-              <div className="baseten-layer bl-5"><div className="layer-head"><h4>Context Layer</h4><span className="tag">L5</span></div><p>Live Sync Engine</p></div>
+          <div className="arch-viz-container w-full" ref={basetenVizStackRef}>
+            <div className="arch-stack" ref={basetenStackInnerRef}>
+              <div className="arch-layer al-1"><div className="layer-head"><h4>Data Core</h4><span className="tag">L1</span></div><p>BigQuery & Vertex AI storing normalized construction truth.</p></div>
+              <div className="arch-layer al-2"><div className="layer-head"><h4>Compute Hub</h4><span className="tag">L2</span></div><p>GKE Clusters processing real-time telemetry and LiDAR feeds.</p></div>
+              <div className="arch-layer al-3"><div className="layer-head"><h4>Reasoning Agent</h4><span className="tag">L3</span></div><p>7 specialized LLMs determining intent and orchestrating tools.</p></div>
+              <div className="arch-layer al-4"><div className="layer-head"><h4>Tool Gateway</h4><span className="tag">L4</span></div><p>Cloud Run managing 390 specific platform-sync tools.</p></div>
+              <div className="arch-layer al-5"><div className="layer-head"><h4>Live Context</h4><span className="tag">L5</span></div><p>Persistent state layer syncing multi-platform communications.</p></div>
             </div>
           </div>
         </div>
@@ -686,38 +689,53 @@ export default function CanvasPage() {
 
       {/* 11. ECOSYSTEM - VISUAL */}
       <section className="visual-snap-section">
-        <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center">
-          <div className="tu-container w-full" ref={tuContainerRef}>
-            <div className="tu-scene" ref={tuSceneRef}><div className="tu-grid"></div></div>
+        <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center relative overflow-visible">
+          <div className="tu-container w-full flex items-center justify-center" ref={tuContainerRef}>
+            <div className="tu-scene flex items-center justify-center" ref={tuSceneRef}>
+                {/* Dynamically populated by useEffect */}
+                <div className="tu-grid"></div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 12. METRICS - TEXT & VISUALS (Combined for finale) */}
+      {/* 12. METRICS - TEXT & VISUALS */}
       <section id="metrics" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)]">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Quantitative Impact</span>
-            <h2 className="text-4xl font-bold tracking-tight mb-6">Measuring the Glass Box.</h2>
+            <h2 className="text-4xl font-bold tracking-tight mb-6">Executive Command Metrics</h2>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
-              <div className="lg:col-span-2 bg-zinc-900/30 backdrop-blur-3xl p-6 md:p-8 rounded-2xl border border-zinc-700/60">
-                  <div className="flex justify-between items-start">
+              <div className="lg:col-span-2 bg-zinc-900/40 backdrop-blur-3xl p-6 md:p-10 rounded-3xl border border-zinc-700/60 shadow-2xl">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
                       <div>
-                          <h3 className="text-2xl font-bold mb-2">Decision Latency Collapse</h3>
-                          <p className="text-[var(--text-secondary)] mb-6 text-sm">Traditional cycles vs. Envision OS instant resolution.</p>
+                          <h3 className="text-3xl font-bold mb-2">Risk Discovery Acceleration</h3>
+                          <p className="text-[var(--text-secondary)] text-base">Time to identify budget & schedule risks.</p>
                       </div>
-                      <div className="text-right flex-shrink-0 ml-4">
-                          <p className="text-5xl md:text-6xl font-bold text-emerald-400 leading-tight">1200x</p>
-                          <p className="text-[var(--text-secondary)] text-sm">Faster Resolution</p>
+                      <div className="text-right mt-4 md:mt-0">
+                          <p className="text-6xl font-bold text-emerald-400">99%</p>
+                          <p className="text-[var(--text-secondary)] text-sm font-mono uppercase tracking-widest">Latency Reduction</p>
                       </div>
                   </div>
-                  <div className="chart-container h-[250px] mt-4"><canvas ref={latencyChartRef}></canvas></div>
+                  <div className="chart-container h-[300px]"><canvas ref={latencyChartRef}></canvas></div>
               </div>
-              <div className="bg-zinc-900/30 backdrop-blur-3xl p-6 md:p-8 rounded-2xl border border-zinc-700/60 flex flex-col items-center justify-center text-center">
-                  <p className="text-7xl lg:text-8xl font-bold bg-gradient-to-br from-slate-200 to-slate-500 text-transparent bg-clip-text">390</p>
-                  <p className="text-[var(--text-secondary)] font-medium mt-1">Tools Executing</p>
-                  <div className="h-[120px] w-full mt-4"><canvas ref={coverageChartRef}></canvas></div>
+              
+              <div className="bg-zinc-900/40 backdrop-blur-3xl p-8 rounded-3xl border border-zinc-700/60 shadow-2xl flex flex-col">
+                  <h3 className="text-2xl font-bold mb-4">System Coverage</h3>
+                  <div className="flex-1 flex flex-col items-center justify-center">
+                    <div className="relative w-full aspect-square max-w-[200px] mb-8">
+                        <canvas ref={coverageChartRef}></canvas>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                            <span className="text-3xl font-bold">23</span>
+                            <span className="text-[10px] text-[var(--text-tertiary)] uppercase font-mono">Platforms</span>
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <p className="text-5xl font-bold bg-gradient-to-br from-white to-slate-500 text-transparent bg-clip-text">Glass Box</p>
+                        <p className="text-[var(--text-secondary)] font-medium mt-2">Verification Score: 9.8/10</p>
+                    </div>
+                  </div>
               </div>
           </div>
         </div>
