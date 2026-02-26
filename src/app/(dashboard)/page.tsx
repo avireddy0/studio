@@ -476,9 +476,9 @@ export default function CanvasPage() {
       </nav>
 
       {/* 1. HERO SECTION */}
-      <section className="scroll-snap-section pt-64 md:pt-72 pb-24 text-center relative">
+      <div className="scroll-snap-section pt-96 md:pt-[24rem] pb-24 text-center relative">
         <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight mb-8 bg-gradient-to-b from-white to-[#A8B2C1] text-transparent bg-clip-text drop-shadow-lg fade-in-up delay-100">
-          Where Development<br/>meets Data
+          Where Development meets Data
         </h1>
         <div className="text-lg md:text-2xl text-[var(--text-secondary)] max-w-4xl mx-auto leading-relaxed mb-12 fade-in-up delay-200">
           <strong className="text-white block font-semibold mb-2">Construction is no longer a black box.</strong>
@@ -488,10 +488,10 @@ export default function CanvasPage() {
           </span>
           .
         </div>
-      </section>
+      </div>
 
-      {/* 2. CONTROL PLANE - TEXT */}
-      <section id="control-plane" className="scroll-snap-section py-12 md:py-24">
+      {/* 2. CONTROL PLANE */}
+      <div id="control-plane" className="scroll-snap-section py-12 md:py-24 scroll-mt-16">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <span className="block font-mono text-xs text-[var(--accent-emerald)] uppercase tracking-widest mb-4">Phase 0: The Interface</span>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">Orchestrator Control Plane</h2>
@@ -499,10 +499,8 @@ export default function CanvasPage() {
             Experience Envision OS deliver instant intelligence through its multimodal agentic AI across 23 software platforms in real-time.
           </p>
         </div>
-      </section>
-
-      {/* 3. CONTROL PLANE - VISUAL */}
-      <section className="visual-snap-section pb-24">
+      </div>
+      <div className="visual-snap-section pb-24 scroll-mt-16">
         <div className="container mx-auto px-4 md:px-6 w-full h-full flex items-center justify-center">
           <div className="w-full max-w-3xl h-full max-h-[600px] rounded-3xl border border-zinc-700/60 bg-zinc-900/30 p-1 shadow-2xl backdrop-blur-3xl overflow-hidden">
             <div className="bg-black/40 rounded-2xl border border-zinc-800/80 flex h-full flex-col overflow-hidden backdrop-blur-xl">
@@ -544,10 +542,10 @@ export default function CanvasPage() {
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* 4. INGESTION - TEXT */}
-      <section id="ingestion" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)]">
+      {/* 3. INGESTION */}
+      <div id="ingestion" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-16">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-2xl text-left">
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 1: Ingestion</span>
@@ -560,10 +558,8 @@ export default function CanvasPage() {
             </p>
           </div>
         </div>
-      </section>
-
-      {/* 5. INGESTION - VISUAL */}
-      <section className="visual-snap-section">
+      </div>
+      <div className="visual-snap-section scroll-mt-16">
         <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center">
           <div className="ingestion-viz w-full">
             <div className="pipeline-line-right"></div>
@@ -603,12 +599,12 @@ export default function CanvasPage() {
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* 6. CONTEXT - TEXT */}
-      <section id="context" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)]">
+      {/* 4. CONTEXT */}
+      <div id="context" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-16">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-2xl text-left">
+          <div className="max-w-2xl text-left text-left-aligned">
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 2: Project Intelligence</span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">Context is Everything.</h2>
             <p className="text-lg text-[var(--text-secondary)] mb-6">
@@ -619,10 +615,8 @@ export default function CanvasPage() {
             </p>
           </div>
         </div>
-      </section>
-
-      {/* 7. CONTEXT - VISUAL */}
-      <section className="visual-snap-section">
+      </div>
+      <div className="visual-snap-section scroll-mt-16">
         <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center">
           <div className="context-fusion-viz w-full">
             <div className="fusion-sources">
@@ -650,10 +644,10 @@ export default function CanvasPage() {
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* 8. ARCHITECTURE - TEXT */}
-      <section id="architecture" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)]">
+      {/* 5. ARCHITECTURE */}
+      <div id="architecture" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-16">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 3: Execution</span>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">Intelligence Requires Infrastructure.</h2>
@@ -661,10 +655,8 @@ export default function CanvasPage() {
             Our architectural stack maps queries from plain English through LLM agents down to 390 specific MCP tools in under 200 milliseconds.
           </p>
         </div>
-      </section>
-
-      {/* 9. ARCHITECTURE - VISUAL */}
-      <section className="visual-snap-section">
+      </div>
+      <div className="visual-snap-section scroll-mt-16">
         <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center">
           <div className="arch-viz-container w-full" ref={basetenVizStackRef}>
             <div className="arch-stack" ref={basetenStackInnerRef}>
@@ -676,10 +668,10 @@ export default function CanvasPage() {
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* 10. ECOSYSTEM - TEXT */}
-      <section id="ecosystem" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)]">
+      {/* 6. ECOSYSTEM */}
+      <div id="ecosystem" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-16">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <span className="block font-mono text-xs text-[var(--accent-emerald)] uppercase tracking-widest mb-4">Phase 4: The Tool Universe</span>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">390 Tools. 7 Platforms.</h2>
@@ -687,10 +679,8 @@ export default function CanvasPage() {
             Orchestrating complex data flows across your entire software ecosystem in real-time.
           </p>
         </div>
-      </section>
-
-      {/* 11. ECOSYSTEM - VISUAL */}
-      <section className="visual-snap-section">
+      </div>
+      <div className="visual-snap-section scroll-mt-16">
         <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center relative overflow-visible">
           <div className="tu-container w-full flex items-center justify-center" ref={tuContainerRef}>
             <div className="tu-scene flex items-center justify-center" ref={tuSceneRef}>
@@ -698,17 +688,17 @@ export default function CanvasPage() {
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* 12. METRICS - TEXT & VISUALS */}
-      <section id="metrics" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)]">
+      {/* 7. METRICS */}
+      <div id="metrics" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-16">
         <div className="container mx-auto px-4 md:px-6 text-center mb-12">
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Quantitative Impact</span>
             <h2 className="text-4xl font-bold tracking-tight mb-6">Executive Command Metrics</h2>
         </div>
-      </section>
+      </div>
 
-      <section className="visual-snap-section pb-24">
+      <div className="visual-snap-section pb-24 scroll-mt-16">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
               <div className="lg:col-span-2 bg-zinc-900/40 backdrop-blur-3xl p-6 md:p-10 rounded-3xl border border-zinc-700/60 shadow-2xl">
@@ -743,7 +733,7 @@ export default function CanvasPage() {
               </div>
           </div>
         </div>
-      </section>
+      </div>
 
       <footer className="bg-[var(--bg-surface)] border-t border-[var(--border-strong)] py-12 text-center text-sm text-[var(--text-tertiary)]">
         <div className="container mx-auto">
