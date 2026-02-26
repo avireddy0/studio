@@ -332,6 +332,7 @@ body::before {
     flex-direction: column;
     justify-content: center;
     padding: 3rem 1.5rem;
+    scroll-margin-top: 4rem; /* Accounts for fixed nav */
   }
 
   .visual-snap-section {
@@ -344,6 +345,7 @@ body::before {
     justify-content: center;
     padding: 1.5rem !important;
     overflow: hidden;
+    scroll-margin-top: 4rem;
   }
 
   .ingestion-viz, .context-fusion-viz, .arch-viz-container, .tu-container {

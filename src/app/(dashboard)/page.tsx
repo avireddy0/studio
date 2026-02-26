@@ -454,7 +454,7 @@ export default function CanvasPage() {
         cancelAnimationFrame(animationFrameId);
         chartInstances.forEach(chart => chart.destroy());
     };
-  }, [runSimulation]);
+  }, []);
 
   return (
     <div className="flex flex-col w-full">
@@ -476,7 +476,7 @@ export default function CanvasPage() {
       </nav>
 
       {/* 1. HERO SECTION */}
-      <section className="scroll-snap-section pt-48 md:pt-56 pb-24 text-center relative">
+      <section className="scroll-snap-section pt-64 md:pt-72 pb-24 text-center relative">
         <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight mb-8 bg-gradient-to-b from-white to-[#A8B2C1] text-transparent bg-clip-text drop-shadow-lg fade-in-up delay-100">
           Where Development<br/>meets Data
         </h1>
@@ -527,11 +527,11 @@ export default function CanvasPage() {
                     );
                 })}
                 {suggestedReplies.length > 0 && (
-                  <div className="suggestions-wrapper flex flex-col items-end">
+                  <div className="suggestions-wrapper flex flex-col items-end mt-4">
                       {suggestedReplies.map((reply, index) => (
                           <button
                               key={index}
-                              className="suggestion-item text-right"
+                              className="suggestion-item text-right mb-2 px-4 py-2 bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/30 rounded-full text-sm transition-all"
                               onClick={() => runSimulation(reply.scenarioId)}
                               disabled={isRunning.current}
                           >
@@ -549,7 +549,7 @@ export default function CanvasPage() {
       {/* 4. INGESTION - TEXT */}
       <section id="ingestion" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)]">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl text-left">
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 1: Ingestion</span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">From Chaos to Control</h2>
             <p className="text-lg text-[var(--text-secondary)] mb-6">
@@ -576,7 +576,6 @@ export default function CanvasPage() {
               </div>
             </div>
             
-            {/* Organized Singular Flow Out */}
             <div className="organized-stream">
                 <div className="json-node data-out-stream" style={{'--d': '0s'} as any}>{'{ "type": "CO", "status": "approved" }'}</div>
                 <div className="json-node data-out-stream" style={{'--d': '1s'} as any}>{'{ "type": "RFI", "id": "2024-118" }'}</div>
@@ -587,16 +586,19 @@ export default function CanvasPage() {
             <div className="speed-line" style={{ '--d': '0.7s', '--y': '50%' } as any}></div>
             <div className="speed-line" style={{ '--d': '1.4s', '--y': '80%' } as any}></div>
 
-            {/* High Volume Document Flow In */}
-            {[...Array(12)].map((_, i) => (
+            {[...Array(15)].map((_, i) => (
                 <div key={i} className="flow-item" style={{ 
-                    '--d': `${i * 0.3}s`, 
+                    '--d': `${i * 0.25}s`, 
                     '--y': `${10 + (i * 7)%80}%`, 
                     '--r': `${-30 + (i*10)%60}deg`, 
                     '--s': '1.0', 
-                    '--c': i % 3 === 0 ? '#EF4444' : i % 3 === 1 ? '#10B981' : '#3B82F6' 
+                    '--c': i % 3 === 0 ? 'var(--accent-pink)' : i % 3 === 1 ? 'var(--accent-emerald)' : 'var(--accent-blue)' 
                 } as any}>
-                    <div className="doc-file-solid"><div className="skeleton"></div><div className="skeleton short"></div><div className="doc-tag">DOC</div></div>
+                    <div className="doc-file-solid" style={{ background: '#FFFFFF' } as any}>
+                        <div className="skeleton"></div>
+                        <div className="skeleton short"></div>
+                        <div className="doc-tag">DOC</div>
+                    </div>
                 </div>
             ))}
           </div>
@@ -692,7 +694,6 @@ export default function CanvasPage() {
         <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center relative overflow-visible">
           <div className="tu-container w-full flex items-center justify-center" ref={tuContainerRef}>
             <div className="tu-scene flex items-center justify-center" ref={tuSceneRef}>
-                {/* Dynamically populated by useEffect */}
                 <div className="tu-grid"></div>
             </div>
           </div>
@@ -701,11 +702,14 @@ export default function CanvasPage() {
 
       {/* 12. METRICS - TEXT & VISUALS */}
       <section id="metrics" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)]">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center mb-12">
+        <div className="container mx-auto px-4 md:px-6 text-center mb-12">
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Quantitative Impact</span>
             <h2 className="text-4xl font-bold tracking-tight mb-6">Executive Command Metrics</h2>
-          </div>
+        </div>
+      </section>
+
+      <section className="visual-snap-section pb-24">
+        <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
               <div className="lg:col-span-2 bg-zinc-900/40 backdrop-blur-3xl p-6 md:p-10 rounded-3xl border border-zinc-700/60 shadow-2xl">
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
