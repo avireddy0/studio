@@ -24,8 +24,6 @@ const initialSuggestions = [
 
 export default function CanvasPage() {
   const chatBodyRef = useRef<HTMLDivElement>(null);
-  const basetenVizStackRef = useRef<HTMLDivElement>(null);
-  const basetenStackInnerRef = useRef<HTMLDivElement>(null);
   const tuContainerRef = useRef<HTMLDivElement>(null);
   const tuSceneRef = useRef<HTMLDivElement>(null);
   const latencyChartRef = useRef<HTMLCanvasElement>(null);
@@ -49,7 +47,7 @@ export default function CanvasPage() {
         { text: 'Executing: sage_get_gl, procore_budget', delay: 1300 },
       ],
       answer:
-        'Job 402. Drywall is 12% over.<br>Architectural deltas confirm rework.',
+        'Job 402 is 12% over budget. This is primarily due to drywall rework requested by the tenant, not a field error. We have already logged the recovery claim with the sub.',
       metric:
         "<span class='text-[var(--accent-emerald)] font-bold'>Decision latency: 0 minutes</span>",
       meta: 'Source: sage_intacct, procore_data',
@@ -71,10 +69,10 @@ export default function CanvasPage() {
         { text: 'Vertex Search: Scanning 227 docs...', delay: 1600 },
       ],
       answer:
-        'March 14th.<br>Verified against MEP progress sets and City of Aventura permit logs.',
+        'March 14th. The City of Aventura verified all fire safety systems today. This clears the final hurdle for tenant move-ins.',
       metric:
         "<span class='text-[var(--accent-emerald)] font-bold'>Confidence: 94%</span>",
-      meta: 'Source: ACC_Annexure_002, unified_communications',
+      meta: 'Source: ACC_Annexure_002, City Permit Logs',
       followUp: [
           { text: "Tell me more about the permit logs.", scenarioId: 6},
           { text: "Who is the PM for Flow Aventura?", scenarioId: 7}
@@ -87,9 +85,9 @@ export default function CanvasPage() {
         { text: "Instant Match: Rule triggered (<1ms)", status: 'complete', delay: 900 },
       ],
       answer:
-        'Generic AI assumes clean, structured data.<br>Construction data is fragmented across PDFs, emails, and broken spreadsheets.',
+        'Generic AI assumes clean data. Envision OS handles the mess—fragmented PDFs, emails, and broken spreadsheets—turning chaos into verified profit protection.',
       metric:
-        "<span class='text-[var(--accent-amber)] font-bold'>Intelligence without infrastructure hallucinates.</span>",
+        "<span class='text-[var(--accent-amber)] font-bold'>Intelligence without infrastructure is just guessing.</span>",
       meta: 'System Policy: The Structural Reality',
       followUp: [
           { text: "Which jobs are off budget?", scenarioId: 1 },
@@ -102,8 +100,8 @@ export default function CanvasPage() {
             { text: "Context Preservation: Linking to Job 402", delay: 300},
             { text: "Executing: sage_get_cost_code", status: "complete", delay: 800},
         ],
-        answer: "The cost code is <span class='font-mono'>14-550-3B-R01</span>.",
-        metric: "This has been logged to the budget audit trail.",
+        answer: "The cost code is <span class='font-mono'>14-550-3B-R01</span>. This has been reconciled with the main contract budget.",
+        metric: "Automatic budget audit complete.",
         meta: "Source: sage_intacct",
         followUp: [
           { text: "Thanks!", scenarioId: 8 },
@@ -129,8 +127,8 @@ export default function CanvasPage() {
             { text: "Context Preservation: Linking to Flow Aventura", delay: 300},
             { text: "Executing: get_document_summary", status: "complete", delay: 900},
         ],
-        answer: "The City of Aventura permit log (updated Feb 21) shows Permit #BLD23-0815 as 'Final Inspection Passed'.<br>This confirms all MEP work is complete.",
-        metric: "No outstanding inspections are listed.",
+        answer: "The City of Aventura permit log shows Permit #BLD23-0815 as 'Final Inspection Passed'. This is the green light for occupancy.",
+        metric: "No outstanding inspections found.",
         meta: "Source: City of Aventura Public Records",
         followUp: [
              { text: "Thanks!", scenarioId: 8 },
@@ -152,7 +150,7 @@ export default function CanvasPage() {
     8: {
         query: "Thanks!",
         routes: [],
-        answer: "You're welcome. How else can I help?",
+        answer: "You're welcome. How else can I help protect your project margins today?",
         metric: "",
         meta: "",
         followUp: initialSuggestions
@@ -163,7 +161,7 @@ export default function CanvasPage() {
             { text: "Route to: Project Specialist", status: "complete", delay: 500},
             { text: "Executing: procore_list_rfis(status='open')", delay: 1100},
         ],
-        answer: "There are 4 other open RFIs for Job 402.<br>The most critical is #2024-112 regarding foundation curing times, due tomorrow.",
+        answer: "There are 4 other open RFIs for Job 402. The most critical is #2024-112 regarding foundation curing times, due tomorrow.",
         metric: "",
         meta: "Source: procore_api",
         followUp: [
@@ -192,7 +190,6 @@ export default function CanvasPage() {
     setMessages(prev => [...prev, {id, type: 'typing'}]);
     return id;
   }, []);
-
 
   const runSimulation = useCallback(
     async (id: keyof typeof scenarios) => {
@@ -226,13 +223,13 @@ export default function CanvasPage() {
 
       isRunning.current = false;
     },
-    [addMessage, addTyping, scrollToBottom, scenarios]
+    [addMessage, addTyping, scrollToBottom]
   );
   
   useEffect(() => {
       if(messages.length === 0) {
         addMessage(
-            `<strong>Envision OS is online.</strong><br/><span class="text-[var(--text-secondary)] text-sm">Connected to 23 platforms. 17 Data Routers active.</span>`,
+            `<strong>Envision OS is online.</strong><br/><span class="text-[var(--text-secondary)] text-sm">Connected to 23 platforms. Audit Engine Active.</span>`,
             'system'
         );
       }
@@ -246,28 +243,6 @@ export default function CanvasPage() {
   useEffect(() => {
     const chartInstances: Chart[] = [];
     const isMobile = window.innerWidth < 768;
-
-
-    const vizContainerStack = basetenVizStackRef.current;
-    const stackInner = basetenStackInnerRef.current;
-    const handleStackMouseMove = (e: MouseEvent) => {
-        if (!vizContainerStack || !stackInner) return;
-        const rect = vizContainerStack.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const xNorm = (x / rect.width) * 2 - 1;
-        const yNorm = (y / rect.height) * 2 - 1;
-        stackInner.style.transform = `rotateX(${55 - (yNorm * 8)}deg) rotateZ(${-30 + (xNorm * 10)}deg)`;
-    };
-    const handleStackMouseLeave = () => {
-        if (stackInner) {
-            stackInner.style.transform = `rotateX(55deg) rotateZ(-30deg)`;
-        }
-    };
-    if (vizContainerStack) {
-        vizContainerStack.addEventListener('mousemove', handleStackMouseMove);
-        vizContainerStack.addEventListener('mouseleave', handleStackMouseLeave);
-    }
 
     const platforms = [
         { id: 'finance', name: 'Finance', color: 'var(--accent-amber)', tools: 58 },
@@ -443,10 +418,6 @@ export default function CanvasPage() {
     }
 
     return () => {
-        if (vizContainerStack) {
-            vizContainerStack.removeEventListener('mousemove', handleStackMouseMove);
-            vizContainerStack.removeEventListener('mouseleave', handleStackMouseLeave);
-        }
         if (tuContainer) {
             tuContainer.removeEventListener('mousemove', handleTuMouseMove);
             tuContainer.removeEventListener('mouseleave', handleTuMouseLeave);
@@ -484,7 +455,7 @@ export default function CanvasPage() {
           <strong className="text-white block font-semibold mb-2">Construction is no longer a black box.</strong>
           Envision OS turns the black box → glass box through{' '}
           <span className="bg-gradient-to-r from-[var(--accent-emerald)] to-[var(--accent-cyan)] text-transparent bg-clip-text font-semibold">
-            continuous data verification across all platforms
+            continuous profit protection across all platforms
           </span>
           .
         </div>
@@ -551,10 +522,10 @@ export default function CanvasPage() {
             <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 1: Ingestion</span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">From Chaos to Control</h2>
             <p className="text-lg text-[var(--text-secondary)] mb-6">
-              Generic AI assumes clean data; construction data is fragmented across PDFs, emails, and spreadsheets. Intelligence without infrastructure hallucinates.
+              Construction data is fragmented across emails, text messages, and broken spreadsheets. Envision OS captures it all simultaneously.
             </p>
             <p className="text-lg text-[var(--text-secondary)]">
-              Envision OS acts as an ingestion engine first. Before an LLM ever sees a prompt, <strong className="text-white">390 specific tools</strong> parse, normalize, and structure reality.
+              Before an LLM ever sees a prompt, <strong className="text-white">390 specific tools</strong> parse and normalize every communication stream into a singular verified reality.
             </p>
           </div>
         </div>
@@ -576,22 +547,24 @@ export default function CanvasPage() {
                 <div className="json-node data-out-stream" style={{'--d': '2s'} as any}>{'{ "type": "BUDGET", "variance": 0.12 }'}</div>
             </div>
 
-            {[...Array(16)].map((_, i) => (
-                <div key={i} className="flow-item" style={{ 
-                    '--d': `${i * 0.15}s`, 
-                    '--y': `${10 + (i * 12)%80}%`, 
-                    '--r': `${-30 + (i*15)%60}deg`, 
-                    '--c': i % 4 === 0 ? 'var(--accent-pink)' : i % 4 === 1 ? 'var(--accent-emerald)' : i % 4 === 2 ? 'var(--accent-blue)' : 'var(--accent-amber)' 
-                } as any}>
-                    <div className="flurry-item">
-                        <div className="skeleton"></div>
-                        <div className="skeleton" style={{ width: '60%' }}></div>
-                        <div className="icon-box">
-                            {i % 4 === 0 ? 'DOC' : i % 4 === 1 ? 'MSG' : i % 4 === 2 ? 'CALL' : 'EMAIL'}
-                        </div>
-                    </div>
-                </div>
-            ))}
+            {[...Array(20)].map((_, i) => {
+                const types = ['EMAIL', 'TEXT', 'DOC', 'MSG', 'CALL'];
+                const type = types[i % types.length];
+                return (
+                  <div key={i} className="flow-item" style={{ 
+                      '--d': `${i * 0.12}s`, 
+                      '--y': `${10 + (i * 15)%80}%`, 
+                      '--r': `${-30 + (i*15)%60}deg`, 
+                      '--c': '#FFFFFF'
+                  } as any}>
+                      <div className="flurry-item">
+                          <div className="skeleton"></div>
+                          <div className="skeleton" style={{ width: '60%' }}></div>
+                          <div className="icon-box">{type}</div>
+                      </div>
+                  </div>
+                );
+            })}
           </div>
         </div>
       </div>
@@ -648,7 +621,7 @@ export default function CanvasPage() {
       <div id="architecture" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-24">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 3: Execution</span>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">Intelligence Requires Infrastructure.</h2>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">The Nervous System</h2>
           <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
             Our architectural stack maps queries from plain English through LLM agents down to 390 specific MCP tools in under 200 milliseconds.
           </p>
@@ -656,13 +629,31 @@ export default function CanvasPage() {
       </div>
       <div className="visual-snap-section">
         <div className="container mx-auto px-4 md:px-6 h-full flex items-center justify-center">
-          <div className="arch-viz-container w-full" ref={basetenVizStackRef}>
-            <div className="arch-stack" ref={basetenStackInnerRef}>
-              <div className="arch-layer al-1"><div className="layer-head"><h4>Field Data Core</h4><span className="tag">L1</span></div><p>BigQuery & Vertex AI storing normalized construction truth across all platform silos.</p></div>
-              <div className="arch-layer al-2"><div className="layer-head"><h4>Compute Hub</h4><span className="tag">L2</span></div><p>GKE Clusters processing real-time telemetry, LiDAR feeds, and schedule deltas.</p></div>
-              <div className="arch-layer al-3"><div className="layer-head"><h4>Reasoning Agent</h4><span className="tag">L3</span></div><p>7 specialized LLMs determining project intent and orchestrating specialized tools.</p></div>
-              <div className="arch-layer al-4"><div className="layer-head"><h4>Tool Gateway</h4><span className="tag">L4</span></div><p>Cloud Run instances managing 390 specific platform-sync tools for Procore, Sage, etc.</p></div>
-              <div className="arch-layer al-5"><div className="layer-head"><h4>Multi-Platform Memory</h4><span className="tag">L5</span></div><p>Persistent state layer syncing communications into a verified living history.</p></div>
+          <div className="arch-viz-container w-full">
+            <div className="nervous-system-grid">
+              <div className="ns-node">
+                <div className="ns-icon"><Database /></div>
+                <div className="ns-content">
+                  <h4>Field Data Core</h4>
+                  <p>BigQuery & Vertex AI storing normalized construction truth across all platform silos.</p>
+                </div>
+              </div>
+              <div className="ns-connector"></div>
+              <div className="ns-node">
+                <div className="ns-icon"><Layers /></div>
+                <div className="ns-content">
+                  <h4>Reasoning Hub</h4>
+                  <p>7 specialized LLMs determining project intent and orchestrating specialized tools.</p>
+                </div>
+              </div>
+              <div className="ns-connector"></div>
+              <div className="ns-node">
+                <div className="ns-icon"><GitPullRequestArrow /></div>
+                <div className="ns-content">
+                  <h4>Tool Gateway</h4>
+                  <p>Cloud Run instances managing 390 specific platform-sync tools for Procore, Sage, and more.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -691,8 +682,8 @@ export default function CanvasPage() {
       {/* 7. METRICS */}
       <div id="metrics" className="scroll-snap-section py-16 md:py-24 border-t border-[var(--border-strong)] scroll-mt-24">
         <div className="container mx-auto px-4 md:px-6 text-center">
-            <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Quantitative Impact</span>
-            <h2 className="text-4xl font-bold tracking-tight mb-6">Executive Command Metrics</h2>
+            <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Investor Value</span>
+            <h2 className="text-4xl font-bold tracking-tight mb-6">Audit Integrity & Profit Protection</h2>
             <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto mb-12">
                 Envision OS delivers a "glass box" view into project reality, shifting the needle on risk and audit integrity.
             </p>
@@ -717,19 +708,19 @@ export default function CanvasPage() {
               </div>
               
               <div className="bg-zinc-900/40 backdrop-blur-3xl p-8 rounded-3xl border border-zinc-700/60 shadow-2xl flex flex-col">
-                  <h3 className="text-xl font-bold mb-4">Continuous Compliance & Audit</h3>
+                  <h3 className="text-xl font-bold mb-4">Investment Transparency</h3>
                   <div className="flex-1 flex flex-col items-center justify-center">
                     <div className="relative w-full aspect-square max-w-[180px] mb-6">
                         <canvas ref={coverageChartRef}></canvas>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                             <span className="text-3xl font-bold">98%</span>
-                            <span className="text-[8px] text-[var(--text-tertiary)] uppercase font-mono text-center px-4">Automatic Verification</span>
+                            <span className="text-[8px] text-[var(--text-tertiary)] uppercase font-mono text-center px-4">Audit Shield</span>
                         </div>
                     </div>
                     <div className="text-center">
-                        <p className="text-3xl font-bold bg-gradient-to-br from-white to-slate-500 text-transparent bg-clip-text">Verified Truth</p>
+                        <p className="text-3xl font-bold bg-gradient-to-br from-white to-slate-500 text-transparent bg-clip-text">Audit Integrity</p>
                         <p className="text-[var(--text-secondary)] text-xs font-medium mt-2 leading-relaxed">
-                            Every project communication is automatically cross-referenced against field reality and the master schedule.
+                            Every project dollar is automatically cross-referenced against field evidence and the master schedule for 100% audit transparency.
                         </p>
                     </div>
                   </div>
@@ -740,10 +731,12 @@ export default function CanvasPage() {
 
       <footer className="bg-[var(--bg-surface)] border-t border-[var(--border-strong)] py-12 text-center text-sm text-[var(--text-tertiary)]">
         <div className="container mx-auto">
-          <p>Envision OS Demo — Version 4.13.0 — Glass Box Architecture</p>
+          <p>Envision OS Demo — Version 4.13.0 — Profit Protection Platform</p>
           <p className="mt-2 font-mono text-[var(--text-secondary)]">Truth Always On.</p>
         </div>
       </footer>
     </div>
   );
 }
+
+import { Database, Layers, GitPullRequestArrow } from 'lucide-react';
