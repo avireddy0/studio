@@ -244,9 +244,9 @@ body::before {
   animation: slidePop 0.8s cubic-bezier(0.17, 0.84, 0.44, 1) forwards;
 }
 
-.b-1 { animation-delay: 0.4s; }
-.b-2 { animation-delay: 1.2s; }
-.b-3 { animation-delay: 2.0s; }
+.b-1 { animation-delay: 0.8s; }
+.b-2 { animation-delay: 1.6s; }
+.b-3 { animation-delay: 2.4s; }
 
 .b-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--c); display: flex; align-items: center; gap: 6px; }
 .b-label::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--c); }
@@ -267,7 +267,7 @@ body::before {
   border-radius: 50%;
   opacity: 0;
   animation: fusionExpand 3s infinite;
-  animation-delay: 2.8s;
+  animation-delay: 3.2s;
 }
 
 .fusion-core-node {
@@ -281,7 +281,7 @@ body::before {
   z-index: 10;
   opacity: 0;
   animation: fadeIn 0.5s forwards;
-  animation-delay: 2.8s;
+  animation-delay: 3.2s;
 }
 
 .fusion-verified-truth {
@@ -301,7 +301,7 @@ body::before {
   opacity: 0;
   transform: scale(0.9);
   animation: mintTruth 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  animation-delay: 3.5s;
+  animation-delay: 4s;
 }
 
 .truth-badge {
@@ -370,7 +370,7 @@ body::before {
   flex-shrink: 0;
 }
 
-.l-info { flex: 1; }
+.l-info { flex: 1; text-align: left; }
 .l-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; font-weight: 800; color: var(--accent-blue); display: block; margin-bottom: 0.25rem; }
 .l-info h4 { font-weight: 700; color: #fff; margin-bottom: 0.25rem; font-size: 1.1rem; }
 .l-info p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4; }
@@ -395,7 +395,7 @@ body::before {
     box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 .user .bubble { background: var(--accent-blue); color: #fff; border-bottom-right-radius: 4px; }
-.system .bubble { background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-bottom-left-radius: 4px; }
+.system .bubble { background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-bottom-left-radius: 4px; text-align: left; color: white; }
 
 .typing-indicator span { 
     height: 6px; width: 6px; background: var(--text-tertiary); display: inline-block; border-radius: 50%; margin: 0 2px;

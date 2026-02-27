@@ -421,7 +421,7 @@ export default function DashboardPage() {
     <div className="flex flex-col w-full bg-[#030303]">
       <nav className="fixed top-0 w-full z-50 bg-[rgba(3,3,3,0.85)] backdrop-blur-md border-b border-[var(--border-subtle)]">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2 font-bold text-lg tracking-tight">
+          <div className="flex items-center gap-2 font-bold text-lg tracking-tight text-white">
             <div className="w-4 h-4 rounded bg-gradient-to-br from-[var(--accent-blue)] to-[var(--accent-violet)]"></div>
             Envision OS
           </div>
@@ -721,7 +721,7 @@ export default function DashboardPage() {
                   <div className="relative w-full aspect-square max-w-[240px] mb-10">
                       <canvas ref={coverageChartRef}></canvas>
                       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                          <span className="text-5xl font-bold">98%</span>
+                          <span className="text-5xl font-bold text-white">98%</span>
                           <span className="text-[10px] text-[var(--text-tertiary)] uppercase font-mono tracking-tighter mt-1">Audit Shield</span>
                       </div>
                   </div>
