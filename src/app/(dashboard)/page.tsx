@@ -410,8 +410,8 @@ export default function DashboardPage() {
         </div>
       </nav>
 
-      {/* 1. HERO SECTION - Adjusted Padding */}
-      <section className="scroll-snap-section flex flex-col items-center justify-center pt-48 md:pt-64 pb-32 text-center relative px-6 overflow-hidden">
+      {/* 1. HERO SECTION */}
+      <section className="scroll-snap-section flex flex-col items-center justify-center pt-40 md:pt-56 pb-32 text-center relative px-6 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full pointer-events-none opacity-30">
             <div className="absolute top-[20%] left-[10%] w-[30%] aspect-square rounded-full bg-primary/20 blur-[120px]"></div>
             <div className="absolute bottom-[20%] right-[10%] w-[40%] aspect-square rounded-full bg-accent-violet/20 blur-[120px]"></div>
@@ -589,12 +589,16 @@ export default function DashboardPage() {
               <div className="context-fusion-viz w-full">
                 <div className="fusion-bubbles">
                   <div className="bubble-snippet b-1">
-                    <div className="b-label" style={{ '--c': 'var(--accent-blue)' } as any}>OWNER MEETING</div>
+                    <div className="b-label" style={{ '--c': 'var(--accent-blue)' } as any}>MEETING NOTE: OAC</div>
                     <p>"Authorize the lobby upgrade. Use the premium marble as discussed."</p>
                   </div>
                   <div className="bubble-snippet b-2">
                     <div className="b-label" style={{ '--c': 'var(--accent-amber)' } as any}>SLACK: #PROJECT-FLOW</div>
                     <p>"Procurement lead time is now 4 weeks. Adjusting the master schedule."</p>
+                  </div>
+                  <div className="bubble-snippet b-3">
+                    <div className="b-label" style={{ '--c': 'var(--accent-violet)' } as any}>EMAIL: PROCUREMENT</div>
+                    <p>"Marble shipment confirmed. ETA matching the new project baseline."</p>
                   </div>
                 </div>
                 <div className="fusion-center">

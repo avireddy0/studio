@@ -223,6 +223,7 @@ body::before {
 }
 .b-1 { animation-delay: 0.5s; }
 .b-2 { animation-delay: 1.5s; }
+.b-3 { animation-delay: 2.5s; }
 
 .b-label { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 800; margin-bottom: 0.75rem; color: var(--c); display: flex; align-items: center; gap: 8px; }
 .b-label::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); }
@@ -234,7 +235,7 @@ body::before {
   border: 3px solid var(--accent-blue);
   border-radius: 50%; opacity: 0;
   animation: fusionExpand 3.5s infinite;
-  animation-delay: 3s;
+  animation-delay: 3.5s;
 }
 .fusion-core-node {
   width: 80px; height: 80px;
@@ -246,7 +247,7 @@ body::before {
   box-shadow: 0 0 40px var(--accent-blue-dim), inset 0 0 20px var(--accent-blue-dim);
   z-index: 10; opacity: 0;
   animation: fadeIn 0.6s forwards;
-  animation-delay: 3s;
+  animation-delay: 3.5s;
 }
 
 .fusion-verified-truth { width: 38%; display: flex; justify-content: center; }
@@ -258,7 +259,7 @@ body::before {
   box-shadow: 0 0 60px var(--accent-emerald-dim);
   opacity: 0; transform: scale(0.92);
   animation: mintTruth 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  animation-delay: 4s;
+  animation-delay: 4.5s;
 }
 .truth-badge {
   background: var(--accent-emerald-dim);
