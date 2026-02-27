@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import Chart from 'chart.js/auto';
-import { Database, Layers, Mail, MessageSquare, FileText, Phone, Zap, Target, ShieldCheck, Share2, BrainCircuit, Activity, Lock, Cpu, TrendingUp, AlertTriangle } from 'lucide-react';
+import { Database, Layers, Mail, MessageSquare, FileText, Phone, Zap, Target, ShieldCheck, Share2, BrainCircuit, Activity, Lock, Cpu, TrendingUp, AlertTriangle, ChevronRight, Globe, BarChart3, Fingerprint } from 'lucide-react';
 
 type Scenario = {
   query: string;
@@ -180,7 +180,7 @@ export default function DashboardPage() {
   useEffect(() => {
       if(messages.length === 0) {
         addMessage(
-            `<strong>Envision OS is online.</strong><br/><span class="text-[var(--text-secondary)] text-xs md:text-sm">Monitoring 23 platforms. Risk Audit Engine: Active.</span>`,
+            `<strong>Envision OS is online.</strong><br/><span class="text-[var(--text-secondary)] text-xs md:text-sm">Continuous Audit Engine: Active. Monitoring 23 data streams.</span>`,
             'system'
         );
       }
@@ -221,8 +221,8 @@ export default function DashboardPage() {
             <div class="tu-billboard-container" style="transform: translateZ(100px)">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
                     <div class="tu-billboard" style="border-top-color: var(--accent-blue)">
-                        <h3>Envision OS</h3>
-                        <p style="color: var(--accent-blue)">Orchestrator</p>
+                        <h3 style="font-size: 1.1rem; font-weight: 800">Envision OS</h3>
+                        <p style="color: var(--accent-blue); font-size: 0.7rem; text-transform: uppercase; font-weight: 700">Orchestrator</p>
                     </div>
                 </div>
             </div>
@@ -253,8 +253,8 @@ export default function DashboardPage() {
             <div class="tu-billboard-container" style="transform: translateZ(70px)">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
                     <div class="tu-billboard" style="border-top-color: ${p.color}">
-                        <h3 style="color: ${p.color}">${p.name}</h3>
-                        <p>${p.tools} Tools Executing</p>
+                        <h3 style="color: ${p.color}; font-weight: 700">${p.name}</h3>
+                        <p style="font-size: 0.65rem; color: var(--text-secondary)">${p.tools} Platforms Syncing</p>
                     </div>
                 </div>
             </div>
@@ -270,7 +270,7 @@ export default function DashboardPage() {
 
     function animateTuScene() {
         if (!tuIsHovered) {
-            tuTargetRotation += 0.012;
+            tuTargetRotation += 0.01;
         }
         tuGlobalRotation += (tuTargetRotation - tuGlobalRotation) * 0.05;
         
@@ -279,44 +279,26 @@ export default function DashboardPage() {
           const billboards = tuScene.querySelectorAll('.tu-billboard-container');
           billboards.forEach(b => {
               const htmlB = b as HTMLElement;
-              const currentZMatch = htmlB.style.transform.match(/translateZ\((.*?)\)/);
-              const currentZ = currentZMatch ? currentZMatch[0] : 'translateZ(0px)';
-              htmlB.style.transform = `${currentZ} rotateZ(${-tuGlobalRotation}deg) rotateX(-60deg)`;
+              htmlB.style.transform = `rotateZ(${-tuGlobalRotation}deg) rotateX(-60deg)`;
           });
         }
         animationFrameId = requestAnimationFrame(animateTuScene);
     }
     animateTuScene();
 
-    const handleTuMouseMove = (e: MouseEvent) => {
-        if (!tuContainer) return;
-        tuIsHovered = true;
-        const rect = tuContainer.getBoundingClientRect();
-        const xNorm = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-        tuTargetRotation += (xNorm * 0.1); 
-    };
-    const handleTuMouseLeave = () => {
-        tuIsHovered = false;
-    };
-    
-    if (tuContainer) {
-      tuContainer.addEventListener('mousemove', handleTuMouseMove);
-      tuContainer.addEventListener('mouseleave', handleTuMouseLeave);
-    }
-    
     if (latencyChartRef.current) {
         const ctxLatency = latencyChartRef.current.getContext('2d');
         if (ctxLatency) {
             chartInstances.push(new Chart(ctxLatency, {
                 type: 'bar',
                 data: {
-                    labels: ['Manual Audit', 'Excel Tracking', 'Risk Logging', 'Envision OS'],
+                    labels: ['Manual Audit', 'Excel Audit', 'Envision OS'],
                     datasets: [{
-                        label: 'Days to Discovery',
-                        data: [45, 14, 7, 0.01], 
-                        backgroundColor: ['#F59E0B', '#3B82F6', '#8B5CF6', '#10B981'],
-                        borderRadius: 6,
-                        borderSkipped: false
+                        label: 'Days to Reality',
+                        data: [45, 14, 0.01], 
+                        backgroundColor: ['#475569', '#3b82f6', '#10b981'],
+                        borderRadius: 8,
+                        barThickness: 32
                     }]
                 },
                 options: {
@@ -325,7 +307,7 @@ export default function DashboardPage() {
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        x: { beginAtZero: true, grid: { color: '#232733' }, ticks: { color: '#94A3B8' } },
+                        x: { beginAtZero: true, grid: { color: '#1e1e20' }, ticks: { color: '#94A3B8' } },
                         y: { grid: { display: false }, ticks: { color: '#94A3B8' } }
                     }
                 }
@@ -339,17 +321,17 @@ export default function DashboardPage() {
             chartInstances.push(new Chart(ctxCoverage, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Audit Shield', 'Remaining Risk'],
+                    labels: ['Verified', 'Scanning'],
                     datasets: [{
                         data: [98, 2],
-                        backgroundColor: ['#10B981', '#1e1e1e'],
+                        backgroundColor: ['#10B981', '#0f0f11'],
                         borderWidth: 0
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: '80%',
+                    cutout: '82%',
                     plugins: { legend: { display: false } }
                 }
             }));
@@ -357,67 +339,78 @@ export default function DashboardPage() {
     }
 
     return () => {
-        if (tuContainer) {
-            tuContainer.removeEventListener('mousemove', handleTuMouseMove);
-            tuContainer.removeEventListener('mouseleave', handleTuMouseLeave);
-        }
         cancelAnimationFrame(animationFrameId);
         chartInstances.forEach(chart => chart.destroy());
     };
   }, []);
 
   return (
-    <div className="flex flex-col w-full bg-[#030303] overflow-x-hidden">
-      <nav className="fixed top-0 w-full z-[100] bg-[rgba(3,3,3,0.85)] backdrop-blur-md border-b border-[var(--border-subtle)]" role="navigation">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2 font-bold text-lg tracking-tight text-white">
-            <div className="w-4 h-4 rounded bg-gradient-to-br from-[var(--accent-blue)] to-[var(--accent-violet)]" aria-hidden="true"></div>
+    <div className="flex flex-col w-full bg-[#020202] overflow-x-hidden selection:bg-primary selection:text-white">
+      {/* NAVIGATION */}
+      <nav className="fixed top-0 w-full z-[100] bg-[rgba(2,2,2,0.85)] backdrop-blur-xl border-b border-white/5" role="navigation">
+        <div className="container mx-auto px-6 py-5 flex justify-between items-center">
+          <div className="flex items-center gap-3 font-bold text-xl tracking-tight text-white group cursor-pointer">
+            <div className="size-5 rounded-sm bg-gradient-to-br from-primary to-accent-violet group-hover:rotate-12 transition-transform" aria-hidden="true"></div>
             Envision OS
           </div>
-          <div className="hidden lg:flex gap-8 text-sm font-medium text-[var(--text-secondary)]">
+          <div className="hidden lg:flex gap-10 text-sm font-semibold text-slate-400">
             <a href="#control-plane" className="hover:text-white transition-colors">Control Plane</a>
             <a href="#ingestion" className="hover:text-white transition-colors">Ingestion</a>
             <a href="#context" className="hover:text-white transition-colors">Context</a>
-            <a href="#architecture" className="hover:text-white transition-colors">Infrastructure</a>
-            <a href="#metrics" className="hover:text-white transition-colors">Metrics</a>
+            <a href="#architecture" className="hover:text-white transition-colors">Architecture</a>
+            <a href="#metrics" className="hover:text-white transition-colors">Audit Integrity</a>
           </div>
+          <button className="bg-white text-black px-5 py-2 rounded-full text-xs font-bold hover:bg-slate-200 transition-colors hidden sm:block">Get Access</button>
         </div>
       </nav>
 
       {/* 1. HERO SECTION */}
-      <section className="scroll-snap-section flex flex-col items-center justify-center pt-[45vh] pb-32 text-center relative px-6">
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-tight mb-8 bg-gradient-to-b from-white to-[#A8B2C1] text-transparent bg-clip-text drop-shadow-2xl fade-in-up delay-100">
-          Where Development meets Data
-        </h1>
-        <div className="text-lg md:text-2xl text-[var(--text-secondary)] max-w-4xl mx-auto leading-relaxed mb-12 fade-in-up delay-200">
-          <strong className="text-white block font-semibold mb-4 text-xl md:text-3xl">Commercial construction is no longer a black box.</strong>
-          Envision OS turns fragmented project reality into verified profit protection through{' '}
-          <span className="bg-gradient-to-r from-[var(--accent-emerald)] to-[var(--accent-cyan)] text-transparent bg-clip-text font-semibold">
-            continuous multi-platform audit cycles
-          </span>.
+      <section className="scroll-snap-section flex flex-col items-center justify-center pt-[35vh] pb-32 text-center relative px-6 overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full pointer-events-none opacity-30">
+            <div className="absolute top-[20%] left-[10%] w-[30%] aspect-square rounded-full bg-primary/20 blur-[120px]"></div>
+            <div className="absolute bottom-[20%] right-[10%] w-[40%] aspect-square rounded-full bg-accent-violet/20 blur-[120px]"></div>
+        </div>
+        
+        <div className="relative z-10">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-primary mb-8 fade-in-up">
+                <Globe className="size-3" />
+                <span>MULTI-PLATFORM ORCHESTRATOR v2.4</span>
+            </div>
+            <h1 className="text-5xl md:text-8xl font-bold tracking-tighter leading-[0.9] mb-10 bg-gradient-to-b from-white via-white to-slate-500 text-transparent bg-clip-text fade-in-up delay-100">
+              Where Development <br/> meets Data
+            </h1>
+            <div className="text-lg md:text-2xl text-slate-400 max-w-4xl mx-auto leading-relaxed mb-12 fade-in-up delay-200">
+              <span className="text-white block font-semibold mb-4">Construction reality is no longer a black box.</span>
+              Turn fragmented communication into verified profit protection through continuous, 
+              <span className="text-white"> multi-platform audit cycles</span>.
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center fade-in-up delay-200">
+                <button className="bg-primary text-white px-8 py-4 rounded-2xl text-base font-bold hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-all">Start Audit Simulation</button>
+                <button className="px-8 py-4 rounded-2xl text-base font-bold border border-white/10 hover:bg-white/5 transition-all flex items-center gap-2">Read Whitepaper <ChevronRight className="size-4" /></button>
+            </div>
         </div>
       </section>
 
       {/* 2. CONTROL PLANE */}
-      <section id="control-plane" className="scroll-snap-section py-24 border-t border-[var(--border-strong)] bg-[#030303]">
-        <div className="container mx-auto px-6 text-center mb-16">
-          <span className="block font-mono text-xs text-[var(--accent-emerald)] uppercase tracking-widest mb-4">Phase 0: The Command Center</span>
+      <section id="control-plane" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202]">
+        <div className="container mx-auto px-6 text-center mb-20">
+          <span className="inline-block px-3 py-1 rounded-md bg-accent-emerald-dim text-accent-emerald font-mono text-[10px] uppercase tracking-widest mb-4">Phase 0: The Command Center</span>
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">Orchestrator Control Plane</h2>
-          <p className="text-base md:text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
-            Experience Envision OS deliver instant intelligence through its multimodal agentic AI across 23 software platforms in real-time.
+          <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+            Experience the multimodal AI that monitors 23 software platforms and protects project margins in real-time.
           </p>
         </div>
         <div className="container mx-auto px-6 flex items-center justify-center">
-          <div className="w-full max-w-4xl h-[600px] rounded-[32px] border border-white/10 bg-zinc-900/30 p-1 shadow-2xl backdrop-blur-3xl overflow-hidden">
-            <div className="bg-black/40 rounded-[28px] border border-white/5 flex h-full flex-col overflow-hidden">
-              <div className="p-5 border-b border-white/10 flex items-center justify-between bg-transparent">
-                <div className="flex items-center gap-3">
-                    <div className="w-2.5 h-2.5 rounded-full bg-[var(--accent-emerald)] animate-pulse"></div>
-                    <div className="font-semibold text-xs md:text-sm">#project-command</div>
+          <div className="w-full max-w-5xl h-[650px] glass-card p-1 shadow-2xl overflow-hidden group">
+            <div className="bg-black/40 rounded-[31px] border border-white/5 flex h-full flex-col overflow-hidden">
+              <div className="p-6 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
+                <div className="flex items-center gap-4">
+                    <div className="w-2.5 h-2.5 rounded-full bg-accent-emerald animate-pulse"></div>
+                    <div className="font-bold text-sm tracking-tight">ENVISION CORE ENGINE</div>
                 </div>
-                <div className="font-mono text-[10px] text-[var(--text-tertiary)]">390 Tools Active</div>
+                <div className="font-mono text-[11px] text-slate-500 bg-white/5 px-3 py-1 rounded-full uppercase tracking-tighter">390 Active Connectors</div>
               </div>
-              <div className="flex-1 p-4 md:p-8 overflow-y-auto flex flex-col gap-2" ref={chatBodyRef}>
+              <div className="flex-1 p-6 md:p-10 overflow-y-auto flex flex-col gap-3" ref={chatBodyRef}>
                 {messages.map((msg, index) => {
                     if (msg.type === 'typing') {
                       return (
@@ -428,19 +421,18 @@ export default function DashboardPage() {
                     }
                     return (
                         <div key={index} className={`msg ${msg.type}`}>
-                            <div className="bubble shadow-xl" dangerouslySetInnerHTML={{ __html: msg.html }} />
+                            <div className="bubble" dangerouslySetInnerHTML={{ __html: msg.html }} />
                         </div>
                     );
                 })}
                 {suggestedReplies.length > 0 && (
-                  <div className="flex flex-wrap gap-2 justify-end mt-6">
+                  <div className="flex flex-wrap gap-2 justify-end mt-10">
                       {suggestedReplies.map((reply, index) => (
                           <button
                               key={index}
-                              className="px-4 py-2 bg-zinc-800/80 hover:bg-[var(--accent-blue)] border border-white/10 rounded-full text-xs md:text-sm font-medium transition-all"
+                              className="px-6 py-3 bg-white/5 hover:bg-primary border border-white/10 rounded-2xl text-xs md:text-sm font-bold transition-all hover:-translate-y-1"
                               onClick={() => runSimulation(reply.scenarioId)}
                               disabled={isRunning.current}
-                              aria-label={`Ask: ${reply.text}`}
                           >
                               {reply.text}
                           </button>
@@ -454,40 +446,53 @@ export default function DashboardPage() {
       </section>
 
       {/* 3. INGESTION */}
-      <section id="ingestion" className="scroll-snap-section py-24 border-t border-[var(--border-strong)] bg-[#030303]">
-        <div className="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-16">
+      <section id="ingestion" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202]">
+        <div className="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-20">
           <div className="flex-1 text-left">
-            <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 1: Multi-Stream Ingestion</span>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">From Chaos to Verified Truth</h2>
-            <p className="text-base md:text-lg text-[var(--text-secondary)] mb-6 leading-relaxed">
-              Construction data is fragmented across thousands of emails, texts, field notes, and spreadsheets. Envision OS captures it all simultaneously.
+            <span className="inline-block px-3 py-1 rounded-md bg-accent-violet-dim text-accent-violet font-mono text-[10px] uppercase tracking-widest mb-4">Phase 1: Multi-Stream Ingestion</span>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">From Chaos <br/> to Intelligence</h2>
+            <p className="text-lg text-slate-400 mb-8 leading-relaxed">
+              Construction data lives in fragmented silos: thousands of emails, field notes, phone calls, and spreadsheets. Envision OS captures it all simultaneously.
             </p>
-            <p className="text-base md:text-lg text-[var(--text-secondary)] leading-relaxed">
-              Our <strong className="text-white font-semibold">Ingestion Pipeline</strong> parses and normalizes every communication stream into a singular, queryable project reality.
-            </p>
+            <div className="space-y-4">
+                <div className="flex items-start gap-4 p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-accent-violet/50 transition-colors">
+                    <div className="size-10 rounded-xl bg-accent-violet-dim flex items-center justify-center text-accent-violet flex-shrink-0"><Mail className="size-5" /></div>
+                    <div>
+                        <h4 className="font-bold mb-1">Communication Mining</h4>
+                        <p className="text-sm text-slate-500">Unstructured communication is parsed and indexed in real-time.</p>
+                    </div>
+                </div>
+                <div className="flex items-start gap-4 p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-accent-violet/50 transition-colors">
+                    <div className="size-10 rounded-xl bg-accent-violet-dim flex items-center justify-center text-accent-violet flex-shrink-0"><FileText className="size-5" /></div>
+                    <div>
+                        <h4 className="font-bold mb-1">Document Normalization</h4>
+                        <p className="text-sm text-slate-500">PDFs and spreadsheets are converted into queryable structural truth.</p>
+                    </div>
+                </div>
+            </div>
           </div>
           <div className="flex-1 w-full max-w-2xl">
               <div className="ingestion-viz w-full">
                 <div className="ingest-engine-core">
                   <div className="engine-box">
                     <div className="css-icon-parser" aria-label="Parser Interface">{'{ }'}</div>
-                    <span className="text-[10px] font-bold tracking-widest mt-2 text-[var(--accent-violet)]">PARSER</span>
+                    <span className="text-[10px] font-black tracking-[0.2em] mt-3 text-accent-violet">AUDIT CORE</span>
                     <div className="engine-laser"></div>
                   </div>
                 </div>
                 <div className="organized-stream">
-                    <div className="json-node data-out-stream" style={{'--d': '0s'} as any}>{'{ "job": 402, "variance": 12% }'}</div>
-                    <div className="json-node data-out-stream" style={{'--d': '1s'} as any}>{'{ "rfi": "2024-118", "status": "draft" }'}</div>
-                    <div className="json-node data-out-stream" style={{'--d': '2s'} as any}>{'{ "permit": "Aventura-F1", "status": "passed" }'}</div>
+                    <div className="json-node data-out-stream" style={{'--d': '0s'} as any}>{'{ "job": 402, "delta": "DRYWALL" }'}</div>
+                    <div className="json-node data-out-stream" style={{'--d': '1s'} as any}>{'{ "rfi": 118, "status": "DRAFT" }'}</div>
+                    <div className="json-node data-out-stream" style={{'--d': '2s'} as any}>{'{ "permit": "F1", "status": "PASS" }'}</div>
                 </div>
-                {[...Array(20)].map((_, i) => {
+                {[...Array(24)].map((_, i) => {
                     const types = ['EMAIL', 'TEXT', 'DOC', 'MSG', 'CALL'];
                     const type = types[i % types.length];
                     return (
                       <div key={i} className="flow-item" style={{ 
-                          '--d': `${i * 0.15}s`, 
-                          '--y': `${20 + (i * 12)%60}%`, 
-                          '--r': `${-20 + (i*10)%40}deg`
+                          '--d': `${i * 0.12}s`, 
+                          '--y': `${20 + (i * 15)%60}%`, 
+                          '--r': `${-25 + (i*12)%50}deg`
                       } as any}>
                           <div className="flurry-item">
                               <div className="skeleton"></div>
@@ -503,23 +508,23 @@ export default function DashboardPage() {
       </section>
 
       {/* 4. CONTEXT */}
-      <section id="context" className="scroll-snap-section py-24 border-t border-[var(--border-strong)] bg-[#030303]">
-        <div className="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-16">
+      <section id="context" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202]">
+        <div className="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-20">
           <div className="flex-1 order-2 lg:order-1 w-full max-w-2xl">
               <div className="context-fusion-viz w-full">
                 <div className="fusion-bubbles">
                   <div className="bubble-snippet b-1">
                     <div className="b-label" style={{ '--c': 'var(--accent-blue)' } as any}>OWNER MEETING</div>
-                    <p>"Authorized marble upgrade for the lobby. Adjusted variance expected."</p>
+                    <p>"Authorize the lobby upgrade. Use the premium marble as discussed."</p>
                   </div>
                   <div className="bubble-snippet b-2">
                     <div className="b-label" style={{ '--c': 'var(--accent-amber)' } as any}>SLACK: #PROJECT-FLOW</div>
-                    <p>"Procurement lead time is 4 weeks. Logged as schedule delta."</p>
+                    <p>"Procurement lead time is now 4 weeks. Adjusting the master schedule."</p>
                   </div>
                 </div>
                 <div className="fusion-center">
                     <div className="fusion-pulse-ring"></div>
-                    <div className="fusion-core-node"><Zap className="size-8" /></div>
+                    <div className="fusion-core-node"><Zap className="size-10" /></div>
                 </div>
                 <div className="fusion-verified-truth">
                     <div className="truth-card">
@@ -527,15 +532,15 @@ export default function DashboardPage() {
                             <ShieldCheck className="size-4" />
                             <span>CONTEXT VERIFIED</span>
                         </div>
-                        <h4 className="text-xl font-bold mb-4">Lobby Finish Upgrade</h4>
-                        <div className="space-y-3">
-                            <div className="flex justify-between items-center text-xs border-b border-white/5 pb-2">
-                                <span className="text-[var(--text-tertiary)] uppercase font-mono tracking-tighter">Status</span>
-                                <span className="text-emerald-400 font-bold">Approved by Owner</span>
+                        <h4 className="text-2xl font-bold mb-6">Lobby Finish Upgrade</h4>
+                        <div className="space-y-4">
+                            <div className="flex justify-between items-center text-xs border-b border-white/5 pb-3">
+                                <span className="text-slate-500 uppercase font-mono font-bold tracking-tight">Status</span>
+                                <span className="text-emerald-400 font-black">Authorized by Owner</span>
                             </div>
-                            <div className="flex justify-between items-center text-xs border-b border-white/5 pb-2">
-                                <span className="text-[var(--text-tertiary)] uppercase font-mono tracking-tighter">Confidence</span>
-                                <span className="text-white font-bold">98.4%</span>
+                            <div className="flex justify-between items-center text-xs border-b border-white/5 pb-3">
+                                <span className="text-slate-500 uppercase font-mono font-bold tracking-tight">Confidence</span>
+                                <span className="text-white font-black">99.2%</span>
                             </div>
                         </div>
                     </div>
@@ -543,61 +548,60 @@ export default function DashboardPage() {
               </div>
           </div>
           <div className="flex-1 order-1 lg:order-2 text-left">
-            <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 2: Project Intelligence</span>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">Context is Everything.</h2>
-            <p className="text-base md:text-lg text-[var(--text-secondary)] mb-6 leading-relaxed">
-              A $50,000 budget variance is just an alarming number until you know the owner verbally approved it in a meeting yesterday.
+            <span className="inline-block px-3 py-1 rounded-md bg-accent-blue-dim text-accent-blue font-mono text-[10px] uppercase tracking-widest mb-4">Phase 2: Project Intelligence</span>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">Context is <br/> Everything.</h2>
+            <p className="text-lg text-slate-400 mb-8 leading-relaxed">
+              A budget variance is just a number until you have the context. Envision OS tags project reality by cross-referencing qualitative signals with financial data.
             </p>
-            <p className="text-base md:text-lg text-[var(--text-secondary)] leading-relaxed">
-              This is the <strong>Context Fusion Engine</strong>. It cross-references qualitative data—Slack, Zoom, and RFIs—to tag project reality with near-perfect accuracy.
+            <p className="text-lg text-slate-400 leading-relaxed">
+              Our <strong>Context Fusion Engine</strong> verifies project decisions through thousands of multi-platform signals to eliminate operational blind spots.
             </p>
           </div>
         </div>
       </section>
 
       {/* 5. ARCHITECTURE */}
-      <section id="architecture" className="scroll-snap-section py-24 border-t border-[var(--border-strong)] bg-[#030303]">
-        <div className="container mx-auto px-6 text-center mb-16">
-          <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 3: The Intelligence Layer</span>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">The Command Nervous System</h2>
-          <p className="text-base md:text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
-            Our architectural stack maps queries from plain English through LLM agents down to 390 specific platform tools in under 200 milliseconds.
+      <section id="architecture" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202]">
+        <div className="container mx-auto px-6 text-center mb-20">
+          <span className="inline-block px-3 py-1 rounded-md bg-accent-violet-dim text-accent-violet font-mono text-[10px] uppercase tracking-widest mb-4">Phase 3: The Intelligence Layer</span>
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">The Infrastructure <br/> of Truth</h2>
+          <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            Our multi-tiered architecture handles massive construction telemetry, turning high-latency silos into a singular source of real-time intelligence.
           </p>
         </div>
-        <div className="container mx-auto px-6 flex items-center justify-center">
-            <div className="arch-nervous-viz w-full max-w-5xl">
-                <div className="nervous-spine" aria-hidden="true"></div>
-                <div className="nervous-grid">
-                    <div className="nervous-layer">
-                        <div className="l-icon"><Share2 className="size-6"/></div>
-                        <div className="l-info">
-                            <span className="l-tag">L4: ACTION INTERFACE</span>
-                            <h4>Tool Gateway</h4>
-                            <p>Managing OAuth2 sessions for 390+ specific platform-sync tools for Procore, Sage, and more.</p>
+        <div className="container mx-auto px-6">
+            <div className="arch-viz-container">
+                <div className="arch-stack">
+                    <div className="stack-layer">
+                        <div className="layer-icon"><Share2 className="size-7" /></div>
+                        <div className="layer-info">
+                            <span className="layer-tag">L4: ACTION GATEWAY</span>
+                            <h4 className="layer-title">Multi-Platform Gateway</h4>
+                            <p className="layer-desc">Executing 390 specialized tools across Procore, Sage, Slack, and Autodesk.</p>
                         </div>
                     </div>
-                    <div className="nervous-layer">
-                        <div className="l-icon"><BrainCircuit className="size-6"/></div>
-                        <div className="l-info">
-                            <span className="l-tag">L3: COGNITIVE ENGINE</span>
-                            <h4>Reasoning Hub</h4>
-                            <p>7 specialized LLM agents analyzing project intent and orchestrating technical data requests.</p>
+                    <div className="stack-layer">
+                        <div className="layer-icon"><BrainCircuit className="size-7" /></div>
+                        <div className="layer-info">
+                            <span className="layer-tag">L3: COGNITIVE LAYER</span>
+                            <h4 className="layer-title">Reasoning Orchestrator</h4>
+                            <p className="layer-desc">7 specialized LLM agents analyzing project intent and data requests.</p>
                         </div>
                     </div>
-                    <div className="nervous-layer">
-                        <div className="l-icon"><Activity className="size-6"/></div>
-                        <div className="l-info">
-                            <span className="l-tag">L2: UNIFIED KNOWLEDGE</span>
-                            <h4>Live Context</h4>
-                            <p>Dynamic vector-search layer consolidating communications and qualitative data into real-time truth.</p>
+                    <div className="stack-layer">
+                        <div className="layer-icon"><Cpu className="size-7" /></div>
+                        <div className="layer-info">
+                            <span className="layer-tag">L2: UNIFIED CONTEXT</span>
+                            <h4 className="layer-title">Vector Memory Hub</h4>
+                            <p className="layer-desc">Real-time normalization of communications and qualitative data streams.</p>
                         </div>
                     </div>
-                    <div className="nervous-layer">
-                        <div className="l-icon"><Database className="size-6"/></div>
-                        <div className="l-info">
-                            <span className="l-tag">L1: NORMALIZED CORE</span>
-                            <h4>Field Data Core</h4>
-                            <p>The ground truth: BigQuery & Vertex AI storing normalized construction data across all siloes.</p>
+                    <div className="stack-layer">
+                        <div className="layer-icon"><Database className="size-7" /></div>
+                        <div className="layer-info">
+                            <span className="layer-tag">L1: NORMALIZED CORE</span>
+                            <h4 className="layer-title">Field Data Core</h4>
+                            <p className="layer-desc">Normalized construction truth stored in Vertex AI & BigQuery.</p>
                         </div>
                     </div>
                 </div>
@@ -606,12 +610,12 @@ export default function DashboardPage() {
       </section>
 
       {/* 6. ECOSYSTEM */}
-      <section id="ecosystem" className="scroll-snap-section py-24 border-t border-[var(--border-strong)] bg-[#030303]">
-        <div className="container mx-auto px-6 text-center mb-16">
-          <span className="block font-mono text-xs text-[var(--accent-emerald)] uppercase tracking-widest mb-4">Phase 4: The Tool Universe</span>
+      <section id="ecosystem" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202]">
+        <div className="container mx-auto px-6 text-center mb-20">
+          <span className="inline-block px-3 py-1 rounded-md bg-accent-emerald-dim text-accent-emerald font-mono text-[10px] uppercase tracking-widest mb-4">Phase 4: Tool Universe</span>
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">390 Tools. One Reality.</h2>
-          <p className="text-base md:text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
-            Orchestrating complex data flows across your entire construction software ecosystem in real-time.
+          <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            Eliminate silos by orchestrating real-time data flows across your entire construction software ecosystem.
           </p>
         </div>
         <div className="container mx-auto px-6 h-[800px] flex items-center justify-center">
@@ -624,53 +628,54 @@ export default function DashboardPage() {
       </section>
 
       {/* 7. METRICS */}
-      <section id="metrics" className="scroll-snap-section py-24 border-t border-[var(--border-strong)] bg-[#030303]">
+      <section id="metrics" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202]">
         <div className="container mx-auto px-6 text-center mb-24">
-            <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Bottom Line Impact</span>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">Risk Discovery Acceleration</h2>
-            <p className="text-base md:text-lg text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed">
-                Envision OS delivers institutional-grade audit integrity, shifting the needle on risk discovery from weeks to milliseconds.
+            <span className="inline-block px-3 py-1 rounded-md bg-accent-violet-dim text-accent-violet font-mono text-[10px] uppercase tracking-widest mb-4">Bottom Line Impact</span>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">Performance <br/> Acceleration</h2>
+            <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                Envision OS shifts construction risk discovery from weeks to milliseconds, protecting profit margins at institutional scale.
             </p>
         </div>
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-24">
-              <div className="lg:col-span-2 bg-zinc-900/40 backdrop-blur-3xl p-8 md:p-12 rounded-[40px] border border-white/10 shadow-2xl flex flex-col">
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-24">
+              <div className="lg:col-span-2 glass-card p-10 md:p-14 flex flex-col shadow-2xl">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-14">
                       <div>
-                          <h3 className="text-2xl md:text-3xl font-bold mb-2">Discovery Velocity</h3>
-                          <p className="text-[var(--text-secondary)] text-sm">Time required to identify field variances.</p>
+                          <h3 className="text-3xl font-bold mb-3 flex items-center gap-2"><BarChart3 className="text-accent-emerald" /> Discovery Velocity</h3>
+                          <p className="text-slate-500 text-sm">Time required to identify project field variances.</p>
                       </div>
-                      <div className="text-right mt-6 md:mt-0">
-                          <p className="text-5xl md:text-7xl font-bold text-emerald-400 tracking-tighter">0.01s</p>
-                          <p className="text-[var(--text-tertiary)] text-[10px] font-mono uppercase tracking-widest mt-2">vs 14 Day Manual Cycle</p>
+                      <div className="text-right mt-8 md:mt-0">
+                          <p className="text-6xl md:text-8xl font-black text-accent-emerald tracking-tighter leading-none">0.01s</p>
+                          <p className="text-slate-600 text-[10px] font-black uppercase tracking-[0.2em] mt-3">VS 14-DAY MANUAL AUDIT</p>
                       </div>
                   </div>
-                  <div className="flex-1 min-h-[300px]"><canvas ref={latencyChartRef}></canvas></div>
+                  <div className="flex-1 min-h-[350px]"><canvas ref={latencyChartRef}></canvas></div>
               </div>
               
-              <div className="bg-zinc-900/40 backdrop-blur-3xl p-8 md:p-12 rounded-[40px] border border-white/10 shadow-2xl flex flex-col items-center justify-center text-center">
-                  <h3 className="text-sm font-bold mb-8 uppercase tracking-widest text-emerald-400 font-mono">Audit Shield</h3>
-                  <div className="relative w-full aspect-square max-w-[200px] mb-10">
+              <div className="glass-card p-10 md:p-14 flex flex-col items-center justify-center text-center shadow-2xl">
+                  <div className="size-16 rounded-2xl bg-accent-emerald-dim flex items-center justify-center text-accent-emerald mb-10"><Fingerprint className="size-8" /></div>
+                  <h3 className="text-sm font-black mb-10 uppercase tracking-[0.3em] text-accent-emerald font-mono">AUDIT SHIELD</h3>
+                  <div className="relative w-full aspect-square max-w-[240px] mb-12">
                       <canvas ref={coverageChartRef}></canvas>
                       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                          <span className="text-4xl md:text-5xl font-bold text-white">98%</span>
-                          <span className="text-[10px] text-[var(--text-tertiary)] uppercase font-mono tracking-tighter mt-1">Transparency</span>
+                          <span className="text-5xl md:text-6xl font-black text-white leading-none">98%</span>
+                          <span className="text-[11px] text-slate-500 uppercase font-black tracking-widest mt-2">TRANSPARENCY</span>
                       </div>
                   </div>
-                  <div className="p-6 bg-white/5 rounded-2xl border border-white/10 text-left">
-                      <h4 className="text-sm font-bold text-white mb-2">Institutional Integrity</h4>
-                      <p className="text-[11px] text-[var(--text-secondary)] leading-relaxed">Every project dollar is cross-referenced against field reality and the master schedule for 100% audit transparency.</p>
+                  <div className="p-8 bg-white/[0.03] rounded-3xl border border-white/5 text-left w-full">
+                      <h4 className="text-base font-bold text-white mb-3">Institutional Integrity</h4>
+                      <p className="text-sm text-slate-400 leading-relaxed">Every project dollar is cross-referenced against field reality and communication records for 100% audit transparency.</p>
                   </div>
               </div>
           </div>
         </div>
       </section>
 
-      <footer className="bg-[#030303] border-t border-[var(--border-strong)] py-16 text-center text-sm text-[var(--text-tertiary)]" role="contentinfo">
+      <footer className="bg-[#020202] border-t border-white/5 py-24 text-center text-sm text-slate-500" role="contentinfo">
         <div className="container mx-auto px-6">
-          <p className="text-lg font-bold text-white mb-4">Envision OS</p>
-          <p>The All-Seeing Eye for Construction Project Management</p>
-          <p className="mt-4 font-mono text-[var(--text-secondary)] uppercase tracking-[0.2em] text-[10px]">The Single Source of Truth.</p>
+          <p className="text-xl font-black text-white mb-6">Envision OS</p>
+          <p className="max-w-md mx-auto leading-relaxed">The Unified Source of Truth for Institutional Construction Asset Management.</p>
+          <p className="mt-8 font-mono text-slate-700 uppercase tracking-[0.4em] text-[10px]">Audit Integrity Engines Active.</p>
         </div>
       </footer>
     </div>
