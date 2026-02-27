@@ -37,6 +37,20 @@ type ChatMessage =
 
 type CSSVarStyle = React.CSSProperties & Record<`--${string}`, string>;
 
+type ArchitectureLayer = {
+  id: 'normalized' | 'context' | 'cognitive' | 'action';
+  level: string;
+  title: string;
+  subtitle: string;
+  metric: string;
+  metricLabel: string;
+  tone: string;
+  icon: React.ComponentType<{ className?: string }>;
+  standaloneImpact: string;
+  contextImpact: string;
+  position?: { x: number; y: number };
+};
+
 const initialSuggestions = [
   { text: "Which jobs are off budget?", scenarioId: 1 },
   { text: "When are we getting a CO?", scenarioId: 2 },
@@ -53,6 +67,185 @@ export default function DashboardPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const isRunning = useRef(false);
   const hasBootstrappedMessage = useRef(false);
+
+  const contextSignals = useMemo(
+    () => [
+      {
+        id: 'owner-meeting',
+        channel: 'OWNER MEETING',
+        quote: 'Authorize the lobby upgrade. Use the premium marble as discussed.',
+        detail: 'Source: Meeting transcript · Role: Owner Representative',
+        strength: 'Signal Strength 0.98',
+        revealAt: 1,
+      },
+      {
+        id: 'project-slack',
+        channel: 'SLACK · #PROJECT-FLOW',
+        quote: 'Procurement lead time is now 4 weeks. Adjusting the master schedule.',
+        detail: 'Source: Internal Slack · Role: Procurement Lead',
+        strength: 'Signal Strength 0.94',
+        revealAt: 2,
+      },
+    ],
+    []
+  );
+
+  const contextReasoningSteps = useMemo(
+    () => [
+      {
+        id: 'intent',
+        title: 'Interpret owner intent',
+        detail: 'Detected explicit owner approval for premium lobby finish scope.',
+        revealAt: 1,
+      },
+      {
+        id: 'risk-model',
+        title: 'Model schedule and cost impact',
+        detail: 'Lead-time analysis predicts a 4-week risk if marble procurement remains single-sourced.',
+        revealAt: 2,
+      },
+      {
+        id: 'control-plan',
+        title: 'Generate control plan',
+        detail: 'Recommend parallel supplier bid + RFI release to preserve quality with schedule protection.',
+        revealAt: 3,
+      },
+    ],
+    []
+  );
+
+  const contextStatusByStage = useMemo(
+    () => [
+      'Listening for authoritative project signals…',
+      'Owner intent captured. Validating downstream dependencies…',
+      'Cross-checking procurement constraints against milestone plan…',
+      'Formulating investor-safe control action package…',
+      'Context verified. Decision package ready for execution.',
+    ],
+    []
+  );
+
+  const contextSequence = useMemo(() => [0, 1, 2, 3, 4, 4], []);
+  const [contextSequenceIndex, setContextSequenceIndex] = useState(0);
+  const contextStage = contextSequence[contextSequenceIndex] ?? 0;
+
+  const architectureLayers = useMemo<ArchitectureLayer[]>(
+    () => [
+      {
+        id: 'normalized',
+        level: 'L1 · NORMALIZED CORE',
+        title: 'Field Data Core',
+        subtitle:
+          'Budget, schedule, and field data are normalized into one reconciled ledger.',
+        metric: '2.8M',
+        metricLabel: 'records reconciled daily',
+        tone: '#06b6d4',
+        icon: Database,
+        standaloneImpact:
+          'Raw systems become queryable, but intent and causality remain fragmented across teams.',
+        contextImpact:
+          'The Context Layer tags each variance with decision evidence, turning raw records into explainable capital signals.',
+        position: { x: 22, y: 76 },
+      },
+      {
+        id: 'context',
+        level: 'L2 · UNIFIED CONTEXT',
+        title: 'Context Layer',
+        subtitle:
+          'Cross-links owner communication, procurement signals, and field activity into decision-grade truth.',
+        metric: '99.2%',
+        metricLabel: 'decision confidence',
+        tone: '#10b981',
+        icon: Cpu,
+        standaloneImpact:
+          'Context acts as the system memory that interprets competing narratives before they become risk.',
+        contextImpact:
+          'This is the force multiplier: every downstream action carries provenance, confidence, and investor-readable rationale.',
+      },
+      {
+        id: 'cognitive',
+        level: 'L3 · COGNITIVE LAYER',
+        title: 'Reasoning Orchestrator',
+        subtitle:
+          'Specialized agents model schedule, cost, and risk implications in real time.',
+        metric: '< 400ms',
+        metricLabel: 'cross-layer reasoning latency',
+        tone: '#3b82f6',
+        icon: BrainCircuit,
+        standaloneImpact:
+          'Fast analysis is possible, but conclusions remain brittle without source-verified project context.',
+        contextImpact:
+          'Context Layer grounding keeps reasoning aligned with owner intent, reducing false escalations and missed risks.',
+        position: { x: 50, y: 16 },
+      },
+      {
+        id: 'action',
+        level: 'L4 · ACTION GATEWAY',
+        title: 'Multi-Platform Gateway',
+        subtitle:
+          'Operational decisions are executed across Procore, Sage, Slack, and compliance workflows.',
+        metric: '390',
+        metricLabel: 'integrated tools',
+        tone: '#f59e0b',
+        icon: Share2,
+        standaloneImpact:
+          'Execution can be fast, but disconnected actions increase change-order, rework, and reporting exposure.',
+        contextImpact:
+          'Context-enriched actions push the right intervention first, preserving timeline integrity and margin protection.',
+        position: { x: 80, y: 66 },
+      },
+    ],
+    []
+  );
+
+  const architectureLayerCycle = useMemo(
+    () => architectureLayers.map((layer) => layer.id),
+    [architectureLayers]
+  );
+  const [activeArchitectureLayerId, setActiveArchitectureLayerId] =
+    useState<ArchitectureLayer['id']>('context');
+  const [isArchitectureAutoplay, setIsArchitectureAutoplay] = useState(true);
+
+  const activeArchitectureLayer = useMemo(
+    () =>
+      architectureLayers.find((layer) => layer.id === activeArchitectureLayerId) ??
+      architectureLayers[1],
+    [architectureLayers, activeArchitectureLayerId]
+  );
+
+  const architectureContextLinks = useMemo(
+    () =>
+      architectureLayers
+        .filter((layer) => layer.id !== 'context' && layer.position)
+        .map((layer) => {
+          const x = layer.position?.x ?? 50;
+          const y = layer.position?.y ?? 50;
+          const dx = x - 50;
+          const dy = y - 50;
+          const length = Math.sqrt(dx * dx + dy * dy);
+          const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+
+          return {
+            id: layer.id,
+            tone: layer.tone,
+            style: {
+              '--tone': layer.tone,
+              '--len': `${length}%`,
+              '--angle': `${angle}deg`,
+            } as CSSVarStyle,
+          };
+        }),
+    [architectureLayers]
+  );
+
+  const spotlightArchitectureLayer = useCallback((layerId: ArchitectureLayer['id']) => {
+    setActiveArchitectureLayerId(layerId);
+    setIsArchitectureAutoplay(false);
+  }, []);
+
+  const resumeArchitectureAutoplay = useCallback(() => {
+    setIsArchitectureAutoplay(true);
+  }, []);
 
   const scenarios = useMemo<Scenarios>(() => ({
     1: {
@@ -213,6 +406,31 @@ export default function DashboardPage() {
   useEffect(() => {
     scrollToBottom();
   }, [messages, scrollToBottom, suggestedReplies]);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setContextSequenceIndex((prev) => (prev + 1) % contextSequence.length);
+    }, 1400);
+
+    return () => window.clearInterval(intervalId);
+  }, [contextSequence.length]);
+
+  useEffect(() => {
+    if (!isArchitectureAutoplay) {
+      return;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setActiveArchitectureLayerId((prev) => {
+        const currentIndex = architectureLayerCycle.indexOf(prev);
+        const safeIndex = currentIndex === -1 ? 0 : currentIndex;
+        const nextIndex = (safeIndex + 1) % architectureLayerCycle.length;
+        return architectureLayerCycle[nextIndex] ?? 'context';
+      });
+    }, 3000);
+
+    return () => window.clearInterval(intervalId);
+  }, [architectureLayerCycle, isArchitectureAutoplay]);
   
   useEffect(() => {
     const chartInstances: Chart[] = [];
@@ -494,7 +712,7 @@ export default function DashboardPage() {
         <div className="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-20">
           <div className="flex-1 text-left">
             <span className="inline-block px-3 py-1 rounded-md bg-accent-violet-dim text-accent-violet font-mono text-[10px] uppercase tracking-widest mb-4">Phase 1: Multi-Stream Ingestion</span>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">From Chaos <br/> to Intelligence</h2>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">From Chaos <br/> to Control</h2>
             <p className="text-lg text-slate-400 mb-8 leading-relaxed">
               Construction data lives in fragmented silos: thousands of emails, field notes, phone calls, and spreadsheets. Envision OS captures it all simultaneously.
             </p>
@@ -555,39 +773,83 @@ export default function DashboardPage() {
       <section id="context" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202]">
         <div className="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-20">
           <div className="flex-1 order-2 lg:order-1 w-full max-w-2xl">
-              <div className="context-fusion-viz w-full">
-                <div className="fusion-bubbles">
-                  <div className="bubble-snippet b-1">
-                    <div className="b-label" style={{ '--c': 'var(--accent-blue)' } as CSSVarStyle}>OWNER MEETING</div>
-                    <p>&quot;Authorize the lobby upgrade. Use the premium marble as discussed.&quot;</p>
-                  </div>
-                  <div className="bubble-snippet b-2">
-                    <div className="b-label" style={{ '--c': 'var(--accent-amber)' } as CSSVarStyle}>SLACK: #PROJECT-FLOW</div>
-                    <p>&quot;Procurement lead time is now 4 weeks. Adjusting the master schedule.&quot;</p>
-                  </div>
+              <div className="context-intelligence-viz w-full" aria-live="polite">
+                <div className="context-signal-column">
+                  {contextSignals.map((signal) => (
+                    <article
+                      key={signal.id}
+                      className={`context-signal-card ${
+                        contextStage >= signal.revealAt ? 'is-visible' : ''
+                      }`}
+                    >
+                      <div className="context-signal-head">
+                        <span className="context-signal-channel">{signal.channel}</span>
+                        <span className="context-signal-strength">{signal.strength}</span>
+                      </div>
+                      <p className="context-signal-quote">&quot;{signal.quote}&quot;</p>
+                      <p className="context-signal-meta">{signal.detail}</p>
+                    </article>
+                  ))}
                 </div>
-                <div className="fusion-center">
-                    <div className="fusion-pulse-ring"></div>
-                    <div className="fusion-core-node"><Zap className="size-10" /></div>
+
+                <div className="context-engine-column">
+                  <div className={`context-engine-core ${contextStage >= 3 ? 'is-hot' : ''}`}>
+                    <Zap className="size-7" />
+                  </div>
+                  <p className="context-engine-status">{contextStatusByStage[contextStage]}</p>
+                  <div className="context-progress-track">
+                    <div
+                      className="context-progress-fill"
+                      style={{ width: `${Math.min(100, contextStage * 25)}%` }}
+                    />
+                  </div>
+                  <ol className="context-reasoning-list">
+                    {contextReasoningSteps.map((step, index) => (
+                      <li
+                        key={step.id}
+                        className={`context-reasoning-item ${
+                          contextStage >= step.revealAt ? 'is-done' : ''
+                        }`}
+                      >
+                        <span className="context-reasoning-index">{index + 1}</span>
+                        <div>
+                          <p className="context-reasoning-title">{step.title}</p>
+                          <p className="context-reasoning-detail">{step.detail}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
                 </div>
-                <div className="fusion-verified-truth">
-                    <div className="truth-card">
-                        <div className="truth-badge">
-                            <ShieldCheck className="size-4" />
-                            <span>CONTEXT VERIFIED</span>
-                        </div>
-                        <h4 className="text-2xl font-bold mb-6">Lobby Finish Upgrade</h4>
-                        <div className="space-y-4">
-                            <div className="flex justify-between items-center text-xs border-b border-white/5 pb-3">
-                                <span className="text-slate-500 uppercase font-mono font-bold tracking-tight">Status</span>
-                                <span className="text-emerald-400 font-black">Authorized by Owner</span>
-                            </div>
-                            <div className="flex justify-between items-center text-xs border-b border-white/5 pb-3">
-                                <span className="text-slate-500 uppercase font-mono font-bold tracking-tight">Confidence</span>
-                                <span className="text-white font-black">99.2%</span>
-                            </div>
-                        </div>
+
+                <div className={`context-control-column ${contextStage >= 4 ? 'is-visible' : ''}`}>
+                  <div className="truth-card">
+                    <div className="truth-badge">
+                      <ShieldCheck className="size-4" />
+                      <span>CONTEXT VERIFIED</span>
                     </div>
+                    <h4 className="text-2xl font-bold mb-6">Lobby Finish Upgrade</h4>
+                    <div className="context-control-rows">
+                      <div className="context-control-row">
+                        <span className="context-control-label">Status</span>
+                        <span className="context-control-value text-emerald-400">Authorized by Owner</span>
+                      </div>
+                      <div className="context-control-row">
+                        <span className="context-control-label">Schedule Risk</span>
+                        <span className="context-control-value">+4 weeks if single-source marble</span>
+                      </div>
+                      <div className="context-control-row">
+                        <span className="context-control-label">Recommended Control</span>
+                        <span className="context-control-value">Issue alternate supplier RFI now</span>
+                      </div>
+                      <div className="context-control-row">
+                        <span className="context-control-label">Confidence</span>
+                        <span className="context-control-value">99.2%</span>
+                      </div>
+                    </div>
+                    <p className="context-control-footnote">
+                      Investor translation: premium finish upside is preserved while execution risk stays controlled.
+                    </p>
+                  </div>
                 </div>
               </div>
           </div>
@@ -614,41 +876,112 @@ export default function DashboardPage() {
           </p>
         </div>
         <div className="container mx-auto px-6">
-            <div className="arch-viz-container">
-                <div className="arch-stack">
-                    <div className="stack-layer">
-                        <div className="layer-icon"><Share2 className="size-7" /></div>
-                        <div className="layer-info">
-                            <span className="layer-tag">L4: ACTION GATEWAY</span>
-                            <h4 className="layer-title">Multi-Platform Gateway</h4>
-                            <p className="layer-desc">Executing 390 specialized tools across Procore, Sage, Slack, and Autodesk.</p>
-                        </div>
-                    </div>
-                    <div className="stack-layer">
-                        <div className="layer-icon"><BrainCircuit className="size-7" /></div>
-                        <div className="layer-info">
-                            <span className="layer-tag">L3: COGNITIVE LAYER</span>
-                            <h4 className="layer-title">Reasoning Orchestrator</h4>
-                            <p className="layer-desc">7 specialized LLM agents analyzing project intent and data requests.</p>
-                        </div>
-                    </div>
-                    <div className="stack-layer">
-                        <div className="layer-icon"><Cpu className="size-7" /></div>
-                        <div className="layer-info">
-                            <span className="layer-tag">L2: UNIFIED CONTEXT</span>
-                            <h4 className="layer-title">Vector Memory Hub</h4>
-                            <p className="layer-desc">Real-time normalization of communications and qualitative data streams.</p>
-                        </div>
-                    </div>
-                    <div className="stack-layer">
-                        <div className="layer-icon"><Database className="size-7" /></div>
-                        <div className="layer-info">
-                            <span className="layer-tag">L1: NORMALIZED CORE</span>
-                            <h4 className="layer-title">Field Data Core</h4>
-                            <p className="layer-desc">Normalized construction truth stored in Vertex AI & BigQuery.</p>
-                        </div>
-                    </div>
+            <div className="layer-impact-showcase" onMouseLeave={resumeArchitectureAutoplay}>
+              <div
+                className="layer-impact-canvas"
+                role="img"
+                aria-label="Interactive map showing the context layer amplifying normalized data, reasoning, and execution layers."
+              >
+                {architectureContextLinks.map((link) => (
+                  <div
+                    key={link.id}
+                    className={`layer-link ${
+                      activeArchitectureLayerId === 'context' || activeArchitectureLayerId === link.id
+                        ? 'is-active'
+                        : ''
+                    }`}
+                    style={link.style}
+                  >
+                    <span className="layer-link-dot"></span>
+                    <span className="layer-link-dot delay"></span>
+                  </div>
+                ))}
+
+                {architectureLayers.map((layer) => {
+                  const Icon = layer.icon;
+                  const isActive = activeArchitectureLayerId === layer.id;
+                  const isContextLayer = layer.id === 'context';
+
+                  return (
+                    <button
+                      key={layer.id}
+                      type="button"
+                      onMouseEnter={() => spotlightArchitectureLayer(layer.id)}
+                      onFocus={() => spotlightArchitectureLayer(layer.id)}
+                      onClick={() => spotlightArchitectureLayer(layer.id)}
+                      className={`layer-node ${
+                        isContextLayer ? 'layer-node-context' : 'layer-node-orbit'
+                      } ${isActive ? 'is-active' : ''}`}
+                      style={
+                        {
+                          '--x': layer.position ? `${layer.position.x}%` : '50%',
+                          '--y': layer.position ? `${layer.position.y}%` : '50%',
+                          '--tone': layer.tone,
+                        } as CSSVarStyle
+                      }
+                    >
+                      <span className="layer-node-icon">
+                        <Icon className="size-5" />
+                      </span>
+                      <span className="layer-node-level">{layer.level}</span>
+                      <span className="layer-node-title">{layer.title}</span>
+                      <span className="layer-node-stat">{layer.metric}</span>
+                    </button>
+                  );
+                })}
+
+                <p className="layer-canvas-caption">
+                  Hover or tap layers to trace how the Context Layer compounds speed, confidence,
+                  and margin protection.
+                </p>
+              </div>
+
+              <div className="layer-impact-panel">
+                <div className="layer-panel-header">
+                  <span className="layer-panel-kicker">Live Impact Narrative</span>
+                  <span className={`layer-autoplay-pill ${isArchitectureAutoplay ? 'is-live' : ''}`}>
+                    {isArchitectureAutoplay ? 'Autoplay On' : 'Autoplay Paused'}
+                  </span>
                 </div>
+
+                <article className="layer-insight-card">
+                  <div className="layer-insight-top">
+                    <span className="layer-insight-level">{activeArchitectureLayer.level}</span>
+                    <div className="layer-insight-metric">
+                      <span className="layer-insight-metric-value">{activeArchitectureLayer.metric}</span>
+                      <span className="layer-insight-metric-label">{activeArchitectureLayer.metricLabel}</span>
+                    </div>
+                  </div>
+                  <h3 className="layer-insight-title">{activeArchitectureLayer.title}</h3>
+                  <p className="layer-insight-subtitle">{activeArchitectureLayer.subtitle}</p>
+                  <div className="layer-impact-block">
+                    <h4>Without Context Layer</h4>
+                    <p>{activeArchitectureLayer.standaloneImpact}</p>
+                  </div>
+                  <div className="layer-impact-block context-boost">
+                    <h4>With Context Layer</h4>
+                    <p>{activeArchitectureLayer.contextImpact}</p>
+                  </div>
+                </article>
+
+                <div className="layer-selector-list">
+                  {architectureLayers.map((layer) => (
+                    <button
+                      key={layer.id}
+                      type="button"
+                      className={`layer-selector ${
+                        activeArchitectureLayerId === layer.id ? 'is-active' : ''
+                      }`}
+                      onMouseEnter={() => spotlightArchitectureLayer(layer.id)}
+                      onFocus={() => spotlightArchitectureLayer(layer.id)}
+                      onClick={() => spotlightArchitectureLayer(layer.id)}
+                    >
+                      <span className="layer-selector-level">{layer.level}</span>
+                      <span className="layer-selector-title">{layer.title}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
         </div>
       </section>
@@ -673,44 +1006,103 @@ export default function DashboardPage() {
 
       {/* 7. METRICS */}
       <section id="metrics" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202]">
-        <div className="container mx-auto px-6 text-center mb-24">
-            <span className="inline-block px-3 py-1 rounded-md bg-accent-violet-dim text-accent-violet font-mono text-[10px] uppercase tracking-widest mb-4">Bottom Line Impact</span>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">Performance <br/> Acceleration</h2>
-            <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                Envision OS shifts construction risk discovery from weeks to milliseconds, protecting profit margins at institutional scale.
-            </p>
-        </div>
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-24">
-              <div className="lg:col-span-2 glass-card p-10 md:p-14 flex flex-col shadow-2xl">
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-14">
-                      <div>
-                          <h3 className="text-3xl font-bold mb-3 flex items-center gap-2"><BarChart3 className="text-accent-emerald" /> Discovery Velocity</h3>
-                          <p className="text-slate-500 text-sm">Time required to identify project field variances.</p>
-                      </div>
-                      <div className="text-right mt-8 md:mt-0">
-                          <p className="text-6xl md:text-8xl font-black text-accent-emerald tracking-tighter leading-none">0.01s</p>
-                          <p className="text-slate-600 text-[10px] font-black uppercase tracking-[0.2em] mt-3">VS 14-DAY MANUAL AUDIT</p>
-                      </div>
-                  </div>
-                  <div className="flex-1 min-h-[350px]"><canvas ref={latencyChartRef}></canvas></div>
+          <div className="acceleration-micdrop">
+            <div className="accel-hero-card">
+              <span className="accel-kicker">Bottom Line Impact</span>
+              <h2 className="accel-title">
+                Performance Acceleration <br /> that rewrites construction economics
+              </h2>
+              <p className="accel-subtitle">
+                Traditional construction intelligence arrives after margin damage is already baked in.
+                Envision OS collapses that lag into a live control loop.
+              </p>
+
+              <div className="accel-shock-panel">
+                <p className="accel-shock-value">120,960,000x</p>
+                <p className="accel-shock-label">faster risk discovery (14 days down to 0.01 seconds)</p>
+                <p className="accel-shock-context">
+                  On a $500M portfolio, every 1% leakage avoided preserves $5M in investor value.
+                </p>
               </div>
-              
-              <div className="glass-card p-10 md:p-14 flex flex-col items-center justify-center text-center shadow-2xl">
-                  <div className="size-16 rounded-2xl bg-accent-emerald-dim flex items-center justify-center text-accent-emerald mb-10"><Fingerprint className="size-8" /></div>
-                  <h3 className="text-sm font-black mb-10 uppercase tracking-[0.3em] text-accent-emerald font-mono">AUDIT SHIELD</h3>
-                  <div className="relative w-full aspect-square max-w-[240px] mb-12">
-                      <canvas ref={coverageChartRef}></canvas>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                          <span className="text-5xl md:text-6xl font-black text-white leading-none">98%</span>
-                          <span className="text-[11px] text-slate-500 uppercase font-black tracking-widest mt-2">TRANSPARENCY</span>
-                      </div>
+
+              <div className="accel-lane-grid" aria-hidden="true">
+                <div className="accel-lane legacy">
+                  <div className="accel-lane-meta">
+                    <span>Legacy reporting cadence</span>
+                    <strong>14 days</strong>
                   </div>
-                  <div className="p-8 bg-white/[0.03] rounded-3xl border border-white/5 text-left w-full">
-                      <h4 className="text-base font-bold text-white mb-3">Institutional Integrity</h4>
-                      <p className="text-sm text-slate-400 leading-relaxed">Every project dollar is cross-referenced against field reality and communication records for 100% audit transparency.</p>
+                  <div className="accel-lane-track">
+                    <span className="accel-packet"></span>
                   </div>
+                </div>
+                <div className="accel-lane envision">
+                  <div className="accel-lane-meta">
+                    <span>Envision OS audit loop</span>
+                    <strong>0.01s</strong>
+                  </div>
+                  <div className="accel-lane-track">
+                    <span className="accel-packet"></span>
+                  </div>
+                </div>
               </div>
+            </div>
+
+            <div className="accel-analytics-grid">
+              <article className="accel-chart-card">
+                <div className="accel-chart-head">
+                  <h3>
+                    <BarChart3 className="size-5 text-accent-emerald" /> Discovery Velocity Benchmark
+                  </h3>
+                  <span>Cross-industry outlier performance</span>
+                </div>
+                <div className="accel-chart-canvas">
+                  <canvas ref={latencyChartRef}></canvas>
+                </div>
+              </article>
+
+              <article className="accel-chart-card">
+                <div className="accel-chart-head">
+                  <h3>
+                    <Fingerprint className="size-5 text-accent-emerald" /> Audit Shield
+                  </h3>
+                  <span>Investor-grade transparency confidence</span>
+                </div>
+                <div className="accel-donut-wrap">
+                  <div className="accel-donut-canvas">
+                    <canvas ref={coverageChartRef}></canvas>
+                    <div className="accel-donut-overlay">
+                      <span>98%</span>
+                      <small>Transparency</small>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <div className="accel-impact-grid">
+              <article className="accel-impact-card">
+                <span className="accel-impact-value">24/7</span>
+                <p className="accel-impact-title">Continuous audit integrity</p>
+                <p className="accel-impact-copy">
+                  Every message, budget delta, and field event is continuously reconciled instead of sampled late.
+                </p>
+              </article>
+              <article className="accel-impact-card">
+                <span className="accel-impact-value">390</span>
+                <p className="accel-impact-title">Integrated control points</p>
+                <p className="accel-impact-copy">
+                  Actions propagate through project, finance, and communication tools as one coordinated system.
+                </p>
+              </article>
+              <article className="accel-impact-card">
+                <span className="accel-impact-value">$5M</span>
+                <p className="accel-impact-title">Value preserved per 1% leakage</p>
+                <p className="accel-impact-copy">
+                  On a representative $500M portfolio, early signal capture prevents avoidable erosion before escalation.
+                </p>
+              </article>
+            </div>
           </div>
         </div>
       </section>
