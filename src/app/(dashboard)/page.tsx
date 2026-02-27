@@ -627,43 +627,58 @@ export default function DashboardPage() {
       {/* 5. ARCHITECTURE */}
       <div id="architecture" className="scroll-snap-section py-24 border-t border-[var(--border-strong)] bg-[#030303]">
         <div className="container mx-auto px-6 text-center">
-          <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 3: Intelligence Stack</span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-8">The Command Nervous System</h2>
+          <span className="block font-mono text-xs text-[var(--accent-violet)] uppercase tracking-widest mb-4">Phase 3: Execution</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-8">The Intelligence Layer</h2>
           <p className="text-lg md:text-xl text-[var(--text-secondary)] max-w-3xl mx-auto leading-relaxed">
             Our architectural stack maps queries from plain English through LLM agents down to 390 specific MCP tools in under 200 milliseconds.
           </p>
         </div>
       </div>
       <div className="visual-snap-section bg-[#030303]">
-        <div className="container mx-auto px-6 h-full flex items-center justify-center">
-          <div className="arch-nervous-viz w-full max-w-5xl">
-            <div className="nervous-grid">
-              <div className="nervous-layer l1">
-                <div className="l-icon"><Database /></div>
-                <div className="l-info">
-                  <span className="l-tag">LAYER 1: FIELD DATA CORE</span>
-                  <h4>The Ground Truth</h4>
-                  <p>Consolidating Sage, Procore, and ACC into a single, queryable BigQuery project with Vertex AI integration.</p>
-                </div>
+        <div className="container mx-auto px-6 h-full flex items-center justify-center overflow-visible">
+          <div className="intelligence-stack-container">
+            <div className="intelligence-stack">
+              <div className="stack-layer layer-4">
+                 <div className="layer-header">
+                    <div className="layer-tag">L4: ACTION INTERFACE</div>
+                    <div className="layer-icon"><Share2 className="size-4"/></div>
+                 </div>
+                 <div className="layer-content">
+                    <h4>Tool Gateway</h4>
+                    <p>Managing OAuth2 sessions for 390+ specific platform-sync tools for Procore, Sage, and more.</p>
+                 </div>
               </div>
-              <div className="nervous-layer l2">
-                <div className="l-icon"><BrainCircuit /></div>
-                <div className="l-info">
-                  <span className="l-tag">LAYER 2: REASONING HUB</span>
-                  <h4>Agent Orchestration</h4>
-                  <p>7 specialized LLMs analyzing query intent to determine which platform tools to trigger and when.</p>
-                </div>
+              <div className="stack-layer layer-3">
+                 <div className="layer-header">
+                    <div className="layer-tag">L3: COGNITIVE ENGINE</div>
+                    <div className="layer-icon"><BrainCircuit className="size-4"/></div>
+                 </div>
+                 <div className="layer-content">
+                    <h4>Reasoning Hub</h4>
+                    <p>7 specialized LLM agents analyzing project intent and orchestrating technical data requests.</p>
+                 </div>
               </div>
-              <div className="nervous-layer l3">
-                <div className="l-icon"><Share2 /></div>
-                <div className="l-info">
-                  <span className="l-tag">LAYER 3: TOOL GATEWAY</span>
-                  <h4>The Action Engine</h4>
-                  <p>Managing OAuth2 sessions for 390+ specific platform-sync tools for Procore, Sage, and more.</p>
-                </div>
+              <div className="stack-layer layer-2">
+                 <div className="layer-header">
+                    <div className="layer-tag">L2: UNIFIED KNOWLEDGE</div>
+                    <div className="layer-icon"><Activity className="size-4"/></div>
+                 </div>
+                 <div className="layer-content">
+                    <h4>Live Context</h4>
+                    <p>Dynamic vector-search layer consolidating communications and qualitative data into real-time truth.</p>
+                 </div>
+              </div>
+              <div className="stack-layer layer-1">
+                 <div className="layer-header">
+                    <div className="layer-tag">L1: NORMALIZED CORE</div>
+                    <div className="layer-icon"><Database className="size-4"/></div>
+                 </div>
+                 <div className="layer-content">
+                    <h4>Field Data Core</h4>
+                    <p>The ground truth: BigQuery & Vertex AI storing normalized construction data across all siloes.</p>
+                 </div>
               </div>
             </div>
-            <div className="nervous-spine"></div>
           </div>
         </div>
       </div>
