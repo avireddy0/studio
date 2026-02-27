@@ -1,3 +1,16 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-abstract",
+      "description": "Abstract data visualization for construction",
+      "imageUrl": "https://images.unsplash.com/photo-1687564276177-ea1bf17b9d5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxhYnN0cmFjdCUyMGNvbnN0cnVjdGlvbnxlbnwwfHx8fDE3NzIxNjE2Nzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract construction"
+    },
+    {
+      "id": "ingestion-process",
+      "description": "Visual of digital data streams",
+      "imageUrl": "https://images.unsplash.com/photo-1674420888888-15f055ffb627?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkYXRhJTIwcGlwZWxpbmV8ZW58MHx8fHwxNzcyMTIwMzgwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "data pipeline"
+    }
+  ]
 }
