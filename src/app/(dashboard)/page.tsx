@@ -111,6 +111,32 @@ export default function DashboardPage() {
             { text: "Show me other open RFIs.", scenarioId: 9 },
         ]
     },
+    6: {
+        query: "Tell me more about permit logs.",
+        routes: [
+            { text: "Vertex Search: Searching City Portals", delay: 400},
+            { text: "Data Normalization: Parsing PDF logs", status: "complete", delay: 900},
+        ],
+        answer: "Envision OS detects city updates within 4 minutes of upload. Fire safety verification was confirmed at 10:42 AM today by Inspector Davis.",
+        metric: "<span class='text-emerald-600 font-bold'>Latency Reduction: 99% faster than manual check.</span>",
+        meta: "Source: City of Aventura Building Dept",
+        followUp: [
+          { text: "Who is the PM?", scenarioId: 7 },
+          { text: "Thanks!", scenarioId: 8 },
+        ]
+    },
+    7: {
+        query: "Who is the PM for this job?",
+        routes: [
+            { text: "Directory Match: Sarah Jenkins", delay: 200},
+        ],
+        answer: "The PM is Sarah Jenkins. She has been automatically notified of the fire safety pass and is currently finalizing close-out documents.",
+        metric: "Communication loop: Active.",
+        meta: "Source: HRIS / Project Directory",
+        followUp: [
+            { text: "Thanks!", scenarioId: 8 },
+        ]
+    },
     8: {
         query: "Thanks!",
         routes: [],
@@ -119,6 +145,18 @@ export default function DashboardPage() {
         meta: "",
         followUp: initialSuggestions
     },
+    9: {
+        query: "Show me other open RFIs.",
+        routes: [
+            { text: "Query: list_open_rfis", delay: 500},
+        ],
+        answer: "There are 4 open RFIs. 2 are high priority related to structural steel lead times for the parking garage.",
+        metric: "<span class='text-amber-600 font-bold'>Risk Warning: Potential 2-week delay if not answered by Friday.</span>",
+        meta: "Source: Procore RFI Log",
+        followUp: [
+            { text: "Thanks!", scenarioId: 8 },
+        ]
+    }
   };
 
   const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
@@ -149,6 +187,13 @@ export default function DashboardPage() {
       setSuggestedReplies([]);
 
       const data = scenarios[id];
+      if (!data) {
+          console.error(`Scenario ${id} not found`);
+          isRunning.current = false;
+          setSuggestedReplies(initialSuggestions);
+          return;
+      }
+
       addMessage(data.query, 'user');
       await sleep(200);
       scrollToBottom();
@@ -170,6 +215,8 @@ export default function DashboardPage() {
 
       if (data.followUp) {
           setSuggestedReplies(data.followUp);
+      } else {
+          setSuggestedReplies(initialSuggestions);
       }
 
       isRunning.current = false;
@@ -205,7 +252,6 @@ export default function DashboardPage() {
     ];
 
     const tuScene = tuSceneRef.current;
-    const tuContainer = tuContainerRef.current;
     const orbRadius = isMobile ? 180 : 320;
 
     if (tuScene) {
@@ -365,7 +411,7 @@ export default function DashboardPage() {
       </nav>
 
       {/* 1. HERO SECTION */}
-      <section className="scroll-snap-section flex flex-col items-center justify-center pt-[48vh] pb-32 text-center relative px-6 overflow-hidden">
+      <section className="scroll-snap-section flex flex-col items-center justify-center pt-[28rem] md:pt-[36rem] pb-32 text-center relative px-6 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full pointer-events-none opacity-30">
             <div className="absolute top-[20%] left-[10%] w-[30%] aspect-square rounded-full bg-primary/20 blur-[120px]"></div>
             <div className="absolute bottom-[20%] right-[10%] w-[40%] aspect-square rounded-full bg-accent-violet/20 blur-[120px]"></div>
@@ -391,8 +437,8 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      {/* 2. COMMAND CENTER (REPLACED CONTROL PLANE) */}
-      <section id="command-center" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202]">
+      {/* 2. COMMAND CENTER */}
+      <section id="command-center" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202] scroll-mt-24">
         <div className="container mx-auto px-6 text-center mb-20">
           <span className="inline-block px-3 py-1 rounded-md bg-accent-emerald-dim text-accent-emerald font-mono text-[10px] uppercase tracking-widest mb-4">Phase 0: The Command Center</span>
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">Command Center</h2>
@@ -401,24 +447,32 @@ export default function DashboardPage() {
           </p>
         </div>
         <div className="container mx-auto px-6 flex items-center justify-center">
-          <div className="w-full max-w-5xl h-[700px] glass-card p-1 shadow-2xl overflow-hidden group">
-            <div className="bg-[#121212] rounded-[31px] border border-white/5 flex h-full flex-col overflow-hidden">
-              <div className="p-6 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
-                <div className="flex items-center gap-4">
-                    <div className="w-2.5 h-2.5 rounded-full bg-accent-emerald animate-pulse"></div>
-                    <div className="font-bold text-sm tracking-tight">ENVISION OS COMMAND</div>
+          <div className="w-full max-w-4xl h-[700px] glass-card p-1 shadow-2xl overflow-hidden group">
+            <div className="bg-white rounded-[31px] border border-slate-200 flex h-full flex-col overflow-hidden">
+              <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-white">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+                        <MessageSquare className="size-5" />
+                    </div>
+                    <div>
+                        <div className="font-bold text-sm text-slate-900 tracking-tight leading-none mb-1">Envision OS</div>
+                        <div className="text-[10px] text-accent-emerald font-bold uppercase tracking-wider">Active Audit Engine</div>
+                    </div>
                 </div>
-                <div className="font-mono text-[11px] text-slate-500 bg-white/5 px-3 py-1 rounded-full uppercase tracking-tighter">Live Audit Stream</div>
+                <div className="flex gap-2">
+                    <div className="w-2.5 h-2.5 rounded-full bg-slate-200"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-slate-200"></div>
+                </div>
               </div>
               
-              {/* iMessage Inspired Chat Interface */}
-              <div className="flex-1 p-6 md:p-12 overflow-y-auto flex flex-col gap-4 bg-[#0a0a0a]" ref={chatBodyRef}>
+              {/* iMessage Interface */}
+              <div className="flex-1 p-6 md:p-10 overflow-y-auto flex flex-col gap-3 bg-white" ref={chatBodyRef}>
                 {messages.map((msg, index) => {
                     if (msg.type === 'typing') {
                       return (
                           <div key={msg.id} className="flex justify-start items-end gap-2 mb-2">
-                              <div className="bg-[#e9e9eb] px-4 py-3 rounded-2xl rounded-bl-sm">
-                                <div className="typing-indicator flex gap-1">
+                              <div className="bg-[#e9e9eb] px-4 py-2.5 rounded-2xl rounded-bl-sm">
+                                <div className="typing-indicator flex gap-1 items-center h-4">
                                     <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
                                     <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-75"></span>
                                     <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-150"></span>
@@ -430,27 +484,27 @@ export default function DashboardPage() {
                     
                     const isUser = msg.type === 'user';
                     return (
-                        <div key={index} className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-4 duration-500`}>
+                        <div key={index} className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`}>
                             <div className={`max-w-[85%] px-5 py-3 text-sm md:text-base ${isUser ? 'bg-[#007AFF] text-white rounded-3xl rounded-br-sm' : 'bg-[#e9e9eb] text-black rounded-3xl rounded-bl-sm'} shadow-sm`}>
                                 <div dangerouslySetInnerHTML={{ __html: msg.html }} />
-                                {msg.meta && <div className="mt-2 text-[10px] opacity-60 font-mono uppercase tracking-tighter border-t border-black/10 pt-1">{msg.meta}</div>}
+                                {msg.meta && <div className="mt-2 text-[10px] opacity-40 font-mono uppercase tracking-tighter border-t border-black/5 pt-1">{msg.meta}</div>}
                             </div>
                         </div>
                     );
                 })}
 
-                {/* Pick an Option Highlight */}
+                {/* Simulation Prompt */}
                 {suggestedReplies.length > 0 && (
                   <div className="mt-12 flex flex-col items-center gap-6 animate-in fade-in zoom-in duration-700">
-                      <div className="flex items-center gap-2 px-6 py-2 rounded-full bg-primary/20 border border-primary/30 text-primary text-xs font-bold animate-pulse">
+                      <div className="flex items-center gap-2 px-6 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-[11px] font-black uppercase tracking-widest animate-pulse">
                         <MousePointerClick className="size-4" />
-                        <span>PICK AN OPTION TO START SIMULATION</span>
+                        <span>Pick an option to start simulation</span>
                       </div>
-                      <div className="flex flex-wrap gap-3 justify-center">
+                      <div className="flex flex-wrap gap-2 justify-center">
                           {suggestedReplies.map((reply, index) => (
                               <button
                                   key={index}
-                                  className="px-8 py-4 bg-white text-black hover:bg-primary hover:text-white rounded-full text-sm font-bold transition-all hover:scale-105 active:scale-95 shadow-[0_4px_15px_rgba(255,255,255,0.1)] border border-transparent"
+                                  className="px-6 py-3 bg-[#e9e9eb] text-slate-800 hover:bg-primary hover:text-white rounded-full text-sm font-semibold transition-all hover:scale-105 active:scale-95 border border-transparent"
                                   onClick={() => runSimulation(reply.scenarioId)}
                                   disabled={isRunning.current}
                               >
@@ -467,7 +521,7 @@ export default function DashboardPage() {
       </section>
 
       {/* 3. INGESTION */}
-      <section id="ingestion" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202]">
+      <section id="ingestion" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202] scroll-mt-24">
         <div className="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-20">
           <div className="flex-1 text-left">
             <span className="inline-block px-3 py-1 rounded-md bg-accent-violet-dim text-accent-violet font-mono text-[10px] uppercase tracking-widest mb-4">Phase 1: Multi-Stream Ingestion</span>
@@ -529,7 +583,7 @@ export default function DashboardPage() {
       </section>
 
       {/* 4. CONTEXT */}
-      <section id="context" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202]">
+      <section id="context" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202] scroll-mt-24">
         <div className="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-20">
           <div className="flex-1 order-2 lg:order-1 w-full max-w-2xl">
               <div className="context-fusion-viz w-full">
@@ -581,8 +635,8 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      {/* 5. INTELLIGENCE LAYER (RESTORED & UPGRADED) */}
-      <section id="architecture" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202]">
+      {/* 5. INTELLIGENCE LAYER */}
+      <section id="architecture" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202] scroll-mt-24">
         <div className="container mx-auto px-6 text-center mb-20">
           <span className="inline-block px-3 py-1 rounded-md bg-accent-violet-dim text-accent-violet font-mono text-[10px] uppercase tracking-widest mb-4">Phase 3: The Intelligence Layer</span>
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">Intelligence Layer</h2>
@@ -631,7 +685,7 @@ export default function DashboardPage() {
       </section>
 
       {/* 6. ECOSYSTEM */}
-      <section id="ecosystem" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202]">
+      <section id="ecosystem" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202] scroll-mt-24">
         <div className="container mx-auto px-6 text-center mb-20">
           <span className="inline-block px-3 py-1 rounded-md bg-accent-emerald-dim text-accent-emerald font-mono text-[10px] uppercase tracking-widest mb-4">Phase 4: Tool Universe</span>
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">390 Tools. One Reality.</h2>
@@ -649,7 +703,7 @@ export default function DashboardPage() {
       </section>
 
       {/* 7. METRICS */}
-      <section id="metrics" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202]">
+      <section id="metrics" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202] scroll-mt-24">
         <div className="container mx-auto px-6 text-center mb-24">
             <span className="inline-block px-3 py-1 rounded-md bg-accent-violet-dim text-accent-violet font-mono text-[10px] uppercase tracking-widest mb-4">Bottom Line Impact</span>
             <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">Performance <br/> Acceleration</h2>
@@ -702,4 +756,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
