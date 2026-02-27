@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { useFormState, useFormStatus } from "react-dom";
-import { handleQuery } from "@/lib/actions";
+import { useActionState, useEffect, useRef, useState } from "react";
+import { useFormStatus } from "react-dom";
+import { handleQuery, type QueryState } from "@/lib/actions";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Send, Loader2, MessageSquare } from "lucide-react";
@@ -10,12 +10,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage, type Message } from "@/components/query/chat-message";
 import { useToast } from "@/hooks/use-toast";
 
-
 const initialState = {
   message: "",
   data: null,
   error: null,
-};
+} satisfies QueryState;
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -28,17 +27,18 @@ function SubmitButton() {
 
 export function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [formState, formAction] = useFormState(handleQuery, initialState);
+  const [formState, formAction] = useActionState<QueryState, FormData>(handleQuery, initialState);
   const formRef = useRef<HTMLFormElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
+  const removeTrailingStatus = (items: Message[]) =>
+    items.filter((msg, index) => !(index === items.length - 1 && msg.role === "status"));
+
   useEffect(() => {
-    if (formState?.data) {
-      setMessages((prev) => [
-        ...prev,
-        { role: "ai", content: formState.data },
-      ]);
+    const data = formState.data;
+    if (data) {
+      setMessages((prev) => [...removeTrailingStatus(prev), { role: "ai", content: data }]);
     }
     if (formState?.error) {
        toast({
@@ -46,7 +46,7 @@ export function ChatInterface() {
         title: "Error",
         description: "An error occurred while processing your query. Please try again.",
       });
-      setMessages((prev) => prev.slice(0, -1)); // Remove the loading message
+      setMessages((prev) => removeTrailingStatus(prev)); // Remove the loading message
     }
   }, [formState, toast]);
 
@@ -63,11 +63,14 @@ export function ChatInterface() {
   }, [messages]);
 
 
-  const handleFormSubmit = async (formData: FormData) => {
+  const handleFormSubmit = (formData: FormData) => {
     const query = formData.get("query") as string;
     if (query.trim()) {
-      setMessages((prev) => [...prev, { role: "user", content: query }]);
-      setMessages((prev) => [...prev, { role: "status", content: "AI is thinking..." }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "user", content: query },
+        { role: "status", content: "AI is thinking..." },
+      ]);
       formAction(formData);
       formRef.current?.reset();
     }

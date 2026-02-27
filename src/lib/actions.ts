@@ -1,7 +1,11 @@
 "use server";
 
 import { z } from "zod";
-import { querySemanticRouting, QuerySemanticRoutingInput } from "@/ai/flows/query-semantic-routing";
+import {
+  querySemanticRouting,
+  QuerySemanticRoutingInput,
+  QuerySemanticRoutingOutput,
+} from "@/ai/flows/query-semantic-routing";
 import { extractDocumentData, DocumentDataExtractionInput } from "@/ai/flows/document-data-extraction-flow";
 import { summarizeQualitativeContext, QualitativeContextSummarizationInput } from "@/ai/flows/qualitative-context-summarization";
 
@@ -9,7 +13,13 @@ const querySchema = z.object({
   query: z.string().min(1, "Query cannot be empty."),
 });
 
-export async function handleQuery(prevState: any, formData: FormData) {
+export type QueryState = {
+  message: string;
+  data: QuerySemanticRoutingOutput | null;
+  error: string | Record<string, string[]> | null;
+};
+
+export async function handleQuery(_prevState: QueryState, formData: FormData): Promise<QueryState> {
   try {
     const validatedFields = querySchema.safeParse({
       query: formData.get('query'),
@@ -18,6 +28,7 @@ export async function handleQuery(prevState: any, formData: FormData) {
     if (!validatedFields.success) {
       return {
         message: 'Invalid query.',
+        data: null,
         error: validatedFields.error.flatten().fieldErrors,
       };
     }
@@ -31,10 +42,12 @@ export async function handleQuery(prevState: any, formData: FormData) {
     return {
       message: 'Query processed.',
       data: result,
+      error: null,
     };
   } catch (error) {
     return {
       message: 'An error occurred.',
+      data: null,
       error: error instanceof Error ? error.message : String(error),
     };
   }

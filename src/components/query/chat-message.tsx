@@ -5,10 +5,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EnvisionOSLogo } from "@/components/icons";
 import { User } from "lucide-react";
 
-export type Message = {
-  role: "user" | "ai" | "status";
-  content: any;
+type ToolExecutionPlan = {
+  toolName: string;
+  parameters: Record<string, unknown>;
 };
+
+export type Message =
+  | { role: "user" | "status"; content: string }
+  | { role: "ai"; content: string | ToolExecutionPlan };
+
+function isToolExecutionPlan(content: Message["content"]): content is ToolExecutionPlan {
+  return (
+    typeof content === "object" &&
+    content !== null &&
+    "toolName" in content &&
+    "parameters" in content
+  );
+}
 
 export function ChatMessage({ message }: { message: Message }) {
   const { role, content } = message;
@@ -43,7 +56,7 @@ export function ChatMessage({ message }: { message: Message }) {
           >
             <p className="text-sm">{content}</p>
           </div>
-        ) : (
+        ) : isToolExecutionPlan(content) ? (
           <Card className="bg-card/60 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="text-base">Tool Execution Plan</CardTitle>
@@ -65,6 +78,10 @@ export function ChatMessage({ message }: { message: Message }) {
               </div>
             </CardContent>
           </Card>
+        ) : (
+          <div className="rounded-lg px-4 py-2 bg-muted">
+            <p className="text-sm">{JSON.stringify(content)}</p>
+          </div>
         )}
       </div>
       {!isAi && (

@@ -156,12 +156,9 @@ const querySemanticRoutingFlow = ai.defineFlow(
     outputSchema: QuerySemanticRoutingOutputSchema,
   },
   async (input) => {
-    const { toolRequests, text } = await ai.generate({
-      prompt: semanticRoutingPrompt,
-      input: input,
-    });
+    const response = await semanticRoutingPrompt(input);
 
-    const toolCall = toolRequests?.[0]; // Get the first tool call proposed by the model
+    const toolCall = response.toolRequests?.[0]?.toolRequest; // Get the first tool call proposed by the model
 
     if (toolCall) {
       // If the model proposed a tool call, return its name and parameters.
@@ -175,7 +172,9 @@ const querySemanticRoutingFlow = ai.defineFlow(
         toolName: 'unknown',
         parameters: {
           originalQuery: input.query,
-          reason: text || 'No specific tool identified and no descriptive text provided by the model.',
+          reason:
+            response.text ||
+            'No specific tool identified and no descriptive text provided by the model.',
         },
       };
     }

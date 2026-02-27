@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useFormStatus } from "react-dom";
 import { handlePdfExtraction } from "@/lib/actions";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,17 +16,6 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Upload, Loader2, FileText, Calendar, User, GitPullRequestArrow } from "lucide-react";
 import type { DocumentDataExtractionOutput } from "@/ai/flows/document-data-extraction-flow";
-
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  return (
-    <Button type="submit" disabled={pending} className="w-full">
-      {pending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
-      Extract Data
-    </Button>
-  );
-}
 
 export function PdfExtractor() {
   const [file, setFile] = useState<File | null>(null);

@@ -1,8 +1,22 @@
 'use client';
 
-import React, { useEffect, useRef, useCallback, useState } from 'react';
+import React, { useEffect, useRef, useCallback, useMemo, useState } from 'react';
 import Chart from 'chart.js/auto';
-import { Database, Layers, Mail, MessageSquare, FileText, Phone, Zap, Target, ShieldCheck, Share2, BrainCircuit, Activity, Lock, Cpu, TrendingUp, AlertTriangle, ChevronRight, Globe, BarChart3, Fingerprint, MousePointerClick } from 'lucide-react';
+import {
+  BarChart3,
+  BrainCircuit,
+  ChevronRight,
+  Cpu,
+  Database,
+  FileText,
+  Fingerprint,
+  Globe,
+  Mail,
+  MousePointerClick,
+  Share2,
+  ShieldCheck,
+  Zap,
+} from 'lucide-react';
 
 type Scenario = {
   query: string;
@@ -17,6 +31,12 @@ type Scenarios = {
   [key: number]: Scenario;
 };
 
+type ChatMessage =
+  | { type: 'typing'; id: string }
+  | { type: 'user' | 'system'; html: string; meta?: string };
+
+type CSSVarStyle = React.CSSProperties & Record<`--${string}`, string>;
+
 const initialSuggestions = [
   { text: "Which jobs are off budget?", scenarioId: 1 },
   { text: "When are we getting a CO?", scenarioId: 2 },
@@ -30,10 +50,11 @@ export default function DashboardPage() {
   const latencyChartRef = useRef<HTMLCanvasElement>(null);
   const coverageChartRef = useRef<HTMLCanvasElement>(null);
   const [suggestedReplies, setSuggestedReplies] = useState(initialSuggestions);
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const isRunning = useRef(false);
+  const hasBootstrappedMessage = useRef(false);
 
-  const scenarios: Scenarios = {
+  const scenarios = useMemo<Scenarios>(() => ({
     1: {
       query: 'Which jobs are currently off budget?',
       routes: [
@@ -119,7 +140,7 @@ export default function DashboardPage() {
         meta: "",
         followUp: initialSuggestions
     },
-  };
+  }), []);
 
   const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
@@ -157,7 +178,7 @@ export default function DashboardPage() {
       scrollToBottom();
 
       await sleep(1000);
-      setMessages(prev => prev.filter(m => m.id !== typingId));
+      setMessages(prev => prev.filter(m => m.type !== 'typing' || m.id !== typingId));
 
       addMessage(
         `${data.answer}<br><br>${data.metric}`,
@@ -174,16 +195,19 @@ export default function DashboardPage() {
 
       isRunning.current = false;
     },
-    [addMessage, addTyping, scrollToBottom]
+    [addMessage, addTyping, scenarios, scrollToBottom]
   );
   
   useEffect(() => {
-      if(messages.length === 0) {
-        addMessage(
-            `<strong>Envision OS is online.</strong><br/><span class="text-slate-500 text-xs md:text-sm">Continuous Audit Engine: Active. Monitoring 23 data streams.</span>`,
-            'system'
-        );
+      if (hasBootstrappedMessage.current) {
+        return;
       }
+
+      hasBootstrappedMessage.current = true;
+      addMessage(
+          `<strong>Envision OS is online.</strong><br/><span class="text-slate-500 text-xs md:text-sm">Continuous Audit Engine: Active. Monitoring 23 data streams.</span>`,
+          'system'
+      );
   }, [addMessage]);
 
   useEffect(() => {
@@ -205,7 +229,6 @@ export default function DashboardPage() {
     ];
 
     const tuScene = tuSceneRef.current;
-    const tuContainer = tuContainerRef.current;
     const orbRadius = isMobile ? 180 : 320;
 
     if (tuScene) {
@@ -265,7 +288,7 @@ export default function DashboardPage() {
 
     let tuGlobalRotation = 0;
     let tuTargetRotation = 0;
-    let tuIsHovered = false;
+    const tuIsHovered = false;
     let animationFrameId: number;
 
     function animateTuScene() {
@@ -502,19 +525,19 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 <div className="organized-stream">
-                    <div className="json-node data-out-stream" style={{'--d': '0s'} as any}>{'{ "job": 402, "delta": "DRYWALL" }'}</div>
-                    <div className="json-node data-out-stream" style={{'--d': '1s'} as any}>{'{ "rfi": 118, "status": "DRAFT" }'}</div>
-                    <div className="json-node data-out-stream" style={{'--d': '2s'} as any}>{'{ "permit": "F1", "status": "PASS" }'}</div>
+                    <div className="json-node data-out-stream" style={{ '--d': '0s' } as CSSVarStyle}>{'{ "job": 402, "delta": "DRYWALL" }'}</div>
+                    <div className="json-node data-out-stream" style={{ '--d': '1s' } as CSSVarStyle}>{'{ "rfi": 118, "status": "DRAFT" }'}</div>
+                    <div className="json-node data-out-stream" style={{ '--d': '2s' } as CSSVarStyle}>{'{ "permit": "F1", "status": "PASS" }'}</div>
                 </div>
                 {[...Array(24)].map((_, i) => {
                     const types = ['EMAIL', 'TEXT', 'DOC', 'MSG', 'CALL'];
                     const type = types[i % types.length];
                     return (
-                      <div key={i} className="flow-item" style={{ 
+                      <div key={i} className="flow-item" style={{
                           '--d': `${i * 0.12}s`, 
                           '--y': `${20 + (i * 15)%60}%`, 
                           '--r': `${-25 + (i*12)%50}deg`
-                      } as any}>
+                      } as CSSVarStyle}>
                           <div className="flurry-item">
                               <div className="skeleton"></div>
                               <div className="skeleton w-3/4"></div>
@@ -535,12 +558,12 @@ export default function DashboardPage() {
               <div className="context-fusion-viz w-full">
                 <div className="fusion-bubbles">
                   <div className="bubble-snippet b-1">
-                    <div className="b-label" style={{ '--c': 'var(--accent-blue)' } as any}>OWNER MEETING</div>
-                    <p>"Authorize the lobby upgrade. Use the premium marble as discussed."</p>
+                    <div className="b-label" style={{ '--c': 'var(--accent-blue)' } as CSSVarStyle}>OWNER MEETING</div>
+                    <p>&quot;Authorize the lobby upgrade. Use the premium marble as discussed.&quot;</p>
                   </div>
                   <div className="bubble-snippet b-2">
-                    <div className="b-label" style={{ '--c': 'var(--accent-amber)' } as any}>SLACK: #PROJECT-FLOW</div>
-                    <p>"Procurement lead time is now 4 weeks. Adjusting the master schedule."</p>
+                    <div className="b-label" style={{ '--c': 'var(--accent-amber)' } as CSSVarStyle}>SLACK: #PROJECT-FLOW</div>
+                    <p>&quot;Procurement lead time is now 4 weeks. Adjusting the master schedule.&quot;</p>
                   </div>
                 </div>
                 <div className="fusion-center">
@@ -702,4 +725,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-

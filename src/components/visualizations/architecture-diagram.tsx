@@ -45,7 +45,7 @@ export function ArchitectureDiagram() {
       </CardHeader>
       <CardContent>
         <div className="relative space-y-4">
-          {layers.map((layer, index) => (
+          {layers.map((layer) => (
             <div key={layer.name} className="relative z-10 flex items-center">
               <div
                 className={`flex h-12 w-12 items-center justify-center rounded-lg bg-muted ${layer.color}`}
