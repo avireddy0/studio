@@ -431,7 +431,7 @@ export default function DashboardPage() {
               <span className="text-white"> multi-platform audit cycles</span>.
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center fade-in-up delay-200">
-                <button className="bg-primary text-white px-8 py-4 rounded-2xl text-base font-bold hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-all">Start Audit Simulation</button>
+                <a href="#command-center" className="bg-primary text-white px-8 py-4 rounded-2xl text-base font-bold hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-all">Start Audit Simulation</a>
                 <button className="px-8 py-4 rounded-2xl text-base font-bold border border-white/10 hover:bg-white/5 transition-all flex items-center gap-2">Read Whitepaper <ChevronRight className="size-4" /></button>
             </div>
         </div>
