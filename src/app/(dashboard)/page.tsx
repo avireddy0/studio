@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import Chart from 'chart.js/auto';
 import { Database, Layers, Mail, MessageSquare, FileText, Phone, Zap, Target, ShieldCheck, Share2, BrainCircuit, Activity, Lock, Cpu, TrendingUp, AlertTriangle, ChevronRight, Globe, BarChart3, Fingerprint, MousePointerClick, CheckCircle2, MessageCircle } from 'lucide-react';
+import { EnvisionOSLogo } from "@/components/icons";
 
 type Scenario = {
   query: string;
@@ -188,7 +189,6 @@ export default function DashboardPage() {
 
       const data = scenarios[id];
       if (!data) {
-          console.error(`Scenario ${id} not found`);
           isRunning.current = false;
           setSuggestedReplies(initialSuggestions);
           return;
@@ -311,13 +311,10 @@ export default function DashboardPage() {
 
     let tuGlobalRotation = 0;
     let tuTargetRotation = 0;
-    let tuIsHovered = false;
     let animationFrameId: number;
 
     function animateTuScene() {
-        if (!tuIsHovered) {
-            tuTargetRotation += 0.01;
-        }
+        tuTargetRotation += 0.01;
         tuGlobalRotation += (tuTargetRotation - tuGlobalRotation) * 0.05;
         
         if (tuScene) {
@@ -599,19 +596,19 @@ export default function DashboardPage() {
                     <div className="b-label" style={{ '--c': 'var(--accent-blue)' } as any}>
                         <Activity className="size-3" /> MEETING NOTE: OAC
                     </div>
-                    <p>"Authorize the lobby upgrade. Use the premium marble as discussed."</p>
+                    <p className="line-clamp-2">"Authorize the lobby upgrade. Use the premium marble as discussed."</p>
                   </div>
                   <div className="bubble-snippet b-2">
                     <div className="b-label" style={{ '--c': 'var(--accent-amber)' } as any}>
                         <MessageCircle className="size-3" /> SLACK: #PROJECT-FLOW
                     </div>
-                    <p>"Procurement lead time is now 4 weeks. Adjusting the master schedule."</p>
+                    <p className="line-clamp-2">"Procurement lead time is now 4 weeks. Adjusting the master schedule."</p>
                   </div>
                   <div className="bubble-snippet b-3">
                     <div className="b-label" style={{ '--c': 'var(--accent-violet)' } as any}>
                         <Mail className="size-3" /> EMAIL: PROCUREMENT
                     </div>
-                    <p>"Marble shipment confirmed. ETA matching the new project baseline."</p>
+                    <p className="line-clamp-2">"Marble shipment confirmed. ETA matching the new project baseline."</p>
                   </div>
                 </div>
 
@@ -629,15 +626,15 @@ export default function DashboardPage() {
                             <ShieldCheck className="size-4" />
                             <span>CONTEXT VERIFIED</span>
                         </div>
-                        <h4 className="text-2xl font-bold mb-6">Lobby Finish Upgrade</h4>
-                        <div className="space-y-4">
-                            <div className="flex justify-between items-center text-xs border-b border-white/5 pb-3">
+                        <h4 className="text-lg md:text-xl font-bold mb-4">Lobby Finish Upgrade</h4>
+                        <div className="space-y-3">
+                            <div className="flex justify-between items-center text-[10px] md:text-xs border-b border-white/5 pb-2">
                                 <span className="text-slate-500 uppercase font-mono font-bold tracking-tight">Status</span>
                                 <span className="text-emerald-400 font-black flex items-center gap-1">
-                                    <CheckCircle2 className="size-3" /> Authorized by Owner
+                                    <CheckCircle2 className="size-2.5" /> Authorized
                                 </span>
                             </div>
-                            <div className="flex justify-between items-center text-xs border-b border-white/5 pb-3">
+                            <div className="flex justify-between items-center text-[10px] md:text-xs border-b border-white/5 pb-2">
                                 <span className="text-slate-500 uppercase font-mono font-bold tracking-tight">Confidence</span>
                                 <span className="text-white font-black">99.2%</span>
                             </div>
@@ -662,46 +659,74 @@ export default function DashboardPage() {
       {/* 5. INTELLIGENCE LAYER */}
       <section id="architecture" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202] scroll-mt-24">
         <div className="container mx-auto px-6 text-center mb-20">
-          <span className="inline-block px-3 py-1 rounded-md bg-accent-violet-dim text-accent-violet font-mono text-[10px] uppercase tracking-widest mb-4">Phase 3: The Intelligence Layer</span>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">Intelligence Layer</h2>
+          <span className="inline-block px-3 py-1 rounded-md bg-accent-violet-dim text-accent-violet font-mono text-[10px] uppercase tracking-widest mb-4">Phase 3: Intelligence Layer</span>
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">The Neural Stack</h2>
           <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Our multi-tiered architecture handles massive construction telemetry, turning high-latency silos into a singular source of real-time intelligence.
+            Our high-fidelity architecture handles massive construction telemetry, turning high-latency silos into real-time project intelligence.
           </p>
         </div>
         <div className="container mx-auto px-6">
             <div className="arch-viz-container">
                 <div className="arch-stack">
-                    <div className="stack-layer">
-                        <div className="layer-icon"><Share2 className="size-7" /></div>
-                        <div className="layer-info">
-                            <span className="layer-tag">L4: ACTION GATEWAY</span>
-                            <h4 className="layer-title">Multi-Platform Gateway</h4>
-                            <p className="layer-desc">Executing 390 specialized tools across Procore, Sage, Slack, and Autodesk.</p>
+                    {/* Layer 4 */}
+                    <div className="stack-layer layer-high">
+                        <div className="layer-glass"></div>
+                        <div className="layer-content">
+                            <div className="layer-icon-wrapper">
+                                <Share2 className="size-6 text-accent-blue" />
+                            </div>
+                            <div className="layer-text">
+                                <span className="layer-id">L4: ACTION GATEWAY</span>
+                                <h4 className="layer-name">Multi-Platform Orchestrator</h4>
+                                <p className="layer-description">Executing 390+ specialized tools across Procore, Sage, and Slack.</p>
+                            </div>
                         </div>
+                        <div className="layer-glow"></div>
                     </div>
-                    <div className="stack-layer">
-                        <div className="layer-icon"><BrainCircuit className="size-7" /></div>
-                        <div className="layer-info">
-                            <span className="layer-tag">L3: COGNITIVE LAYER</span>
-                            <h4 className="layer-title">Reasoning Orchestrator</h4>
-                            <p className="layer-desc">7 specialized LLM agents analyzing project intent and data requests.</p>
+                    {/* Layer 3 */}
+                    <div className="stack-layer layer-mid-high">
+                        <div className="layer-glass"></div>
+                        <div className="layer-content">
+                            <div className="layer-icon-wrapper">
+                                <BrainCircuit className="size-6 text-accent-violet" />
+                            </div>
+                            <div className="layer-text">
+                                <span className="layer-id">L3: COGNITIVE FABRIC</span>
+                                <h4 className="layer-name">Reasoning Engine</h4>
+                                <p className="layer-description">7 specialized LLM agents analyzing project intent and data requests.</p>
+                            </div>
                         </div>
+                        <div className="layer-glow"></div>
                     </div>
-                    <div className="stack-layer">
-                        <div className="layer-icon"><Cpu className="size-7" /></div>
-                        <div className="layer-info">
-                            <span className="layer-tag">L2: UNIFIED CONTEXT</span>
-                            <h4 className="layer-title">Vector Memory Hub</h4>
-                            <p className="layer-desc">Real-time normalization of communications and qualitative data streams.</p>
+                    {/* Layer 2 */}
+                    <div className="stack-layer layer-mid-low">
+                        <div className="layer-glass"></div>
+                        <div className="layer-content">
+                            <div className="layer-icon-wrapper">
+                                <Cpu className="size-6 text-accent-amber" />
+                            </div>
+                            <div className="layer-text">
+                                <span className="layer-id">L2: UNIFIED CONTEXT</span>
+                                <h4 className="layer-name">Vector Memory Hub</h4>
+                                <p className="layer-description">Real-time normalization of multi-stream qualitative project data.</p>
+                            </div>
                         </div>
+                        <div className="layer-glow"></div>
                     </div>
-                    <div className="stack-layer">
-                        <div className="layer-icon"><Database className="size-7" /></div>
-                        <div className="layer-info">
-                            <span className="layer-tag">L1: NORMALIZED CORE</span>
-                            <h4 className="layer-title">Field Data Core</h4>
-                            <p className="layer-desc">Normalized construction truth stored in Vertex AI & BigQuery.</p>
+                    {/* Layer 1 */}
+                    <div className="stack-layer layer-low">
+                        <div className="layer-glass"></div>
+                        <div className="layer-content">
+                            <div className="layer-icon-wrapper">
+                                <Database className="size-6 text-accent-emerald" />
+                            </div>
+                            <div className="layer-text">
+                                <span className="layer-id">L1: TRUTH CORE</span>
+                                <h4 className="layer-name">Normalized Data Core</h4>
+                                <p className="layer-description">Institutional construction truth stored in Vertex AI & BigQuery.</p>
+                            </div>
                         </div>
+                        <div className="layer-glow"></div>
                     </div>
                 </div>
             </div>
@@ -780,4 +805,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-

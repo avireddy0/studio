@@ -194,7 +194,7 @@ body::before {
     100% { left: 50%; top: 50%; opacity: 0; transform: scale(0.2) rotate(0deg); } 
 }
 
-/* --- CONTEXT FUSION VIZ (REVAMPED) --- */
+/* --- CONTEXT FUSION VIZ --- */
 .context-fusion-viz {
   height: 600px;
   background: radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.05), transparent), var(--bg-surface);
@@ -343,89 +343,111 @@ body::before {
 
 @keyframes fadeIn { to { opacity: 1; } }
 
-/* --- INTELLIGENCE LAYER (3D STACK) --- */
+/* --- INTELLIGENCE LAYER (FUTURISTIC STACK) --- */
 .arch-viz-container {
-    perspective: 1500px;
-    height: 700px;
+    perspective: 2000px;
+    height: 800px;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: visible;
 }
 
 .arch-stack {
     position: relative;
     width: 100%;
-    max-width: 600px;
-    transform: rotateX(45deg) rotateZ(-15deg);
+    max-width: 700px;
+    transform: rotateX(55deg) rotateZ(-20deg);
     transform-style: preserve-3d;
-    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .arch-stack:hover {
-    transform: rotateX(35deg) rotateZ(-5deg);
+    transform: rotateX(45deg) rotateZ(-10deg);
 }
 
 .stack-layer {
     position: relative;
-    height: 120px;
     width: 100%;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border-subtle);
-    border-radius: 24px;
-    margin-bottom: -30px;
+    height: 140px;
+    margin-bottom: -50px;
     transform-style: preserve-3d;
     transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    padding: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
 }
 
-.stack-layer:hover {
-    background: rgba(59, 130, 246, 0.08);
-    border-color: var(--accent-blue);
-    transform: translateZ(60px);
-    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7);
-}
-
-.layer-icon {
-    width: 56px; height: 56px;
-    background: var(--bg-surface-elevated);
-    border: 1px solid var(--border-strong);
-    border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--accent-blue);
-    flex-shrink: 0;
+.layer-glass {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.01);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 32px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     transition: all 0.4s ease;
 }
 
-.stack-layer:hover .layer-icon {
-    transform: scale(1.15) rotate(5deg);
-    border-color: var(--accent-blue);
-    color: #fff;
-    background: var(--accent-blue);
+.layer-content {
+    position: relative;
+    z-index: 10;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    transform: translateZ(20px);
 }
 
-.layer-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    font-weight: 800;
-    color: var(--accent-blue);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    display: block;
-    margin-bottom: 0.25rem;
+.layer-icon-wrapper {
+    width: 64px; height: 64px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
 }
 
-.layer-title { font-weight: 800; color: #fff; font-size: 1.15rem; margin-bottom: 0.25rem; }
-.layer-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4; }
+.layer-text { flex: 1; }
+.layer-id { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 800; color: rgba(255,255,255,0.4); letter-spacing: 0.2em; display: block; margin-bottom: 0.25rem; }
+.layer-name { font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 0.25rem; }
+.layer-description { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.4; }
+
+.layer-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    border-radius: 32px;
+    pointer-events: none;
+}
+
+/* Specific Layer Rotations for Stack Effect */
+.layer-high { transform: translateZ(180px); }
+.layer-mid-high { transform: translateZ(120px); }
+.layer-mid-low { transform: translateZ(60px); }
+.layer-low { transform: translateZ(0px); }
+
+/* Hover States */
+.stack-layer:hover {
+    margin-bottom: -30px;
+}
+.stack-layer:hover .layer-glass {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateZ(20px);
+}
+.stack-layer:hover .layer-glow { opacity: 1; }
+
+.layer-high:hover .layer-glow { background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15), transparent 70%); }
+.layer-mid-high:hover .layer-glow { background: radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.15), transparent 70%); }
+.layer-mid-low:hover .layer-glow { background: radial-gradient(circle at 20% 50%, rgba(245, 158, 11, 0.15), transparent 70%); }
+.layer-low:hover .layer-glow { background: radial-gradient(circle at 20% 50%, rgba(16, 185, 129, 0.15), transparent 70%); }
 
 @media (max-width: 1024px) {
     .arch-viz-container { height: auto; padding: 4rem 0; perspective: none; }
     .arch-stack { transform: none !important; display: flex; flex-direction: column; gap: 1.5rem; }
     .stack-layer { transform: none !important; margin: 0; height: auto; }
+    .layer-glass { background: rgba(255, 255, 255, 0.02); }
 }
 
 /* --- ECOSYSTEM --- */
