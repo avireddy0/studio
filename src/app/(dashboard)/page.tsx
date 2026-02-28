@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import Chart from 'chart.js/auto';
 import { Database, Layers, Mail, MessageSquare, FileText, Zap, Target, ShieldCheck, Share2, BrainCircuit, Activity, Cpu, ChevronRight, Globe, BarChart3, Fingerprint, MousePointerClick, CheckCircle2, MessageCircle, Lock, ShieldAlert } from 'lucide-react';
+import { EnvisionOSLogo } from "@/components/icons";
 
 type Scenario = {
   query: string;
@@ -75,9 +76,9 @@ export default function DashboardPage() {
         { text: "Instant Match: Policy triggered (<1ms)", status: 'complete', delay: 900 },
       ],
       answer:
-        'Generic AI assumes clean data. Envision OS handles the mess—fragmented PDFs, phone call transcripts, and broken spreadsheets—turning chaos into verified profit protection and institutional-grade transparency.',
+        'Generic AI assumes clean data. Envision OS handles the mess—fragmented PDFs, phone call transcripts, and broken spreadsheets—turning chaos into verified profit protection, governance, and institutional-grade security.',
       metric:
-        "<span class='text-amber-600 font-bold'>Transparency is the foundation.</span>",
+        "<span class='text-amber-600 font-bold'>Governance is the foundation.</span>",
       meta: 'System Policy: The Structural Reality',
       followUp: [
           { text: "Which jobs are off budget?", scenarioId: 1 },
@@ -399,8 +400,8 @@ export default function DashboardPage() {
             <a href="#command-center" className="hover:text-white transition-colors">Command Center</a>
             <a href="#ingestion" className="hover:text-white transition-colors">Ingestion</a>
             <a href="#context" className="hover:text-white transition-colors">Context</a>
-            <a href="#architecture" className="hover:text-white transition-colors">Intelligence Layer</a>
-            <a href="#metrics" className="hover:text-white transition-colors">Audit Integrity</a>
+            <a href="#architecture" className="hover:text-white transition-colors">Digital Twin</a>
+            <a href="#metrics" className="hover:text-white transition-colors">Security & Compliance</a>
           </div>
           <button className="bg-white text-black px-5 py-2 rounded-full text-xs font-bold hover:bg-slate-200 transition-colors hidden sm:block">Get Access</button>
         </div>
@@ -627,7 +628,7 @@ export default function DashboardPage() {
                             <div className="flex justify-between items-center text-[10px] md:text-xs border-b border-white/5 pb-2">
                                 <span className="text-slate-500 uppercase font-mono font-bold tracking-tight">Status</span>
                                 <span className="text-emerald-400 font-black flex items-center gap-1">
-                                    <CheckCircle2 className="size-2.5" /> Authorized
+                                    <CheckCircle2 className="size-2.5" /> Authorized by Owner
                                 </span>
                             </div>
                             <div className="flex justify-between items-center text-[10px] md:text-xs border-b border-white/5 pb-2">
@@ -655,8 +656,8 @@ export default function DashboardPage() {
       {/* 5. INTELLIGENCE LAYER */}
       <section id="architecture" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202] scroll-mt-24">
         <div className="container mx-auto px-6 text-center mb-20">
-          <span className="inline-block px-3 py-1 rounded-md bg-accent-violet-dim text-accent-violet font-mono text-[10px] uppercase tracking-widest mb-4">Phase 3: Intelligence Layer</span>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">The Neural Stack</h2>
+          <span className="inline-block px-3 py-1 rounded-md bg-accent-violet-dim text-accent-violet font-mono text-[10px] uppercase tracking-widest mb-4">Phase 3: Digital Twin & Real-time Telemetry</span>
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">Telemetry Fabric</h2>
           <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
             Our high-fidelity architecture handles massive construction telemetry, turning high-latency silos into real-time project intelligence.
           </p>
@@ -668,12 +669,12 @@ export default function DashboardPage() {
                         <div className="layer-glass"></div>
                         <div className="layer-content">
                             <div className="layer-icon-wrapper">
-                                <Share2 className="size-6 text-accent-blue" />
+                                <Activity className="size-6 text-accent-blue" />
                             </div>
                             <div className="layer-text">
                                 <span className="layer-id">L4: ACTION GATEWAY</span>
                                 <h4 className="layer-name">Multi-Platform Orchestrator</h4>
-                                <p className="layer-description line-clamp-2">Executing 390+ specialized tools across Procore, Sage, and Slack.</p>
+                                <p className="layer-description line-clamp-2">Real-time orchestration across 390+ field sensors and platform streams.</p>
                             </div>
                         </div>
                         <div className="layer-glow"></div>
@@ -682,12 +683,12 @@ export default function DashboardPage() {
                         <div className="layer-glass"></div>
                         <div className="layer-content">
                             <div className="layer-icon-wrapper">
-                                <BrainCircuit className="size-6 text-accent-violet" />
+                                <Layers className="size-6 text-accent-violet" />
                             </div>
                             <div className="layer-text">
                                 <span className="layer-id">L3: COGNITIVE FABRIC</span>
                                 <h4 className="layer-name">Reasoning Engine</h4>
-                                <p className="layer-description line-clamp-2">7 specialized LLM agents analyzing project intent and data requests.</p>
+                                <p className="layer-description line-clamp-2">Heuristic reasoning engine for cross-platform data alignment and validation.</p>
                             </div>
                         </div>
                         <div className="layer-glow"></div>
@@ -696,12 +697,12 @@ export default function DashboardPage() {
                         <div className="layer-glass"></div>
                         <div className="layer-content">
                             <div className="layer-icon-wrapper">
-                                <Cpu className="size-6 text-accent-amber" />
+                                <Database className="size-6 text-accent-amber" />
                             </div>
                             <div className="layer-text">
                                 <span className="layer-id">L2: UNIFIED CONTEXT</span>
                                 <h4 className="layer-name">Vector Memory Hub</h4>
-                                <p className="layer-description line-clamp-2">Real-time normalization of multi-stream qualitative project data.</p>
+                                <p className="layer-description line-clamp-2">Unified vector memory for high-frequency construction telemetry.</p>
                             </div>
                         </div>
                         <div className="layer-glow"></div>
@@ -710,12 +711,12 @@ export default function DashboardPage() {
                         <div className="layer-glass"></div>
                         <div className="layer-content">
                             <div className="layer-icon-wrapper">
-                                <Database className="size-6 text-accent-emerald" />
+                                <Fingerprint className="size-6 text-accent-emerald" />
                             </div>
                             <div className="layer-text">
                                 <span className="layer-id">L1: TRUTH CORE</span>
                                 <h4 className="layer-name">Normalized Data Core</h4>
-                                <p className="layer-description line-clamp-2">Institutional construction truth stored in Vertex AI & BigQuery.</p>
+                                <p className="layer-description line-clamp-2">Normalized immutable truth core, secured via SOC2 and AES-256.</p>
                             </div>
                         </div>
                         <div className="layer-glow"></div>
@@ -791,7 +792,7 @@ export default function DashboardPage() {
         <div className="container mx-auto px-6">
           <p className="text-xl font-black text-white mb-6">Envision OS</p>
           <p className="max-w-md mx-auto leading-relaxed">The Unified Source of Truth for Institutional Construction Asset Management.</p>
-          <p className="mt-8 font-mono text-slate-700 uppercase tracking-[0.4em] text-[10px]">Security Integrity Engines Active.</p>
+          <p className="mt-8 font-mono text-slate-700 uppercase tracking-[0.4em] text-[10px]">Compliance & Security Integrity Engines Active.</p>
         </div>
       </footer>
     </div>
