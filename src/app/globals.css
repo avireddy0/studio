@@ -69,6 +69,93 @@ html {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* 3D STACK LAYERS */
+.arch-stack {
+    perspective: 2000px;
+    position: relative;
+    width: 100%;
+    height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stack-layer {
+    position: absolute;
+    width: 100%;
+    max-width: 500px;
+    height: 220px;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+.stack-layer .layer-glass {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 15, 20, 0.7);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 32px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+.stack-layer .layer-content {
+    position: relative;
+    z-index: 10;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.layer-id {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    opacity: 0.4;
+    margin-bottom: 8px;
+}
+
+.layer-description {
+    font-size: 14px;
+    color: #94A3B8;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+.layer-glow {
+    position: absolute;
+    inset: -1px;
+    border-radius: 32px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.layer-high { transform: rotateX(55deg) rotateZ(-20deg) translateZ(180px); }
+.layer-mid-high { transform: rotateX(55deg) rotateZ(-20deg) translateZ(100px); }
+.layer-mid-low { transform: rotateX(55deg) rotateZ(-20deg) translateZ(20px); }
+.layer-low { transform: rotateX(55deg) rotateZ(-20deg) translateZ(-60px); }
+
+.arch-stack:hover .layer-high { transform: rotateX(55deg) rotateZ(-20deg) translateZ(280px); }
+.arch-stack:hover .layer-mid-high { transform: rotateX(55deg) rotateZ(-20deg) translateZ(160px); }
+.arch-stack:hover .layer-mid-low { transform: rotateX(55deg) rotateZ(-20deg) translateZ(40px); }
+.arch-stack:hover .layer-low { transform: rotateX(55deg) rotateZ(-20deg) translateZ(-80px); }
+
+.stack-layer:hover {
+    filter: brightness(1.2);
+}
+.stack-layer:hover .layer-glow { opacity: 1; }
+
+.layer-high .layer-glow { background: radial-gradient(circle at 50% 50%, rgba(59,130,246,0.3), transparent 70%); }
+.layer-mid-high .layer-glow { background: radial-gradient(circle at 50% 50%, rgba(139,92,246,0.3), transparent 70%); }
+.layer-mid-low .layer-glow { background: radial-gradient(circle at 50% 50%, rgba(245,158,11,0.3), transparent 70%); }
+.layer-low .layer-glow { background: radial-gradient(circle at 50% 50%, rgba(16,185,129,0.3), transparent 70%); }
+
 /* TOOL UNIVERSE REDESIGN */
 .tu-container { 
     perspective: 2000px;
@@ -148,12 +235,41 @@ html {
     100% { left: 0%; opacity: 0; }
 }
 
+/* INGESTION VIZ ANIMATIONS */
+@keyframes ingest-float {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.8; }
+  50% { transform: translateY(-15px) scale(1.05); opacity: 1; }
+}
+.animate-ingest-float {
+  animation: ingest-float 4s infinite ease-in-out;
+}
+
+@keyframes ingest-stream {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+.animate-ingest-stream {
+  animation: ingest-stream 2s infinite linear;
+}
+
+@keyframes particle-fly {
+  0% { transform: translateX(-200px) translateY(0) scale(0); opacity: 0; }
+  20% { transform: translateX(-150px) translateY(0) scale(1); opacity: 1; }
+  80% { transform: translateX(150px) translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateX(200px) translateY(0) scale(0); opacity: 0; }
+}
+.animate-particle-fly {
+  animation: particle-fly 3s infinite linear;
+}
+
 @media (max-width: 768px) {
     .tu-container { height: 500px; border-radius: 24px; }
     .tu-scene { transform: rotateX(65deg) scale(0.7) !important; }
     .tu-sat-card { padding: 12px; min-width: 100px; }
     .tu-sat-card h3 { font-size: 0.8rem !important; }
     .tu-hub-core { width: 100px; height: 100px; border-radius: 30px; }
+    .arch-stack { height: 500px; scale: 0.8; }
+    .stack-layer { height: 180px; }
 }
 
 /* CONTEXT FUSION ANIMATIONS */
@@ -202,4 +318,3 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
 }
-
