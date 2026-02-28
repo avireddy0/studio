@@ -286,7 +286,7 @@ export default function DashboardPage() {
           line.style.width = `${orbRadius}px`;
           line.style.transform = `rotateZ(${angle}rad)`;
           line.innerHTML = `<div class="tu-pulse" style="background: ${p.color}; box-shadow: 0 0 15px ${p.color}; animation-delay: ${Math.random() * 2}s"></div>`;
-          tuScene.appendChild(line);
+          tuScene.appendChild(sat); // wait, it was satirically p.name, let's fix the variable
 
           const sat = document.createElement('div');
           sat.className = 'tu-sat';
