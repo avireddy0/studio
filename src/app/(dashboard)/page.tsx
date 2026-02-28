@@ -55,6 +55,7 @@ export default function DashboardPage() {
   const coverageChartRef = useRef<HTMLCanvasElement>(null);
   const [suggestedReplies, setSuggestedReplies] = useState(initialSuggestions);
   const [messages, setMessages] = useState<any[]>([]);
+  const [particleStyles, setParticleStyles] = useState<{ top: string }[]>([]);
   const isRunning = useRef(false);
 
   const scenarios: Scenarios = {
@@ -247,6 +248,11 @@ export default function DashboardPage() {
             'system'
         );
       }
+      
+      // Hydration-safe particle generation
+      setParticleStyles([...Array(8)].map(() => ({
+        top: `${20 + Math.random() * 60}%`
+      })));
   }, [addMessage]);
 
   useEffect(() => {
@@ -523,10 +529,12 @@ export default function DashboardPage() {
                     <h4 className="font-bold text-xl mb-3 text-white">Comms Mining</h4>
                     <p className="text-base text-slate-500 leading-relaxed font-medium">Unstructured emails and chats parsed in real-time.</p>
                 </div>
-                <div className="p-8 rounded-[36px] bg-white/5 border border-white/5 hover:border-accent-violet/50 transition-colors group">
-                    <FileText className="size-8 text-accent-violet mb-6 group-hover:scale-110 transition-transform" />
-                    <h4 className="font-bold text-xl mb-3 text-white">Normalization</h4>
-                    <p className="text-base text-slate-500 leading-relaxed font-medium">PDFs and field data converted to verified truth.</p>
+                <div className="p-8 rounded-[36px] bg-white/5 border border-white/10 backdrop-blur-xl animate-ingest-float flex items-center justify-between group" style={{ animationDelay: `0s` }}>
+                    <div className="flex items-center gap-3">
+                        <FileText className={`size-4 text-accent-violet`} />
+                        <span className="text-[11px] font-black uppercase tracking-[0.2em] text-white">Normalization</span>
+                    </div>
+                    <div className="size-1.5 rounded-full bg-accent-violet animate-ping"></div>
                 </div>
             </div>
           </div>
@@ -552,15 +560,15 @@ export default function DashboardPage() {
 
                 {/* Center: AI Parser Core */}
                 <div className="relative flex items-center justify-center z-20 order-1 md:order-2">
-                    {/* Flow Particles */}
+                    {/* Flow Particles - Hydration Safe */}
                     <div className="absolute inset-0 flex items-center justify-center -z-10 pointer-events-none overflow-visible">
-                        {[...Array(8)].map((_, i) => (
+                        {particleStyles.map((style, i) => (
                             <div 
                                 key={i} 
                                 className="absolute size-2 bg-accent-violet rounded-full blur-[2px] animate-particle-fly" 
                                 style={{ 
                                     animationDelay: `${i * 0.4}s`,
-                                    top: `${20 + Math.random() * 60}%`
+                                    top: style.top
                                 }}
                             ></div>
                         ))}
@@ -678,7 +686,7 @@ export default function DashboardPage() {
             <div className="arch-stack">
                 {[
                     { id: "L4: ACTION GATEWAY", name: "Multi-Platform Orchestrator", desc: "Real-time orchestration across 390+ field sensors and platform streams.", icon: Activity, color: "text-blue-400", cls: "layer-high" },
-                    { id: "L3: COGNITIVE FABRIC", name: "Reasoning Engine", desc: "Heuristic reasoning engine for cross-platform data alignment and validation.", icon: Layers, color: "text-violet-400", cls: "layer-mid-high" },
+                    { id: "L3: COGNITIVE FABRIC", name: "Heuristic reasoning engine for data validation.", desc: "Dynamic reasoning across project layers.", icon: Layers, color: "text-violet-400", cls: "layer-mid-high" },
                     { id: "L2: UNIFIED CONTEXT", name: "Vector Memory Hub", desc: "Unified vector memory for high-frequency construction telemetry.", icon: Database, color: "text-amber-400", cls: "layer-mid-low" },
                     { id: "L1: TRUTH CORE", name: "Normalized Data Core", desc: "Normalized immutable truth core, secured via SOC2 and AES-256.", icon: Fingerprint, color: "text-emerald-400", cls: "layer-low" }
                 ].map((layer, i) => (
