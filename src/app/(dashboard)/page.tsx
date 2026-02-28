@@ -2,8 +2,7 @@
 
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import Chart from 'chart.js/auto';
-import { Database, Layers, Mail, MessageSquare, FileText, Zap, Target, ShieldCheck, Share2, BrainCircuit, Activity, Cpu, ChevronRight, Globe, BarChart3, Fingerprint, MousePointerClick, CheckCircle2, MessageCircle } from 'lucide-react';
-import { EnvisionOSLogo } from "@/components/icons";
+import { Database, Layers, Mail, MessageSquare, FileText, Zap, Target, ShieldCheck, Share2, BrainCircuit, Activity, Cpu, ChevronRight, Globe, BarChart3, Fingerprint, MousePointerClick, CheckCircle2, MessageCircle, Lock, ShieldAlert } from 'lucide-react';
 
 type Scenario = {
   query: string;
@@ -364,7 +363,7 @@ export default function DashboardPage() {
             chartInstances.push(new Chart(ctxCoverage, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Verified', 'Scanning'],
+                    labels: ['Compliant', 'Scanning'],
                     datasets: [{
                         data: [98, 2],
                         backgroundColor: ['#10B981', '#0f0f11'],
@@ -747,10 +746,10 @@ export default function DashboardPage() {
       {/* 7. METRICS */}
       <section id="metrics" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202] scroll-mt-24">
         <div className="container mx-auto px-6 text-center mb-24">
-            <span className="inline-block px-3 py-1 rounded-md bg-accent-violet-dim text-accent-violet font-mono text-[10px] uppercase tracking-widest mb-4">Bottom Line Impact</span>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">Performance <br/> Acceleration</h2>
+            <span className="inline-block px-3 py-1 rounded-md bg-accent-violet-dim text-accent-violet font-mono text-[10px] uppercase tracking-widest mb-4">Institutional Security & Protection</span>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">Compliance <br/> Acceleration</h2>
             <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                Envision OS shifts construction risk discovery from weeks to milliseconds, protecting profit margins at institutional scale.
+                Envision OS shifts construction risk discovery and data protection from weeks to milliseconds, protecting sensitive telemetry at institutional scale.
             </p>
         </div>
         <div className="container mx-auto px-6">
@@ -770,18 +769,18 @@ export default function DashboardPage() {
               </div>
               
               <div className="glass-card p-10 md:p-14 flex flex-col items-center justify-center text-center shadow-2xl">
-                  <div className="size-16 rounded-2xl bg-accent-emerald-dim flex items-center justify-center text-accent-emerald mb-10"><Fingerprint className="size-8" /></div>
-                  <h3 className="text-sm font-black mb-10 uppercase tracking-[0.3em] text-accent-emerald font-mono">AUDIT SHIELD</h3>
+                  <div className="size-16 rounded-2xl bg-accent-emerald-dim flex items-center justify-center text-accent-emerald mb-10"><ShieldCheck className="size-8" /></div>
+                  <h3 className="text-sm font-black mb-10 uppercase tracking-[0.3em] text-accent-emerald font-mono">GOVERNANCE SHIELD</h3>
                   <div className="relative w-full aspect-square max-w-[240px] mb-12">
                       <canvas ref={coverageChartRef}></canvas>
                       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                           <span className="text-5xl md:text-6xl font-black text-white leading-none">98%</span>
-                          <span className="text-[11px] text-slate-500 uppercase font-black tracking-widest mt-2">TRANSPARENCY</span>
+                          <span className="text-[11px] text-slate-500 uppercase font-black tracking-widest mt-2">PROTECTION</span>
                       </div>
                   </div>
                   <div className="p-8 bg-white/[0.03] rounded-3xl border border-white/5 text-left w-full">
-                      <h4 className="text-base font-bold text-white mb-3">Institutional Integrity</h4>
-                      <p className="text-sm text-slate-400 leading-relaxed">Every project dollar is cross-referenced against field reality and communication records for 100% audit transparency.</p>
+                      <h4 className="text-base font-bold text-white mb-3">Security & Compliance</h4>
+                      <p className="text-sm text-slate-400 leading-relaxed">Institutional-grade Data Loss Prevention (DLP) and Access Control. Sensitive project telemetry is hardened through continuous SOC2-aligned monitoring.</p>
                   </div>
               </div>
           </div>
@@ -792,7 +791,7 @@ export default function DashboardPage() {
         <div className="container mx-auto px-6">
           <p className="text-xl font-black text-white mb-6">Envision OS</p>
           <p className="max-w-md mx-auto leading-relaxed">The Unified Source of Truth for Institutional Construction Asset Management.</p>
-          <p className="mt-8 font-mono text-slate-700 uppercase tracking-[0.4em] text-[10px]">Audit Integrity Engines Active.</p>
+          <p className="mt-8 font-mono text-slate-700 uppercase tracking-[0.4em] text-[10px]">Security Integrity Engines Active.</p>
         </div>
       </footer>
     </div>
