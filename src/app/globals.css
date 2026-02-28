@@ -469,20 +469,63 @@ body::before {
     .fusion-center { height: 100px; }
 }
 
-/* --- TOOL UNIVERSE REDESIGN --- */
-.tu-container { height: 800px; width: 100%; border: 1px solid var(--border-strong); border-radius: 40px; position: relative; overflow: hidden; background: radial-gradient(circle at center, #111113 0%, #020202 100%); display: flex; align-items: center; justify-content: center; }
-.tu-scene { position: relative; width: 1px; height: 1px; transform-style: preserve-3d; }
-.tu-grid { position: absolute; width: 4000px; height: 4000px; background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px); background-size: 80px 80px; -webkit-mask-image: radial-gradient(black 10%, transparent 60%); pointer-events: none; }
+/* --- TOOL UNIVERSE REDESIGN (NEURAL HUB) --- */
+.tu-container { 
+    height: clamp(500px, 70vh, 800px); 
+    width: 100%; 
+    border: 1px solid var(--border-strong); 
+    border-radius: 40px; 
+    position: relative; 
+    overflow: hidden; 
+    background: radial-gradient(circle at center, #111113 0%, #020202 100%); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+}
+.tu-scene { 
+    position: relative; 
+    width: 1px; height: 1px; 
+    transform-style: preserve-3d; 
+}
+.tu-grid { 
+    position: absolute; 
+    width: 4000px; height: 4000px; 
+    background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px); 
+    background-size: 80px 80px; 
+    -webkit-mask-image: radial-gradient(black 10%, transparent 60%); 
+    pointer-events: none; 
+    transform: translate(-50%, -50%);
+}
 
 .tu-hub { position: absolute; width: 120px; height: 120px; transform-style: preserve-3d; top: -60px; left: -60px; }
 .tu-hub-front { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; }
 .tu-hub-layer { position: absolute; inset: 0; border: 4px solid var(--border-subtle); border-radius: 50%; background: var(--bg-surface-glass); }
 
-.tu-sat { position: absolute; width: 85px; height: 85px; transform-style: preserve-3d; cursor: pointer; }
-.tu-sat-layer { position: absolute; inset: 0; border: 2.5px solid; border-radius: 20px; }
+.tu-sat { 
+    position: absolute; 
+    width: 100px; height: 100px; 
+    transform-style: preserve-3d; 
+    cursor: pointer; 
+    top: -50px; left: -50px;
+    transition: transform 0.4s ease;
+}
+.tu-sat-layer { position: absolute; inset: 0; border: 2px solid; border-radius: 20px; }
 
-.tu-line { position: absolute; height: 1px; background: linear-gradient(90deg, transparent, var(--border-subtle), transparent); transform-origin: left center; z-index: 1; top: 0; left: 0; }
-.tu-pulse { position: absolute; width: 12px; height: 12px; border-radius: 50%; top: -6px; animation: tuPulseRun 3s infinite linear; }
+.tu-line { 
+    position: absolute; 
+    height: 1px; 
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); 
+    transform-origin: left center; 
+    z-index: 1; 
+    top: 0; left: 0; 
+}
+.tu-pulse { 
+    position: absolute; 
+    width: 10px; height: 10px; 
+    border-radius: 50%; 
+    top: -5px; 
+    animation: tuPulseRun 3s infinite linear; 
+}
 
 @keyframes tuPulseRun {
     0% { left: 100%; opacity: 0; }
@@ -491,12 +534,30 @@ body::before {
     100% { left: 0%; opacity: 0; }
 }
 
-.tu-billboard-container { position: absolute; width: 200px; height: 100px; pointer-events: none; }
-.tu-billboard { background: rgba(8, 8, 10, 0.98); border: 1px solid var(--border-strong); padding: 14px 24px; border-radius: 14px; text-align: center; border-top-width: 4px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7); width: max-content; }
+.tu-billboard-container { position: absolute; width: 220px; height: 100px; pointer-events: none; }
+.tu-billboard { 
+    background: rgba(8, 8, 10, 0.9); 
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-strong); 
+    padding: 12px 20px; 
+    border-radius: 12px; 
+    text-align: center; 
+    border-top-width: 4px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); 
+    width: max-content; 
+}
 
 .glass-card {
     background: rgba(15, 15, 17, 0.6);
     backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 32px;
+}
+
+@media (max-width: 768px) {
+    .tu-container { height: 500px; border-radius: 24px; }
+    .tu-scene { transform: rotateX(65deg) scale(0.8) !important; }
+    .tu-billboard { padding: 8px 12px; }
+    .tu-billboard h3 { font-size: 0.9rem !important; }
+    .tu-billboard p { font-size: 0.6rem !important; }
 }

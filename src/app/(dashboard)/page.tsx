@@ -239,22 +239,22 @@ export default function DashboardPage() {
   
   useEffect(() => {
     const chartInstances: Chart[] = [];
-    const isMobile = window.innerWidth < 768;
-
-    const platforms = [
-        { id: 'finance', name: 'Finance', color: 'var(--accent-amber)', tools: 58 },
-        { id: 'comms', name: 'Comms', color: 'var(--accent-blue)', tools: 85 },
-        { id: 'project', name: 'Project', color: 'var(--accent-emerald)', tools: 53 },
-        { id: 'hr', name: 'HR/Ops', color: 'var(--accent-violet)', tools: 42 },
-        { id: 'sales', name: 'Sales', color: 'var(--accent-pink)', tools: 40 },
-        { id: 'research', name: 'Research', color: 'var(--accent-cyan)', tools: 50 },
-        { id: 'infra', name: 'Infra', color: '#64748B', tools: 62 }
-    ];
-
+    
+    // --- TOOL UNIVERSE LOGIC ---
     const tuScene = tuSceneRef.current;
-    const orbRadius = isMobile ? 180 : 320;
-
     if (tuScene) {
+      const isMobile = window.innerWidth < 768;
+      const orbRadius = isMobile ? 140 : 280;
+      const platforms = [
+          { id: 'finance', name: 'Finance', color: 'var(--accent-amber)', tools: 58 },
+          { id: 'comms', name: 'Comms', color: 'var(--accent-blue)', tools: 85 },
+          { id: 'project', name: 'Project', color: 'var(--accent-emerald)', tools: 53 },
+          { id: 'hr', name: 'HR/Ops', color: 'var(--accent-violet)', tools: 42 },
+          { id: 'sales', name: 'Sales', color: 'var(--accent-pink)', tools: 40 },
+          { id: 'research', name: 'Research', color: 'var(--accent-cyan)', tools: 50 },
+          { id: 'infra', name: 'Infra', color: '#64748B', tools: 62 }
+      ];
+
       tuScene.innerHTML = '<div class="tu-grid"></div>';
 
       const hub = document.createElement('div');
@@ -307,28 +307,34 @@ export default function DashboardPage() {
           `;
           tuScene.appendChild(sat);
       });
+
+      let tuGlobalRotation = 0;
+      let tuTargetRotation = 0;
+      let animationFrameId: number;
+
+      const animateTuScene = () => {
+          tuTargetRotation += 0.01;
+          tuGlobalRotation += (tuTargetRotation - tuGlobalRotation) * 0.05;
+          
+          if (tuScene) {
+            tuScene.style.transform = `rotateX(60deg) rotateZ(${tuGlobalRotation}deg)`;
+            const billboards = tuScene.querySelectorAll('.tu-billboard-container');
+            billboards.forEach(b => {
+                const htmlB = b as HTMLElement;
+                htmlB.style.transform = `rotateZ(${-tuGlobalRotation}deg) rotateX(-60deg)`;
+            });
+          }
+          animationFrameId = requestAnimationFrame(animateTuScene);
+      }
+      animateTuScene();
+
+      // Cleanup function for tuScene effect
+      return () => {
+        cancelAnimationFrame(animationFrameId);
+      };
     }
 
-    let tuGlobalRotation = 0;
-    let tuTargetRotation = 0;
-    let animationFrameId: number;
-
-    function animateTuScene() {
-        tuTargetRotation += 0.01;
-        tuGlobalRotation += (tuTargetRotation - tuGlobalRotation) * 0.05;
-        
-        if (tuScene) {
-          tuScene.style.transform = `rotateX(60deg) rotateZ(${tuGlobalRotation}deg)`;
-          const billboards = tuScene.querySelectorAll('.tu-billboard-container');
-          billboards.forEach(b => {
-              const htmlB = b as HTMLElement;
-              htmlB.style.transform = `rotateZ(${-tuGlobalRotation}deg) rotateX(-60deg)`;
-          });
-        }
-        animationFrameId = requestAnimationFrame(animateTuScene);
-    }
-    animateTuScene();
-
+    // --- CHARTS LOGIC ---
     if (latencyChartRef.current) {
         const ctxLatency = latencyChartRef.current.getContext('2d');
         if (ctxLatency) {
@@ -382,7 +388,6 @@ export default function DashboardPage() {
     }
 
     return () => {
-        cancelAnimationFrame(animationFrameId);
         chartInstances.forEach(chart => chart.destroy());
     };
   }, []);
@@ -732,10 +737,10 @@ export default function DashboardPage() {
           <span className="inline-block px-3 py-1 rounded-md bg-accent-emerald-dim text-accent-emerald font-mono text-[10px] uppercase tracking-widest mb-4">Phase 4: Neural Connectivity Hub</span>
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">Ecosystem Sync</h2>
           <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            A state-of-the-art visual of your construction nervous system. 390+ platforms orchestrated through a single neural point of truth.
+            Our multi-platform nervous system orchestrates 390+ platforms through a single neural point of truth.
           </p>
         </div>
-        <div className="container mx-auto px-6 h-[800px] flex items-center justify-center">
+        <div className="container mx-auto px-6 h-[400px] md:h-[800px] flex items-center justify-center">
           <div className="tu-container w-full" ref={tuContainerRef}>
             <div className="tu-scene" ref={tuSceneRef}>
                 <div className="tu-grid" aria-hidden="true"></div>
