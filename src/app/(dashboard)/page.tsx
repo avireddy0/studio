@@ -729,10 +729,10 @@ export default function DashboardPage() {
       {/* 6. ECOSYSTEM */}
       <section id="ecosystem" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202] scroll-mt-24">
         <div className="container mx-auto px-6 text-center mb-20">
-          <span className="inline-block px-3 py-1 rounded-md bg-accent-emerald-dim text-accent-emerald font-mono text-[10px] uppercase tracking-widest mb-4">Phase 4: Tool Universe</span>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">390 Tools. One Reality.</h2>
+          <span className="inline-block px-3 py-1 rounded-md bg-accent-emerald-dim text-accent-emerald font-mono text-[10px] uppercase tracking-widest mb-4">Phase 4: Neural Connectivity Hub</span>
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">Ecosystem Sync</h2>
           <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Eliminate silos by orchestrating real-time data flows across your entire construction software ecosystem.
+            A state-of-the-art visual of your construction nervous system. 390+ platforms orchestrated through a single neural point of truth.
           </p>
         </div>
         <div className="container mx-auto px-6 h-[800px] flex items-center justify-center">
@@ -770,7 +770,7 @@ export default function DashboardPage() {
               </div>
               
               <div className="glass-card p-10 md:p-14 flex flex-col items-center justify-center text-center shadow-2xl">
-                  <div className="size-16 rounded-2xl bg-accent-emerald-dim flex items-center justify-center text-accent-emerald mb-10"><ShieldCheck className="size-8" /></div>
+                  <div className="size-16 rounded-2xl bg-accent-emerald-dim flex items-center justify-center text-accent-emerald mb-10"><Lock className="size-8" /></div>
                   <h3 className="text-sm font-black mb-10 uppercase tracking-[0.3em] text-accent-emerald font-mono">GOVERNANCE SHIELD</h3>
                   <div className="relative w-full aspect-square max-w-[240px] mb-12">
                       <canvas ref={coverageChartRef}></canvas>

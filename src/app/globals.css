@@ -23,7 +23,7 @@
     --border: 0 0% 15%;
     --input: 0 0% 15%;
     --ring: 217 91% 60%;
-    --radius: 0.75rem;
+    --radius: 1.5rem;
     
     --sidebar-background: 0 0% 1%;
     --sidebar-foreground: 0 0% 90%;
@@ -41,21 +41,21 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased selection:bg-primary/30;
     font-family: 'Inter', sans-serif;
   }
 }
 
 :root {
-  --bg-base: #030303;
-  --bg-surface: #0a0a0a;
-  --bg-surface-elevated: #121212;
+  --bg-base: #020202;
+  --bg-surface: #08080a;
+  --bg-surface-elevated: #0f0f11;
   --bg-surface-glass: rgba(10, 10, 12, 0.85);
-  --border-subtle: #27272a;
-  --border-strong: #3f3f46;
-  --text-primary: #f4f4f5;
-  --text-secondary: #a1a1aa;
-  --text-tertiary: #52525b;
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #475569;
   --accent-blue: #3b82f6;
   --accent-blue-dim: rgba(59, 130, 246, 0.2);
   --accent-emerald: #10b981;
@@ -76,8 +76,11 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+  background-size: 40px 40px, 80px 80px, 80px 80px;
   z-index: -1;
   pointer-events: none;
 }
@@ -100,6 +103,7 @@ body::before {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* --- INGESTION VIZ --- */
 .ingestion-viz {
   height: 520px;
   background: var(--bg-surface);
@@ -207,6 +211,7 @@ body::before {
     100% { left: 50%; top: 50%; opacity: 0; transform: scale(0.2) rotate(0deg); } 
 }
 
+/* --- CONTEXT FUSION VIZ --- */
 .context-fusion-viz {
   height: 600px;
   background: radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.05), transparent), var(--bg-surface);
@@ -356,6 +361,7 @@ body::before {
 
 @keyframes fadeIn { to { opacity: 1; } }
 
+/* --- ARCH STACK --- */
 .arch-viz-container {
     perspective: 2000px;
     height: 800px;
@@ -463,6 +469,7 @@ body::before {
     .fusion-center { height: 100px; }
 }
 
+/* --- TOOL UNIVERSE REDESIGN --- */
 .tu-container { height: 800px; width: 100%; border: 1px solid var(--border-strong); border-radius: 40px; position: relative; overflow: hidden; background: radial-gradient(circle at center, #111113 0%, #020202 100%); display: flex; align-items: center; justify-content: center; }
 .tu-scene { position: relative; width: 1px; height: 1px; transform-style: preserve-3d; }
 .tu-grid { position: absolute; width: 4000px; height: 4000px; background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px); background-size: 80px 80px; -webkit-mask-image: radial-gradient(black 10%, transparent 60%); pointer-events: none; }
