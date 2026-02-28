@@ -76,7 +76,7 @@ export default function DashboardPage() {
         { text: "Instant Match: Policy triggered (<1ms)", status: 'complete', delay: 900 },
       ],
       answer:
-        'Generic AI assumes clean data. Envision OS handles the mess—fragmented PDFs, phone call transcripts, and broken spreadsheets—turning chaos into verified profit protection, governance, and institutional-grade security.',
+        'Generic AI assumes clean data. Envision OS handles the mess—fragmented PDFs, phone call transcripts, and broken spreadsheets—turning chaos into verified governance, profit protection, and institutional-grade security.',
       metric:
         "<span class='text-amber-600 font-bold'>Governance is the foundation.</span>",
       meta: 'System Policy: The Structural Reality',
