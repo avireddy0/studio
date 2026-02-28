@@ -533,7 +533,7 @@ export default function DashboardPage() {
                 <div className="ingest-engine-core absolute inset-0 flex items-center justify-center z-20">
                     <div className="size-40 bg-black border-2 border-accent-violet rounded-[40px] flex flex-col items-center justify-center shadow-[0_0_60px_rgba(139,92,246,0.4)]">
                         <span className="text-4xl font-bold text-white mb-2">{'</>'}</span>
-                        <span className="text-[9px] font-black tracking-widest text-accent-violet uppercase">Audit Core</span>
+                        <span className="text-[9px] font-black tracking-widest text-accent-violet uppercase">AI Parser</span>
                     </div>
                 </div>
                 {[...Array(12)].map((_, i) => (
@@ -723,4 +723,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
