@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import Chart from 'chart.js/auto';
-import { Database, Layers, Mail, MessageSquare, FileText, Phone, Zap, Target, ShieldCheck, Share2, BrainCircuit, Activity, Lock, Cpu, TrendingUp, AlertTriangle, ChevronRight, Globe, BarChart3, Fingerprint, MousePointerClick, CheckCircle2, MessageCircle } from 'lucide-react';
+import { Database, Layers, Mail, MessageSquare, FileText, Zap, Target, ShieldCheck, Share2, BrainCircuit, Activity, Cpu, ChevronRight, Globe, BarChart3, Fingerprint, MousePointerClick, CheckCircle2, MessageCircle } from 'lucide-react';
 import { EnvisionOSLogo } from "@/components/icons";
 
 type Scenario = {
@@ -286,7 +286,7 @@ export default function DashboardPage() {
           line.style.width = `${orbRadius}px`;
           line.style.transform = `rotateZ(${angle}rad)`;
           line.innerHTML = `<div class="tu-pulse" style="background: ${p.color}; box-shadow: 0 0 15px ${p.color}; animation-delay: ${Math.random() * 2}s"></div>`;
-          tuScene.appendChild(sat); // wait, it was satirically p.name, let's fix the variable
+          tuScene.appendChild(line);
 
           const sat = document.createElement('div');
           sat.className = 'tu-sat';
@@ -462,7 +462,6 @@ export default function DashboardPage() {
                 </div>
               </div>
               
-              {/* iMessage Interface */}
               <div className="flex-1 p-6 md:p-10 overflow-y-auto flex flex-col gap-3 bg-white" ref={chatBodyRef}>
                 {messages.map((msg, index) => {
                     if (msg.type === 'typing') {
@@ -490,7 +489,6 @@ export default function DashboardPage() {
                     );
                 })}
 
-                {/* Simulation Prompt */}
                 {suggestedReplies.length > 0 && (
                   <div className="mt-12 flex flex-col items-center gap-6 animate-in fade-in zoom-in duration-700">
                       <div className="flex items-center gap-2 px-6 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-[11px] font-black uppercase tracking-widest animate-pulse">
@@ -501,7 +499,7 @@ export default function DashboardPage() {
                           {suggestedReplies.map((reply, index) => (
                               <button
                                   key={index}
-                                  className="px-6 py-3 bg-[#e9e9eb] text-slate-800 hover:bg-primary hover:text-white rounded-full text-sm font-semibold transition-all hover:scale-105 active:scale-95 border border-transparent"
+                                  className="px-6 py-3 bg-[#e9e9eb] text-slate-800 hover:bg-primary hover:text-white rounded-full text-sm font-semibold transition-all hover:scale-105 active:scale-95 border border-transparent shadow-sm"
                                   onClick={() => runSimulation(reply.scenarioId)}
                                   disabled={isRunning.current}
                               >
@@ -582,9 +580,8 @@ export default function DashboardPage() {
       {/* 4. CONTEXT */}
       <section id="context" className="scroll-snap-section py-32 border-t border-white/5 bg-[#020202] scroll-mt-24">
         <div className="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-20">
-          <div className="flex-1 order-2 lg:order-1 w-full max-w-2xl">
+          <div className="flex-1 order-2 lg:order-1 w-full max-w-2xl overflow-hidden">
               <div className="context-fusion-viz w-full">
-                {/* Visual Flow Lines */}
                 <div className="fusion-flow-lines">
                     <div className="flow-path path-1"></div>
                     <div className="flow-path path-2"></div>
@@ -666,9 +663,8 @@ export default function DashboardPage() {
           </p>
         </div>
         <div className="container mx-auto px-6">
-            <div className="arch-viz-container">
+            <div className="arch-viz-container overflow-visible">
                 <div className="arch-stack">
-                    {/* Layer 4 */}
                     <div className="stack-layer layer-high">
                         <div className="layer-glass"></div>
                         <div className="layer-content">
@@ -678,12 +674,11 @@ export default function DashboardPage() {
                             <div className="layer-text">
                                 <span className="layer-id">L4: ACTION GATEWAY</span>
                                 <h4 className="layer-name">Multi-Platform Orchestrator</h4>
-                                <p className="layer-description">Executing 390+ specialized tools across Procore, Sage, and Slack.</p>
+                                <p className="layer-description line-clamp-2">Executing 390+ specialized tools across Procore, Sage, and Slack.</p>
                             </div>
                         </div>
                         <div className="layer-glow"></div>
                     </div>
-                    {/* Layer 3 */}
                     <div className="stack-layer layer-mid-high">
                         <div className="layer-glass"></div>
                         <div className="layer-content">
@@ -693,12 +688,11 @@ export default function DashboardPage() {
                             <div className="layer-text">
                                 <span className="layer-id">L3: COGNITIVE FABRIC</span>
                                 <h4 className="layer-name">Reasoning Engine</h4>
-                                <p className="layer-description">7 specialized LLM agents analyzing project intent and data requests.</p>
+                                <p className="layer-description line-clamp-2">7 specialized LLM agents analyzing project intent and data requests.</p>
                             </div>
                         </div>
                         <div className="layer-glow"></div>
                     </div>
-                    {/* Layer 2 */}
                     <div className="stack-layer layer-mid-low">
                         <div className="layer-glass"></div>
                         <div className="layer-content">
@@ -708,12 +702,11 @@ export default function DashboardPage() {
                             <div className="layer-text">
                                 <span className="layer-id">L2: UNIFIED CONTEXT</span>
                                 <h4 className="layer-name">Vector Memory Hub</h4>
-                                <p className="layer-description">Real-time normalization of multi-stream qualitative project data.</p>
+                                <p className="layer-description line-clamp-2">Real-time normalization of multi-stream qualitative project data.</p>
                             </div>
                         </div>
                         <div className="layer-glow"></div>
                     </div>
-                    {/* Layer 1 */}
                     <div className="stack-layer layer-low">
                         <div className="layer-glass"></div>
                         <div className="layer-content">
@@ -723,7 +716,7 @@ export default function DashboardPage() {
                             <div className="layer-text">
                                 <span className="layer-id">L1: TRUTH CORE</span>
                                 <h4 className="layer-name">Normalized Data Core</h4>
-                                <p className="layer-description">Institutional construction truth stored in Vertex AI & BigQuery.</p>
+                                <p className="layer-description line-clamp-2">Institutional construction truth stored in Vertex AI & BigQuery.</p>
                             </div>
                         </div>
                         <div className="layer-glow"></div>

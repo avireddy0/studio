@@ -88,7 +88,6 @@ body::before {
   scroll-margin-top: 4rem;
 }
 
-/* --- ANIMATIONS --- */
 .fade-in-up {
   animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   opacity: 0;
@@ -101,7 +100,6 @@ body::before {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- INGESTION VIZ --- */
 .ingestion-viz {
   height: 520px;
   background: var(--bg-surface);
@@ -127,6 +125,21 @@ body::before {
   border-radius: 35px;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   box-shadow: 0 0 50px var(--accent-violet-dim);
+  position: relative;
+}
+
+.engine-box::after {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border: 2px solid var(--accent-violet-dim);
+    border-radius: 40px;
+    animation: pulseBorder 2s infinite ease-out;
+}
+
+@keyframes pulseBorder {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.2); opacity: 0; }
 }
 
 .css-icon-parser { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 800; color: #fff; }
@@ -194,7 +207,6 @@ body::before {
     100% { left: 50%; top: 50%; opacity: 0; transform: scale(0.2) rotate(0deg); } 
 }
 
-/* --- CONTEXT FUSION VIZ --- */
 .context-fusion-viz {
   height: 600px;
   background: radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.05), transparent), var(--bg-surface);
@@ -202,7 +214,7 @@ body::before {
   border-radius: 40px;
   position: relative;
   overflow: hidden;
-  padding: 3rem;
+  padding: 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -240,12 +252,13 @@ body::before {
   flex-direction: column;
   gap: 1.5rem;
   z-index: 10;
+  min-width: 0;
 }
 
 .bubble-snippet {
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-subtle);
-  padding: 1.5rem;
+  padding: 1.25rem;
   border-radius: 20px;
   opacity: 0;
   transform: translateX(-40px);
@@ -263,10 +276,10 @@ body::before {
 
 .b-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; font-weight: 800; margin-bottom: 0.75rem; color: var(--c); display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
 .b-label::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
-.bubble-snippet p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.4; font-style: italic; }
+.bubble-snippet p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4; font-style: italic; }
 
 .fusion-center {
-  width: 20%;
+  width: 15%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -329,7 +342,7 @@ body::before {
   padding: 2rem;
   border-radius: 28px;
   width: 100%;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
   box-shadow: 0 0 60px var(--accent-emerald-dim);
   opacity: 0;
   transform: scale(0.9);
@@ -343,7 +356,6 @@ body::before {
 
 @keyframes fadeIn { to { opacity: 1; } }
 
-/* --- INTELLIGENCE LAYER (FUTURISTIC STACK) --- */
 .arch-viz-container {
     perspective: 2000px;
     height: 800px;
@@ -380,7 +392,7 @@ body::before {
     position: absolute;
     inset: 0;
     background: rgba(255, 255, 255, 0.01);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(24px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 32px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
@@ -406,7 +418,7 @@ body::before {
     flex-shrink: 0;
 }
 
-.layer-text { flex: 1; }
+.layer-text { flex: 1; min-width: 0; }
 .layer-id { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 800; color: rgba(255,255,255,0.4); letter-spacing: 0.2em; display: block; margin-bottom: 0.25rem; }
 .layer-name { font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 0.25rem; }
 .layer-description { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.4; }
@@ -421,20 +433,18 @@ body::before {
     pointer-events: none;
 }
 
-/* Specific Layer Rotations for Stack Effect */
 .layer-high { transform: translateZ(180px); }
 .layer-mid-high { transform: translateZ(120px); }
 .layer-mid-low { transform: translateZ(60px); }
 .layer-low { transform: translateZ(0px); }
 
-/* Hover States */
 .stack-layer:hover {
     margin-bottom: -30px;
 }
 .stack-layer:hover .layer-glass {
     background: rgba(255, 255, 255, 0.04);
     border-color: rgba(255, 255, 255, 0.25);
-    transform: translateZ(20px);
+    transform: translateZ(30px);
 }
 .stack-layer:hover .layer-glow { opacity: 1; }
 
@@ -448,9 +458,11 @@ body::before {
     .arch-stack { transform: none !important; display: flex; flex-direction: column; gap: 1.5rem; }
     .stack-layer { transform: none !important; margin: 0; height: auto; }
     .layer-glass { background: rgba(255, 255, 255, 0.02); }
+    .context-fusion-viz { flex-direction: column; height: auto; gap: 3rem; padding: 2rem 1rem; }
+    .fusion-bubbles, .fusion-center, .fusion-verified-truth { width: 100%; }
+    .fusion-center { height: 100px; }
 }
 
-/* --- ECOSYSTEM --- */
 .tu-container { height: 800px; width: 100%; border: 1px solid var(--border-strong); border-radius: 40px; position: relative; overflow: hidden; background: radial-gradient(circle at center, #111113 0%, #020202 100%); display: flex; align-items: center; justify-content: center; }
 .tu-scene { position: relative; width: 1px; height: 1px; transform-style: preserve-3d; }
 .tu-grid { position: absolute; width: 4000px; height: 4000px; background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px); background-size: 80px 80px; -webkit-mask-image: radial-gradient(black 10%, transparent 60%); pointer-events: none; }
@@ -458,7 +470,6 @@ body::before {
 .tu-sat-layer { position: absolute; inset: 0; border: 2.5px solid; border-radius: 20px; }
 .tu-billboard { background: rgba(8, 8, 10, 0.98); border: 1px solid var(--border-strong); padding: 14px 24px; border-radius: 14px; text-align: center; border-top-width: 4px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7); width: max-content; }
 
-/* --- UTILS --- */
 .glass-card {
     background: rgba(15, 15, 17, 0.6);
     backdrop-filter: blur(16px);
