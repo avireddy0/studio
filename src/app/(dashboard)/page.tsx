@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import Chart from 'chart.js/auto';
-import { Database, Layers, Mail, MessageSquare, FileText, Phone, Zap, Target, ShieldCheck, Share2, BrainCircuit, Activity, Lock, Cpu, TrendingUp, AlertTriangle, ChevronRight, Globe, BarChart3, Fingerprint, MousePointerClick } from 'lucide-react';
+import { Database, Layers, Mail, MessageSquare, FileText, Phone, Zap, Target, ShieldCheck, Share2, BrainCircuit, Activity, Lock, Cpu, TrendingUp, AlertTriangle, ChevronRight, Globe, BarChart3, Fingerprint, MousePointerClick, CheckCircle2, MessageCircle } from 'lucide-react';
 
 type Scenario = {
   query: string;
@@ -403,7 +403,7 @@ export default function DashboardPage() {
             <a href="#command-center" className="hover:text-white transition-colors">Command Center</a>
             <a href="#ingestion" className="hover:text-white transition-colors">Ingestion</a>
             <a href="#context" className="hover:text-white transition-colors">Context</a>
-            <a href="#architecture" className="hover:text-white transition-colors">Architecture</a>
+            <a href="#architecture" className="hover:text-white transition-colors">Intelligence Layer</a>
             <a href="#metrics" className="hover:text-white transition-colors">Audit Integrity</a>
           </div>
           <button className="bg-white text-black px-5 py-2 rounded-full text-xs font-bold hover:bg-slate-200 transition-colors hidden sm:block">Get Access</button>
@@ -587,24 +587,42 @@ export default function DashboardPage() {
         <div className="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-20">
           <div className="flex-1 order-2 lg:order-1 w-full max-w-2xl">
               <div className="context-fusion-viz w-full">
+                {/* Visual Flow Lines */}
+                <div className="fusion-flow-lines">
+                    <div className="flow-path path-1"></div>
+                    <div className="flow-path path-2"></div>
+                    <div className="flow-path path-3"></div>
+                </div>
+                
                 <div className="fusion-bubbles">
                   <div className="bubble-snippet b-1">
-                    <div className="b-label" style={{ '--c': 'var(--accent-blue)' } as any}>MEETING NOTE: OAC</div>
+                    <div className="b-label" style={{ '--c': 'var(--accent-blue)' } as any}>
+                        <Activity className="size-3" /> MEETING NOTE: OAC
+                    </div>
                     <p>"Authorize the lobby upgrade. Use the premium marble as discussed."</p>
                   </div>
                   <div className="bubble-snippet b-2">
-                    <div className="b-label" style={{ '--c': 'var(--accent-amber)' } as any}>SLACK: #PROJECT-FLOW</div>
+                    <div className="b-label" style={{ '--c': 'var(--accent-amber)' } as any}>
+                        <MessageCircle className="size-3" /> SLACK: #PROJECT-FLOW
+                    </div>
                     <p>"Procurement lead time is now 4 weeks. Adjusting the master schedule."</p>
                   </div>
                   <div className="bubble-snippet b-3">
-                    <div className="b-label" style={{ '--c': 'var(--accent-violet)' } as any}>EMAIL: PROCUREMENT</div>
+                    <div className="b-label" style={{ '--c': 'var(--accent-violet)' } as any}>
+                        <Mail className="size-3" /> EMAIL: PROCUREMENT
+                    </div>
                     <p>"Marble shipment confirmed. ETA matching the new project baseline."</p>
                   </div>
                 </div>
+
                 <div className="fusion-center">
                     <div className="fusion-pulse-ring"></div>
-                    <div className="fusion-core-node"><Zap className="size-10" /></div>
+                    <div className="fusion-core-node">
+                        <Zap className="size-10" />
+                        <div className="core-scanner"></div>
+                    </div>
                 </div>
+
                 <div className="fusion-verified-truth">
                     <div className="truth-card">
                         <div className="truth-badge">
@@ -615,7 +633,9 @@ export default function DashboardPage() {
                         <div className="space-y-4">
                             <div className="flex justify-between items-center text-xs border-b border-white/5 pb-3">
                                 <span className="text-slate-500 uppercase font-mono font-bold tracking-tight">Status</span>
-                                <span className="text-emerald-400 font-black">Authorized by Owner</span>
+                                <span className="text-emerald-400 font-black flex items-center gap-1">
+                                    <CheckCircle2 className="size-3" /> Authorized by Owner
+                                </span>
                             </div>
                             <div className="flex justify-between items-center text-xs border-b border-white/5 pb-3">
                                 <span className="text-slate-500 uppercase font-mono font-bold tracking-tight">Confidence</span>
@@ -760,3 +780,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+
