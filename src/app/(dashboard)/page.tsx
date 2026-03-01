@@ -52,9 +52,9 @@ export default function LandingPage() {
             </div>
             
             <div className="space-y-4 mb-16">
-                <h1 className="text-5xl md:text-8xl font-bold tracking-tighter leading-none">
+                <h1 className="text-5xl md:text-8xl font-semibold tracking-tighter leading-none">
                     Where <br/>
-                    <span className="text-primary italic">Development</span> <br/>
+                    <span className="text-primary">Development</span> <br/>
                     Meets Data
                 </h1>
             </div>

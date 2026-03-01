@@ -210,9 +210,9 @@ export default function DashboardPage() {
                     <Terminal className="size-3" />
                     <span>FINAL_ORCHESTRATION_GATE</span>
                 </div>
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-white uppercase leading-tight">
+                <h2 className="text-3xl md:text-5xl font-semibold tracking-tighter text-white uppercase leading-tight">
                     Full Project <br/>
-                    <span className="text-primary italic">Initialization</span>
+                    <span className="text-primary">Initialization</span>
                 </h2>
                 <p className="text-muted-foreground text-sm font-medium leading-relaxed">
                     Deploy verified intelligence streams to all project nodes. Ensure institutional transparency and profit protection at scale.
