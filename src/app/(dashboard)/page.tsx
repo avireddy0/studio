@@ -96,6 +96,10 @@ export default function UnifiedPage() {
                         { Icon: MessageSquare, delay: 1.2, top: '15%' },
                         { Icon: Phone, delay: 2.8, top: '80%' },
                         { Icon: FileText, delay: 3.2, top: '40%' },
+                        { Icon: Mail, delay: 1.7, top: '10%' },
+                        { Icon: MessageSquare, delay: 2.5, top: '55%' },
+                        { Icon: FileText, delay: 0.9, top: '90%' },
+                        { Icon: Phone, delay: 3.5, top: '25%' },
                       ].map((item, i) => (
                           <div 
                             key={i} 

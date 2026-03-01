@@ -81,26 +81,27 @@
 /* ANIMATIONS */
 @keyframes float-in {
   0% { transform: translateX(-100px); opacity: 0; }
-  50% { opacity: 0.5; }
-  100% { transform: translateX(50px); opacity: 0; }
+  20% { opacity: 0.8; }
+  80% { opacity: 0.8; }
+  100% { transform: translateX(300px); opacity: 0; }
 }
 .animate-float-in {
-  animation: float-in 3s infinite linear;
+  animation: float-in 3.5s infinite linear;
 }
 
 @keyframes slide-right {
   0% { transform: translateX(-50px); opacity: 0; }
   20% { opacity: 1; }
   80% { opacity: 1; }
-  100% { transform: translateX(100px); opacity: 0; }
+  100% { transform: translateX(400px); opacity: 0; }
 }
 .animate-slide-right {
-  animation: slide-right 4s infinite linear;
+  animation: slide-right 5s infinite linear;
 }
 
 @keyframes pulse-status {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.8); }
+  50% { opacity: 0.4; transform: scale(0.85); }
 }
 .animate-status {
   animation: pulse-status 2s infinite ease-in-out;
