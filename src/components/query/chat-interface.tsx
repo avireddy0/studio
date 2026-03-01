@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useRef, useEffect, useActionState } from "react";
@@ -40,7 +39,7 @@ function SubmitButton() {
 
 export function ChatInterface() {
   const pathname = usePathname();
-  const isDashboard = pathname === '/dashboard' || pathname === '/';
+  const isDashboard = pathname === '/dashboard' || pathname === '/' || pathname === '';
   
   const [messages, setMessages] = useState<Message[]>([
     { 

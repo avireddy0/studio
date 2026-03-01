@@ -11,13 +11,13 @@ import {
 import {
   Database,
   Zap,
-  Settings,
   FileText,
   Map as MapIcon,
   Activity,
   Terminal,
   ChevronRight,
-  Home
+  Home,
+  Settings
 } from "lucide-react";
 
 const navItems = [
@@ -29,18 +29,17 @@ const navItems = [
   { href: "/#initialize", label: "INITIALIZE", icon: Settings },
   { href: "/site-intel", label: "SITE INTEL", icon: MapIcon },
   { href: "/documents", label: "DOCUMENTS", icon: FileText },
-  { href: "/settings", label: "SETTINGS", icon: Settings },
 ];
 
 export function SidebarNav() {
   const pathname = usePathname();
   const [currentHash, setCurrentHash] = useState("");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Handle initial hash
+    setMounted(true);
     setCurrentHash(window.location.hash.replace('#', ''));
 
-    // Listen for hash changes
     const handleHashChange = () => {
       setCurrentHash(window.location.hash.replace('#', ''));
     };
@@ -49,17 +48,16 @@ export function SidebarNav() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
+  if (!mounted) return null;
+
   return (
     <SidebarMenu className="gap-2">
       {navItems.map((item) => {
         const isAnchor = item.href.includes('#');
         const itemHash = isAnchor ? item.href.split('#')[1] : null;
         
-        // Active state logic:
-        // 1. For anchors: Must be on home page AND hash must match
-        // 2. For standard links: Pathname must match exactly
         const isActive = isAnchor 
-          ? pathname === '/' && currentHash === itemHash
+          ? (pathname === '/' || pathname === '') && currentHash === itemHash
           : pathname === item.href;
 
         return (
@@ -69,7 +67,7 @@ export function SidebarNav() {
               isActive={isActive}
               tooltip={item.label}
               className={`
-                  h-10 px-4 transition-all group
+                  h-10 px-4 transition-all group rounded-none
                   ${isActive
                       ? "bg-primary/10 text-primary border-l-2 border-primary" 
                       : "text-muted-foreground hover:bg-white/5 hover:text-white"

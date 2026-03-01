@@ -1,12 +1,12 @@
-
 'use client';
 
 import React from 'react';
 import { DashboardHeader } from "@/components/dashboard-header";
-import { FileText, Search, Download, Filter, FileCode, FileType } from "lucide-react";
+import { FileText, Search, Download, Filter, FileCode } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 
 export default function DocumentsPage() {
   return (

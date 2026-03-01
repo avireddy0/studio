@@ -29,22 +29,14 @@ export default function UnifiedPage() {
   }, []);
 
   if (!mounted) {
-    return (
-      <div className="flex flex-col w-full bg-white h-[calc(100vh-64px)]">
-        <section className="flex flex-col items-center justify-center p-6 h-full w-full">
-            <h1 className="text-5xl md:text-8xl font-semibold tracking-tighter leading-none text-black">
-                Where Development <br/> Meets Data
-            </h1>
-        </section>
-      </div>
-    );
+    return <div className="min-h-screen bg-white" />;
   }
 
   return (
     <div className="flex flex-col w-full selection:bg-primary/20 font-sans snap-y snap-mandatory overflow-y-auto h-[calc(100vh-64px)] no-scrollbar scroll-smooth">
       
       {/* SECTION 01: INSTITUTIONAL HERO (WHITE) */}
-      <section id="hero" className="snap-start relative flex flex-col items-center justify-center p-6 bg-white text-black overflow-hidden min-h-full w-full">
+      <section id="hero" className="snap-start relative flex flex-col items-center justify-center p-6 bg-white text-black overflow-hidden min-h-screen w-full">
         <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03]" style={{ 
           backgroundImage: `linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)`,
           backgroundSize: '40px 40px'
@@ -59,7 +51,7 @@ export default function UnifiedPage() {
             <div className="space-y-4 mb-16">
                 <h1 className="text-5xl md:text-8xl font-semibold tracking-tighter leading-none">
                     Where <br/>
-                    <span className="text-primary">Development</span> <br/>
+                    <span className="text-primary font-semibold">Development</span> <br/>
                     Meets Data
                 </h1>
             </div>
@@ -83,7 +75,7 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 02: TELEMETRY METRICS (OBSIDIAN) */}
-      <section id="metrics" className="snap-start relative min-h-full w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
+      <section id="metrics" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
         <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
         <div className="relative z-10 w-full max-w-7xl">
             <div className="flex items-center gap-3 mb-8">
@@ -114,14 +106,14 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 03: INTEL CORE (OBSIDIAN) */}
-      <section id="intel" className="snap-start relative min-h-full w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
+      <section id="intel" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
         <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
-        <div className="relative z-10 w-full max-w-7xl h-[80vh] flex flex-col">
+        <div className="relative z-10 w-full max-w-7xl h-full flex flex-col justify-center">
             <div className="flex items-center gap-3 mb-6 shrink-0">
                 <Terminal className="size-4 text-primary" />
                 <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">02_INTEL_TERMINAL_CORE</h2>
             </div>
-            <Card className="bg-[#12121A] border-[#1E1E2E] flex-1 flex flex-col overflow-hidden">
+            <Card className="bg-[#12121A] border-[#1E1E2E] h-[70vh] flex flex-col overflow-hidden">
                 <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-3 shrink-0">
                     <div className="flex items-center justify-between">
                         <CardTitle className="text-[10px] tracking-[0.3em]">SECURE_COMMAND_INTERFACE</CardTitle>
@@ -139,19 +131,19 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 04: RISK (OBSIDIAN) */}
-      <section id="risk" className="snap-start relative min-h-full w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
+      <section id="risk" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
           <div className="relative z-10 w-full max-w-7xl">
               <div className="flex items-center gap-3 mb-8">
                   <Target className="size-4 text-primary" />
                   <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">03_RISK_GEOSPATIAL</h2>
               </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[60vh]">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[50vh]">
                 <Card className="bg-[#12121A] border-[#1E1E2E]">
                     <CardHeader className="border-b border-[#1E1E2E]/50 py-3">
                         <CardTitle className="text-[10px] tracking-[0.3em]">PROJECT_RISK_MATRIX</CardTitle>
                     </CardHeader>
-                    <CardContent className="p-8 h-full">
+                    <CardContent className="p-8">
                         <div className="space-y-8">
                         {[
                             { name: 'PROJECT_PHOENIX', risk: 'LOW', color: 'bg-primary' },
@@ -180,7 +172,7 @@ export default function UnifiedPage() {
                     <CardHeader className="border-b border-[#1E1E2E]/50 py-3">
                         <CardTitle className="text-[10px] tracking-[0.3em]">GEOSPATIAL_STATUS</CardTitle>
                     </CardHeader>
-                    <CardContent className="p-8 flex flex-col items-center justify-center text-center gap-6 h-full relative overflow-hidden">
+                    <CardContent className="p-8 flex flex-col items-center justify-center text-center gap-6 min-h-[300px] relative overflow-hidden">
                         <div className="absolute inset-0 tactical-grid opacity-20 pointer-events-none" />
                         <div className="relative">
                             <MapIcon className="size-16 text-primary/10" />
@@ -201,14 +193,14 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 05: DATA INGESTION (OBSIDIAN) */}
-      <section id="ingestion" className="snap-start relative min-h-full w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
+      <section id="ingestion" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
-          <div className="relative z-10 w-full max-w-7xl h-[60vh] flex flex-col">
+          <div className="relative z-10 w-full max-w-7xl flex flex-col">
               <div className="flex items-center gap-3 mb-6 shrink-0">
                   <Database className="size-4 text-primary" />
                   <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">04_DATA_INGESTION_PIPELINE</h2>
               </div>
-              <Card className="bg-[#12121A] border-[#1E1E2E] flex-1">
+              <Card className="bg-[#12121A] border-[#1E1E2E]">
                   <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-6">
                       <div className="flex items-center justify-between">
                           <div className="flex flex-col gap-1">
@@ -218,7 +210,7 @@ export default function UnifiedPage() {
                           <span className="text-[9px] font-mono text-muted-foreground uppercase">Buffer: 99.8%</span>
                       </div>
                   </CardHeader>
-                  <CardContent className="p-8 md:p-12 h-[calc(100%-80px)] overflow-auto">
+                  <CardContent className="p-8 md:p-12">
                       <PdfExtractor />
                   </CardContent>
               </Card>
@@ -226,14 +218,14 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 06: CONTEXT FUSION (OBSIDIAN) */}
-      <section id="fusion" className="snap-start relative min-h-full w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
+      <section id="fusion" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
-          <div className="relative z-10 w-full max-w-7xl h-[60vh] flex flex-col">
+          <div className="relative z-10 w-full max-w-7xl flex flex-col">
               <div className="flex items-center gap-3 mb-6 shrink-0">
                   <Zap className="size-4 text-primary" />
                   <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">05_CONTEXT_FUSION_ENGINE</h2>
               </div>
-              <Card className="bg-[#12121A] border-[#1E1E2E] flex-1">
+              <Card className="bg-[#12121A] border-[#1E1E2E]">
                   <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-6">
                       <div className="flex items-center justify-between">
                           <div className="flex flex-col gap-1">
@@ -243,7 +235,7 @@ export default function UnifiedPage() {
                           <span className="text-[9px] font-mono text-muted-foreground uppercase">Correlation: 0.94 Sigma</span>
                       </div>
                   </CardHeader>
-                  <CardContent className="p-8 md:p-12 h-[calc(100%-80px)] overflow-auto">
+                  <CardContent className="p-8 md:p-12">
                       <ContextSummarizer />
                   </CardContent>
               </Card>
@@ -251,7 +243,7 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 07: INITIALIZE COMMAND (OBSIDIAN) */}
-      <section id="initialize" className="snap-start relative min-h-full w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 text-center gap-12 border-t border-[#1E1E2E]">
+      <section id="initialize" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 text-center gap-12 border-t border-[#1E1E2E]">
           <div className="space-y-6 max-w-3xl">
               <div className="inline-flex items-center gap-2 px-6 py-2 border border-primary/20 bg-primary/5 text-[10px] font-bold uppercase tracking-[0.5em] text-primary mb-4">
                   <Terminal className="size-4" />
@@ -259,7 +251,7 @@ export default function UnifiedPage() {
               </div>
               <h2 className="text-4xl md:text-7xl font-semibold tracking-tighter text-white uppercase leading-tight">
                   Full Project <br/>
-                  <span className="text-primary">Initialization</span>
+                  <span className="text-primary font-semibold">Initialization</span>
               </h2>
               <p className="text-muted-foreground text-lg font-medium leading-relaxed">
                   Deploy verified intelligence streams to all project nodes. Ensure institutional transparency and profit protection at scale.
