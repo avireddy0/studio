@@ -1,185 +1,142 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { handleContextSummarization } from "@/lib/actions";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
-import { Loader2, Wand2, Zap, Target, ListChecks, ShieldAlert, Layers, ShieldCheck, Cpu } from "lucide-react";
-import type { QualitativeContextSummarizationOutput } from "@/ai/flows/qualitative-context-summarization";
+import React, { useState, useEffect } from "react";
+import { 
+  Layers, 
+  ShieldAlert, 
+  ShieldCheck, 
+  Zap, 
+  Activity, 
+  Database, 
+  Cpu, 
+  AlertTriangle,
+  ArrowUp
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const formSchema = z.object({
-  projectDecisionOrIssue: z.string().min(5, "Title required."),
-  qualitativeData: z.string().min(20, "More data required for fusion."),
-});
-
 export function ContextSummarizer() {
-  const [result, setResult] = useState<QualitativeContextSummarizationOutput | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
+  const [activeLayer, setActiveLayer] = useState<number>(0);
+  const [mounted, setMounted] = useState(false);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      projectDecisionOrIssue: "",
-      qualitativeData: "",
-    },
-  });
+  useEffect(() => {
+    setMounted(true);
+    const interval = setInterval(() => {
+      setActiveLayer((prev) => (prev + 1) % 3);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-    setResult(null);
-    const response = await handleContextSummarization(values);
-    
-    if (response.data) {
-      setResult(response.data);
-    } else {
-      toast({
-        variant: "destructive",
-        title: "Fusion Failed",
-        description: response.error as string || "An unknown error occurred.",
-      });
-    }
-    setIsLoading(false);
-  }
+  if (!mounted) return null;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-      {/* INPUT SIDE */}
-      <div className="space-y-8">
-        <div className="space-y-2">
-            <h3 className="text-xl font-bold tracking-tight text-white uppercase">Initialize Fusion</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-                Connect fragmented communication nodes to the verified project baseline.
-            </p>
+    <div className="relative w-full h-full flex flex-col items-center justify-center gap-12 py-12">
+      
+      {/* AUTHORITATIVE MESSAGE */}
+      <div className="text-center space-y-4 max-w-2xl z-20">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-destructive/20 bg-destructive/5 text-[10px] font-bold uppercase tracking-[0.4em] text-destructive mb-2 animate-pulse">
+            <ShieldAlert className="size-3" />
+            <span>CRITICAL_WARNING_PROTOCOL</span>
         </div>
-
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="projectDecisionOrIssue"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-primary">Context_Target</FormLabel>
-                  <FormControl>
-                    <Input 
-                        placeholder="e.g., 'Steel Procurement Delay'" 
-                        {...field} 
-                        className="bg-[#0A0A0F] border-[#1E1E2E] text-white h-11"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="qualitativeData"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-primary">Signal_Input_Stream</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Paste Slack logs, Zoom transcripts, or field notes..."
-                      className="min-h-[150px] bg-[#0A0A0F] border-[#1E1E2E] text-white/70 leading-relaxed font-mono text-xs"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" disabled={isLoading} className="w-full h-14 group">
-              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Cpu className="mr-2 h-4 w-4" />}
-              EXECUTE_CONTEXT_FUSION
-            </Button>
-          </form>
-        </Form>
+        <h2 className="text-4xl md:text-6xl font-semibold tracking-tighter text-white uppercase leading-tight">
+          Data Without Context <br/>
+          <span className="text-destructive">Is Dangerous.</span>
+        </h2>
+        <p className="text-muted-foreground text-sm font-medium leading-relaxed max-w-lg mx-auto">
+          Raw signal streams without institutional verification create fragmentation. 
+          Envision OS fuses multi-platform chaos into a sovereign intelligence baseline.
+        </p>
       </div>
 
-      {/* VISUALIZATION SIDE */}
-      <div className="relative min-h-[500px] flex flex-col gap-6">
-        {!result && !isLoading ? (
-            <div className="flex-1 border border-dashed border-white/10 flex flex-col items-center justify-center text-center p-12 gap-6 bg-white/[0.01]">
-                <div className="relative">
-                    <Layers className="size-16 text-white/10" />
-                    <ShieldAlert className="size-6 text-destructive absolute -top-1 -right-1 animate-pulse" />
-                </div>
-                <div className="space-y-2">
-                    <p className="text-sm font-bold text-white/40 uppercase tracking-[0.2em]">Data Without Context is Dangerous</p>
-                    <p className="text-[10px] font-mono text-muted-foreground uppercase leading-relaxed">
-                        Raw data points are liability. <br/> Initialize fusion to generate verified intelligence.
-                    </p>
-                </div>
+      {/* INTERACTIVE LAYER STACK */}
+      <div className="relative w-full max-w-4xl h-[400px] perspective-[1500px]">
+        
+        {/* LAYER 03: CONTEXT VERIFICATION (TOP) */}
+        <div className={cn(
+            "absolute inset-0 border-2 border-primary bg-primary/10 backdrop-blur-md transition-all duration-700 ease-out flex flex-col items-center justify-center gap-6 shadow-[0_0_100px_rgba(0,124,90,0.2)]",
+            activeLayer === 2 ? "translate-z-[150px] opacity-100 scale-100" : "translate-z-[200px] opacity-20 scale-105 pointer-events-none"
+        )}>
+            <div className="absolute top-4 left-4 flex items-center gap-2">
+                <ShieldCheck className="size-4 text-primary" />
+                <span className="text-[10px] font-mono font-bold text-primary uppercase tracking-widest">LAYER_03: SOVEREIGN_INTEL</span>
             </div>
-        ) : isLoading ? (
-            <div className="flex-1 border border-primary/20 bg-primary/5 flex flex-col items-center justify-center gap-4">
-                <Loader2 className="size-10 text-primary animate-spin" />
-                <span className="text-[10px] font-mono font-bold text-primary uppercase tracking-[0.4em]">Fusing_Intelligence_Layers...</span>
+            <div className="size-24 rounded-full bg-primary/20 border border-primary flex items-center justify-center animate-status">
+                <ShieldCheck className="size-12 text-primary" />
             </div>
-        ) : (
-            <div className="flex-1 flex flex-col gap-6">
-                {/* INTERACTIVE LAYERING VISUAL */}
-                <div className="relative h-64 border border-white/10 bg-black/40 overflow-hidden group">
-                    <div className="absolute inset-0 tactical-grid opacity-20" />
-                    
-                    {/* DATA LAYER (BOTTOM) */}
-                    <div className="absolute inset-4 border border-white/5 bg-white/[0.02] flex flex-col items-center justify-center gap-2 transform translate-z-[-10px] group-hover:translate-y-[-10px] transition-transform duration-500">
-                        <span className="text-[8px] font-mono text-white/20 uppercase">Baseline_Data_Stream</span>
-                        <div className="flex gap-2">
-                            {[1, 2, 3].map(i => <div key={i} className="h-1 w-8 bg-white/5" />)}
-                        </div>
-                    </div>
-
-                    {/* CONTEXT LAYER (TOP) */}
-                    <div className="absolute inset-0 bg-primary/10 backdrop-blur-sm border-t-2 border-primary flex flex-col items-center justify-center gap-3 transform translate-z-[10px] transition-all duration-700 animate-in fade-in slide-in-from-bottom-4">
-                        <ShieldCheck className="size-10 text-primary" />
-                        <div className="text-center">
-                            <p className="text-[10px] font-bold text-white uppercase tracking-[0.3em]">CONTEXT_VERIFIED</p>
-                            <p className="text-[8px] font-mono text-primary uppercase tracking-widest">{result.confidenceLevel}_Confidence_Vector</p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* RESULTS CONTENT */}
-                <div className="space-y-6 font-mono">
-                    <div className="space-y-2">
-                        <h4 className="text-[9px] font-bold text-primary uppercase tracking-widest flex items-center gap-2">
-                            <Zap className="size-3" /> FUSED_SUMMARY
-                        </h4>
-                        <p className="text-xs text-white/70 leading-relaxed bg-white/[0.02] p-4 border border-white/5">
-                            {result.summary}
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-3">
-                            <h4 className="text-[9px] font-bold text-primary uppercase tracking-widest flex items-center gap-2">
-                                <Target className="size-3" /> CRITICAL_NODES
-                            </h4>
-                            <ul className="space-y-2 text-[10px] text-white/50">
-                                {result.criticalPoints.map((p, i) => <li key={i} className="flex gap-2"><span>-</span> {p}</li>)}
-                            </ul>
-                        </div>
-                        <div className="space-y-3">
-                            <h4 className="text-[9px] font-bold text-primary uppercase tracking-widest flex items-center gap-2">
-                                <ListChecks className="size-3" /> ACTION_QUEUE
-                            </h4>
-                            <ul className="space-y-2 text-[10px] text-white/50">
-                                {result.actionItems.map((p, i) => <li key={i} className="flex gap-2"><span>•</span> {p}</li>)}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+            <div className="text-center">
+                <p className="text-[14px] font-bold text-white uppercase tracking-[0.4em]">VERIFIED_TRUTH</p>
+                <p className="text-[8px] font-mono text-primary uppercase tracking-widest mt-1">Institutional_Baseline_Locked</p>
             </div>
-        )}
+        </div>
+
+        {/* LAYER 02: METADATA CORRELATION (MIDDLE) */}
+        <div className={cn(
+            "absolute inset-0 border border-white/20 bg-white/5 backdrop-blur-sm transition-all duration-700 ease-out flex flex-col items-center justify-center gap-6",
+            activeLayer === 1 ? "translate-z-[0px] opacity-100 scale-95" : "translate-z-[50px] opacity-20 scale-100 pointer-events-none"
+        )}>
+            <div className="absolute top-4 left-4 flex items-center gap-2">
+                <Cpu className="size-4 text-white/40" />
+                <span className="text-[10px] font-mono font-bold text-white/40 uppercase tracking-widest">LAYER_02: CROSS_CORRELATION</span>
+            </div>
+            <div className="grid grid-cols-4 gap-4 w-full px-12 opacity-40">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
+                    <div key={i} className="h-1 bg-white/10 relative">
+                        <div className="absolute inset-0 bg-primary animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                    </div>
+                ))}
+            </div>
+            <div className="text-center">
+                <p className="text-[12px] font-bold text-white/60 uppercase tracking-[0.3em]">SYNTHESIZING_NODES</p>
+                <p className="text-[8px] font-mono text-muted-foreground uppercase tracking-widest mt-1">Multi-Platform_Signal_Match</p>
+            </div>
+        </div>
+
+        {/* LAYER 01: RAW SIGNAL CHAOS (BOTTOM) */}
+        <div className={cn(
+            "absolute inset-0 border border-destructive/20 bg-destructive/5 transition-all duration-700 ease-out flex flex-col items-center justify-center gap-6 overflow-hidden",
+            activeLayer === 0 ? "translate-z-[-150px] opacity-100 scale-90" : "translate-z-[-100px] opacity-20 scale-95 pointer-events-none"
+        )}>
+            <div className="absolute inset-0 tactical-grid opacity-20" />
+            <div className="absolute top-4 left-4 flex items-center gap-2">
+                <AlertTriangle className="size-4 text-destructive/40" />
+                <span className="text-[10px] font-mono font-bold text-destructive/40 uppercase tracking-widest">LAYER_01: RAW_SIGNAL_CHAOS</span>
+            </div>
+            
+            <div className="flex flex-wrap gap-2 justify-center px-12">
+                {["RFI_99", "PDF_ERR", "XLS_LOST", "CALL_DROP", "MSG_NULL", "BIM_LAG", "DATA_NOISE"].map((str, i) => (
+                    <div key={i} className="px-3 py-1 border border-destructive/30 text-[9px] font-mono text-destructive uppercase animate-pulse">
+                        {str}
+                    </div>
+                ))}
+            </div>
+
+            <div className="text-center">
+                <p className="text-[12px] font-bold text-destructive/60 uppercase tracking-[0.3em]">FRAGMENTED_LIABILITY</p>
+                <p className="text-[8px] font-mono text-destructive/40 uppercase tracking-widest mt-1">Unverified_Data_Stream</p>
+            </div>
+        </div>
+
+      </div>
+
+      {/* LAYER NAVIGATION HUD */}
+      <div className="flex gap-4 z-20">
+          {[
+              { id: 0, label: "RAW_CHAOS", icon: Activity, color: "text-destructive" },
+              { id: 1, label: "CORRELATION", icon: Cpu, color: "text-white/60" },
+              { id: 2, label: "SOVEREIGN_TRUTH", icon: ShieldCheck, color: "text-primary" },
+          ].map((layer) => (
+              <button
+                key={layer.id}
+                onClick={() => setActiveLayer(layer.id)}
+                className={cn(
+                    "flex flex-col items-center gap-2 p-4 border transition-all min-w-[140px]",
+                    activeLayer === layer.id ? "bg-white/10 border-white/20" : "bg-transparent border-white/5 opacity-40 hover:opacity-60"
+                )}
+              >
+                  <layer.icon className={cn("size-5", layer.color)} />
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-white">{layer.label}</span>
+                  {activeLayer === layer.id && <div className="h-0.5 w-full bg-primary mt-1" />}
+              </button>
+          ))}
       </div>
     </div>
   );

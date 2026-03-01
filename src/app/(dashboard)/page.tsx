@@ -41,8 +41,8 @@ export default function UnifiedPage() {
 
   const satelliteImage = PlaceHolderImages.find(img => img.id === 'satellite-map');
 
-  // Realistic Signal Tornado - 80 high-impact elements, wide left, converging to center, 40% slower
-  const chaoticInputs = Array.from({ length: 80 }).map((_, i) => {
+  // Realistic Signal Tornado - Converging into a > point in the center
+  const chaoticInputs = Array.from({ length: 70 }).map((_, i) => {
     const icons = [
         { Icon: FileText, color: "text-blue-400", label: "PDF" },
         { Icon: FileSpreadsheet, color: "text-green-400", label: "XLS" },
@@ -54,17 +54,15 @@ export default function UnifiedPage() {
     ];
     const item = icons[i % icons.length];
     const topPercent = Math.random() * 100;
-    // Calculate yOffset to meet precisely at the vertical middle (50% of the container)
-    const yOffsetValue = 50 - topPercent;
+    const yOffsetValue = 50 - topPercent; // Mathematically funnel to center
     
     return {
       ...item,
-      // Use negative delays to ensure icons are already "in stream" on load (no initial delay)
-      delay: `-${(Math.random() * 15).toFixed(2)}s`, 
-      duration: `${(8.0 + Math.random() * 6.0).toFixed(2)}s`, // 40% slower
+      delay: `-${(Math.random() * 10).toFixed(2)}s`, // Negative delay for zero startup wait
+      duration: `${(7.0 + Math.random() * 5.0).toFixed(2)}s`, // 40% slower trajectory
       top: `${topPercent.toFixed(2)}%`,
-      yOffset: `${(yOffsetValue * 8.5).toFixed(2)}px`, // Funnel to center
-      size: "size-12", // Bigger icons
+      yOffset: `${(yOffsetValue * 8).toFixed(2)}px`,
+      size: "size-16 md:size-20", // Larger icons on left
     };
   });
 
@@ -127,7 +125,7 @@ export default function UnifiedPage() {
                         {chaoticInputs.map((item, i) => (
                             <div 
                               key={i} 
-                              className="absolute left-[-150px] animate-tornado"
+                              className="absolute left-[-200px] animate-tornado"
                               style={{ 
                                   "--delay": item.delay,
                                   "--duration": item.duration,
@@ -136,10 +134,10 @@ export default function UnifiedPage() {
                               } as React.CSSProperties}
                             >
                                 <div className="flex flex-col items-center gap-1 group">
-                                    <div className={cn("p-2 border bg-black/40 border-white/10 shadow-xl", item.color)}>
+                                    <div className={cn("p-4 border bg-black/80 border-white/10 shadow-2xl transition-transform hover:scale-110", item.color)}>
                                         <item.Icon className={item.size} />
                                     </div>
-                                    <span className="text-[8px] font-mono opacity-60 font-bold uppercase tracking-widest">{item.label}</span>
+                                    <span className="text-[9px] font-mono text-white/60 font-bold uppercase tracking-[0.2em]">{item.label}</span>
                                 </div>
                             </div>
                         ))}
@@ -147,15 +145,15 @@ export default function UnifiedPage() {
 
                       {/* THE PARSER CORE (CENTER) */}
                       <div className="relative z-20 flex flex-col items-center gap-4 px-12">
-                          <div className="size-48 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_80px_rgba(0,124,90,0.2)] bg-[#0A0A0F]/50 backdrop-blur-sm">
+                          <div className="size-56 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_100px_rgba(0,124,90,0.3)] bg-[#0A0A0F]/80 backdrop-blur-xl">
                               <div className="relative">
                                 <Database className="size-24 text-primary" />
                                 <div className="absolute inset-0 size-24 bg-primary/30 blur-3xl animate-pulse" />
                               </div>
                           </div>
                           <div className="flex flex-col items-center gap-0.5">
-                              <span className="text-[10px] font-mono font-bold text-primary uppercase tracking-[0.4em]">Parser_Core</span>
-                              <span className="text-[7px] font-mono text-white/40 uppercase tracking-widest animate-pulse">Synthesizing_Intelligence...</span>
+                              <span className="text-[11px] font-mono font-bold text-primary uppercase tracking-[0.4em]">Parser_Core_Active</span>
+                              <span className="text-[8px] font-mono text-white/40 uppercase tracking-widest animate-pulse">Orchestrating_Intelligence...</span>
                           </div>
                       </div>
 
@@ -173,7 +171,7 @@ export default function UnifiedPage() {
                               ].map((str, i) => (
                                 <div 
                                     key={i} 
-                                    className="animate-data-stream-single opacity-0 text-[10px] font-mono text-primary font-bold whitespace-nowrap bg-primary/5 px-4 py-2 border-l-2 border-primary shadow-sm" 
+                                    className="animate-data-stream-single opacity-0 text-[11px] font-mono text-primary font-bold whitespace-nowrap bg-primary/5 px-6 py-3 border-l-4 border-primary shadow-sm" 
                                     style={{ animationDelay: `${i * 0.7}s` }}
                                 >
                                     {str}
@@ -225,20 +223,7 @@ export default function UnifiedPage() {
                   <Zap className="size-4 text-primary" />
                   <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">04_Context_Fusion_Engine</h2>
               </div>
-              <Card className="bg-[#12121A] border-[#1E1E2E] flex-1 flex flex-col overflow-hidden">
-                  <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-10 shrink-0">
-                      <div className="flex items-center justify-between">
-                          <div className="flex flex-col gap-1">
-                              <CardTitle className="text-[16px] tracking-[0.3em]">Context Is Everything</CardTitle>
-                              <CardDescription className="text-[10px] font-mono text-primary/60 uppercase tracking-widest">Multi-Platform Correlation</CardDescription>
-                          </div>
-                          <span className="text-[9px] font-mono text-muted-foreground uppercase">Correlation: 0.94 Sigma</span>
-                      </div>
-                  </CardHeader>
-                  <CardContent className="p-8 md:p-16 flex-1 overflow-auto">
-                      <ContextSummarizer />
-                  </CardContent>
-              </Card>
+              <ContextSummarizer />
           </div>
       </section>
 

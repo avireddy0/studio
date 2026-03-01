@@ -81,7 +81,6 @@ export function ChatInterface() {
       setMessages((prev) => [...prev, { role: "user", content: query }]);
       setMessages((prev) => [...prev, { role: "status", content: "ORCHESTRATING_INTEL..." }]);
       
-      // Fix: Wrap useActionState call in startTransition for React 19 compliance
       startTransition(() => {
         formAction(formData);
       });
