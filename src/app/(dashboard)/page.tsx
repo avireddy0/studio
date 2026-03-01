@@ -51,7 +51,7 @@ export default function UnifiedPage() {
       duration: `${(5.0 + Math.random() * 4.5).toFixed(2)}s`, // Slowed down by 40%
       top: `${(Math.random() * 100).toFixed(2)}%`,
       yOffset: `${(Math.random() * 400 - 200).toFixed(2)}px`,
-      size: i % 12 === 0 ? "size-6" : "size-4",
+      size: i % 10 === 0 ? "size-10" : "size-7", // SIGNIFICANTLY BIGGER ICONS
     };
   });
 
@@ -91,15 +91,22 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 02: INGESTION PIPELINE (OBSIDIAN) - CHAOS TO CONTROL */}
-      <section id="ingestion" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden">
+      <section id="ingestion" className="snap-start relative h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
-          <div className="relative z-10 w-full max-w-7xl flex flex-col gap-12">
-              <div className="flex items-center gap-3 mb-2 shrink-0">
-                  <Database className="size-4 text-primary" />
-                  <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">02_Data_Ingestion_Pipeline</h2>
+          <div className="relative z-10 w-full max-w-7xl h-full flex flex-col justify-between py-12 gap-8">
+              
+              <div className="space-y-4 shrink-0">
+                  <div className="flex items-center gap-3 mb-2">
+                      <Database className="size-4 text-primary" />
+                      <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">02_Data_Ingestion_Pipeline</h2>
+                  </div>
+                  <h3 className="text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Chaos to Control.</h3>
+                  <p className="text-lg text-white/60 max-w-2xl leading-relaxed font-medium">
+                      Slamming thousands of fragmented construction signals—emails, texts, and calls—into a verified institutional stream. Deterministic parsing for weapons-grade project accuracy.
+                  </p>
               </div>
               
-              <div className="relative w-full h-[600px] flex items-center bg-white/[0.02] border border-white/5">
+              <div className="relative w-full flex-1 flex items-center bg-white/[0.02] border border-white/5">
                   <div className="absolute inset-0 flex items-center justify-center">
                       
                       {/* THE CHAOTIC TORNADO FUNNEL (LEFT TO CENTER) */}
@@ -107,7 +114,7 @@ export default function UnifiedPage() {
                         {chaoticInputs.map((item, i) => (
                             <div 
                               key={i} 
-                              className="absolute left-[-50px] animate-tornado text-white/20"
+                              className="absolute left-[-100px] animate-tornado text-white/30"
                               style={{ 
                                   "--delay": item.delay,
                                   "--duration": item.duration,
@@ -122,10 +129,10 @@ export default function UnifiedPage() {
 
                       {/* THE PARSER CORE (CENTER) */}
                       <div className="relative z-20 flex flex-col items-center gap-4 px-12">
-                          <div className="size-40 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_80px_rgba(0,124,90,0.2)] bg-[#0A0A0F]/50 backdrop-blur-sm">
+                          <div className="size-48 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_80px_rgba(0,124,90,0.2)] bg-[#0A0A0F]/50 backdrop-blur-sm">
                               <div className="relative">
-                                <Database className="size-20 text-primary" />
-                                <div className="absolute inset-0 size-20 bg-primary/30 blur-3xl animate-pulse" />
+                                <Database className="size-24 text-primary" />
+                                <div className="absolute inset-0 size-24 bg-primary/30 blur-3xl animate-pulse" />
                               </div>
                           </div>
                           <div className="flex flex-col items-center gap-0.5">
@@ -148,7 +155,7 @@ export default function UnifiedPage() {
                               ].map((str, i) => (
                                 <div 
                                     key={i} 
-                                    className="animate-data-stream-single opacity-0 text-[9px] font-mono text-primary font-bold whitespace-nowrap bg-primary/5 px-3 py-1.5 border-l-2 border-primary shadow-sm" 
+                                    className="animate-data-stream-single opacity-0 text-[10px] font-mono text-primary font-bold whitespace-nowrap bg-primary/5 px-4 py-2 border-l-2 border-primary shadow-sm" 
                                     style={{ animationDelay: `${i * 0.6}s` }}
                                 >
                                     {str}
@@ -156,15 +163,6 @@ export default function UnifiedPage() {
                               ))}
                           </div>
                       </div>
-                  </div>
-              </div>
-
-              <div className="max-w-3xl">
-                  <div className="space-y-4">
-                      <h3 className="text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Chaos to Control.</h3>
-                      <p className="text-lg text-white/60 max-w-2xl leading-relaxed font-medium">
-                          Slamming thousands of fragmented construction signals—emails, texts, and calls—into a verified institutional stream. Deterministic parsing for weapons-grade project accuracy.
-                      </p>
                   </div>
               </div>
           </div>
