@@ -82,7 +82,7 @@ export function ChatInterface() {
       setMessages((prev) => [...prev, { role: "user", content: query }]);
       setMessages((prev) => [...prev, { role: "status", content: "ORCHESTRATING_INTEL..." }]);
       
-      // Ensure the action is called within a transition for React 19 compliance
+      // Wrap manual trigger in startTransition for React 19 compliance
       startTransition(() => {
         formAction(formData);
       });

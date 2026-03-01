@@ -81,11 +81,11 @@
 /* ANIMATIONS */
 @keyframes tornado-ingest {
   0% { 
-    transform: translate(-300px, 0) scale(1.4); 
+    transform: translate(-300px, 0) scale(1.6); 
     opacity: 1; 
   }
   100% { 
-    /* Funnel precisely into the central Parser Core */
+    /* Funnel precisely into the central Parser Core with NO FADE until the very end */
     transform: translate(calc(50vw - 60px), var(--y-offset)) scale(0); 
     opacity: 1; 
   }
