@@ -93,7 +93,7 @@ export default function UnifiedPage() {
             </div>
 
             <p className="text-sm sm:text-base md:text-xl text-black/60 max-w-2xl mb-6 sm:mb-8 md:mb-16 leading-relaxed font-medium">
-                Sovereign project orchestration. Eliminating fragmented noise with <span className="text-black font-bold uppercase">weapons-grade accuracy</span> and verified multi-platform data fusion.
+                One platform. Every signal. From RFIs to financials, Envision fuses your scattered project data into a <span className="text-black font-bold uppercase">single source of truth</span> — so nothing falls through the cracks.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 font-mono">
