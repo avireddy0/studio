@@ -1,7 +1,6 @@
 'use client'
 
-import { motion, useAnimationControls } from 'framer-motion'
-import { useRef, useState, useEffect, useMemo } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import {
   FileText,
   FileSpreadsheet,
@@ -14,98 +13,70 @@ import {
   Receipt,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import type { LucideIcon } from 'lucide-react'
 
-// Document card data — each has unique visual personality
-const DOC_ITEMS = [
-  { Icon: FileText, label: "PDF", accent: "#EF4444", startY: 4, rotate: -18, lines: [100, 80, 90, 60] },
-  { Icon: FileSpreadsheet, label: "XLS", accent: "#22C55E", startY: 15, rotate: 12, lines: [100, 100, 70] },
-  { Icon: FileSignature, label: "RFI", accent: "#F59E0B", startY: 27, rotate: -8, lines: [90, 75, 100, 50, 85] },
-  { Icon: FileCode, label: "BIM", accent: "#A855F7", startY: 39, rotate: 22, lines: [100, 60, 80] },
-  { Icon: Mail, label: "EMAIL", accent: "#3B82F6", startY: 51, rotate: -14, lines: [100, 90, 70, 100] },
-  { Icon: Phone, label: "CALL", accent: "#10B981", startY: 63, rotate: 6, lines: [80, 100, 60] },
-  { Icon: MessageSquare, label: "SMS", accent: "#EC4899", startY: 74, rotate: -20, lines: [100, 70, 90, 50] },
-  { Icon: Receipt, label: "INVOICE", accent: "#F97316", startY: 85, rotate: 15, lines: [100, 80, 100, 70, 60] },
-  { Icon: Camera, label: "PHOTO", accent: "#0EA5E9", startY: 94, rotate: -10, lines: [80, 100] },
-]
-
-// Realistic paper document card
-function DocCard({ accent, Icon, label, lines, rotate }: {
-  accent: string
-  Icon: typeof FileText
+// ─── DOCUMENT TYPES ────────────────────────────────────────────
+interface DocType {
+  Icon: LucideIcon
   label: string
+  accent: string
   lines: number[]
-  rotate: number
-}) {
-  return (
-    <div
-      className="relative"
-      style={{
-        transform: `rotate(${rotate}deg) perspective(600px) rotateY(-3deg)`,
-        transformStyle: 'preserve-3d',
-      }}
-    >
-      {/* Shadow layer */}
-      <div className="absolute inset-0 rounded-lg bg-black/20 blur-xl translate-y-2 translate-x-1" />
-
-      {/* Main card */}
-      <div className="relative bg-white rounded-lg overflow-hidden"
-        style={{
-          boxShadow: `0 8px 32px rgba(0,0,0,0.3), 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.9)`,
-          width: 'clamp(52px, 8vw, 110px)',
-          padding: 'clamp(6px, 1vw, 14px)',
-        }}
-      >
-        {/* Accent stripe top */}
-        <div className="h-[3px] sm:h-1 rounded-full mb-1.5 sm:mb-2.5" style={{ background: accent }} />
-
-        {/* Icon */}
-        <div className="flex items-center gap-1 sm:gap-1.5 mb-1.5 sm:mb-2">
-          <Icon
-            className="size-3 sm:size-4 md:size-5 shrink-0"
-            style={{ color: accent }}
-          />
-          <span
-            className="text-[5px] sm:text-[7px] md:text-[8px] font-black uppercase tracking-[0.15em] truncate"
-            style={{ color: accent }}
-          >
-            {label}
-          </span>
-        </div>
-
-        {/* Text lines */}
-        <div className="flex flex-col gap-[2px] sm:gap-1">
-          {lines.map((w, i) => (
-            <div
-              key={i}
-              className="h-[2px] sm:h-[3px] rounded-full bg-gray-200"
-              style={{ width: `${w}%` }}
-            />
-          ))}
-        </div>
-
-        {/* Corner fold */}
-        <div className="absolute top-0 right-0 w-3 h-3 sm:w-4 sm:h-4">
-          <div className="absolute top-0 right-0 w-full h-full bg-gray-100"
-            style={{ clipPath: 'polygon(100% 0, 0 0, 100% 100%)' }}
-          />
-          <div className="absolute top-0 right-0 w-full h-full bg-gray-200/80"
-            style={{ clipPath: 'polygon(0 0, 100% 100%, 0 100%)' }}
-          />
-        </div>
-      </div>
-    </div>
-  )
 }
 
+const DOC_TYPES: DocType[] = [
+  { Icon: FileText, label: "PDF", accent: "#EF4444", lines: [100, 80, 90, 60] },
+  { Icon: FileSpreadsheet, label: "XLS", accent: "#22C55E", lines: [100, 100, 70] },
+  { Icon: FileSignature, label: "RFI", accent: "#F59E0B", lines: [90, 75, 100, 50] },
+  { Icon: FileCode, label: "BIM", accent: "#A855F7", lines: [100, 60, 80] },
+  { Icon: Mail, label: "EMAIL", accent: "#3B82F6", lines: [100, 90, 70, 100] },
+  { Icon: Phone, label: "CALL", accent: "#10B981", lines: [80, 100, 60] },
+  { Icon: MessageSquare, label: "SMS", accent: "#EC4899", lines: [100, 70, 90] },
+  { Icon: Receipt, label: "INVOICE", accent: "#F97316", lines: [100, 80, 100, 70] },
+  { Icon: Camera, label: "PHOTO", accent: "#0EA5E9", lines: [80, 100] },
+]
+
+// ─── FLYING CARD STATE ─────────────────────────────────────────
+interface FlyingCard {
+  id: number
+  typeIdx: number
+  startX: number
+  startY: number
+  progress: number
+  speed: number
+  rotation: number
+  rotSpeed: number
+  wobblePhase: number
+  wobbleAmp: number
+}
+
+// Cubic ease-in for vacuum acceleration
+function easeInCubic(t: number) {
+  return t * t * t
+}
+
+// Quadratic bezier
+function qBez(a: number, b: number, c: number, t: number) {
+  const u = 1 - t
+  return u * u * a + 2 * u * t * b + t * t * c
+}
+
+// ─── MAIN COMPONENT ────────────────────────────────────────────
 export function IngestionFunnel() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [size, setSize] = useState({ w: 800, h: 400 })
+  const [cards, setCards] = useState<FlyingCard[]>([])
+  const [scanY, setScanY] = useState(0)
+  const [pulseScale, setPulseScale] = useState(1)
+  const nextId = useRef(0)
+  const lastSpawn = useRef(0)
+  const animRef = useRef<number>(0)
 
+  // Measure container
   useEffect(() => {
     const measure = () => {
       if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect()
-        setSize({ w: rect.width, h: rect.height })
+        const r = containerRef.current.getBoundingClientRect()
+        setSize({ w: r.width, h: r.height })
       }
     }
     measure()
@@ -113,180 +84,249 @@ export function IngestionFunnel() {
     return () => window.removeEventListener('resize', measure)
   }, [])
 
-  const centerX = size.w * 0.5
-  const centerY = size.h * 0.5
+  // Main animation loop
+  useEffect(() => {
+    if (size.w < 10) return
+
+    let prevTime = 0
+
+    const loop = (time: number) => {
+      const dt = prevTime ? (time - prevTime) / 1000 : 0.016
+      prevTime = time
+
+      // Spawn a new card every ~600ms
+      if (time - lastSpawn.current > 600) {
+        const typeIdx = nextId.current % DOC_TYPES.length
+        nextId.current++
+        const startY = 8 + Math.random() * 84
+
+        setCards(prev => {
+          // Keep max ~12 active cards
+          const active = prev.filter(c => c.progress < 1)
+          return [...active, {
+            id: nextId.current,
+            typeIdx,
+            startX: -10 + Math.random() * 20,
+            startY,
+            progress: 0,
+            speed: 0.12 + Math.random() * 0.06,
+            rotation: (Math.random() - 0.5) * 40,
+            rotSpeed: (Math.random() - 0.5) * 60,
+            wobblePhase: Math.random() * Math.PI * 2,
+            wobbleAmp: 8 + Math.random() * 16,
+          }]
+        })
+        lastSpawn.current = time
+      }
+
+      // Update card progress
+      setCards(prev => prev.map(c => {
+        // Accelerating progress — faster as it approaches core
+        const accel = 1 + c.progress * 4
+        const newProgress = Math.min(1, c.progress + c.speed * dt * accel)
+        return { ...c, progress: newProgress, rotation: c.rotation + c.rotSpeed * dt }
+      }).filter(c => c.progress < 1))
+
+      // Scan line
+      setScanY(prev => {
+        const next = prev + dt * 30
+        return next > 100 ? 0 : next
+      })
+
+      // Pulse
+      setPulseScale(1 + Math.sin(time * 0.002) * 0.03)
+
+      animRef.current = requestAnimationFrame(loop)
+    }
+
+    animRef.current = requestAnimationFrame(loop)
+    return () => cancelAnimationFrame(animRef.current)
+  }, [size])
+
+  const cx = size.w * 0.5
+  const cy = size.h * 0.5
 
   return (
-    <div ref={containerRef} className="relative w-full h-full rounded-2xl overflow-hidden"
+    <div ref={containerRef} className="relative w-full h-full rounded-2xl overflow-hidden select-none"
       style={{
-        background: 'radial-gradient(ellipse at 50% 50%, rgba(99,102,241,0.04) 0%, rgba(10,10,15,0.02) 60%, transparent 100%)',
+        background: 'radial-gradient(ellipse at 50% 50%, rgba(99,102,241,0.05) 0%, rgba(10,10,15,0.02) 50%, transparent 100%)',
       }}
     >
-      {/* Subtle grid overlay */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: 'linear-gradient(rgba(99,102,241,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.3) 1px, transparent 1px)',
-        backgroundSize: '40px 40px',
+      {/* Background grid */}
+      <div className="absolute inset-0 opacity-[0.025]" style={{
+        backgroundImage: 'linear-gradient(rgba(99,102,241,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.4) 1px, transparent 1px)',
+        backgroundSize: '32px 32px',
       }} />
 
-      {/* Radial glow behind Audit Core */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[80%] rounded-full z-0"
+      {/* Energy field around core */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[90%] pointer-events-none z-0"
         style={{
-          background: 'radial-gradient(ellipse, rgba(99,102,241,0.08) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse, rgba(99,102,241,0.07) 0%, rgba(99,102,241,0.02) 40%, transparent 70%)',
         }}
       />
 
-      {/* FLYING DOCUMENT CARDS — VACUUMED INTO AUDIT CORE */}
-      {DOC_ITEMS.map((item, i) => {
-        const startX = 8
-        const startYpx = (item.startY / 100) * size.h
-        const dx = centerX - startX - 20
-        const dy = centerY - startYpx
-        const dur = 4.5 + (i % 3) * 0.4
+      {/* ─── FLYING CARDS ─── */}
+      {cards.map(card => {
+        const t = easeInCubic(card.progress)
+        const type = DOC_TYPES[card.typeIdx]
+
+        // Curved path via quadratic bezier
+        const controlX = cx * 0.35
+        const startYpx = (card.startY / 100) * size.h
+        const controlY = startYpx + (cy - startYpx) * 0.25
+
+        const x = qBez(card.startX, controlX, cx - 20, t)
+        const y = qBez(startYpx, controlY, cy, t)
+
+        // Wobble perpendicular to path
+        const wobble = Math.sin(card.wobblePhase + card.progress * 8) * card.wobbleAmp * (1 - t)
+
+        const scale = 1 - t * 0.97
+        const opacity = card.progress < 0.08
+          ? card.progress / 0.08
+          : card.progress > 0.82
+            ? Math.max(0, (1 - card.progress) / 0.18)
+            : 1
 
         return (
-          <motion.div
-            key={item.label}
-            className="absolute pointer-events-none z-10"
-            style={{ left: startX, top: `${item.startY}%` }}
-            animate={{
-              x: [0, dx * 0.15, dx * 0.4, dx * 0.75, dx],
-              y: [0, dy * 0.08, dy * 0.3, dy * 0.65, dy],
-              scale: [1, 0.95, 0.7, 0.3, 0.02],
-              opacity: [0, 1, 1, 0.7, 0],
-              rotate: [0, item.rotate * 0.3, item.rotate * -0.2, item.rotate * 0.5, 0],
-            }}
-            transition={{
-              duration: dur,
-              repeat: Infinity,
-              delay: i * 0.45,
-              ease: [0.22, 0.03, 0.36, 1],
-              times: [0, 0.1, 0.35, 0.75, 1],
+          <div
+            key={card.id}
+            className="absolute top-0 left-0 pointer-events-none z-10"
+            style={{
+              transform: `translate(${x + wobble * 0.3}px, ${y + wobble}px) rotate(${card.rotation}deg) scale(${scale})`,
+              opacity,
+              willChange: 'transform, opacity',
             }}
           >
-            <DocCard
-              accent={item.accent}
-              Icon={item.Icon}
-              label={item.label}
-              lines={item.lines}
-              rotate={item.rotate}
+            {/* Card glow trail */}
+            <div className="absolute inset-0 rounded-lg blur-md -z-10"
+              style={{
+                background: type.accent,
+                opacity: 0.15 * (1 - t),
+                transform: `scale(${1.3 + t})`,
+              }}
             />
-          </motion.div>
+            {/* Card body */}
+            <div className="bg-white rounded-lg overflow-hidden"
+              style={{
+                boxShadow: `0 ${4 + (1 - t) * 8}px ${12 + (1 - t) * 24}px rgba(0,0,0,${0.15 + (1 - t) * 0.2}), 0 1px 3px rgba(0,0,0,0.1)`,
+                width: 'clamp(48px, 7.5vw, 100px)',
+                padding: 'clamp(5px, 0.8vw, 12px)',
+              }}
+            >
+              <div className="h-[2px] sm:h-[3px] rounded-full mb-1 sm:mb-2" style={{ background: type.accent }} />
+              <div className="flex items-center gap-1 mb-1 sm:mb-1.5">
+                <type.Icon className="size-2.5 sm:size-3.5 md:size-4 shrink-0" style={{ color: type.accent }} />
+                <span className="text-[4px] sm:text-[6px] md:text-[7px] font-black uppercase tracking-wider truncate" style={{ color: type.accent }}>
+                  {type.label}
+                </span>
+              </div>
+              <div className="flex flex-col gap-[1.5px] sm:gap-[2px]">
+                {type.lines.map((w, j) => (
+                  <div key={j} className="h-[1.5px] sm:h-[2px] rounded-full bg-gray-200/80" style={{ width: `${w}%` }} />
+                ))}
+              </div>
+            </div>
+          </div>
         )
       })}
 
-      {/* AUDIT CORE — CENTER with layered glow */}
+      {/* ─── AUDIT CORE ─── */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
         {/* Outer pulse ring */}
-        <motion.div
-          className="absolute -inset-4 sm:-inset-6 md:-inset-8 rounded-[2rem] border border-indigo-500/20"
-          animate={{
-            opacity: [0.3, 0.6, 0.3],
-            scale: [1, 1.03, 1],
-          }}
-          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+        <div
+          className="absolute -inset-3 sm:-inset-5 md:-inset-7 rounded-[1.5rem] border border-indigo-400/15 pointer-events-none"
+          style={{ transform: `scale(${pulseScale})`, transition: 'transform 0.1s linear' }}
+        />
+        <div
+          className="absolute -inset-6 sm:-inset-9 md:-inset-12 rounded-[2rem] border border-indigo-400/8 pointer-events-none"
+          style={{ transform: `scale(${2 - pulseScale})`, transition: 'transform 0.1s linear' }}
         />
 
-        {/* Glow halo */}
-        <div className="absolute -inset-8 sm:-inset-12 md:-inset-16 rounded-full"
+        {/* Core glow */}
+        <div className="absolute -inset-10 sm:-inset-14 md:-inset-20 rounded-full pointer-events-none"
           style={{
-            background: 'radial-gradient(ellipse, rgba(99,102,241,0.15) 0%, rgba(99,102,241,0.05) 40%, transparent 70%)',
+            background: 'radial-gradient(ellipse, rgba(99,102,241,0.12) 0%, rgba(99,102,241,0.04) 45%, transparent 70%)',
           }}
         />
 
-        {/* Main core container */}
-        <div className="relative w-32 sm:w-44 md:w-56 lg:w-64 h-36 sm:h-48 md:h-56 lg:h-64 rounded-3xl flex flex-col items-center justify-center overflow-hidden"
+        {/* Main core box */}
+        <div className="relative w-28 sm:w-40 md:w-52 lg:w-60 h-32 sm:h-44 md:h-52 lg:h-60 rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center overflow-hidden"
           style={{
-            background: 'linear-gradient(180deg, rgba(15,15,30,0.98) 0%, rgba(10,10,20,0.99) 100%)',
-            border: '1px solid rgba(99,102,241,0.25)',
-            boxShadow: '0 0 60px rgba(99,102,241,0.12), 0 0 120px rgba(99,102,241,0.06), inset 0 1px 0 rgba(99,102,241,0.1), inset 0 0 40px rgba(99,102,241,0.03)',
+            background: 'linear-gradient(180deg, rgba(12,12,28,0.98) 0%, rgba(8,8,18,0.99) 100%)',
+            border: '1px solid rgba(99,102,241,0.2)',
+            boxShadow: '0 0 40px rgba(99,102,241,0.1), 0 0 80px rgba(99,102,241,0.05), inset 0 1px 0 rgba(99,102,241,0.08), inset 0 0 30px rgba(99,102,241,0.02)',
           }}
         >
-          {/* Inner grid pattern */}
-          <div className="absolute inset-0 opacity-[0.04]" style={{
+          {/* Inner grid */}
+          <div className="absolute inset-0 opacity-[0.03]" style={{
             backgroundImage: 'linear-gradient(rgba(99,102,241,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.5) 1px, transparent 1px)',
-            backgroundSize: '20px 20px',
+            backgroundSize: '16px 16px',
           }} />
 
-          {/* Scan line with glow trail */}
-          <motion.div
-            className="absolute left-0 right-0 h-[2px] z-10"
+          {/* Scan line */}
+          <div
+            className="absolute left-0 right-0 h-[2px] pointer-events-none z-10"
             style={{
-              background: 'linear-gradient(90deg, transparent 0%, rgba(129,140,248,0.6) 20%, rgba(129,140,248,0.8) 50%, rgba(129,140,248,0.6) 80%, transparent 100%)',
-              boxShadow: '0 0 20px rgba(99,102,241,0.5), 0 0 60px rgba(99,102,241,0.2)',
+              top: `${scanY}%`,
+              background: 'linear-gradient(90deg, transparent 0%, rgba(129,140,248,0.5) 15%, rgba(129,140,248,0.7) 50%, rgba(129,140,248,0.5) 85%, transparent 100%)',
+              boxShadow: '0 0 12px rgba(99,102,241,0.4), 0 0 40px rgba(99,102,241,0.15)',
             }}
-            animate={{ top: ['-2%', '102%'] }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: 'linear' }}
           />
 
-          {/* Curly braces icon */}
-          <motion.span
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-mono mb-2 sm:mb-3 relative z-10"
-            style={{ color: 'rgba(129,140,248,0.4)' }}
-            animate={{ opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          {/* Braces */}
+          <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-mono relative z-10"
+            style={{ color: `rgba(129,140,248,${0.3 + Math.sin(Date.now() * 0.002) * 0.1})` }}
           >
             &#123; &#125;
-          </motion.span>
+          </span>
 
-          {/* Label */}
-          <span className="text-[9px] sm:text-[11px] md:text-sm font-bold uppercase tracking-[0.3em] text-white/80 relative z-10">
+          <span className="text-[8px] sm:text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-white/75 relative z-10 mt-1 sm:mt-2">
             Audit Core
           </span>
 
-          {/* Sublabel */}
-          <motion.span
-            className="text-[6px] sm:text-[7px] md:text-[8px] font-mono text-indigo-400/40 uppercase tracking-[0.2em] mt-1 relative z-10"
-            animate={{ opacity: [0.3, 0.7, 0.3] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          <span className="text-[5px] sm:text-[6px] md:text-[7px] font-mono text-indigo-400/40 uppercase tracking-wider mt-0.5 relative z-10"
+            style={{ opacity: 0.4 + Math.sin(Date.now() * 0.003) * 0.3 }}
           >
-            processing...
-          </motion.span>
+            synthesizing...
+          </span>
         </div>
       </div>
 
-      {/* VERIFIED JSON OUTPUT — RIGHT SIDE */}
-      <div className="absolute right-[2%] sm:right-[4%] md:right-[6%] top-1/2 -translate-y-1/2 flex flex-col gap-2 sm:gap-3 z-10">
+      {/* ─── JSON OUTPUT ─── */}
+      <div className="absolute right-[2%] sm:right-[4%] md:right-[6%] top-1/2 -translate-y-[55%] flex flex-col gap-1.5 sm:gap-2 z-10">
         {[
-          { json: `{ "permit": "F1",\n  "status": "PASS" }`, delay: 0 },
-          { json: `{ "rfi": "042",\n  "stage": "VERIFIED" }`, delay: 1.2 },
-          { json: `{ "bim": "REV_4",\n  "sync": true }`, delay: 2.4 },
+          { json: '{ "permit": "F1",\n  "status": "PASS" }', opacity: 1, tx: 0 },
+          { json: '{ "rfi": "042",\n  "stage": "VERIFIED" }', opacity: 0.65, tx: 3 },
+          { json: '{ "bim": "R4",\n  "sync": true }', opacity: 0.35, tx: 6 },
         ].map((item, i) => (
-          <motion.div
+          <div
             key={i}
-            className="rounded-lg overflow-hidden"
+            className="rounded-md sm:rounded-lg overflow-hidden"
             style={{
-              background: 'linear-gradient(135deg, rgba(0,124,90,0.12) 0%, rgba(0,124,90,0.06) 100%)',
-              border: '1px solid rgba(0,124,90,0.2)',
-              boxShadow: '0 4px 20px rgba(0,124,90,0.08), inset 0 1px 0 rgba(0,124,90,0.1)',
-              opacity: i === 2 ? 0.4 : i === 1 ? 0.7 : 1,
-              transform: `translateX(${i * 4}px)`,
-            }}
-            animate={{ y: [0, -5, 0] }}
-            transition={{
-              duration: 3 + i * 0.3,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay: item.delay,
+              background: 'linear-gradient(135deg, rgba(0,124,90,0.1) 0%, rgba(0,124,90,0.04) 100%)',
+              border: '1px solid rgba(0,124,90,0.15)',
+              boxShadow: '0 2px 12px rgba(0,124,90,0.06)',
+              opacity: item.opacity,
+              transform: `translateX(${item.tx}px) translateY(${Math.sin(Date.now() * 0.001 + i * 1.2) * 4}px)`,
             }}
           >
-            <div className="px-2.5 py-1.5 sm:px-4 sm:py-2.5 md:px-5 md:py-3">
-              {/* Status dot */}
-              <div className="flex items-center gap-1.5 mb-1 sm:mb-1.5">
-                <div className="size-1 sm:size-1.5 rounded-full bg-primary animate-pulse" />
-                <span className="text-[5px] sm:text-[6px] md:text-[7px] font-mono text-primary/60 uppercase tracking-widest">
-                  verified
-                </span>
+            <div className="px-2 py-1.5 sm:px-3 sm:py-2 md:px-4 md:py-2.5">
+              <div className="flex items-center gap-1 mb-0.5 sm:mb-1">
+                <div className="size-1 sm:size-1.5 rounded-full bg-primary" style={{
+                  boxShadow: '0 0 4px rgba(0,124,90,0.5)',
+                  opacity: 0.6 + Math.sin(Date.now() * 0.004 + i) * 0.4,
+                }} />
+                <span className="text-[4px] sm:text-[5px] md:text-[6px] font-mono text-primary/50 uppercase tracking-widest">verified</span>
               </div>
-              <pre className="text-[6px] sm:text-[8px] md:text-[10px] font-mono text-primary leading-relaxed whitespace-pre">
-                {item.json}
-              </pre>
+              <pre className="text-[5px] sm:text-[7px] md:text-[9px] font-mono text-primary/90 leading-relaxed whitespace-pre">{item.json}</pre>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
 
-      {/* Subtle border */}
-      <div className="absolute inset-0 rounded-2xl border border-white/[0.06] pointer-events-none z-30" />
+      {/* Border frame */}
+      <div className="absolute inset-0 rounded-2xl border border-white/[0.05] pointer-events-none z-30" />
     </div>
   )
 }
