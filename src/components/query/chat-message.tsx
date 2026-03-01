@@ -3,7 +3,7 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EnvisionOSLogo } from "@/components/icons";
-import { User } from "lucide-react";
+import { User, Terminal } from "lucide-react";
 
 export type Message = {
   role: "user" | "ai" | "status";
@@ -15,7 +15,8 @@ export function ChatMessage({ message }: { message: Message }) {
 
   if (role === 'status') {
     return (
-        <div className="flex items-center justify-center text-sm text-muted-foreground my-4">
+        <div className="flex items-center justify-center text-[10px] font-mono text-white/40 my-6 tracking-[0.5em] uppercase">
+            <div className="size-1 bg-white animate-ping mr-3" />
             {content}
         </div>
     );
@@ -24,41 +25,44 @@ export function ChatMessage({ message }: { message: Message }) {
   const isAi = role === "ai";
 
   return (
-    <div className={`flex items-start gap-4 my-6 ${isAi ? "" : "justify-end"}`}>
+    <div className={`flex items-start gap-4 my-8 ${isAi ? "" : "justify-end"}`}>
       {isAi && (
-        <Avatar className="h-8 w-8 border border-primary/50">
-          <AvatarFallback className="bg-primary text-primary-foreground">
-            <EnvisionOSLogo className="h-5 w-5" />
+        <Avatar className="h-10 w-10 border border-white/20 rounded-none">
+          <AvatarFallback className="bg-black text-white rounded-none">
+            <EnvisionOSLogo className="h-6 w-6" />
           </AvatarFallback>
         </Avatar>
       )}
       <div className={`max-w-2xl ${isAi ? "text-left" : "text-right"}`}>
         {typeof content === "string" ? (
           <div
-            className={`rounded-lg px-4 py-2 ${
+            className={`px-6 py-4 rounded-none shadow-xl ${
               isAi
-                ? "bg-muted"
-                : "bg-primary text-primary-foreground"
+                ? "bg-black text-white border border-white/10"
+                : "bg-white text-[#007C5A] font-bold"
             }`}
           >
-            <p className="text-sm">{content}</p>
+            <p className="text-sm leading-relaxed">{content}</p>
           </div>
         ) : (
-          <Card className="bg-card/60 backdrop-blur-xl">
-            <CardHeader>
-              <CardTitle className="text-base">Tool Execution Plan</CardTitle>
+          <Card className="bg-black border-white/10 rounded-none shadow-2xl">
+            <CardHeader className="border-b border-white/5 bg-white/[0.02]">
+              <CardTitle className="text-[10px] tracking-[0.3em] uppercase text-white/60 flex items-center gap-2">
+                <Terminal className="size-3 text-primary" />
+                Specialized_Orchestration_Output
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
+            <CardContent className="p-6">
+              <div className="space-y-6">
                 <div>
-                  <h3 className="font-semibold text-sm">Tool Name:</h3>
-                  <p className="font-code text-accent text-sm bg-muted p-2 rounded-md mt-1">
+                  <h3 className="text-[9px] font-mono text-white/40 uppercase tracking-widest mb-2">Protocol_Target</h3>
+                  <p className="font-mono text-primary text-sm bg-white/5 p-3 border border-white/5">
                     {content.toolName}
                   </p>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-sm">Parameters:</h3>
-                  <pre className="font-code text-sm bg-muted p-3 rounded-md mt-1 overflow-x-auto">
+                  <h3 className="text-[9px] font-mono text-white/40 uppercase tracking-widest mb-2">Extracted_Payload</h3>
+                  <pre className="font-mono text-xs bg-black p-4 border border-white/5 overflow-x-auto text-white/80">
                     {JSON.stringify(content.parameters, null, 2)}
                   </pre>
                 </div>
@@ -68,9 +72,9 @@ export function ChatMessage({ message }: { message: Message }) {
         )}
       </div>
       {!isAi && (
-        <Avatar className="h-8 w-8">
-          <AvatarFallback>
-            <User className="h-5 w-5" />
+        <Avatar className="h-10 w-10 border border-white/20 rounded-none">
+          <AvatarFallback className="bg-white text-[#007C5A] rounded-none">
+            <User className="h-6 w-6" />
           </AvatarFallback>
         </Avatar>
       )}
