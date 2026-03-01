@@ -1,0 +1,141 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1772379218048,
+  "projectRoot": "/Users/avireddy/GitHub/studio",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "next",
+        "version": "15.5.9",
+        "category": "fullstack"
+      },
+      {
+        "name": "react",
+        "version": "19.2.1",
+        "category": "frontend"
+      },
+      {
+        "name": "react-dom",
+        "version": "19.2.1",
+        "category": "frontend"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": null,
+    "lintCommand": "npm run lint",
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "next dev --turbopack -p 9002",
+      "genkit:dev": "genkit start -- tsx src/ai/dev.ts",
+      "genkit:watch": "genkit start -- tsx --watch src/ai/dev.ts",
+      "build": "NODE_ENV=production next build",
+      "start": "next start",
+      "lint": "next lint",
+      "typecheck": "tsc --noEmit"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": "type-based"
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "docs",
+      "src"
+    ],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "dataconnect": {
+      "path": "dataconnect",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1772379218019,
+      "keyFiles": [
+        "dataconnect.yaml",
+        "seed_data.gql"
+      ]
+    },
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 1,
+      "lastAccessed": 1772379218020,
+      "keyFiles": [
+        "blueprint.md"
+      ]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 0,
+      "lastAccessed": 1772379218021,
+      "keyFiles": []
+    },
+    "src/app": {
+      "path": "src/app",
+      "purpose": "Application code",
+      "fileCount": 3,
+      "lastAccessed": 1772379218033,
+      "keyFiles": [
+        "favicon.ico",
+        "globals.css",
+        "layout.tsx"
+      ]
+    },
+    "src/components": {
+      "path": "src/components",
+      "purpose": "UI components",
+      "fileCount": 3,
+      "lastAccessed": 1772379218033,
+      "keyFiles": [
+        "dashboard-header.tsx",
+        "icons.tsx",
+        "sidebar-nav.tsx"
+      ]
+    },
+    "src/lib": {
+      "path": "src/lib",
+      "purpose": "Library code",
+      "fileCount": 5,
+      "lastAccessed": 1772379218034,
+      "keyFiles": [
+        "actions.ts",
+        "firestore.ts",
+        "placeholder-images.json"
+      ]
+    }
+  },
+  "hotPaths": [],
+  "userDirectives": []
+}

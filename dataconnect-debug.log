@@ -1,20 +1,13 @@
-I0301 15:18:54.645984    9376 load.go:31] Reloading schema and connectors...
-W0301 15:18:54.937678    9376 control.go:74] [/emulator/studio 5dab] connector "example" has errors: example/queries.gql:40:5: Cannot query field "id" on type "Project_KeyOutput".
-example/queries.gql:28:3: Field "project_insert" must not have a selection since type "Project_KeyOutput" has no subfields.
-example/queries.gql:51:5: Cannot query field "id" on type "Comment_KeyOutput".
-example/queries.gql:45:3: Field "comment_insert" must not have a selection since type "Comment_KeyOutput" has no subfields.
-
-sources: example/queries.gql [1260B] 
-I0301 15:18:54.937767    9376 control.go:100] [/emulator/studio 5dab] UpdateResources(): done
+I0301 10:29:20.889306    8937 load.go:31] Reloading schema and connectors...
+I0301 10:29:20.951665    8937 control.go:100] [projects/emulator/locations/emulator/services/studio b9e7] UpdateResources(): done
 Main schema: sources: schema/schema.gql [734B] 
-Connector "example": sources: example/queries.gql [1260B] 
-E0301 15:18:54.942074    9376 load.go:73] Could not load sources: 
-Errors: example/queries.gql:40:5: Cannot query field "id" on type "Project_KeyOutput".
-example/queries.gql:28:3: Field "project_insert" must not have a selection since type "Project_KeyOutput" has no subfields.
-example/queries.gql:51:5: Cannot query field "id" on type "Comment_KeyOutput".
-example/queries.gql:45:3: Field "comment_insert" must not have a selection since type "Comment_KeyOutput" has no subfields.
-I0301 15:18:54.943952    9376 collector.go:107] schema extensions wrote into "/home/user/studio/dataconnect/.dataconnect/schema"
-Generated sources: main/mutation.gql [16419B] prelude.gql [80731B] main/implicit.gql [2439B] main/input.gql [44487B] main/relation.gql [22274B] main/query.gql [6117B] 
-I0301 15:18:54.944050    9376 load.go:74] Finished reloading
-I0301 15:18:55.025760    9376 dev.go:104] Listening on address (HTTP + gRPC): 127.0.0.1:50002
-I0301 15:18:55.374100    9376 engine.go:208] [/emulator/studio 5dab] ExecuteGraphqlRead IntrospectionQuery: succeeded. 
+Connector "example": sources: example/queries.gql [1234B] 
+I0301 10:29:20.965639    8937 codegen.go:80] [connector "example" javascriptSdk] Generating sources into "/Users/avireddy/GitHub/studio/src/dataconnect-generated"
+I0301 10:29:20.980305    8937 collector.go:107] schema extensions wrote into "/Users/avireddy/GitHub/studio/dataconnect/.dataconnect/schema"
+Generated sources: prelude.gql [80730B] main/implicit.gql [2439B] main/input.gql [44487B] main/relation.gql [22274B] main/query.gql [6117B] main/mutation.gql [16419B] 
+I0301 10:29:20.982943    8937 collector.go:107] connector "example" javascriptSdk wrote into "/Users/avireddy/GitHub/studio/src/dataconnect-generated"
+Generated sources: .guides/setup.md [1682B] react/esm/package.json [17B] react/index.cjs.js [1763B] react/esm/index.esm.js [1665B] index.cjs.js [2132B] package.json [863B] README.md [22802B] react/index.d.ts [2205B] .guides/usage.md [2445B] index.d.ts [4530B] esm/index.esm.js [1838B] esm/package.json [17B] react/package.json [460B] react/README.md [28778B] .guides/config.json [236B] 
+I0301 10:29:20.988191    8937 installsdk.go:55] Package @dataconnect/generated is already installed. Skipping installation
+I0301 10:29:20.988272    8937 load.go:109] Finished reloading
+I0301 10:29:20.991069    8937 dev.go:104] Listening on address (HTTP + gRPC): 127.0.0.1:9399
+I0301 10:29:20.991876    8937 dev.go:104] Listening on address (HTTP + gRPC): [::1]:9399
