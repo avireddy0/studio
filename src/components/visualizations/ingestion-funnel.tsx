@@ -284,23 +284,23 @@ export function IngestionFunnel() {
     const y = cubicBez(card.startYFrac * sizeRef.current.h, card.cp1y, card.cp2y, cy, t)
 
     // Wobble (perpendicular, dies off near core)
-    const wobble = Math.sin(card.wobblePhase + card.progress * 12) * 14 * (1 - t * t)
-    const finalX = x + wobble * 0.18
+    const wobble = Math.sin(card.wobblePhase + card.progress * 10) * 20 * (1 - t * t)
+    const finalX = x + wobble * 0.22
     const finalY = y + wobble
 
-    // Scale: depth-based, crushes to zero as absorbed
-    const absorbCrush = 1 - easeInQuint(clamp((card.progress - 0.72) / 0.28, 0, 1))
+    // Scale: depth-based, crushes to zero as absorbed (starts later = cards visible longer)
+    const absorbCrush = 1 - easeInQuint(clamp((card.progress - 0.78) / 0.22, 0, 1))
     const scale = card.scale * absorbCrush
 
     // Rotation: spins faster as sucked in
-    const rot = (card.rotation + card.rotSpeed * card.progress * (1 + card.progress * 3)) * (Math.PI / 180)
+    const rot = (card.rotation + card.rotSpeed * card.progress * (1 + card.progress * 4)) * (Math.PI / 180)
 
-    // Opacity
+    // Opacity: fade in fast, hold long, disappear sharply at absorption
     let opacity: number
-    if (card.progress < 0.07) {
-      opacity = card.progress / 0.07
-    } else if (card.progress > 0.78) {
-      opacity = clamp((1 - card.progress) / 0.22, 0, 1)
+    if (card.progress < 0.05) {
+      opacity = card.progress / 0.05
+    } else if (card.progress > 0.82) {
+      opacity = clamp((1 - card.progress) / 0.18, 0, 1)
     } else {
       opacity = 1
     }
@@ -639,8 +639,8 @@ export function IngestionFunnel() {
     canvas.height = sizeRef.current.h * dpr
     ctx.scale(dpr, dpr)
 
-    const SPAWN_INTERVAL = 480
-    const MAX_CARDS = 12
+    const SPAWN_INTERVAL = 440
+    const MAX_CARDS = 14
     let prevTime = 0
 
     const loop = (time: number) => {
@@ -651,25 +651,26 @@ export function IngestionFunnel() {
       const { w, h } = sizeRef.current
       const cx = w * 0.5
       const cy = h * 0.5
-      const cardW = clamp(w * 0.105, 68, 112)
+      const cardW = clamp(w * 0.12, 80, 130)
       const cardH = cardW * 1.35
 
       // ── SPAWN ──────────────────────────────────────────────────
       if (time - lastSpawnRef.current > SPAWN_INTERVAL && cardsRef.current.length < MAX_CARDS) {
         const id = ++nextIdRef.current
         const typeIdx = (id - 1) % DOC_TYPES.length
-        const startXFrac = 0.01 + Math.random() * 0.08
-        const startYFrac = 0.04 + Math.random() * 0.92
+        // Spawn across the left 22% of the canvas width, full height spread
+        const startXFrac = 0.01 + Math.random() * 0.20
+        const startYFrac = 0.03 + Math.random() * 0.94
         const depth = 0.35 + Math.random() * 0.65
 
         const startX = startXFrac * w
         const startY = startYFrac * h
 
-        // Control points for S-curve into center
-        const cp1x = w * 0.18 + Math.random() * w * 0.08
-        const cp1y = startY + (cy - startY) * 0.15 + (Math.random() - 0.5) * h * 0.25
-        const cp2x = w * 0.36 + Math.random() * w * 0.05
-        const cp2y = cy + (Math.random() - 0.5) * h * 0.12
+        // Control points for wide fan-in S-curve into center
+        const cp1x = w * 0.28 + Math.random() * w * 0.06
+        const cp1y = startY + (cy - startY) * 0.20 + (Math.random() - 0.5) * h * 0.22
+        const cp2x = w * 0.40 + Math.random() * w * 0.04
+        const cp2y = cy + (Math.random() - 0.5) * h * 0.10
 
         cardsRef.current.push({
           id,
@@ -681,10 +682,10 @@ export function IngestionFunnel() {
           cp2x,
           cp2y,
           progress: 0,
-          baseSpeed: lerp(0.09, 0.15, depth),
-          rotation: (Math.random() - 0.5) * 40,
-          rotSpeed: (Math.random() - 0.5) * 55,
-          scale: lerp(0.55, 1.0, depth),
+          baseSpeed: lerp(0.08, 0.13, depth),
+          rotation: (Math.random() - 0.5) * 45,
+          rotSpeed: (Math.random() - 0.5) * 60,
+          scale: lerp(0.60, 1.05, depth),
           depth,
           wobblePhase: Math.random() * Math.PI * 2,
         })
@@ -772,15 +773,28 @@ export function IngestionFunnel() {
       drawSparks(ctx)
 
       // ── CORE GLOW (drawn after cards so it blooms over them) ───
-      const coreRadius = clamp(Math.min(w, h) * 0.11, 55, 105)
-      const coreGlow1 = ctx.createRadialGradient(cx, cy, 0, cx, cy, coreRadius * 2.8)
-      const glowPulse = 0.5 + Math.sin(time * 0.0020) * 0.2
-      coreGlow1.addColorStop(0, `rgba(0,200,120,${0.09 + glowPulse * 0.04})`)
-      coreGlow1.addColorStop(0.4, `rgba(0,124,90,${0.04 + glowPulse * 0.02})`)
-      coreGlow1.addColorStop(1, 'rgba(0,124,90,0)')
+      const coreRadius = clamp(Math.min(w, h) * 0.12, 60, 115)
+      const glowPulse = 0.5 + Math.sin(time * 0.0020) * 0.25
+
+      // Outer diffuse halo — very large, soft
+      const coreGlow1 = ctx.createRadialGradient(cx, cy, 0, cx, cy, coreRadius * 4.5)
+      coreGlow1.addColorStop(0, `rgba(0,220,130,${0.13 + glowPulse * 0.06})`)
+      coreGlow1.addColorStop(0.25, `rgba(0,180,100,${0.07 + glowPulse * 0.03})`)
+      coreGlow1.addColorStop(0.6, `rgba(0,124,90,${0.025 + glowPulse * 0.01})`)
+      coreGlow1.addColorStop(1, 'rgba(0,80,50,0)')
       ctx.fillStyle = coreGlow1
       ctx.beginPath()
-      ctx.arc(cx, cy, coreRadius * 2.8, 0, Math.PI * 2)
+      ctx.arc(cx, cy, coreRadius * 4.5, 0, Math.PI * 2)
+      ctx.fill()
+
+      // Inner tight glow — punchy bright core
+      const coreGlow2 = ctx.createRadialGradient(cx, cy, 0, cx, cy, coreRadius * 1.5)
+      coreGlow2.addColorStop(0, `rgba(0,255,160,${0.18 + glowPulse * 0.10})`)
+      coreGlow2.addColorStop(0.5, `rgba(0,200,120,${0.08 + glowPulse * 0.04})`)
+      coreGlow2.addColorStop(1, 'rgba(0,150,90,0)')
+      ctx.fillStyle = coreGlow2
+      ctx.beginPath()
+      ctx.arc(cx, cy, coreRadius * 1.5, 0, Math.PI * 2)
       ctx.fill()
 
       // Update React state (throttled — only what DOM elements need)

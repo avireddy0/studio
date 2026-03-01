@@ -594,3 +594,11 @@ curl -s http://localhost:9002 2>&1 | head -20
 cat /private/tmp/claude-501/-Users-avireddy-GitHub-studio/tasks/bts9wnr0o.output 2>/dev/null | tail -30
 xcrun simctl list devices | grep -E "Booted" | head -5
 xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion" && sleep 4 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-funnel-check.png && echo "screenshot taken"
+lsof -i :9002 | grep LISTEN
+curl -s http://localhost:9002 2>&1 | head -50
+kill 28855 2>/dev/null; sleep 1; npm run dev 2>&1 &
+sleep 5 && cat /private/tmp/claude-501/-Users-avireddy-GitHub-studio/tasks/bqf28yeq5.output 2>/dev/null | tail -50
+curl -s "http://localhost:9002" -w "\nHTTP: %{http_code}" 2>&1 | tail -5 && sleep 2 && cat /private/tmp/claude-501/-Users-avireddy-GitHub-studio/tasks/bqf28yeq5.output 2>/dev/null | tail -30
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002/?s=ingestion" && sleep 5 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-v2.png && echo "done"
+xcrun simctl openurl 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138 "http://localhost:9002/?s=ingestion" && sleep 5 && xcrun simctl io 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138 screenshot /tmp/ingestion-ipad.png && echo "done"
+npm run build 2>&1 | tail -25

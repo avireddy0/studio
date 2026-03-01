@@ -144,6 +144,12 @@
       "type": "file"
     },
     {
+      "path": "src/components/visualizations/ingestion-funnel.tsx",
+      "accessCount": 19,
+      "lastAccessed": 1772408763333,
+      "type": "file"
+    },
+    {
       "path": "src/app/globals.css",
       "accessCount": 12,
       "lastAccessed": 1772408172116,
@@ -153,12 +159,6 @@
       "path": "src/components/context/context-summarizer.tsx",
       "accessCount": 11,
       "lastAccessed": 1772382712975,
-      "type": "file"
-    },
-    {
-      "path": "src/components/visualizations/ingestion-funnel.tsx",
-      "accessCount": 7,
-      "lastAccessed": 1772408517450,
       "type": "file"
     },
     {
