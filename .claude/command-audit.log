@@ -1,1 +1,383 @@
 npx next build 2>&1 | tail -40
+npm run build 2>&1 | tail -40
+lsof -ti:9002 2>/dev/null | head -5
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002/ 2>&1
+curl -s http://localhost:9002/ 2>&1 | head -100
+lsof -ti:9002 2>/dev/null | xargs kill -9 2>/dev/null; sleep 1; npm run dev 2>&1 | head -50
+sleep 5 && cat /private/tmp/claude-501/-Users-avireddy-GitHub-studio/tasks/b5otv4gwa.output
+sleep 3 && curl -s http://localhost:9002/ 2>&1 | head -50
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002/ 2>&1
+npm install three @react-three/fiber @react-three/drei @types/three 2>&1 | tail -10
+npx next build 2>&1 | tail -40
+lsof -ti:9002 2>/dev/null | xargs kill -9 2>/dev/null; sleep 1; npm run dev 2>&1 &
+npm run build 2>&1
+lsof -ti:9002 2>/dev/null | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 3 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+npm run build 2>&1
+npm run build 2>&1
+which xcrun && xcrun simctl list devices available 2>/dev/null | head -30
+ls /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app 2>/dev/null && echo "Simulator.app found" || echo "Simulator.app not found"
+ls /Users/avireddy/.claude/projects/-Users-avireddy-GitHub-studio/memory/ 2>/dev/null || echo "Directory does not exist"
+mkdir -p /Users/avireddy/.claude/projects/-Users-avireddy-GitHub-studio/memory/
+lsof -ti:9002 2>/dev/null && echo "Dev server running" || echo "Dev server NOT running"
+mkdir -p /tmp/studio-responsive
+xcrun simctl boot "6D376F1D-2AB6-4314-ABA7-E874D263C943" 2>&1 || true
+xcrun simctl boot "4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" 2>&1 || true
+sleep 5 && xcrun simctl list devices booted 2>/dev/null
+IPHONE_E="6D376F1D-2AB6-4314-ABA7-E874D263C943"
+IPHONE_PRO="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+IPAD="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138"
+
+SECTIONS=("hero" "ingestion" "intel" "fusion" "tactical-bim" "site-docs")
+DEVICES=("$IPHONE_E:iphone16e" "$IPHONE_PRO:iphone16pro" "$IPAD:ipadair11")
+
+for section in "${SECTIONS[@]}"; do
+  for device_entry in "${DEVICES[@]}"; do
+    udid="${device_entry%%:*}"
+    name="${device_entry##*:}"
+    xcrun simctl openurl "$udid" "http://localhost:9002/#${section}" 2>/dev/null &
+  done
+  wait
+  sleep 4
+  
+  for device_entry in "${DEVICES[@]}"; do
+    udid="${device_entry%%:*}"
+    name="${device_entry##*:}"
+    xcrun simctl io "$udid" screenshot "/tmp/studio-responsive/${name}_${section}.png" 2>/dev/null &
+  done
+  wait
+  echo "Done: $section"
+done
+
+echo "All screenshots captured!"
+ls -la /tmp/studio-responsive/
+# First, let's open the page fresh on all devices
+IPHONE_E="6D376F1D-2AB6-4314-ABA7-E874D263C943"
+IPHONE_PRO="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+IPAD="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138"
+
+# Open the base URL on all devices
+xcrun simctl openurl "$IPHONE_E" "http://localhost:9002" &
+xcrun simctl openurl "$IPHONE_PRO" "http://localhost:9002" &
+xcrun simctl openurl "$IPAD" "http://localhost:9002" &
+wait
+sleep 5
+echo "Pages loaded on all devices"
+# Reboot the shutdown devices
+xcrun simctl boot "6D376F1D-2AB6-4314-ABA7-E874D263C943" 2>&1 || true
+xcrun simctl boot "4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" 2>&1 || true
+sleep 8
+xcrun simctl list devices booted
+# Open Safari and navigate to localhost on all 3 devices
+IPHONE_E="6D376F1D-2AB6-4314-ABA7-E874D263C943"
+IPHONE_PRO="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+IPAD="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138"
+
+# Launch Safari first, then open URL - this ensures Safari is active
+for udid in "$IPHONE_E" "$IPHONE_PRO" "$IPAD"; do
+  xcrun simctl launch "$udid" com.apple.mobilesafari 2>&1 &
+done
+wait
+sleep 3
+
+# Now open the URL in Safari on each device
+for udid in "$IPHONE_E" "$IPHONE_PRO" "$IPAD"; do
+  xcrun simctl openurl "$udid" "http://localhost:9002" 2>&1 &
+done
+wait
+sleep 5
+
+# Also bring up the Simulator app so we can see it
+open -a Simulator
+
+echo "Safari launched and navigated on all devices"
+# Clean up old screenshots and take fresh ones for Section 1 (Hero)
+rm -f /tmp/studio-responsive/*.png
+
+IPHONE_E="6D376F1D-2AB6-4314-ABA7-E874D263C943"
+IPHONE_PRO="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+IPAD="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138"
+
+# Screenshot Section 01: Hero (already visible)
+sleep 2
+xcrun simctl io "$IPHONE_E" screenshot "/tmp/studio-responsive/01_hero_iphone16e.png" 2>&1 &
+xcrun simctl io "$IPHONE_PRO" screenshot "/tmp/studio-responsive/01_hero_iphone16pro.png" 2>&1 &
+xcrun simctl io "$IPAD" screenshot "/tmp/studio-responsive/01_hero_ipadair11.png" 2>&1 &
+wait
+echo "Section 01 (Hero) captured"
+IPHONE_E="6D376F1D-2AB6-4314-ABA7-E874D263C943"
+IPHONE_PRO="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+IPAD="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138"
+DEVICES=("$IPHONE_E:iphone16e" "$IPHONE_PRO:iphone16pro" "$IPAD:ipadair11")
+
+SECTIONS=("02:ingestion" "03:intel" "04:fusion" "05:tactical-bim" "06:site-docs")
+
+for entry in "${SECTIONS[@]}"; do
+  num="${entry%%:*}"
+  section="${entry##*:}"
+  
+  # Navigate all devices to this section
+  for device_entry in "${DEVICES[@]}"; do
+    udid="${device_entry%%:*}"
+    xcrun simctl openurl "$udid" "http://localhost:9002/#${section}" 2>/dev/null &
+  done
+  wait
+  sleep 4
+  
+  # Screenshot all devices
+  for device_entry in "${DEVICES[@]}"; do
+    udid="${device_entry%%:*}"
+    name="${device_entry##*:}"
+    xcrun simctl io "$udid" screenshot "/tmp/studio-responsive/${num}_${section}_${name}.png" 2>/dev/null &
+  done
+  wait
+  echo "Section ${num} (${section}) captured"
+done
+
+echo ""
+echo "=== All screenshots ==="
+ls -lh /tmp/studio-responsive/*.png
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002 2>/dev/null
+curl -s http://localhost:9002 2>&1 | head -50
+lsof -ti:9002 | xargs ps -p 2>/dev/null | tail -5
+kill $(lsof -ti:9002) 2>/dev/null; sleep 2; npm run dev 2>&1 &
+sleep 10
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+echo "connected" && pwd && lsof -ti:9002 2>/dev/null | head -1
+IPHONE_E="6D376F1D-2AB6-4314-ABA7-E874D263C943"
+IPHONE_PRO="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+IPAD="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138"
+
+# Refresh all devices by opening the URL again
+for udid in "$IPHONE_E" "$IPHONE_PRO" "$IPAD"; do
+  xcrun simctl openurl "$udid" "http://localhost:9002" 2>&1 &
+done
+wait
+sleep 6
+
+# Clean old screenshots
+rm -f /tmp/studio-responsive/*.png
+
+# Screenshot Section 01: Hero
+for udid_name in "$IPHONE_E:iphone16e" "$IPHONE_PRO:iphone16pro" "$IPAD:ipadair11"; do
+  udid="${udid_name%%:*}"
+  name="${udid_name##*:}"
+  xcrun simctl io "$udid" screenshot "/tmp/studio-responsive/01_hero_${name}.png" 2>/dev/null &
+done
+wait
+echo "Section 01 done"
+
+# Now scroll through remaining sections
+for entry in "02:ingestion" "03:intel" "04:fusion" "05:tactical-bim" "06:site-docs"; do
+  num="${entry%%:*}"
+  section="${entry##*:}"
+  
+  for udid in "$IPHONE_E" "$IPHONE_PRO" "$IPAD"; do
+    xcrun simctl openurl "$udid" "http://localhost:9002/#${section}" 2>/dev/null &
+  done
+  wait
+  sleep 4
+  
+  for udid_name in "$IPHONE_E:iphone16e" "$IPHONE_PRO:iphone16pro" "$IPAD:ipadair11"; do
+    udid="${udid_name%%:*}"
+    name="${udid_name##*:}"
+    xcrun simctl io "$udid" screenshot "/tmp/studio-responsive/${num}_${section}_${name}.png" 2>/dev/null &
+  done
+  wait
+  echo "Section ${num} done"
+done
+
+echo "All screenshots complete"
+ls -lh /tmp/studio-responsive/
+# Check if server is still alive
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002 2>/dev/null
+# First, refresh the page on all devices (single load, no hash)
+IPHONE_E="6D376F1D-2AB6-4314-ABA7-E874D263C943"
+IPHONE_PRO="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+IPAD="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138"
+
+# Open fresh on each device one at a time to avoid overwhelming the server
+xcrun simctl openurl "$IPHONE_PRO" "http://localhost:9002" 2>&1
+sleep 3
+xcrun simctl openurl "$IPHONE_E" "http://localhost:9002" 2>&1
+sleep 3
+xcrun simctl openurl "$IPAD" "http://localhost:9002" 2>&1
+sleep 5
+
+echo "All devices loaded"
+
+# Clean screenshots
+rm -f /tmp/studio-responsive/*.png
+
+# Take hero screenshots
+xcrun simctl io "$IPHONE_E" screenshot "/tmp/studio-responsive/01_hero_iphone16e.png" 2>/dev/null &
+xcrun simctl io "$IPHONE_PRO" screenshot "/tmp/studio-responsive/01_hero_iphone16pro.png" 2>/dev/null &
+xcrun simctl io "$IPAD" screenshot "/tmp/studio-responsive/01_hero_ipadair11.png" 2>/dev/null &
+wait
+echo "Hero captured"
+IPHONE_E="6D376F1D-2AB6-4314-ABA7-E874D263C943"
+IPHONE_PRO="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+IPAD="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138"
+
+SECTIONS=("02_ingestion" "03_intel" "04_fusion" "05_tactical-bim" "06_site-docs")
+
+# Function to swipe up on a device using simctl
+swipe_up() {
+  local udid="$1"
+  # Get device info for screen dimensions
+  # Use AppleScript to simulate keyboard "down arrow" which triggers snap scroll
+  # Actually we'll use simctl's key send for page down
+  xcrun simctl io "$udid" sendkey 0x7D 2>/dev/null  # down arrow
+}
+
+for section in "${SECTIONS[@]}"; do
+  # Swipe down on all devices
+  for udid in "$IPHONE_E" "$IPHONE_PRO" "$IPAD"; do
+    xcrun simctl io "$udid" sendkey 0x7D 2>/dev/null &
+  done
+  wait
+  sleep 3
+  
+  # Screenshot all devices
+  xcrun simctl io "$IPHONE_E" screenshot "/tmp/studio-responsive/${section}_iphone16e.png" 2>/dev/null &
+  xcrun simctl io "$IPHONE_PRO" screenshot "/tmp/studio-responsive/${section}_iphone16pro.png" 2>/dev/null &
+  xcrun simctl io "$IPAD" screenshot "/tmp/studio-responsive/${section}_ipadair11.png" 2>/dev/null &
+  wait
+  echo "Done: $section"
+done
+
+echo "All screenshots complete"
+ls -lh /tmp/studio-responsive/
+# Test AppleScript scroll approach on the focused Simulator device
+# First, bring Simulator to front and try scrolling
+osascript -e '
+tell application "Simulator" to activate
+delay 1
+tell application "System Events"
+    tell process "Simulator"
+        -- Click in the middle of the window to ensure focus is on web content
+        click at {400, 500}
+        delay 0.5
+        -- Scroll down using scroll wheel
+        scroll area 1 of window 1 by -5
+    end tell
+end tell
+' 2>&1 || echo "AppleScript scroll failed, trying alternative..."
+
+# Alternative: use mouse scroll via cliclick if available
+which cliclick 2>/dev/null && echo "cliclick available" || echo "cliclick not available"
+git status -s
+git diff --stat
+git log --oneline -5
+git add src/app/'(dashboard)'/page.tsx src/components/context/context-summarizer.tsx src/components/dashboard-header.tsx src/components/visualizations/tactical-bim-overlay.tsx src/components/visualizations/bim-scene.tsx package.json package-lock.json
+git commit -m "$(cat <<'EOF'
+feat: add 3D BIM digital twin and fix mobile responsiveness
+
+- Add interactive Three.js 3D building model with 8-floor digital twin,
+  orbit controls, floor selection, crane animation, and HUD overlay
+- Fix snap-scroll sections overflowing on mobile by adding overflow-hidden
+  to all sections and removing shrink-0 from compressible content
+- Tighten padding, margins, text sizes, and min-heights for small viewports
+- Make telemetry cards 2-col grid on mobile, context fusion nav scrollable
+- Reduce header padding on small screens
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)"
+git push
+# First, let's bring Simulator to front and try spacebar to scroll
+# Spacebar in Safari scrolls down one page, which should trigger snap-scroll
+osascript -e '
+tell application "Simulator" to activate
+delay 1
+tell application "System Events"
+    keystroke space
+end tell
+' 2>&1
+sleep 2
+
+# Take a screenshot to see if it scrolled
+xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot "/tmp/studio-responsive/test_scroll.png" 2>/dev/null
+echo "Test scroll done"
+# Test: navigate one device to one hash section
+# Server is healthy (returned 200 earlier), let's see if hash nav works
+IPHONE_PRO="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+
+xcrun simctl openurl "$IPHONE_PRO" "http://localhost:9002/#ingestion" 2>&1
+sleep 5
+xcrun simctl io "$IPHONE_PRO" screenshot "/tmp/studio-responsive/test_hash_nav.png" 2>/dev/null
+echo "Test done"
+
+# Check server health
+curl -s -o /dev/null -w "Server status: %{http_code}\n" http://localhost:9002
+# Check what simctl io commands are available
+xcrun simctl io --help 2>&1 | head -30
+# Clear Safari cache/data on the iPhone 16 Pro to get rid of cached error
+xcrun simctl spawn "1311D811-5479-4E95-B2FD-67CD57CE77F6" defaults delete com.apple.mobilesafari 2>&1 || true
+# Terminate and relaunch Safari
+xcrun simctl terminate "1311D811-5479-4E95-B2FD-67CD57CE77F6" com.apple.mobilesafari 2>&1 || true
+sleep 2
+xcrun simctl openurl "1311D811-5479-4E95-B2FD-67CD57CE77F6" "http://localhost:9002" 2>&1
+sleep 5
+xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot "/tmp/studio-responsive/test_fresh.png" 2>/dev/null
+echo "Fresh load test done"
+# Wait for Turbopack to recompile, then test with curl
+sleep 3
+curl -s -o /dev/null -w "%{http_code}" "http://localhost:9002/?s=ingestion"
+npm run build 2>&1
+git add 'src/app/(dashboard)/page.tsx' && git commit -m "$(cat <<'EOF'
+feat: add satellite imagery background to geospatial intel feed
+
+Replace dark SVG background with ESRI World Imagery satellite tiles
+centered on downtown LA construction corridor. Layers: satellite photo,
+dark tactical tint with gradient, SVG tactical overlay with building
+footprints/markers/scan line, and tactical grid.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+npm run build 2>&1 | tail -5
+git add 'src/app/(dashboard)/page.tsx' && git commit -m "$(cat <<'EOF'
+copy: update hero tagline for broader audience appeal
+
+Replace military jargon with clear value prop targeting both retail
+investors and commercial developers.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 http://localhost:9002
+lsof -ti:9002 2>/dev/null
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 4 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 http://localhost:9002
+npm run build 2>&1 | tail -3
+git add 'src/app/(dashboard)/page.tsx' src/app/globals.css && git commit -m "$(cat <<'EOF'
+feat: add cinematic zoom animation to geospatial intel feed
+
+Slow 18s loop zooms into the PHOENIX_A active site highlight then
+pulls back out. Satellite image, tint, and SVG overlay all animate
+together via a shared wrapper with transform-origin at the marker.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=site-docs"
+npm run build 2>&1 | tail -20
+git add 'src/app/(dashboard)/page.tsx' && git commit -m "$(cat <<'EOF'
+feat: simplify ingestion output to single file line with white parser
+
+- Replace 7 data stream lines with single ENVISION_VERIFIED_STREAM.json output
+- Change parser core background from dark to white for visual contrast
+- Reinforces chaos-to-control narrative: many inputs → one clean output
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion"
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1
+npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion"

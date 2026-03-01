@@ -138,15 +138,33 @@
   },
   "hotPaths": [
     {
-      "path": "src/components/context/context-summarizer.tsx",
-      "accessCount": 4,
-      "lastAccessed": 1772381087039,
+      "path": "src/app/(dashboard)/page.tsx",
+      "accessCount": 51,
+      "lastAccessed": 1772388741784,
       "type": "file"
     },
     {
-      "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1772381055868,
+      "path": "src/components/context/context-summarizer.tsx",
+      "accessCount": 11,
+      "lastAccessed": 1772382712975,
+      "type": "file"
+    },
+    {
+      "path": "src/components/visualizations/tactical-bim-overlay.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1772382785322,
+      "type": "file"
+    },
+    {
+      "path": "src/app/globals.css",
+      "accessCount": 5,
+      "lastAccessed": 1772388393736,
+      "type": "file"
+    },
+    {
+      "path": "src/components/dashboard-header.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1772382768603,
       "type": "file"
     },
     {
@@ -156,15 +174,15 @@
       "type": "file"
     },
     {
-      "path": "src/components/visualizations/tactical-bim-overlay.tsx",
+      "path": "src/app/(dashboard)/layout.tsx",
       "accessCount": 2,
-      "lastAccessed": 1772380907275,
+      "lastAccessed": 1772382465705,
       "type": "file"
     },
     {
-      "path": "src/app/globals.css",
+      "path": "src/components/query/chat-interface.tsx",
       "accessCount": 2,
-      "lastAccessed": 1772380925418,
+      "lastAccessed": 1772382471356,
       "type": "file"
     },
     {
@@ -180,21 +198,9 @@
       "type": "directory"
     },
     {
-      "path": "src/app/(dashboard)/layout.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1772380097081,
-      "type": "file"
-    },
-    {
       "path": "src/app/layout.tsx",
       "accessCount": 1,
       "lastAccessed": 1772380097440,
-      "type": "file"
-    },
-    {
-      "path": "src/components/dashboard-header.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1772380098201,
       "type": "file"
     },
     {
@@ -207,12 +213,6 @@
       "path": "tailwind.config.ts",
       "accessCount": 1,
       "lastAccessed": 1772380099268,
-      "type": "file"
-    },
-    {
-      "path": "src/components/query/chat-interface.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1772380254912,
       "type": "file"
     },
     {
@@ -231,6 +231,18 @@
       "path": "src/ai/flows/query-semantic-routing.ts",
       "accessCount": 1,
       "lastAccessed": 1772380259480,
+      "type": "file"
+    },
+    {
+      "path": "src/components/visualizations/bim-scene.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1772382131474,
+      "type": "file"
+    },
+    {
+      "path": "src/hooks/use-mobile.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1772382466811,
       "type": "file"
     }
   ],
