@@ -16,7 +16,14 @@ import {
   Timestamp,
   WithFieldValue,
 } from 'firebase/firestore'
+import { Firestore } from 'firebase/firestore'
 import { getFirebaseDb } from './firebase'
+
+function requireDb(): Firestore {
+  const db = requireDb()
+  if (!db) throw new Error('Firebase is not configured. Set NEXT_PUBLIC_FIREBASE_API_KEY.')
+  return db
+}
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -60,35 +67,35 @@ export type Document = {
 // ─── Typed Collection References (lazy — safe for SSR) ───────────────────────
 
 export function usersCol(): CollectionReference<UserProfile> {
-  return collection(getFirebaseDb(), 'users') as CollectionReference<UserProfile>
+  return collection(requireDb(), 'users') as CollectionReference<UserProfile>
 }
 
 export function projectsCol(): CollectionReference<Project> {
-  return collection(getFirebaseDb(), 'projects') as CollectionReference<Project>
+  return collection(requireDb(), 'projects') as CollectionReference<Project>
 }
 
 export function queriesCol(): CollectionReference<SavedQuery> {
-  return collection(getFirebaseDb(), 'queries') as CollectionReference<SavedQuery>
+  return collection(requireDb(), 'queries') as CollectionReference<SavedQuery>
 }
 
 export function documentsCol(): CollectionReference<Document> {
-  return collection(getFirebaseDb(), 'documents') as CollectionReference<Document>
+  return collection(requireDb(), 'documents') as CollectionReference<Document>
 }
 
 export function userDoc(uid: string): DocumentReference<UserProfile> {
-  return doc(getFirebaseDb(), 'users', uid) as DocumentReference<UserProfile>
+  return doc(requireDb(), 'users', uid) as DocumentReference<UserProfile>
 }
 
 export function projectDoc(projectId: string): DocumentReference<Project> {
-  return doc(getFirebaseDb(), 'projects', projectId) as DocumentReference<Project>
+  return doc(requireDb(), 'projects', projectId) as DocumentReference<Project>
 }
 
 export function queryDoc(queryId: string): DocumentReference<SavedQuery> {
-  return doc(getFirebaseDb(), 'queries', queryId) as DocumentReference<SavedQuery>
+  return doc(requireDb(), 'queries', queryId) as DocumentReference<SavedQuery>
 }
 
 export function documentDoc(docId: string): DocumentReference<Document> {
-  return doc(getFirebaseDb(), 'documents', docId) as DocumentReference<Document>
+  return doc(requireDb(), 'documents', docId) as DocumentReference<Document>
 }
 
 // ─── Generic CRUD Helpers ────────────────────────────────────────────────────

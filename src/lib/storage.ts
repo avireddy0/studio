@@ -3,15 +3,22 @@ import {
   uploadBytesResumable,
   getDownloadURL,
   deleteObject,
+  FirebaseStorage,
 } from 'firebase/storage'
-import { storage } from './firebase'
+import { getFirebaseStorage } from './firebase'
+
+function requireStorage(): FirebaseStorage {
+  const s = getFirebaseStorage()
+  if (!s) throw new Error('Firebase is not configured. Set NEXT_PUBLIC_FIREBASE_API_KEY.')
+  return s
+}
 
 export async function uploadFile(
   path: string,
   file: File,
   onProgress?: (percent: number) => void
 ): Promise<string> {
-  const storageRef = ref(storage, path)
+  const storageRef = ref(requireStorage(), path)
   const task = uploadBytesResumable(storageRef, file)
 
   return new Promise((resolve, reject) => {
@@ -33,11 +40,11 @@ export async function uploadFile(
 }
 
 export async function getFileUrl(path: string): Promise<string> {
-  const storageRef = ref(storage, path)
+  const storageRef = ref(requireStorage(), path)
   return getDownloadURL(storageRef)
 }
 
 export async function deleteFile(path: string): Promise<void> {
-  const storageRef = ref(storage, path)
+  const storageRef = ref(requireStorage(), path)
   await deleteObject(storageRef)
 }

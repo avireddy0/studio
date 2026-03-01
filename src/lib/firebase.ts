@@ -13,40 +13,37 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 }
 
-// Only initialize on the client side to avoid SSR prerender errors
-function getFirebaseApp(): FirebaseApp {
+const isConfigured = !!firebaseConfig.apiKey
+
+function getFirebaseApp(): FirebaseApp | null {
+  if (!isConfigured) return null
   if (getApps().length) return getApp()
   return initializeApp(firebaseConfig)
 }
 
-let _auth: Auth | null = null
-let _db: Firestore | null = null
-let _storage: FirebaseStorage | null = null
-
-export function getFirebaseAuth(): Auth {
-  if (!_auth) _auth = getAuth(getFirebaseApp())
-  return _auth
+export function getFirebaseAuth(): Auth | null {
+  const app = getFirebaseApp()
+  return app ? getAuth(app) : null
 }
 
-export function getFirebaseDb(): Firestore {
-  if (!_db) _db = getFirestore(getFirebaseApp())
-  return _db
+export function getFirebaseDb(): Firestore | null {
+  const app = getFirebaseApp()
+  return app ? getFirestore(app) : null
 }
 
-export function getFirebaseStorage(): FirebaseStorage {
-  if (!_storage) _storage = getStorage(getFirebaseApp())
-  return _storage
+export function getFirebaseStorage(): FirebaseStorage | null {
+  const app = getFirebaseApp()
+  return app ? getStorage(app) : null
 }
 
-// Convenience re-exports for modules that import directly
-// These are safe to call in 'use client' components
-export const app = typeof window !== 'undefined' ? getFirebaseApp() : null as unknown as FirebaseApp
-export const auth = typeof window !== 'undefined' ? getFirebaseAuth() : null as unknown as Auth
-export const db = typeof window !== 'undefined' ? getFirebaseDb() : null as unknown as Firestore
-export const storage = typeof window !== 'undefined' ? getFirebaseStorage() : null as unknown as FirebaseStorage
+export const app = typeof window !== 'undefined' ? getFirebaseApp() : null
+export const auth = typeof window !== 'undefined' ? getFirebaseAuth() : null
+export const db = typeof window !== 'undefined' ? getFirebaseDb() : null
+export const storage = typeof window !== 'undefined' ? getFirebaseStorage() : null
 
-export const analytics = typeof window !== 'undefined'
-  ? import('firebase/analytics').then(({ getAnalytics, isSupported }) =>
-      isSupported().then(yes => yes ? getAnalytics(getFirebaseApp()) : null)
-    )
+export const analytics = typeof window !== 'undefined' && isConfigured
+  ? import('firebase/analytics').then(({ getAnalytics, isSupported }) => {
+      const firebaseApp = getFirebaseApp()
+      return firebaseApp ? isSupported().then(yes => yes ? getAnalytics(firebaseApp) : null) : null
+    })
   : null

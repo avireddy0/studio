@@ -52,7 +52,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(getFirebaseAuth(), firebaseUser => {
+    const firebaseAuth = getFirebaseAuth()
+    if (!firebaseAuth) {
+      setLoading(false)
+      return
+    }
+    const unsubscribe = onAuthStateChanged(firebaseAuth, firebaseUser => {
       setUser(firebaseUser)
       setLoading(false)
     })
@@ -60,9 +65,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   async function signInWithGoogle() {
+    const firebaseAuth = getFirebaseAuth()
+    if (!firebaseAuth) { setError('Firebase not configured'); return }
     setError(null)
     try {
-      const result = await signInWithPopup(getFirebaseAuth(), googleProvider)
+      const result = await signInWithPopup(firebaseAuth, googleProvider)
       const isNew = result.user.metadata.creationTime === result.user.metadata.lastSignInTime
       await ensureUserProfile(result.user, isNew)
     } catch (err) {
@@ -72,9 +79,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function signInWithEmail(email: string, password: string) {
+    const firebaseAuth = getFirebaseAuth()
+    if (!firebaseAuth) { setError('Firebase not configured'); return }
     setError(null)
     try {
-      const result = await signInWithEmailAndPassword(getFirebaseAuth(), email, password)
+      const result = await signInWithEmailAndPassword(firebaseAuth, email, password)
       await ensureUserProfile(result.user, false)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Sign-in failed')
@@ -83,9 +92,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function signUp(email: string, password: string) {
+    const firebaseAuth = getFirebaseAuth()
+    if (!firebaseAuth) { setError('Firebase not configured'); return }
     setError(null)
     try {
-      const result = await createUserWithEmailAndPassword(getFirebaseAuth(), email, password)
+      const result = await createUserWithEmailAndPassword(firebaseAuth, email, password)
       await ensureUserProfile(result.user, true)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Sign-up failed')
@@ -94,9 +105,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function signOut() {
+    const firebaseAuth = getFirebaseAuth()
+    if (!firebaseAuth) return
     setError(null)
     try {
-      await firebaseSignOut(getFirebaseAuth())
+      await firebaseSignOut(firebaseAuth)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Sign-out failed')
       throw err
