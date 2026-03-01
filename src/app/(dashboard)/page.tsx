@@ -55,6 +55,8 @@ export default function UnifiedPage() {
     const item = icons[i % icons.length];
     const topPercent = Math.random() * 100;
     // Calculate yOffset to meet precisely at the vertical middle (50% of the container)
+    // The target is 50%. The distance from topPercent to 50% is (50 - topPercent).
+    // Multiply by a factor to match the container height visually (8.5 is a heuristic for 100vh height / icons)
     const yOffsetValue = 50 - topPercent;
     
     return {
