@@ -1,24 +1,21 @@
+
 'use client';
 
 import React from 'react';
 import { 
   Crosshair, 
   ArrowRight, 
-  ShieldCheck, 
-  Cpu, 
   Database, 
-  Zap, 
+  Cpu, 
   Target,
-  ChevronRight,
-  Activity,
-  Box
+  ChevronRight
 } from 'lucide-react';
 import { EnvisionOSLogo } from "@/components/icons";
 import Link from 'next/link';
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col w-full bg-white text-black min-h-screen selection:bg-primary/20 font-sans">
+    <div className="flex flex-col w-full bg-white text-black min-h-screen selection:bg-primary/20 font-sans overflow-x-hidden">
       {/* HUD OVERLAY - SUBTLE LIGHT VERSION */}
       <div className="fixed inset-0 pointer-events-none z-0 opacity-[0.03]" style={{ 
         backgroundImage: `linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)`,
@@ -52,7 +49,7 @@ export default function LandingPage() {
             </div>
             
             <div className="space-y-4 mb-16">
-                <h1 className="text-5xl md:text-8xl font-semibold tracking-tighter leading-none">
+                <h1 className="text-5xl md:text-8xl font-semibold tracking-tighter leading-none uppercase">
                     Where <br/>
                     <span className="text-primary">Development</span> <br/>
                     Meets Data
