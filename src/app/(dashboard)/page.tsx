@@ -45,29 +45,15 @@ export default function UnifiedPage() {
     return <div className="min-h-screen bg-white" />;
   }
 
-  // 7 large icons for the ingestion funnel — wide spread on left, converging into center parser
-  const chaoticInputs = [
-    { Icon: FileText, color: "text-blue-400", label: "PDF" },
-    { Icon: FileSpreadsheet, color: "text-green-400", label: "XLS" },
-    { Icon: FileSignature, color: "text-amber-400", label: "RFI" },
-    { Icon: FileCode, color: "text-purple-400", label: "BIM" },
-    { Icon: Mail, color: "text-sky-400", label: "MAIL" },
-    { Icon: Phone, color: "text-emerald-400", label: "CALL" },
-    { Icon: MessageSquare, color: "text-pink-400", label: "TEXT" },
-  ].map((item, i) => {
-    const topPercent = 3 + (i / 6) * 94;
-    const yCenter = 50;
-    const yOffsetValue = yCenter - topPercent;
-    const duration = 5.5 + i * 0.3;
-
-    return {
-      ...item,
-      delay: `-${((i / 7) * duration).toFixed(2)}s`,
-      duration: `${duration.toFixed(2)}s`,
-      top: `${topPercent.toFixed(2)}%`,
-      yOffset: `${(yOffsetValue * 5.5).toFixed(2)}px`,
-    };
-  });
+  // Document cards for the ingestion funnel — scattered on the left, flying into parser
+  const docCards = [
+    { label: "DOC", rotate: -15, top: "10%", left: "2%", smLeft: "5%", delay: "0s" },
+    { label: "PDF", rotate: -20, top: "40%", left: "0%", smLeft: "2%", delay: "-3s" },
+    { label: "EMAIL", rotate: 8, top: "55%", left: "8%", smLeft: "12%", delay: "-2s" },
+    { label: "XLS", rotate: 18, top: "5%", left: "12%", smLeft: "15%", delay: "-5s" },
+    { label: "CALL", rotate: -5, top: "30%", left: "15%", smLeft: "20%", delay: "-4s" },
+    { label: "TEXT", rotate: 12, top: "75%", left: "5%", smLeft: "10%", delay: "-1s" },
+  ];
 
   return (
     <div
@@ -120,56 +106,53 @@ export default function UnifiedPage() {
                   </p>
               </div>
 
-              <div className="relative w-full flex-1 flex items-center bg-white/[0.02] border border-white/5 overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
+              <div className="relative w-full flex-1 flex items-center bg-white/[0.02] border border-white/5 rounded-2xl overflow-hidden">
 
-                      {/* THE CHAOTIC FUNNEL — 7 BIG ICONS CONVERGING INTO CENTER */}
-                      <div className="absolute left-0 w-1/2 h-full pointer-events-none">
-                        {chaoticInputs.map((item, i) => (
-                            <div
-                              key={i}
-                              className="absolute left-[-120px] sm:left-[-180px] animate-tornado"
-                              style={{
-                                  animationDelay: item.delay,
-                                  animationDuration: item.duration,
-                                  "--y-offset": item.yOffset,
-                                  top: item.top
-                              } as React.CSSProperties}
-                            >
-                                <div className="flex flex-col items-center gap-1.5">
-                                    <div className={cn("p-4 sm:p-6 md:p-8 border bg-black/90 border-white/10 shadow-2xl", item.color)}>
-                                        <item.Icon className="size-12 sm:size-16 md:size-24 lg:size-28" />
-                                    </div>
-                                    <span className="text-[10px] sm:text-[11px] font-mono text-white/50 font-bold uppercase tracking-[0.2em]">{item.label}</span>
-                                </div>
-                            </div>
-                        ))}
+                  {/* FLOATING DOCUMENT CARDS — LEFT SIDE */}
+                  {docCards.map((card, i) => (
+                    <div
+                      key={i}
+                      className="absolute animate-float-doc"
+                      style={{
+                        top: card.top,
+                        left: card.left,
+                        animationDelay: card.delay,
+                      }}
+                    >
+                      <div
+                        className="bg-white rounded-lg shadow-2xl p-2.5 sm:p-3 md:p-4 w-14 sm:w-20 md:w-28"
+                        style={{ transform: `rotate(${card.rotate}deg)` }}
+                      >
+                        <div className="flex flex-col gap-1 mb-1.5 sm:mb-2">
+                          <div className="w-full h-[3px] sm:h-1 bg-gray-200 rounded" />
+                          <div className="w-3/4 h-[3px] sm:h-1 bg-gray-200 rounded" />
+                          <div className="w-full h-[3px] sm:h-1 bg-gray-100 rounded" />
+                        </div>
+                        <span className="block text-center text-[7px] sm:text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-wider">{card.label}</span>
                       </div>
+                    </div>
+                  ))}
 
-                      {/* THE PARSER CORE (CENTER) — WHITE CONTAINER */}
-                      <div className="relative z-20 flex flex-col items-center gap-4 px-4 sm:px-8 md:px-12">
-                          <div className="size-28 sm:size-40 md:size-48 lg:size-64 rounded-full bg-white border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_100px_rgba(0,124,90,0.3)] backdrop-blur-xl">
-                              <div className="relative">
-                                <Database className="size-12 sm:size-16 md:size-20 lg:size-28 text-primary" />
-                                <div className="absolute inset-0 size-12 sm:size-16 md:size-20 lg:size-28 bg-primary/30 blur-3xl animate-pulse" />
-                              </div>
-                          </div>
-                          <div className="flex flex-col items-center gap-0.5">
-                              <span className="text-[11px] font-mono font-bold text-primary uppercase tracking-[0.4em]">Parser_Core_Active</span>
-                              <span className="text-[10px] md:text-[8px] font-mono text-white/40 uppercase tracking-widest animate-pulse">Synthesizing_Intelligence...</span>
-                          </div>
-                      </div>
-
-                      {/* THE SINGLE FILE LINE (CENTER TO RIGHT) */}
-                      <div className="absolute right-0 w-1/2 h-full overflow-hidden pointer-events-none">
-                          <div className="flex items-center h-full pl-4 sm:pl-8 md:pl-12">
-                              <div className="animate-data-stream-single opacity-0 flex items-center gap-3 sm:gap-4 md:gap-6 text-[10px] sm:text-[11px] md:text-sm font-mono text-primary font-bold whitespace-nowrap bg-primary/5 px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-5 border-l-4 border-primary shadow-lg">
-                                  <FileText className="size-4 sm:size-5 md:size-6 text-primary shrink-0" />
-                                  <span>ENVISION_VERIFIED_STREAM.json</span>
-                              </div>
-                          </div>
-                      </div>
+                  {/* AUDIT CORE — CENTER (ROUNDED RECTANGLE WITH INDIGO GLOW) */}
+                  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                    <div className="relative w-32 sm:w-44 md:w-56 lg:w-64 h-36 sm:h-48 md:h-56 lg:h-64 rounded-3xl bg-[#0A0A14] border border-indigo-500/30 shadow-[0_0_80px_rgba(99,102,241,0.15)] flex flex-col items-center justify-center overflow-hidden">
+                      {/* Horizontal scan line */}
+                      <div className="absolute inset-x-0 h-[2px] bg-indigo-400/60 shadow-[0_0_20px_rgba(99,102,241,0.5)] animate-scan-line" />
+                      <span className="text-3xl sm:text-4xl md:text-5xl font-mono text-indigo-300/50 mb-2 sm:mb-3">&#123; &#125;</span>
+                      <span className="text-[9px] sm:text-[11px] md:text-sm font-bold uppercase tracking-[0.3em] text-white/80">Audit Core</span>
+                    </div>
                   </div>
+
+                  {/* VERIFIED JSON OUTPUT — RIGHT SIDE */}
+                  <div className="absolute right-[3%] sm:right-[5%] md:right-[8%] top-1/2 -translate-y-1/2 flex flex-col gap-2 sm:gap-3">
+                    <div className="bg-primary/10 border border-primary/20 rounded-lg px-3 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4 shadow-lg animate-float-doc" style={{ animationDelay: '-1s' }}>
+                      <pre className="text-[7px] sm:text-[9px] md:text-[11px] font-mono text-primary leading-relaxed whitespace-pre">{`{ "permit": "F1",\n  "status": "PASS" }`}</pre>
+                    </div>
+                    <div className="bg-primary/10 border border-primary/20 rounded-lg px-3 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4 shadow-lg opacity-50 translate-x-2 animate-float-doc" style={{ animationDelay: '-3s' }}>
+                      <pre className="text-[7px] sm:text-[9px] md:text-[11px] font-mono text-primary leading-relaxed whitespace-pre">{`{ "rfi": "042",\n  "stage": "DRAFT" }`}</pre>
+                    </div>
+                  </div>
+
               </div>
           </div>
       </section>

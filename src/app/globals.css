@@ -110,6 +110,15 @@
   animation: data-stream-single 5s infinite linear;
 }
 
+/* FLOATING DOCUMENT CARDS — gentle drift for ingestion section */
+@keyframes float-doc {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float-doc {
+  animation: float-doc 4s ease-in-out infinite;
+}
+
 /* STATUS PULSE */
 @keyframes pulse-status {
   0%, 100% { opacity: 1; transform: scale(1); }
