@@ -4,35 +4,48 @@
 
 @layer base {
   :root {
-    --background: 240 10% 2%;
-    --foreground: 0 0% 100%;
-    --card: 240 10% 4%;
-    --card-foreground: 0 0% 100%;
-    --popover: 240 10% 2%;
-    --popover-foreground: 0 0% 100%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
     --primary: 164 100% 24%; /* #007C5A */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 164 100% 24%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 164 100% 24%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 164 100% 24%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 5% 15%;
+    --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 240 5% 10%;
-    --muted-foreground: 240 5% 65%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
     --accent: 164 100% 24%;
     --accent-foreground: 0 0% 98%;
-    --destructive: 0 84% 60%;
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5% 15%;
-    --input: 240 5% 15%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
     --ring: 164 100% 24%;
-    --radius: 0.25rem; /* Sharper technical corners */
-    
-    --sidebar-background: 240 10% 2%;
-    --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 164 100% 24%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 5% 12%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 240 5% 12%;
-    --sidebar-ring: 164 100% 24%;
   }
 }
 
@@ -41,12 +54,8 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/30;
+    @apply bg-background text-foreground antialiased selection:bg-primary/20;
     font-family: 'Inter', sans-serif;
-    background-image: radial-gradient(circle at 50% 50%, rgba(0, 124, 90, 0.03) 0%, transparent 100%), 
-                      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), 
-                      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 100% 100%, 40px 40px, 40px 40px;
   }
 }
 
@@ -54,106 +63,67 @@
   font-family: 'JetBrains Mono', monospace;
 }
 
-.tactical-border {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03);
+/* MISSION CRITICAL ACCENTS */
+.tactical-grid {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
 }
 
-.envision-glow {
-  box-shadow: 0 0 20px rgba(0, 124, 90, 0.2);
+.dark .tactical-grid {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
 }
 
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
+/* IMESSAGE STYLE BUBBLES */
+.imessage-bubble {
+  @apply relative px-5 py-2.5 rounded-[20px] max-w-[85%] text-[16px] leading-tight font-medium;
 }
 
-.scanline::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, transparent 50%, rgba(0, 124, 90, 0.02) 50%);
-  background-size: 100% 4px;
-  pointer-events: none;
-  z-index: 50;
+.imessage-user {
+  @apply bg-primary text-white rounded-br-none ml-auto;
 }
 
-/* 3D STACK LAYERS - TACTICAL REDESIGN */
-.arch-stack {
-    perspective: 2500px;
-    position: relative;
-    width: 100%;
-    height: 700px;
+.imessage-system {
+  @apply bg-[#E9E9EB] text-black rounded-bl-none mr-auto;
 }
 
-.stack-layer {
-    position: absolute;
-    width: 100%;
-    max-width: 550px;
-    height: 200px;
-    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-    transform-style: preserve-3d;
-    cursor: pointer;
+.dark .imessage-system {
+  @apply bg-[#262629] text-white;
 }
 
-.stack-layer .layer-glass {
-    position: absolute;
-    inset: 0;
-    background: rgba(5, 5, 10, 0.85);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(0, 124, 90, 0.3);
-    border-radius: 4px;
-}
-
-.stack-layer .layer-content {
-    position: relative;
-    z-index: 10;
-    padding: 24px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.layer-id {
-    display: block;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 900;
-    color: #007C5A;
-    letter-spacing: 0.3em;
-    margin-bottom: 4px;
-}
-
-.layer-high { transform: rotateX(55deg) rotateZ(-15deg) translateZ(200px); }
-.layer-mid-high { transform: rotateX(55deg) rotateZ(-15deg) translateZ(100px); }
-.layer-mid-low { transform: rotateX(55deg) rotateZ(-15deg) translateZ(0px); }
-.layer-low { transform: rotateX(55deg) rotateZ(-15deg) translateZ(-100px); }
-
-.arch-stack:hover .layer-high { transform: rotateX(55deg) rotateZ(-15deg) translateZ(300px); }
-.arch-stack:hover .layer-mid-high { transform: rotateX(55deg) rotateZ(-15deg) translateZ(180px); }
-.arch-stack:hover .layer-mid-low { transform: rotateX(55deg) rotateZ(-15deg) translateZ(60px); }
-.arch-stack:hover .layer-low { transform: rotateX(55deg) rotateZ(-15deg) translateZ(-60px); }
-
-/* INGESTION STREAM TACTICAL */
-@keyframes technical-fly {
-  0% { transform: translateX(-150%) translateY(0); opacity: 0; }
-  20% { opacity: 1; }
-  80% { opacity: 1; }
+/* ANIMATIONS */
+@keyframes fly-in {
+  0% { transform: translateX(-100%) translateY(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
   100% { transform: translateX(100%) translateY(0); opacity: 0; }
 }
 
-.animate-technical-fly {
-  animation: technical-fly 4s infinite linear;
+.animate-fly-in {
+  animation: fly-in 4s infinite linear;
 }
 
-@keyframes grid-pulse {
-  0%, 100% { opacity: 0.1; }
-  50% { opacity: 0.3; }
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 124, 90, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(0, 124, 90, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 124, 90, 0); }
 }
 
-.grid-overlay {
-  background-size: 20px 20px;
-  background-image: linear-gradient(to right, rgba(0, 124, 90, 0.1) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(0, 124, 90, 0.1) 1px, transparent 1px);
-  animation: grid-pulse 4s infinite ease-in-out;
+.pulse-ring {
+  animation: pulse-ring 2s infinite;
+}
+
+/* 3D STACK LAYERS */
+.arch-stack {
+    perspective: 2000px;
+}
+
+.stack-layer {
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: rotateX(55deg) rotateZ(-15deg);
+}
+
+.stack-layer:hover {
+    transform: rotateX(55deg) rotateZ(-15deg) translateZ(50px);
 }
