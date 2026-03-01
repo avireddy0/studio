@@ -146,9 +146,9 @@ export default function UnifiedPage() {
                         ))}
                       </div>
 
-                      {/* THE PARSER CORE (CENTER) */}
+                      {/* THE PARSER CORE (CENTER) — WHITE CONTAINER */}
                       <div className="relative z-20 flex flex-col items-center gap-4 px-4 sm:px-8 md:px-12">
-                          <div className="size-28 sm:size-40 md:size-48 lg:size-64 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_100px_rgba(0,124,90,0.3)] bg-[#0A0A0F]/80 backdrop-blur-xl">
+                          <div className="size-28 sm:size-40 md:size-48 lg:size-64 rounded-full bg-white border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_100px_rgba(0,124,90,0.3)] backdrop-blur-xl">
                               <div className="relative">
                                 <Database className="size-12 sm:size-16 md:size-20 lg:size-28 text-primary" />
                                 <div className="absolute inset-0 size-12 sm:size-16 md:size-20 lg:size-28 bg-primary/30 blur-3xl animate-pulse" />
@@ -162,24 +162,11 @@ export default function UnifiedPage() {
 
                       {/* THE SINGLE FILE LINE (CENTER TO RIGHT) */}
                       <div className="absolute right-0 w-1/2 h-full overflow-hidden pointer-events-none">
-                          <div className="flex flex-col justify-center h-full gap-4 pl-4 sm:pl-8 md:pl-12">
-                              {[
-                                "0x1A2B_RFI_VERIFIED",
-                                "0x3C4D_CONTRACT_SIGNED",
-                                "0x5E6F_BIM_SYNCED",
-                                "0x7G8H_XLS_NORMALIZED",
-                                "0x9I0J_LOG_ARCHIVED",
-                                "0xAK1L_NODE_STABLE",
-                                "0xCM2N_SIGNAL_CLEAN"
-                              ].map((str, i) => (
-                                <div
-                                    key={i}
-                                    className="animate-data-stream-single opacity-0 text-[9px] sm:text-[10px] md:text-[11px] font-mono text-primary font-bold whitespace-nowrap bg-primary/5 px-3 py-2 sm:px-4 md:px-6 md:py-3 border-l-4 border-primary shadow-sm"
-                                    style={{ animationDelay: `${i * 0.7}s` }}
-                                >
-                                    {str}
-                                </div>
-                              ))}
+                          <div className="flex items-center h-full pl-4 sm:pl-8 md:pl-12">
+                              <div className="animate-data-stream-single opacity-0 flex items-center gap-3 sm:gap-4 md:gap-6 text-[10px] sm:text-[11px] md:text-sm font-mono text-primary font-bold whitespace-nowrap bg-primary/5 px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-5 border-l-4 border-primary shadow-lg">
+                                  <FileText className="size-4 sm:size-5 md:size-6 text-primary shrink-0" />
+                                  <span>ENVISION_VERIFIED_STREAM.json</span>
+                              </div>
                           </div>
                       </div>
                   </div>
