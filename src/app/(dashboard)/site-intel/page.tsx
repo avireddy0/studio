@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -30,13 +29,15 @@ export default function SiteIntelPage() {
             <CardContent className="p-0 relative h-[700px]">
               {/* SATELLITE IMAGE MAP */}
               <div className="absolute inset-0 grayscale contrast-125 brightness-75">
-                <Image 
-                  src={satelliteImage?.imageUrl || ''} 
-                  alt="Satellite Map" 
-                  fill 
-                  className="object-cover"
-                  data-ai-hint={satelliteImage?.imageHint}
-                />
+                {satelliteImage?.imageUrl && (
+                  <Image 
+                    src={satelliteImage.imageUrl} 
+                    alt="Satellite Map" 
+                    fill 
+                    className="object-cover"
+                    data-ai-hint={satelliteImage.imageHint}
+                  />
+                )}
               </div>
               <div className="absolute inset-0 tactical-grid opacity-20 pointer-events-none" />
               

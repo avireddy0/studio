@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -17,13 +16,15 @@ export function TacticalBimOverlay() {
       
       {/* SCANNING IMAGE */}
       <div className="absolute inset-0 grayscale contrast-200 brightness-50 opacity-60">
-        <Image
-          src={image?.imageUrl || ''}
-          alt="LiDAR Scan"
-          fill
-          className="object-cover"
-          data-ai-hint={image?.imageHint}
-        />
+        {image?.imageUrl && (
+          <Image
+            src={image.imageUrl}
+            alt="LiDAR Scan"
+            fill
+            className="object-cover"
+            data-ai-hint={image.imageHint}
+          />
+        )}
       </div>
 
       {/* TACTICAL GRID & HUD */}

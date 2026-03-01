@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -13,7 +12,6 @@ import {
   Map as MapIcon,
   Zap,
   Circle,
-  Crosshair as CrosshairIcon,
   Layers
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -21,8 +19,6 @@ import { ChatInterface } from "@/components/query/chat-interface";
 import { PdfExtractor } from "@/components/ingestion/pdf-extractor";
 import { ContextSummarizer } from "@/components/context/context-summarizer";
 import { TacticalBimOverlay } from "@/components/visualizations/tactical-bim-overlay";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 export default function UnifiedPage() {
   const [mounted, setMounted] = useState(false);
