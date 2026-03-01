@@ -1,15 +1,9 @@
-import type {Metadata} from 'next';
-import './globals.css';
-import { Toaster } from "@/components/ui/toaster"
+import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'ENVISION OS | WEAPONS-GRADE INTEL',
-  description: 'Verified profit protection and institutional-grade transparency for commercial construction.',
-  openGraph: {
-    title: 'ENVISION OS | WEAPONS-GRADE INTEL',
-    description: 'Where Development meets Data. Verified profit protection through continuous multi-platform audit cycles.',
-    type: 'website',
-  },
+  title: "ENVISION OS | Command Terminal",
+  description: "Institutional-grade construction intelligence. Verified multi-platform data fusion.",
 };
 
 export default function RootLayout({
@@ -18,15 +12,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-      </head>
-      <body className="font-sans antialiased">
+    <html lang="en" className="dark scroll-smooth">
+      <body className="antialiased bg-[#020202] text-[#00FF41] min-h-screen font-mono">
+        <div className="fixed inset-0 scanlines pointer-events-none z-50"></div>
         {children}
-        <Toaster />
       </body>
     </html>
   );
