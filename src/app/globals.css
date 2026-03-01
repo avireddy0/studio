@@ -5,14 +5,14 @@
 @layer base {
   :root {
     --background: 0 0% 2%;
-    --foreground: 120 100% 40%; /* Tactical Green */
+    --foreground: 0 0% 98%;
     --card: 0 0% 4%;
-    --card-foreground: 120 100% 40%;
+    --card-foreground: 0 0% 98%;
     --popover: 0 0% 4%;
-    --popover-foreground: 120 100% 40%;
-    --primary: 120 100% 40%; /* #00cc00ish */
+    --popover-foreground: 0 0% 98%;
+    --primary: 164 100% 40%; /* Emerald/Tactical Green */
     --primary-foreground: 0 0% 0%;
-    --secondary: 200 100% 40%; /* Tactical Blue/Cyan */
+    --secondary: 200 100% 40%; /* Tactical Blue */
     --secondary-foreground: 0 0% 0%;
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 60%;
@@ -22,8 +22,13 @@
     --destructive-foreground: 0 0% 100%;
     --border: 0 0% 20%;
     --input: 0 0% 10%;
-    --ring: 120 100% 40%;
-    --radius: 0rem; /* ZERO RADIUS EVERYWHERE */
+    --ring: 164 100% 40%;
+    --radius: 0rem; 
+  }
+
+  .dark {
+    --background: 0 0% 2%;
+    --foreground: 0 0% 98%;
   }
 }
 
@@ -33,158 +38,11 @@
     border-radius: 0 !important; /* Force strict angular UI */
   }
   body {
-    @apply bg-background text-foreground antialiased;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    @apply bg-background text-foreground antialiased selection:bg-primary/20;
     overflow-x: hidden;
   }
 }
 
-/* C2 TACTICAL GRID */
-.tactical-grid {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(0, 255, 65, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
-  background-position: center center;
-}
-
-/* SCANLINE TEXTURE */
-.scanlines {
-  position: relative;
-}
-.scanlines::before {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  z-index: 50;
-  background-size: 100% 4px, 6px 100%;
-  pointer-events: none;
-}
-
-/* RADAR SWEEP */
-@keyframes radar-sweep {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-.radar-sweep-element {
-  background: conic-gradient(from 0deg, transparent 70%, rgba(0, 255, 65, 0.4) 100%);
-  animation: radar-sweep 4s infinite linear;
-  border-radius: 50% !important; /* The only exception for circles */
-}
-
-/* FUNNEL ANIMATION FOR INGESTION */
-@keyframes funnel {
-  0% { transform: translateX(0) scale(1.2); opacity: 0; }
-  10% { opacity: 1; }
-  80% { transform: translateX(35vw) scale(0.5); opacity: 0.8; }
-  100% { transform: translateX(40vw) scale(0); opacity: 0; }
-}
-.animate-funnel {
-  animation: funnel 2s infinite linear;
-}
-
-@keyframes funnel-mobile {
-  0% { transform: translateX(0) scale(1); opacity: 0; }
-  10% { opacity: 1; }
-  80% { transform: translateX(20vw) scale(0.5); opacity: 0.8; }
-  100% { transform: translateX(25vw) scale(0); opacity: 0; }
-}
-@media (max-width: 768px) {
-  .animate-funnel {
-    animation: funnel-mobile 2s infinite linear;
-  }
-}
-
-/* HORIZONTAL SCAN */
-@keyframes scan-horizontal {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(200%); }
-}
-.animate-scan-horizontal {
-  animation: scan-horizontal 2s infinite linear;
-}
-
-/* GLITCH EFFECT */
-.glitch {
-  position: relative;
-}
-.glitch::before, .glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--background);
-}
-.glitch::before {
-  left: 2px;
-  text-shadow: -1px 0 red;
-  clip: rect(24px, 550px, 90px, 0);
-  animation: glitch-anim 2s infinite linear alternate-reverse;
-}
-.glitch::after {
-  left: -2px;
-  text-shadow: -1px 0 blue;
-  clip: rect(85px, 550px, 140px, 0);
-  animation: glitch-anim 2.5s infinite linear alternate-reverse;
-}
-
-@keyframes glitch-anim {
-  0% { clip: rect(13px, 9999px, 85px, 0); }
-  5% { clip: rect(61px, 9999px, 20px, 0); }
-  10% { clip: rect(14px, 9999px, 10px, 0); }
-  15% { clip: rect(98px, 9999px, 79px, 0); }
-  20% { clip: rect(31px, 9999px, 86px, 0); }
-  25% { clip: rect(54px, 9999px, 54px, 0); }
-  30% { clip: rect(48px, 9999px, 10px, 0); }
-  35% { clip: rect(4px, 9999px, 59px, 0); }
-  40% { clip: rect(59px, 9999px, 73px, 0); }
-  45% { clip: rect(15px, 9999px, 89px, 0); }
-  50% { clip: rect(82px, 9999px, 91px, 0); }
-  55% { clip: rect(5px, 9999px, 85px, 0); }
-  60% { clip: rect(64px, 9999px, 57px, 0); }
-  65% { clip: rect(85px, 9999px, 57px, 0); }
-  70% { clip: rect(2px, 9999px, 28px, 0); }
-  75% { clip: rect(98px, 9999px, 55px, 0); }
-  80% { clip: rect(11px, 9999px, 66px, 0); }
-  85% { clip: rect(32px, 9999px, 90px, 0); }
-  90% { clip: rect(3px, 9999px, 4px, 0); }
-  95% { clip: rect(40px, 9999px, 85px, 0); }
-  100% { clip: rect(11px, 9999px, 25px, 0); }
-}
-
-/* 3D CONTEXT LAYERS */
-.context-layer {
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transform-style: preserve-3d;
-}
-.layer-bottom {
-  transform: rotateX(60deg) rotateZ(-30deg) translateZ(-150px) translateY(50px);
-}
-.layer-middle {
-  transform: rotateX(60deg) rotateZ(-30deg) translateZ(0px) translateY(0px);
-}
-.layer-top {
-  transform: rotateX(60deg) rotateZ(-30deg) translateZ(150px) translateY(-50px);
-}
-.context-container:hover .layer-bottom {
-  transform: rotateX(60deg) rotateZ(-30deg) translateZ(-200px) translateY(80px);
-}
-.context-container:hover .layer-top {
-  transform: rotateX(60deg) rotateZ(-30deg) translateZ(200px) translateY(-80px);
-}
-
-/* UI PANELS */
-.c2-panel {
-  @apply bg-[#050505] border border-[#333] relative overflow-hidden;
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
-}
-.c2-panel-header {
-  @apply bg-[#111] border-b border-[#333] px-4 py-2 flex justify-between items-center text-[10px] uppercase tracking-widest text-[#888];
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
