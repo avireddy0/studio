@@ -3,11 +3,10 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'Envision OS | Where Development Meets Data',
-  description: 'Verified profit protection and institutional-grade transparency for commercial construction through continuous multi-platform audit cycles.',
-  keywords: ['Construction Management', 'AI Orchestration', 'Profit Protection', 'Audit Transparency', 'Envision OS'],
+  title: 'ENVISION OS | WEAPONS-GRADE INTEL',
+  description: 'Verified profit protection and institutional-grade transparency for commercial construction.',
   openGraph: {
-    title: 'Envision OS | Where Development Meets Data',
+    title: 'ENVISION OS | WEAPONS-GRADE INTEL',
     description: 'Where Development meets Data. Verified profit protection through continuous multi-platform audit cycles.',
     type: 'website',
   },
@@ -25,7 +24,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-sans antialiased bg-[#030303] text-white">
+      <body className="font-sans antialiased bg-[#0A0A0F] text-white">
         {children}
         <Toaster />
       </body>
