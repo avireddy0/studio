@@ -5,7 +5,6 @@ import { useState, useRef, useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { handleQuery } from "@/lib/actions";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Send, Loader2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage, type Message } from "@/components/query/chat-message";
@@ -99,7 +98,7 @@ export function ChatInterface() {
         </div>
       </ScrollArea>
 
-      <div className="bg-white/80 backdrop-blur-xl p-4 md:p-6 border-t border-black/5">
+      <div className="bg-white/95 backdrop-blur-xl p-4 md:p-6 border-t border-black/5">
         {/* SUGGESTED PROMPTS - GREY PILLS */}
         <div className="max-w-3xl mx-auto flex gap-2 overflow-x-auto pb-4 no-scrollbar">
             {SUGGESTED_PROMPTS.map((prompt, i) => (
@@ -120,14 +119,14 @@ export function ChatInterface() {
         >
           <Input
             name="query"
-            placeholder="iMessage"
-            className="bg-transparent border-none text-black placeholder:text-black/30 h-10 focus-visible:ring-0 font-sans text-base shadow-none"
+            placeholder="Intelligence Command..."
+            className="bg-transparent border-none text-black placeholder:text-black/30 h-10 focus-visible:ring-0 font-sans text-base shadow-none rounded-none"
             autoComplete="off"
           />
           <SubmitButton />
         </form>
         <div className="mt-4 flex justify-center">
-            <p className="text-[8px] font-mono text-black/20 uppercase tracking-[0.5em]">Institutional Intelligence Gateway</p>
+            <p className="text-[8px] font-mono text-black/20 uppercase tracking-[0.5em]">Sovereign Intelligence Gateway</p>
         </div>
       </div>
     </div>
