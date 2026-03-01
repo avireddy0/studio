@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Crosshair, 
-  ArrowRight, 
-  Database, 
-  Zap, 
+import {
+  Crosshair,
+  ArrowRight,
+  Database,
+  Zap,
   Target,
   Terminal,
   Activity,
@@ -19,13 +19,11 @@ import {
   Phone,
   MessageSquare
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChatInterface } from "@/components/query/chat-interface";
 import { ContextSummarizer } from "@/components/context/context-summarizer";
 import { TacticalBimOverlay } from "@/components/visualizations/tactical-bim-overlay";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { cn } from "@/lib/utils";
 
 export default function UnifiedPage() {
@@ -39,41 +37,36 @@ export default function UnifiedPage() {
     return <div className="min-h-screen bg-white" />;
   }
 
-  const satelliteImage = PlaceHolderImages.find(img => img.id === 'satellite-map');
+  // 7 large icons for the ingestion funnel — wide spread on left, converging into center parser
+  const chaoticInputs = [
+    { Icon: FileText, color: "text-blue-400", label: "PDF" },
+    { Icon: FileSpreadsheet, color: "text-green-400", label: "XLS" },
+    { Icon: FileSignature, color: "text-amber-400", label: "RFI" },
+    { Icon: FileCode, color: "text-purple-400", label: "BIM" },
+    { Icon: Mail, color: "text-sky-400", label: "MAIL" },
+    { Icon: Phone, color: "text-emerald-400", label: "CALL" },
+    { Icon: MessageSquare, color: "text-pink-400", label: "TEXT" },
+  ].map((item, i) => {
+    const topPercent = 3 + (i / 6) * 94;
+    const yCenter = 50;
+    const yOffsetValue = yCenter - topPercent;
+    const duration = 5.5 + i * 0.3;
 
-  // Realistic Signal Funnel - Wide on left, Converging into center
-  const chaoticInputs = Array.from({ length: 15 }).map((_, i) => {
-    const icons = [
-        { Icon: FileText, color: "text-blue-400", label: "PDF" },
-        { Icon: FileSpreadsheet, color: "text-green-400", label: "XLS" },
-        { Icon: FileSignature, color: "text-amber-400", label: "RFI" },
-        { Icon: FileCode, color: "text-purple-400", label: "BIM" },
-        { Icon: Mail, color: "text-sky-400", label: "MAIL" },
-        { Icon: Phone, color: "text-emerald-400", label: "CALL" },
-        { Icon: MessageSquare, color: "text-pink-400", label: "TEXT" },
-    ];
-    const item = icons[i % icons.length];
-    const topPercent = (i / 15) * 100;
-    // Calculate yOffset relative to vertical center (50%) to form a aggressive > shape
-    const yOffsetValue = 50 - topPercent; 
-    
     return {
       ...item,
-      // NEGATIVE DELAY to ensure icons are present immediately on load
-      delay: `-${(Math.random() * 12).toFixed(2)}s`, 
-      duration: `${(10.0 + Math.random() * 8.0).toFixed(2)}s`, // 40% slower trajectory
+      delay: `-${((i / 7) * duration).toFixed(2)}s`,
+      duration: `${duration.toFixed(2)}s`,
       top: `${topPercent.toFixed(2)}%`,
-      yOffset: `${(yOffsetValue * 4.5).toFixed(2)}px`, // Funnel factor
-      size: "size-10 sm:size-14 md:size-20 lg:size-24",
+      yOffset: `${(yOffsetValue * 5.5).toFixed(2)}px`,
     };
   });
 
   return (
-    <div 
+    <div
         id="main-scroll-container"
         className="flex flex-col w-full selection:bg-primary/20 font-sans snap-y snap-mandatory overflow-y-auto h-[calc(100vh-64px)] no-scrollbar scroll-smooth"
     >
-      
+
       {/* SECTION 01: INSTITUTIONAL HERO (WHITE) */}
       <section id="hero" className="snap-start relative flex flex-col items-center justify-center p-6 bg-white text-black h-[calc(100vh-64px)] w-full shrink-0">
         <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] tactical-grid" />
@@ -82,7 +75,7 @@ export default function UnifiedPage() {
                 <Crosshair className="size-3" />
                 <span>Institutional Intel System v4.0</span>
             </div>
-            
+
             <div className="space-y-4 mb-16">
                 <h1 className="text-5xl md:text-8xl font-semibold tracking-tighter leading-none">
                     Where <br/>
@@ -107,7 +100,7 @@ export default function UnifiedPage() {
       <section id="ingestion" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden shrink-0">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
           <div className="relative z-10 w-full max-w-7xl h-full flex flex-col justify-between py-12 gap-8">
-              
+
               <div className="space-y-4 shrink-0">
                   <div className="flex items-center gap-3 mb-2">
                       <Database className="size-4 text-primary" />
@@ -118,28 +111,28 @@ export default function UnifiedPage() {
                       Slamming fragmented construction signals into a verified institutional stream. Deterministic parsing for weapons-grade project accuracy.
                   </p>
               </div>
-              
+
               <div className="relative w-full flex-1 flex items-center bg-white/[0.02] border border-white/5 overflow-hidden">
                   <div className="absolute inset-0 flex items-center justify-center">
-                      
-                      {/* THE CHAOTIC FUNNEL (LEFT TO CENTER) */}
+
+                      {/* THE CHAOTIC FUNNEL — 7 BIG ICONS CONVERGING INTO CENTER */}
                       <div className="absolute left-0 w-1/2 h-full pointer-events-none">
                         {chaoticInputs.map((item, i) => (
-                            <div 
-                              key={i} 
-                              className="absolute left-[-200px] animate-tornado"
-                              style={{ 
+                            <div
+                              key={i}
+                              className="absolute left-[-120px] sm:left-[-180px] animate-tornado"
+                              style={{
                                   animationDelay: item.delay,
                                   animationDuration: item.duration,
                                   "--y-offset": item.yOffset,
                                   top: item.top
                               } as React.CSSProperties}
                             >
-                                <div className="flex flex-col items-center gap-1">
-                                    <div className={cn("p-3 sm:p-4 md:p-6 border bg-black/90 border-white/10 shadow-2xl transition-transform hover:scale-110", item.color)}>
-                                        <item.Icon className={item.size} />
+                                <div className="flex flex-col items-center gap-1.5">
+                                    <div className={cn("p-4 sm:p-6 md:p-8 border bg-black/90 border-white/10 shadow-2xl", item.color)}>
+                                        <item.Icon className="size-12 sm:size-16 md:size-24 lg:size-28" />
                                     </div>
-                                    <span className="text-[10px] font-mono text-white/40 font-bold uppercase tracking-[0.2em]">{item.label}</span>
+                                    <span className="text-[10px] sm:text-[11px] font-mono text-white/50 font-bold uppercase tracking-[0.2em]">{item.label}</span>
                                 </div>
                             </div>
                         ))}
@@ -171,8 +164,8 @@ export default function UnifiedPage() {
                                 "0xAK1L_NODE_STABLE",
                                 "0xCM2N_SIGNAL_CLEAN"
                               ].map((str, i) => (
-                                <div 
-                                    key={i} 
+                                <div
+                                    key={i}
                                     className="animate-data-stream-single opacity-0 text-[9px] sm:text-[10px] md:text-[11px] font-mono text-primary font-bold whitespace-nowrap bg-primary/5 px-3 py-2 sm:px-4 md:px-6 md:py-3 border-l-4 border-primary shadow-sm"
                                     style={{ animationDelay: `${i * 0.7}s` }}
                                 >
@@ -194,7 +187,7 @@ export default function UnifiedPage() {
                 <Terminal className="size-4 text-primary" />
                 <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/40">03_Intelligence_Terminal_Core</h2>
             </div>
-            
+
             <div className="mb-8 shrink-0">
               <h2 className="text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Intelligence Command.</h2>
               <p className="text-black/60 max-w-xl text-lg font-medium mt-4">Verified institutional oracle. Direct access to cross-platform project truth.</p>
@@ -279,37 +272,92 @@ export default function UnifiedPage() {
                 <MapIcon className="size-4 text-primary" />
                 <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">06_Site_Doc_Repository</h2>
             </div>
-            
+
             <div className="flex-1 overflow-hidden flex flex-col gap-8">
-                {/* SATELLITE MAP (TOP HALF) */}
+                {/* GEOSPATIAL TACTICAL MAP */}
                 <Card className="bg-[#12121A] border-[#1E1E2E] relative overflow-hidden flex-1 min-h-[300px]">
                     <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-3 relative z-20 shrink-0">
                         <div className="flex items-center justify-between">
                             <CardTitle className="text-[10px] tracking-[0.3em]">Geospatial_Intel_Feed</CardTitle>
-                            <span className="text-[10px] md:text-[8px] font-mono text-primary uppercase">LAT: 34.0522° N</span>
+                            <span className="text-[8px] font-mono text-primary uppercase">LAT: 34.0522° N | LONG: -118.2437° W</span>
                         </div>
                     </CardHeader>
                     <CardContent className="p-0 relative h-full">
-                        {satelliteImage?.imageUrl && (
-                            <Image 
-                                src={satelliteImage.imageUrl} 
-                                alt="Satellite Map" 
-                                fill 
-                                className="object-cover grayscale contrast-125 brightness-75"
-                                data-ai-hint={satelliteImage.imageHint}
-                            />
-                        )}
-                        <div className="absolute inset-0 tactical-grid opacity-20 pointer-events-none" />
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                            <div className="relative">
-                                <div className="size-16 rounded-full border border-primary animate-ping absolute -inset-0 opacity-20" />
-                                <Target className="size-8 text-primary" />
-                            </div>
+                        <svg viewBox="0 0 800 400" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+                            <rect width="800" height="400" fill="#0D1117" />
+
+                            {/* Grid */}
+                            {Array.from({length: 21}).map((_, i) => (
+                              <g key={`g-${i}`}>
+                                <line x1={i * 40} y1={0} x2={i * 40} y2={400} stroke="rgba(0,124,90,0.06)" strokeWidth="0.5" />
+                                <line x1={0} y1={i * 40} x2={800} y2={i * 40} stroke="rgba(0,124,90,0.06)" strokeWidth="0.5" />
+                              </g>
+                            ))}
+
+                            {/* Roads */}
+                            <line x1={0} y1={200} x2={800} y2={200} stroke="rgba(255,255,255,0.08)" strokeWidth="4" />
+                            <line x1={400} y1={0} x2={400} y2={400} stroke="rgba(255,255,255,0.08)" strokeWidth="3" />
+                            <line x1={100} y1={0} x2={700} y2={400} stroke="rgba(255,255,255,0.04)" strokeWidth="2" />
+                            <line x1={200} y1={400} x2={600} y2={0} stroke="rgba(255,255,255,0.03)" strokeWidth="2" />
+
+                            {/* Building footprints */}
+                            <rect x={280} y={100} width={120} height={80} fill="rgba(0,124,90,0.15)" stroke="rgba(0,124,90,0.5)" strokeWidth="1.5" />
+                            <text x={340} y={135} fill="rgba(0,124,90,0.8)" fontSize="8" fontFamily="monospace" textAnchor="middle" fontWeight="bold">PHOENIX_A</text>
+                            <text x={340} y={148} fill="rgba(0,124,90,0.5)" fontSize="6" fontFamily="monospace" textAnchor="middle">ACTIVE SITE</text>
+
+                            <rect x={450} y={120} width={80} height={60} fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+                            <text x={490} y={155} fill="rgba(255,255,255,0.15)" fontSize="6" fontFamily="monospace" textAnchor="middle">BLDG_B</text>
+
+                            <rect x={180} y={230} width={100} height={70} fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+                            <text x={230} y={270} fill="rgba(255,255,255,0.15)" fontSize="6" fontFamily="monospace" textAnchor="middle">WAREHOUSE</text>
+
+                            <rect x={500} y={250} width={140} height={90} fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+                            <text x={570} y={300} fill="rgba(255,255,255,0.15)" fontSize="6" fontFamily="monospace" textAnchor="middle">PARKING_STR</text>
+
+                            <rect x={120} y={80} width={60} height={50} fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+                            <rect x={600} y={60} width={90} height={55} fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+                            <rect x={650} y={280} width={70} height={50} fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+
+                            {/* Active site pulsing marker */}
+                            <circle cx={340} cy={140} r={25} fill="none" stroke="rgba(0,124,90,0.4)" strokeWidth="1">
+                              <animate attributeName="r" values="25;40;25" dur="3s" repeatCount="indefinite" />
+                              <animate attributeName="opacity" values="0.4;0.05;0.4" dur="3s" repeatCount="indefinite" />
+                            </circle>
+                            <circle cx={340} cy={140} r={15} fill="none" stroke="rgba(0,124,90,0.2)" strokeWidth="0.5">
+                              <animate attributeName="r" values="15;30;15" dur="3s" repeatCount="indefinite" />
+                              <animate attributeName="opacity" values="0.3;0;0.3" dur="3s" repeatCount="indefinite" />
+                            </circle>
+                            <circle cx={340} cy={140} r={4} fill="rgba(0,124,90,1)" />
+
+                            {/* Secondary markers */}
+                            <circle cx={490} cy={150} r={3} fill="rgba(255,255,255,0.25)" />
+                            <circle cx={230} cy={265} r={3} fill="rgba(255,255,255,0.25)" />
+                            <circle cx={570} cy={295} r={3} fill="rgba(245,158,11,0.5)" />
+
+                            {/* Zone boundary */}
+                            <rect x={250} y={70} width={200} height={140} fill="none" stroke="rgba(0,124,90,0.2)" strokeWidth="1" strokeDasharray="6 3" />
+                            <text x={255} y={63} fill="rgba(0,124,90,0.4)" fontSize="7" fontFamily="monospace">ZONE_ALPHA — CONTROLLED ACCESS</text>
+
+                            {/* Topographic contour hints */}
+                            <path d="M50,300 Q200,275 350,310 Q500,345 700,285" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+                            <path d="M30,330 Q180,305 330,340 Q500,370 720,310" fill="none" stroke="rgba(255,255,255,0.025)" strokeWidth="1" />
+                            <path d="M80,100 Q250,80 400,95 Q550,110 750,75" fill="none" stroke="rgba(255,255,255,0.02)" strokeWidth="1" />
+
+                            {/* Coordinates */}
+                            <text x={12} y={15} fill="rgba(255,255,255,0.12)" fontSize="8" fontFamily="monospace">34.0530°N</text>
+                            <text x={12} y={395} fill="rgba(255,255,255,0.12)" fontSize="8" fontFamily="monospace">34.0510°N</text>
+                            <text x={700} y={15} fill="rgba(255,255,255,0.12)" fontSize="8" fontFamily="monospace">-118.2420°W</text>
+                            <text x={700} y={395} fill="rgba(255,255,255,0.12)" fontSize="8" fontFamily="monospace">-118.2450°W</text>
+                        </svg>
+
+                        <div className="absolute inset-0 tactical-grid opacity-10 pointer-events-none" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                            <Target className="size-8 text-primary/20" />
                         </div>
                     </CardContent>
                 </Card>
 
-                {/* DOCUMENTS TABLE (BOTTOM HALF) */}
+                {/* DOCUMENTS TABLE */}
                 <Card className="bg-[#12121A] border-[#1E1E2E] overflow-hidden flex-1 min-h-[300px] flex flex-col">
                     <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-3 shrink-0">
                         <CardTitle className="text-[10px] tracking-[0.3em]">Document_Intel_Vault</CardTitle>

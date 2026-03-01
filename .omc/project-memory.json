@@ -136,6 +136,103 @@
       ]
     }
   },
-  "hotPaths": [],
+  "hotPaths": [
+    {
+      "path": "src/components/context/context-summarizer.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1772381087039,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(dashboard)/page.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1772381055868,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/actions.ts",
+      "accessCount": 3,
+      "lastAccessed": 1772381077705,
+      "type": "file"
+    },
+    {
+      "path": "src/components/visualizations/tactical-bim-overlay.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1772380907275,
+      "type": "file"
+    },
+    {
+      "path": "src/app/globals.css",
+      "accessCount": 2,
+      "lastAccessed": 1772380925418,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 1,
+      "lastAccessed": 1772380093682,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 1,
+      "lastAccessed": 1772380094043,
+      "type": "directory"
+    },
+    {
+      "path": "src/app/(dashboard)/layout.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1772380097081,
+      "type": "file"
+    },
+    {
+      "path": "src/app/layout.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1772380097440,
+      "type": "file"
+    },
+    {
+      "path": "src/components/dashboard-header.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1772380098201,
+      "type": "file"
+    },
+    {
+      "path": "src/components/sidebar-nav.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1772380098671,
+      "type": "file"
+    },
+    {
+      "path": "tailwind.config.ts",
+      "accessCount": 1,
+      "lastAccessed": 1772380099268,
+      "type": "file"
+    },
+    {
+      "path": "src/components/query/chat-interface.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1772380254912,
+      "type": "file"
+    },
+    {
+      "path": "src/components/query/chat-message.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1772380255509,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/placeholder-images.ts",
+      "accessCount": 1,
+      "lastAccessed": 1772380255850,
+      "type": "file"
+    },
+    {
+      "path": "src/ai/flows/query-semantic-routing.ts",
+      "accessCount": 1,
+      "lastAccessed": 1772380259480,
+      "type": "file"
+    }
+  ],
   "userDirectives": []
 }
