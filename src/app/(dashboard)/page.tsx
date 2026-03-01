@@ -21,7 +21,6 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ChatInterface } from "@/components/query/chat-interface";
-import { PdfExtractor } from "@/components/ingestion/pdf-extractor";
 import { ContextSummarizer } from "@/components/context/context-summarizer";
 import { TacticalBimOverlay } from "@/components/visualizations/tactical-bim-overlay";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -48,9 +47,8 @@ export default function UnifiedPage() {
     const Icon = icons[i % icons.length];
     return {
       Icon,
-      // Slowed down by 40% (was ~0.4-1.0s, now ~2.5-4.5s for visibility and tornado feel)
       delay: `${(Math.random() * 8).toFixed(2)}s`,
-      duration: `${(2.5 + Math.random() * 2.0).toFixed(2)}s`,
+      duration: `${(5.0 + Math.random() * 4.5).toFixed(2)}s`, // Slowed down by 40%
       top: `${(Math.random() * 100).toFixed(2)}%`,
       yOffset: `${(Math.random() * 400 - 200).toFixed(2)}px`,
       size: i % 12 === 0 ? "size-6" : "size-4",
@@ -92,24 +90,24 @@ export default function UnifiedPage() {
         </div>
       </section>
 
-      {/* SECTION 02: INGESTION PIPELINE (WHITE) - THE TORNADO FUNNEL */}
-      <section id="ingestion" className="snap-start relative min-h-screen w-full bg-white text-black flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden">
+      {/* SECTION 02: INGESTION PIPELINE (OBSIDIAN) - CHAOS TO CONTROL */}
+      <section id="ingestion" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
           <div className="relative z-10 w-full max-w-7xl flex flex-col gap-12">
               <div className="flex items-center gap-3 mb-2 shrink-0">
                   <Database className="size-4 text-primary" />
-                  <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/40">02_Data_Ingestion_Pipeline</h2>
+                  <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">02_Data_Ingestion_Pipeline</h2>
               </div>
               
-              <div className="relative w-full h-[500px] flex items-center bg-gray-50/30 border border-black/5 overflow-hidden">
+              <div className="relative w-full h-[600px] flex items-center bg-white/[0.02] border border-white/5">
                   <div className="absolute inset-0 flex items-center justify-center">
                       
                       {/* THE CHAOTIC TORNADO FUNNEL (LEFT TO CENTER) */}
-                      <div className="absolute left-0 w-1/2 h-full overflow-hidden pointer-events-none">
+                      <div className="absolute left-0 w-1/2 h-full pointer-events-none">
                         {chaoticInputs.map((item, i) => (
                             <div 
                               key={i} 
-                              className="absolute left-[-50px] animate-tornado opacity-0 text-muted-foreground/30"
+                              className="absolute left-[-50px] animate-tornado text-white/20"
                               style={{ 
                                   "--delay": item.delay,
                                   "--duration": item.duration,
@@ -124,15 +122,15 @@ export default function UnifiedPage() {
 
                       {/* THE PARSER CORE (CENTER) */}
                       <div className="relative z-20 flex flex-col items-center gap-4 px-12">
-                          <div className="size-36 rounded-full bg-primary/5 border-2 border-primary/20 flex items-center justify-center animate-status shadow-[0_0_60px_rgba(0,124,90,0.15)] bg-white/50 backdrop-blur-sm">
+                          <div className="size-40 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_80px_rgba(0,124,90,0.2)] bg-[#0A0A0F]/50 backdrop-blur-sm">
                               <div className="relative">
-                                <Database className="size-16 text-primary" />
-                                <div className="absolute inset-0 size-16 bg-primary/20 blur-2xl animate-pulse" />
+                                <Database className="size-20 text-primary" />
+                                <div className="absolute inset-0 size-20 bg-primary/30 blur-3xl animate-pulse" />
                               </div>
                           </div>
                           <div className="flex flex-col items-center gap-0.5">
                               <span className="text-[10px] font-mono font-bold text-primary uppercase tracking-[0.4em]">Parser_Core</span>
-                              <span className="text-[7px] font-mono text-muted-foreground uppercase tracking-widest animate-pulse">Synthesizing...</span>
+                              <span className="text-[7px] font-mono text-white/40 uppercase tracking-widest animate-pulse">Synthesizing...</span>
                           </div>
                       </div>
 
@@ -161,23 +159,18 @@ export default function UnifiedPage() {
                   </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div className="max-w-3xl">
                   <div className="space-y-4">
-                      <h3 className="text-4xl font-semibold tracking-tighter uppercase leading-tight">Chaos To Control <br/> Unified Intelligence</h3>
-                      <p className="text-base text-black/60 max-w-md leading-relaxed">
+                      <h3 className="text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Chaos to Control.</h3>
+                      <p className="text-lg text-white/60 max-w-2xl leading-relaxed font-medium">
                           Slamming thousands of fragmented construction signals—emails, texts, and calls—into a verified institutional stream. Deterministic parsing for weapons-grade project accuracy.
                       </p>
                   </div>
-                  <Card className="bg-white border-black/10 shadow-2xl rounded-none">
-                      <CardContent className="p-10">
-                          <PdfExtractor />
-                      </CardContent>
-                  </Card>
               </div>
           </div>
       </section>
 
-      {/* SECTION 03: COMMAND INTERFACE (WHITE) */}
+      {/* SECTION 03: INTELLIGENCE COMMAND (WHITE) */}
       <section id="intel" className="snap-start relative min-h-screen w-full bg-white text-black flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] tactical-grid" />
         <div className="relative z-10 w-full max-w-7xl h-[85vh] flex flex-col">
@@ -185,7 +178,13 @@ export default function UnifiedPage() {
                 <Terminal className="size-4 text-primary" />
                 <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/40">03_Intelligence_Terminal_Core</h2>
             </div>
-            <Card className="bg-white border-black/5 shadow-2xl h-full flex flex-col overflow-hidden rounded-none">
+            
+            <div className="mb-8">
+              <h2 className="text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Intelligence Command.</h2>
+              <p className="text-black/60 max-w-xl text-lg font-medium mt-4">Verified institutional oracle. Direct access to cross-platform project truth.</p>
+            </div>
+
+            <Card className="bg-white border-black/5 shadow-2xl flex-1 flex flex-col overflow-hidden rounded-none">
                 <CardHeader className="border-b border-black/5 bg-gray-50/50 py-3 shrink-0">
                     <div className="flex items-center justify-between">
                         <CardTitle className="text-[10px] tracking-[0.3em] text-black/60">Secure_Command_Interface</CardTitle>
