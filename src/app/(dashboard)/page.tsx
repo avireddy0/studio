@@ -483,9 +483,9 @@ export default function DashboardPage() {
                         <div className="text-center font-mono space-y-2">
                             <div className="bg-[#00FF41] text-black font-bold p-2 text-[12px] uppercase">PAYMENT_AUTHORIZED</div>
                             <div className="text-[8px] text-white text-left space-y-1">
-                                <p>> PM Daily Log confirms work complete.</p>
-                                <p>> Geo-tagged photo attached to RFI #12.</p>
-                                <p>> Budget variance: 0%.</p>
+                                <p>&gt; PM Daily Log confirms work complete.</p>
+                                <p>&gt; Geo-tagged photo attached to RFI #12.</p>
+                                <p>&gt; Budget variance: 0%.</p>
                             </div>
                         </div>
                     </div>
