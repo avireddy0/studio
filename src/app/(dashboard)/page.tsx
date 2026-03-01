@@ -291,6 +291,7 @@ export default function UnifiedPage() {
                         </div>
                     </CardHeader>
                     <CardContent className="p-0 relative h-full overflow-hidden">
+                      <div className="absolute inset-0 animate-geo-zoom">
                         {/* Satellite imagery background (ESRI World Imagery — downtown LA construction corridor) */}
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
@@ -365,6 +366,7 @@ export default function UnifiedPage() {
                               <animate attributeName="y2" values="0;400;0" dur="8s" repeatCount="indefinite" />
                             </line>
                         </svg>
+                      </div>
 
                         <div className="absolute inset-0 tactical-grid opacity-[0.06] pointer-events-none" />
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
