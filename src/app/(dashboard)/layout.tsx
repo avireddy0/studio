@@ -1,6 +1,8 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { useAuth } from '@/context/auth-context';
+import { LoginForm } from '@/components/auth/login-form';
 import {
   SidebarProvider,
   Sidebar,
@@ -12,19 +14,37 @@ import {
 import { EnvisionOSLogo } from "@/components/icons";
 import { SidebarNav } from "@/components/sidebar-nav";
 
+function AuthSkeleton() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-[#030303]">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+    </div>
+  )
+}
+
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const { user, loading } = useAuth();
 
-  // Render the new landing page without the sidebar for the root path
+  // Landing page is always public
   if (pathname === '/') {
     return <>{children}</>;
   }
 
-  // Render other dashboard pages with the sidebar
+  // Show spinner while auth state resolves
+  if (loading) {
+    return <AuthSkeleton />;
+  }
+
+  // Require auth for all dashboard routes
+  if (!user) {
+    return <LoginForm />;
+  }
+
   return (
     <SidebarProvider>
       <Sidebar>

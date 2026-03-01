@@ -1,0 +1,90 @@
+/* --- INGESTION VIZ --- */
+.ingestion-viz {
+  height: 520px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 40px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.95);
+}
+
+.ingest-engine-core {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 160px; height: 160px;
+  z-index: 20;
+}
+
+.engine-box {
+  width: 100%; height: 100%;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--accent-violet);
+  border-radius: 42px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  box-shadow: 0 0 60px var(--accent-violet-dim), inset 0 0 30px var(--accent-violet-dim);
+}
+
+.engine-laser {
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--accent-violet);
+  box-shadow: 0 0 20px 5px var(--accent-violet);
+  animation: scanLaser 2.5s infinite ease-in-out alternate;
+}
+
+@keyframes scanLaser { 0% { top: 15%; } 100% { top: 85%; } }
+
+.flurry-item {
+  width: 50px; height: 65px;
+  background: #ffffff !important;
+  border-radius: 6px;
+  padding: 6px;
+  display: flex; flex-direction: column; gap: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85);
+  border-top: 3px solid #000;
+}
+
+.flurry-item .skeleton { width: 100%; height: 2px; background: rgba(0, 0, 0, 0.1); border-radius: 1px; }
+.flurry-item .icon-box { margin-top: auto; display: flex; align-items: center; justify-content: center; font-family: var(--font-jetbrains-mono), monospace; font-size: 0.45rem; font-weight: 900; color: #000; letter-spacing: -0.02em; }
+
+.organized-stream {
+  position: absolute; left: 55%; width: 45%; height: 100%;
+  display: flex; flex-direction: column; justify-content: center; z-index: 10;
+}
+
+.json-node {
+  background: var(--accent-emerald-dim);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.7rem;
+  color: var(--accent-emerald);
+  backdrop-filter: blur(8px);
+}
+
+.data-out-stream {
+  position: absolute;
+  animation: organizedExit 3s infinite linear;
+  animation-delay: var(--d);
+  opacity: 0;
+}
+
+@keyframes organizedExit {
+  0% { left: 0%; transform: scale(0.7); opacity: 0; }
+  15% { opacity: 1; transform: scale(1); }
+  100% { left: 100%; opacity: 0; transform: scale(1); }
+}
+
+.flow-item {
+  position: absolute; left: -15%; top: var(--y);
+  animation: flurryIn 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  animation-delay: var(--d);
+}
+
+@keyframes flurryIn {
+  0% { left: -15%; top: var(--y); opacity: 0; transform: scale(1) rotate(var(--r)); }
+  20% { opacity: 1; }
+  100% { left: 50%; top: 50%; opacity: 0; transform: scale(0.3) rotate(0deg); }
+}

@@ -1,0 +1,321 @@
+/* --- ACCELERATION MIC DROP --- */
+.acceleration-micdrop {
+  display: grid;
+  gap: 1rem;
+}
+
+.accel-hero-card {
+  border-radius: 36px;
+  border: 1px solid rgba(59, 130, 246, 0.26);
+  background:
+    radial-gradient(circle at 22% 25%, rgba(59, 130, 246, 0.2), transparent 42%),
+    radial-gradient(circle at 82% 82%, rgba(16, 185, 129, 0.16), transparent 38%),
+    linear-gradient(160deg, rgba(7, 11, 18, 0.92) 0%, rgba(2, 6, 23, 0.94) 100%);
+  padding: 2rem;
+  box-shadow:
+    inset 0 0 140px rgba(2, 6, 23, 0.55),
+    0 35px 80px rgba(2, 6, 23, 0.62);
+}
+
+.accel-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.64rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #93c5fd;
+  margin-bottom: 0.8rem;
+}
+
+.accel-title {
+  font-size: clamp(2.1rem, 5vw, 4.4rem);
+  line-height: 0.97;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+  color: #f8fafc;
+  margin-bottom: 1rem;
+}
+
+.accel-subtitle {
+  max-width: 900px;
+  font-size: 1.02rem;
+  line-height: 1.62;
+  color: #cbd5e1;
+  margin-bottom: 1.25rem;
+}
+
+.accel-shock-panel {
+  border-radius: 24px;
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  background: linear-gradient(160deg, rgba(16, 185, 129, 0.14) 0%, rgba(8, 15, 24, 0.72) 100%);
+  padding: 1.15rem 1.3rem;
+  margin-bottom: 1.15rem;
+}
+
+.accel-shock-value {
+  display: block;
+  font-size: clamp(2.6rem, 8vw, 6.3rem);
+  line-height: 0.9;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  color: #6ee7b7;
+  text-shadow: 0 0 24px rgba(16, 185, 129, 0.28);
+}
+
+.accel-shock-label {
+  margin-top: 0.35rem;
+  font-size: 0.82rem;
+  font-family: var(--font-jetbrains-mono), monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a7f3d0;
+}
+
+.accel-shock-context {
+  margin-top: 0.55rem;
+  font-size: 0.9rem;
+  color: #d1fae5;
+  line-height: 1.5;
+}
+
+.accel-lane-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.accel-lane {
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  background: rgba(15, 23, 42, 0.48);
+  padding: 0.72rem 0.8rem;
+}
+
+.accel-lane-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.58rem;
+}
+
+.accel-lane-meta span {
+  font-size: 0.74rem;
+  color: #cbd5e1;
+}
+
+.accel-lane-meta strong {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.accel-lane.legacy .accel-lane-meta strong {
+  color: #f59e0b;
+}
+
+.accel-lane.envision .accel-lane-meta strong {
+  color: #10b981;
+}
+
+.accel-lane-track {
+  height: 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(15, 23, 42, 0.9);
+  position: relative;
+  overflow: hidden;
+}
+
+.accel-lane .accel-packet {
+  position: absolute;
+  top: 50%;
+  left: -5%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  animation: accelPacketSlow 6.2s linear infinite;
+}
+
+.accel-lane.legacy .accel-packet {
+  background: #f59e0b;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.62);
+  animation-name: accelPacketSlow;
+}
+
+.accel-lane.envision .accel-packet {
+  background: #10b981;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.62);
+  animation-name: accelPacketFast;
+}
+
+.accel-analytics-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.9fr);
+}
+
+.accel-chart-card {
+  border-radius: 26px;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  background: linear-gradient(160deg, rgba(15, 23, 42, 0.74) 0%, rgba(2, 6, 23, 0.82) 100%);
+  padding: 1.1rem 1.15rem;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.accel-chart-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 0.9rem;
+}
+
+.accel-chart-head h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.accel-chart-head span {
+  font-size: 0.66rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: right;
+}
+
+.accel-chart-canvas {
+  min-height: 240px;
+  flex: 1;
+}
+
+.accel-donut-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.accel-donut-canvas {
+  width: 100%;
+  max-width: 210px;
+  aspect-ratio: 1;
+  position: relative;
+}
+
+.accel-donut-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.accel-donut-overlay span {
+  font-size: 2.25rem;
+  line-height: 1;
+  font-weight: 900;
+  color: #f8fafc;
+}
+
+.accel-donut-overlay small {
+  margin-top: 0.25rem;
+  font-size: 0.66rem;
+  font-family: var(--font-jetbrains-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #94a3b8;
+}
+
+.accel-impact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.accel-impact-card {
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  background: rgba(15, 23, 42, 0.52);
+  padding: 0.95rem;
+}
+
+.accel-impact-value {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #6ee7b7;
+  margin-bottom: 0.3rem;
+}
+
+.accel-impact-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 0.4rem;
+}
+
+.accel-impact-copy {
+  font-size: 0.78rem;
+  line-height: 1.48;
+  color: #cbd5e1;
+}
+
+@media (max-width: 1100px) {
+  .accel-analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .accel-impact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .accel-hero-card {
+    padding: 1.2rem;
+  }
+
+  .accel-shock-panel {
+    padding: 0.9rem 0.95rem;
+  }
+
+  .accel-title {
+    line-height: 1.02;
+  }
+
+  .accel-chart-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .accel-chart-head span {
+    text-align: left;
+  }
+}
+
+@keyframes accelPacketSlow {
+  0% { left: -5%; opacity: 0; }
+  12% { opacity: 1; }
+  100% { left: 102%; opacity: 0; }
+}
+
+@keyframes accelPacketFast {
+  0% { left: -5%; opacity: 0; transform: translateY(-50%) scale(0.92); }
+  10% { opacity: 1; }
+  100% { left: 102%; opacity: 0; transform: translateY(-50%) scale(1.05); }
+}

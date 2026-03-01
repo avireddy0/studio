@@ -1,0 +1,37 @@
+/* --- ECOSYSTEM / TOOL UNIVERSE --- */
+.tu-container {
+  height: 800px; width: 100%; border: 1px solid var(--border-strong); border-radius: 40px;
+  position: relative; overflow: hidden;
+  background: radial-gradient(circle at center, #0f0f11 0%, #020202 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.tu-scene {
+  position: relative; width: 1px; height: 1px; transform-style: preserve-3d;
+}
+
+.tu-grid {
+  position: absolute; width: 4000px; height: 4000px;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  -webkit-mask-image: radial-gradient(black 10%, transparent 60%);
+  pointer-events: none;
+}
+
+.tu-sat {
+  position: absolute; width: 85px; height: 85px;
+  transform-style: preserve-3d; cursor: pointer;
+}
+
+.tu-sat-layer {
+  position: absolute; inset: 0; border: 2.5px solid; border-radius: 20px;
+}
+
+.tu-billboard {
+  background: rgba(8, 8, 10, 0.98); border: 1px solid var(--border-strong);
+  padding: 14px 24px; border-radius: 14px; text-align: center;
+  border-top-width: 4px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+  width: max-content;
+}
