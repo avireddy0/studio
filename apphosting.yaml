@@ -10,7 +10,11 @@ runConfig:
 env:
   - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
     value: studio-7741937329-54916
-  - variable: GOOGLE_GENAI_API_KEY
-    secret: GOOGLE_GENAI_API_KEY
-  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-    secret: NEXT_PUBLIC_FIREBASE_API_KEY
+
+# Uncomment after creating secrets with:
+#   firebase apphosting:secrets:set GOOGLE_GENAI_API_KEY --project studio-7741937329-54916
+#   firebase apphosting:secrets:set NEXT_PUBLIC_FIREBASE_API_KEY --project studio-7741937329-54916
+#  - variable: GOOGLE_GENAI_API_KEY
+#    secret: GOOGLE_GENAI_API_KEY
+#  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+#    secret: NEXT_PUBLIC_FIREBASE_API_KEY
