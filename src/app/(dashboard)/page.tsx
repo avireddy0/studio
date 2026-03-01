@@ -41,8 +41,8 @@ export default function UnifiedPage() {
 
   const satelliteImage = PlaceHolderImages.find(img => img.id === 'satellite-map');
 
-  // Realistic Signal Tornado - 180 elements funneling aggressively into center, 40% slower
-  const chaoticInputs = Array.from({ length: 180 }).map((_, i) => {
+  // Realistic Signal Tornado - 80 high-impact elements, wide left, converging to center, 40% slower
+  const chaoticInputs = Array.from({ length: 80 }).map((_, i) => {
     const icons = [
         { Icon: FileText, color: "text-blue-400", label: "PDF" },
         { Icon: FileSpreadsheet, color: "text-green-400", label: "XLS" },
@@ -55,17 +55,16 @@ export default function UnifiedPage() {
     const item = icons[i % icons.length];
     const topPercent = Math.random() * 100;
     // Calculate yOffset to meet precisely at the vertical middle (50% of the container)
-    // The target is 50%. The distance from topPercent to 50% is (50 - topPercent).
-    // Multiply by a factor to match the container height visually (8.5 is a heuristic for 100vh height / icons)
     const yOffsetValue = 50 - topPercent;
     
     return {
       ...item,
-      delay: `${(Math.random() * 12).toFixed(2)}s`,
-      duration: `${(8.0 + Math.random() * 6.0).toFixed(2)}s`, // 40% slower trajectory
+      // Use negative delays to ensure icons are already "in stream" on load (no initial delay)
+      delay: `-${(Math.random() * 15).toFixed(2)}s`, 
+      duration: `${(8.0 + Math.random() * 6.0).toFixed(2)}s`, // 40% slower
       top: `${topPercent.toFixed(2)}%`,
-      yOffset: `${(yOffsetValue * 8.5).toFixed(2)}px`, // Converge to center coordinate
-      size: i % 12 === 0 ? "size-10" : "size-7", // Varied visual magnitude
+      yOffset: `${(yOffsetValue * 8.5).toFixed(2)}px`, // Funnel to center
+      size: "size-12", // Bigger icons
     };
   });
 
@@ -76,7 +75,7 @@ export default function UnifiedPage() {
     >
       
       {/* SECTION 01: INSTITUTIONAL HERO (WHITE) */}
-      <section id="hero" className="snap-start relative flex flex-col items-center justify-center p-6 bg-white text-black overflow-hidden h-screen w-full shrink-0">
+      <section id="hero" className="snap-start relative flex flex-col items-center justify-center p-6 bg-white text-black h-screen w-full shrink-0">
         <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] tactical-grid" />
         <div className="relative z-10 max-w-6xl w-full">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-primary/20 bg-primary/5 text-[9px] font-bold uppercase tracking-[0.4em] text-primary mb-12">
@@ -137,10 +136,10 @@ export default function UnifiedPage() {
                               } as React.CSSProperties}
                             >
                                 <div className="flex flex-col items-center gap-1 group">
-                                    <div className={cn("p-1 border bg-black/40 border-white/10", item.color)}>
+                                    <div className={cn("p-2 border bg-black/40 border-white/10 shadow-xl", item.color)}>
                                         <item.Icon className={item.size} />
                                     </div>
-                                    <span className="text-[6px] font-mono opacity-40 font-bold uppercase tracking-tighter">{item.label}</span>
+                                    <span className="text-[8px] font-mono opacity-60 font-bold uppercase tracking-widest">{item.label}</span>
                                 </div>
                             </div>
                         ))}
@@ -148,15 +147,15 @@ export default function UnifiedPage() {
 
                       {/* THE PARSER CORE (CENTER) */}
                       <div className="relative z-20 flex flex-col items-center gap-4 px-12">
-                          <div className="size-40 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_80px_rgba(0,124,90,0.2)] bg-[#0A0A0F]/50 backdrop-blur-sm">
+                          <div className="size-48 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_80px_rgba(0,124,90,0.2)] bg-[#0A0A0F]/50 backdrop-blur-sm">
                               <div className="relative">
-                                <Database className="size-20 text-primary" />
-                                <div className="absolute inset-0 size-20 bg-primary/30 blur-3xl animate-pulse" />
+                                <Database className="size-24 text-primary" />
+                                <div className="absolute inset-0 size-24 bg-primary/30 blur-3xl animate-pulse" />
                               </div>
                           </div>
                           <div className="flex flex-col items-center gap-0.5">
                               <span className="text-[10px] font-mono font-bold text-primary uppercase tracking-[0.4em]">Parser_Core</span>
-                              <span className="text-[7px] font-mono text-white/40 uppercase tracking-widest animate-pulse">Synthesizing...</span>
+                              <span className="text-[7px] font-mono text-white/40 uppercase tracking-widest animate-pulse">Synthesizing_Intelligence...</span>
                           </div>
                       </div>
 

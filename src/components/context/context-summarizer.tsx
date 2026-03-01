@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -11,10 +10,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Wand2, Zap, Target, ListChecks, ShieldCheck } from "lucide-react";
+import { Loader2, Wand2, Zap, Target, ListChecks, ShieldAlert, Layers, ShieldCheck, Cpu } from "lucide-react";
 import type { QualitativeContextSummarizationOutput } from "@/ai/flows/qualitative-context-summarization";
-import { Badge } from "@/components/ui/badge";
-import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
@@ -23,9 +20,6 @@ const formSchema = z.object({
 });
 
 export function ContextSummarizer() {
-  const pathname = usePathname();
-  const isDashboard = pathname === '/dashboard';
-  
   const [result, setResult] = useState<QualitativeContextSummarizationOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -55,43 +49,30 @@ export function ContextSummarizer() {
     setIsLoading(false);
   }
 
-  const getConfidenceColor = (level: 'High' | 'Medium' | 'Low') => {
-    switch(level) {
-        case 'High': return 'bg-primary';
-        case 'Medium': return 'bg-yellow-500';
-        case 'Low': return 'bg-destructive';
-        default: return 'bg-muted-foreground';
-    }
-  }
-
   return (
-    <div className={cn(
-        "grid gap-6",
-        isDashboard ? "grid-cols-1" : "lg:grid-cols-2"
-    )}>
-      <div className={cn(
-        "space-y-4",
-        isDashboard ? "p-4 border border-white/5 bg-black/20" : ""
-      )}>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      {/* INPUT SIDE */}
+      <div className="space-y-8">
+        <div className="space-y-2">
+            <h3 className="text-xl font-bold tracking-tight text-white uppercase">Initialize Fusion</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+                Connect fragmented communication nodes to the verified project baseline.
+            </p>
+        </div>
+
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="projectDecisionOrIssue"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn(
-                    "text-[10px] font-bold uppercase tracking-widest",
-                    isDashboard ? "text-muted-foreground" : ""
-                  )}>Issue_Identifier</FormLabel>
+                  <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-primary">Context_Target</FormLabel>
                   <FormControl>
                     <Input 
-                        placeholder="e.g., 'Steel Procurement'" 
+                        placeholder="e.g., 'Steel Procurement Delay'" 
                         {...field} 
-                        className={cn(
-                            "h-9 text-xs",
-                            isDashboard ? "bg-[#0A0A0F] border-[#1E1E2E] text-white" : ""
-                        )}
+                        className="bg-[#0A0A0F] border-[#1E1E2E] text-white h-11"
                     />
                   </FormControl>
                   <FormMessage />
@@ -103,17 +84,11 @@ export function ContextSummarizer() {
               name="qualitativeData"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn(
-                    "text-[10px] font-bold uppercase tracking-widest",
-                    isDashboard ? "text-muted-foreground" : ""
-                  )}>Raw_Intelligence_Stream</FormLabel>
+                  <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-primary">Signal_Input_Stream</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Paste transcripts, notes, or chat logs..."
-                      className={cn(
-                        "min-h-[100px] text-xs leading-relaxed",
-                        isDashboard ? "bg-[#0A0A0F] border-[#1E1E2E] text-white/70" : ""
-                      )}
+                      placeholder="Paste Slack logs, Zoom transcripts, or field notes..."
+                      className="min-h-[150px] bg-[#0A0A0F] border-[#1E1E2E] text-white/70 leading-relaxed font-mono text-xs"
                       {...field}
                     />
                   </FormControl>
@@ -121,66 +96,89 @@ export function ContextSummarizer() {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isLoading} className="w-full">
-              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wand2 className="mr-2 h-4 w-4" />}
-              {isDashboard ? "FUSE_CONTEXT" : "Generate Summary"}
+            <Button type="submit" disabled={isLoading} className="w-full h-14 group">
+              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Cpu className="mr-2 h-4 w-4" />}
+              EXECUTE_CONTEXT_FUSION
             </Button>
           </form>
         </Form>
       </div>
 
-      <div className={cn(
-        "border p-4 min-h-[200px] overflow-auto",
-        isDashboard ? "bg-[#0A0A0F] border-[#1E1E2E]" : "bg-card/60 backdrop-blur-xl border-border"
-      )}>
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center h-full gap-2 text-primary/40 animate-pulse">
-            <Loader2 className="h-6 w-6 animate-spin" />
-            <span className="text-[9px] font-mono uppercase">Analyzing_Correlation...</span>
-          </div>
-        ) : !result ? (
-          <div className="flex items-center justify-center h-full text-center p-4">
-            <p className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest leading-loose">
-              Awaiting_Fusion_Target...<br/>
-              Map_Qualitative_Nodes_To_Verified_Truth
-            </p>
-          </div>
+      {/* VISUALIZATION SIDE */}
+      <div className="relative min-h-[500px] flex flex-col gap-6">
+        {!result && !isLoading ? (
+            <div className="flex-1 border border-dashed border-white/10 flex flex-col items-center justify-center text-center p-12 gap-6 bg-white/[0.01]">
+                <div className="relative">
+                    <Layers className="size-16 text-white/10" />
+                    <ShieldAlert className="size-6 text-destructive absolute -top-1 -right-1 animate-pulse" />
+                </div>
+                <div className="space-y-2">
+                    <p className="text-sm font-bold text-white/40 uppercase tracking-[0.2em]">Data Without Context is Dangerous</p>
+                    <p className="text-[10px] font-mono text-muted-foreground uppercase leading-relaxed">
+                        Raw data points are liability. <br/> Initialize fusion to generate verified intelligence.
+                    </p>
+                </div>
+            </div>
+        ) : isLoading ? (
+            <div className="flex-1 border border-primary/20 bg-primary/5 flex flex-col items-center justify-center gap-4">
+                <Loader2 className="size-10 text-primary animate-spin" />
+                <span className="text-[10px] font-mono font-bold text-primary uppercase tracking-[0.4em]">Fusing_Intelligence_Layers...</span>
+            </div>
         ) : (
-          <div className="space-y-5 font-mono">
-            <div className="space-y-1">
-              <h3 className="text-[8px] text-primary font-bold flex items-center gap-2 uppercase tracking-widest">
-                <Zap className="size-3" /> FUSED_SUMMARY
-              </h3>
-              <p className="text-[11px] text-white/70 leading-normal">{result.summary}</p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                    <h3 className="text-[8px] text-primary font-bold flex items-center gap-2 uppercase tracking-widest">
-                        <Target className="size-3" /> CRITICAL_NODES
-                    </h3>
-                    <ul className="space-y-1 text-[10px] text-white/50">
-                        {result.criticalPoints.slice(0, 3).map((point, i) => <li key={i} className="flex gap-2"><span>-</span> {point}</li>)}
-                    </ul>
-                </div>
-                <div className="space-y-1">
-                    <h3 className="text-[8px] text-primary font-bold flex items-center gap-2 uppercase tracking-widest">
-                        <ListChecks className="size-3" /> ACTION_QUEUE
-                    </h3>
-                    <ul className="space-y-1 text-[10px] text-white/50">
-                        {result.actionItems.slice(0, 3).map((item, i) => <li key={i} className="flex gap-2"><span>•</span> {item}</li>)}
-                    </ul>
-                </div>
-            </div>
+            <div className="flex-1 flex flex-col gap-6">
+                {/* INTERACTIVE LAYERING VISUAL */}
+                <div className="relative h-64 border border-white/10 bg-black/40 overflow-hidden group">
+                    <div className="absolute inset-0 tactical-grid opacity-20" />
+                    
+                    {/* DATA LAYER (BOTTOM) */}
+                    <div className="absolute inset-4 border border-white/5 bg-white/[0.02] flex flex-col items-center justify-center gap-2 transform translate-z-[-10px] group-hover:translate-y-[-10px] transition-transform duration-500">
+                        <span className="text-[8px] font-mono text-white/20 uppercase">Baseline_Data_Stream</span>
+                        <div className="flex gap-2">
+                            {[1, 2, 3].map(i => <div key={i} className="h-1 w-8 bg-white/5" />)}
+                        </div>
+                    </div>
 
-             <div className="pt-3 border-t border-white/5 flex items-center justify-between">
-                <h3 className="text-[8px] text-muted-foreground uppercase tracking-widest">CONFIDENCE_VECTOR</h3>
-                <div className="flex items-center gap-2">
-                    <div className={cn("size-1.5 rounded-full animate-status", getConfidenceColor(result.confidenceLevel))} />
-                    <span className="text-[9px] font-bold text-white uppercase">{result.confidenceLevel}</span>
+                    {/* CONTEXT LAYER (TOP) */}
+                    <div className="absolute inset-0 bg-primary/10 backdrop-blur-sm border-t-2 border-primary flex flex-col items-center justify-center gap-3 transform translate-z-[10px] transition-all duration-700 animate-in fade-in slide-in-from-bottom-4">
+                        <ShieldCheck className="size-10 text-primary" />
+                        <div className="text-center">
+                            <p className="text-[10px] font-bold text-white uppercase tracking-[0.3em]">CONTEXT_VERIFIED</p>
+                            <p className="text-[8px] font-mono text-primary uppercase tracking-widest">{result.confidenceLevel}_Confidence_Vector</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* RESULTS CONTENT */}
+                <div className="space-y-6 font-mono">
+                    <div className="space-y-2">
+                        <h4 className="text-[9px] font-bold text-primary uppercase tracking-widest flex items-center gap-2">
+                            <Zap className="size-3" /> FUSED_SUMMARY
+                        </h4>
+                        <p className="text-xs text-white/70 leading-relaxed bg-white/[0.02] p-4 border border-white/5">
+                            {result.summary}
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-3">
+                            <h4 className="text-[9px] font-bold text-primary uppercase tracking-widest flex items-center gap-2">
+                                <Target className="size-3" /> CRITICAL_NODES
+                            </h4>
+                            <ul className="space-y-2 text-[10px] text-white/50">
+                                {result.criticalPoints.map((p, i) => <li key={i} className="flex gap-2"><span>-</span> {p}</li>)}
+                            </ul>
+                        </div>
+                        <div className="space-y-3">
+                            <h4 className="text-[9px] font-bold text-primary uppercase tracking-widest flex items-center gap-2">
+                                <ListChecks className="size-3" /> ACTION_QUEUE
+                            </h4>
+                            <ul className="space-y-2 text-[10px] text-white/50">
+                                {result.actionItems.map((p, i) => <li key={i} className="flex gap-2"><span>•</span> {p}</li>)}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-          </div>
         )}
       </div>
     </div>

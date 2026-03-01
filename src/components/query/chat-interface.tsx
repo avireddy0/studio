@@ -8,7 +8,6 @@ import { Send, Loader2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage, type Message } from "@/components/query/chat-message";
 import { useToast } from "@/hooks/use-toast";
-import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const initialState = {
@@ -82,7 +81,7 @@ export function ChatInterface() {
       setMessages((prev) => [...prev, { role: "user", content: query }]);
       setMessages((prev) => [...prev, { role: "status", content: "ORCHESTRATING_INTEL..." }]);
       
-      // Wrap manual trigger in startTransition for React 19 compliance
+      // Fix: Wrap useActionState call in startTransition for React 19 compliance
       startTransition(() => {
         formAction(formData);
       });
