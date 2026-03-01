@@ -139,8 +139,8 @@
   "hotPaths": [
     {
       "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 51,
-      "lastAccessed": 1772388741784,
+      "accessCount": 58,
+      "lastAccessed": 1772406241286,
       "type": "file"
     },
     {
@@ -150,15 +150,15 @@
       "type": "file"
     },
     {
-      "path": "src/components/visualizations/tactical-bim-overlay.tsx",
-      "accessCount": 5,
-      "lastAccessed": 1772382785322,
+      "path": "src/app/globals.css",
+      "accessCount": 8,
+      "lastAccessed": 1772406125478,
       "type": "file"
     },
     {
-      "path": "src/app/globals.css",
+      "path": "src/components/visualizations/tactical-bim-overlay.tsx",
       "accessCount": 5,
-      "lastAccessed": 1772388393736,
+      "lastAccessed": 1772382785322,
       "type": "file"
     },
     {

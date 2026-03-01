@@ -381,3 +381,30 @@ lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1
 npm run dev
 sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
 xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion"
+npm run build 2>&1 | tail -20
+git add 'src/app/(dashboard)/page.tsx' src/app/globals.css && git commit -m "$(cat <<'EOF'
+feat: redesign ingestion section with floating doc cards and audit core
+
+- Replace tornado icon animation with floating white document cards (DOC, PDF, EMAIL, XLS, CALL, TEXT)
+- Replace circular parser with rounded-rectangle Audit Core with indigo glow and scan line
+- Replace single file output with green JSON data cards showing verified structured data
+- Add float-doc CSS animation for gentle card drift effect
+- Matches reference design: scattered docs → audit core → clean JSON output
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+xcrun simctl boot 1311D811-5479-4E95-B2FD-67CD57CE77F6 && open -a Simulator
+sleep 5 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion"
+npm run build 2>&1 | tail -20
+git add 'src/app/(dashboard)/page.tsx' && git commit -m "$(cat <<'EOF'
+feat: add vacuum/tornado animation to ingestion cards with proper icons
+
+- Replace static floating cards with tornado animation that vacuums cards into Audit Core
+- Add 9 input types with distinct icons: PDF, XLS, RFI, BIM, EMAIL, CALL, TEXT, INVOICE, PHOTO
+- White cards with colored Lucide icons fly from left and shrink into center parser
+- Keep Audit Core center and JSON output on right
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
