@@ -20,10 +20,10 @@ import { Button } from "@/components/ui/button";
 
 export default function UnifiedPage() {
   return (
-    <div className="flex flex-col w-full selection:bg-primary/20 font-sans snap-y snap-mandatory overflow-y-auto h-screen no-scrollbar scroll-smooth">
+    <div className="flex flex-col w-full selection:bg-primary/20 font-sans snap-y snap-mandatory overflow-y-auto h-[calc(100vh-64px)] no-scrollbar scroll-smooth">
       
       {/* SECTION 01: INSTITUTIONAL HERO (WHITE) */}
-      <section id="hero" className="snap-start relative flex flex-col items-center justify-center p-6 bg-white text-black overflow-hidden min-h-screen w-full">
+      <section id="hero" className="snap-start relative flex flex-col items-center justify-center p-6 bg-white text-black overflow-hidden min-h-full w-full">
         <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03]" style={{ 
           backgroundImage: `linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)`,
           backgroundSize: '40px 40px'
@@ -62,7 +62,7 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 02: TELEMETRY METRICS (OBSIDIAN) */}
-      <section id="metrics" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
+      <section id="metrics" className="snap-start relative min-h-full w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
         <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
         <div className="relative z-10 w-full max-w-7xl">
             <div className="flex items-center gap-3 mb-8">
@@ -93,15 +93,15 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 03: INTEL CORE (OBSIDIAN) */}
-      <section id="intel" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
+      <section id="intel" className="snap-start relative min-h-full w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
         <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
-        <div className="relative z-10 w-full max-w-7xl">
+        <div className="relative z-10 w-full max-w-7xl h-full flex flex-col">
             <div className="flex items-center gap-3 mb-8">
                 <Terminal className="size-4 text-primary" />
                 <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">02_INTEL_TERMINAL_CORE</h2>
             </div>
-            <Card className="bg-[#12121A] border-[#1E1E2E] min-h-[60vh] flex flex-col">
-                <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-3">
+            <Card className="bg-[#12121A] border-[#1E1E2E] flex-1 min-h-[60vh] flex flex-col overflow-hidden">
+                <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-3 shrink-0">
                     <div className="flex items-center justify-between">
                         <CardTitle className="text-[10px] tracking-[0.3em]">SECURE_COMMAND_INTERFACE</CardTitle>
                         <div className="flex items-center gap-2">
@@ -118,7 +118,7 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 04: DATA INGESTION (OBSIDIAN) */}
-      <section id="ingestion" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
+      <section id="ingestion" className="snap-start relative min-h-full w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
           <div className="relative z-10 w-full max-w-7xl">
               <div className="flex items-center gap-3 mb-8">
@@ -135,7 +135,7 @@ export default function UnifiedPage() {
                           <span className="text-[9px] font-mono text-muted-foreground uppercase">Buffer: 99.8%</span>
                       </div>
                   </CardHeader>
-                  <CardContent className="p-12">
+                  <CardContent className="p-8 md:p-12">
                       <PdfExtractor />
                   </CardContent>
               </Card>
@@ -143,7 +143,7 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 05: CONTEXT FUSION (OBSIDIAN) */}
-      <section id="fusion" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
+      <section id="fusion" className="snap-start relative min-h-full w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
           <div className="relative z-10 w-full max-w-7xl">
               <div className="flex items-center gap-3 mb-8">
@@ -160,7 +160,7 @@ export default function UnifiedPage() {
                           <span className="text-[9px] font-mono text-muted-foreground uppercase">Correlation: 0.94 Sigma</span>
                       </div>
                   </CardHeader>
-                  <CardContent className="p-12">
+                  <CardContent className="p-8 md:p-12">
                       <ContextSummarizer />
                   </CardContent>
               </Card>
@@ -168,7 +168,7 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 06: INITIALIZE COMMAND (OBSIDIAN) */}
-      <section id="initialize" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 text-center gap-12 border-t border-[#1E1E2E]">
+      <section id="initialize" className="snap-start relative min-h-full w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 text-center gap-12 border-t border-[#1E1E2E]">
           <div className="space-y-6 max-w-3xl">
               <div className="inline-flex items-center gap-2 px-6 py-2 border border-primary/20 bg-primary/5 text-[10px] font-bold uppercase tracking-[0.5em] text-primary mb-4">
                   <Terminal className="size-4" />

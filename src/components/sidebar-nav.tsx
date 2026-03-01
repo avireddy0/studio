@@ -38,8 +38,9 @@ export function SidebarNav() {
     <SidebarMenu className="gap-2">
       {navItems.map((item) => {
         const isAnchor = item.href.includes('#');
+        // For anchors, we check if we are on the home page
         const isActive = isAnchor 
-          ? false // Dynamic anchor highlighting is complex, defaulting to false for now
+          ? pathname === '/' && typeof window !== 'undefined' && window.location.hash === item.href.split('#')[1]
           : pathname === item.href;
 
         return (
