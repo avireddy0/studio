@@ -408,3 +408,4 @@ feat: add vacuum/tornado animation to ingestion cards with proper icons
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 EOF
 )" && git push
+xcrun simctl boot 1311D811-5479-4E95-B2FD-67CD57CE77F6 2>/dev/null; open -a Simulator; sleep 6 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion"
