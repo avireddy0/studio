@@ -207,8 +207,8 @@ export default function DashboardPage() {
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        x: { grid: { display: false }, ticks: { color: '#666', font: { family: 'JetBrains Mono', size: 10 } } },
-                        y: { grid: { display: false }, ticks: { color: '#666', font: { family: 'JetBrains Mono', size: 10 } } }
+                        x: { grid: { display: false }, ticks: { color: '#666', font: { family: 'Helvetica Neue', size: 10 } } },
+                        y: { grid: { display: false }, ticks: { color: '#666', font: { family: 'Helvetica Neue', size: 10 } } }
                     }
                 }
             }));
@@ -298,62 +298,50 @@ export default function DashboardPage() {
         </div>
         
         <div className="container mx-auto px-6 flex justify-center relative z-20">
-          <div className="w-full max-w-5xl h-[800px] bg-[#0A0A0A] rounded-2xl border border-white/10 shadow-3xl overflow-hidden flex flex-col relative">
-            <div className="p-8 border-b border-white/5 flex items-center justify-between bg-black/80 backdrop-blur-2xl">
-              <div className="flex items-center gap-5">
-                  <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
-                      <Smartphone className="size-6" />
-                  </div>
-                  <div>
-                      <div className="font-bold text-base text-white tracking-tight">Envision OS AI</div>
-                      <div className="text-[10px] text-primary font-bold uppercase tracking-[0.3em] flex items-center gap-2 font-mono">
-                        <span className="size-2 rounded-full bg-primary animate-pulse"></span>
-                        SECURE_NODE_CONNECTED
+          <div className="w-full max-w-4xl h-[800px] bg-white rounded-3xl border border-white/10 shadow-3xl overflow-hidden flex flex-col relative">
+            <div className="px-8 py-4 border-b border-black/5 flex items-center justify-between bg-white/95 backdrop-blur-md sticky top-0 z-30">
+              <div className="flex-1 flex items-center justify-center">
+                  <div className="flex flex-col items-center">
+                      <div className="size-10 rounded-full bg-primary flex items-center justify-center text-white mb-1 shadow-md">
+                          <Smartphone className="size-5" />
                       </div>
-                  </div>
-              </div>
-              <div className="flex items-center gap-8">
-                  <div className="hidden lg:block text-right">
-                      <div className="text-[9px] text-white/20 font-bold uppercase tracking-widest font-mono">SESSION_ID</div>
-                      <div className="text-[10px] text-white/60 font-bold font-mono">TX_99-102-X</div>
-                  </div>
-                  <div className="font-mono text-[10px] text-primary/40 font-bold uppercase tracking-widest border border-primary/20 px-3 py-1 rounded-sm">
-                      AES-256
+                      <div className="font-bold text-[13px] text-black">Envision OS AI</div>
+                      <div className="text-[10px] text-black/40 font-medium">Active Session</div>
                   </div>
               </div>
             </div>
             
-            <div className="flex-1 p-8 md:p-12 overflow-y-auto flex flex-col gap-8 bg-black/40" ref={chatBodyRef}>
+            <div className="flex-1 p-6 md:p-8 overflow-y-auto flex flex-col gap-2 imessage-container" ref={chatBodyRef}>
               {messages.map((msg, index) => {
                   if (msg.type === 'typing') {
                     return (
-                        <div key={msg.id} className="imessage-bubble imessage-system opacity-40 flex items-center gap-2">
-                            <span className="size-1.5 bg-white/40 rounded-full animate-bounce"></span>
-                            <span className="size-1.5 bg-white/40 rounded-full animate-bounce [animation-delay:0.2s]"></span>
-                            <span className="size-1.5 bg-white/40 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+                        <div key={msg.id} className="imessage-bubble imessage-system flex items-center gap-1.5 py-3 px-4">
+                            <span className="size-1.5 bg-black/30 rounded-full animate-bounce"></span>
+                            <span className="size-1.5 bg-black/30 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                            <span className="size-1.5 bg-black/30 rounded-full animate-bounce [animation-delay:0.4s]"></span>
                         </div>
                     );
                   }
                   
                   const isUser = msg.type === 'user';
                   return (
-                      <div key={index} className={`flex flex-col w-full ${isUser ? 'items-end' : 'items-start'} animate-in slide-in-from-bottom-4 duration-500`}>
+                      <div key={index} className={`flex flex-col w-full ${isUser ? 'items-end' : 'items-start'} animate-in slide-in-from-bottom-2 duration-300`}>
                           <div className={`imessage-bubble ${isUser ? 'imessage-user' : 'imessage-system'}`}>
                               {msg.content}
                           </div>
-                          {msg.metric && <div className="mt-3 text-[11px] text-primary font-bold uppercase tracking-[0.3em] px-3 font-mono">{msg.metric}</div>}
-                          {msg.meta && <div className="mt-1 text-[10px] text-white/20 font-bold uppercase tracking-widest px-3 font-mono">{msg.meta}</div>}
+                          {msg.metric && <div className="mt-1 text-[9px] text-primary font-bold uppercase tracking-[0.2em] px-2 font-mono">{msg.metric}</div>}
+                          {msg.meta && <div className="mt-0.5 text-[8px] text-black/20 font-bold uppercase tracking-widest px-2 font-mono">{msg.meta}</div>}
                       </div>
                   );
               })}
             </div>
 
-            <div className="p-10 border-t border-white/5 bg-black/80 backdrop-blur-2xl">
-                <div className="flex flex-wrap gap-4 justify-center">
+            <div className="p-8 border-t border-black/5 bg-white/95 backdrop-blur-md">
+                <div className="flex flex-wrap gap-2 justify-center">
                     {suggestedReplies.map((reply, index) => (
                         <button
                             key={index}
-                            className="px-8 py-3.5 bg-white/5 text-white/50 hover:bg-primary hover:text-white border border-white/10 rounded-sm text-[11px] font-bold tracking-[0.2em] transition-all font-mono uppercase"
+                            className="px-5 py-2 bg-[#F2F2F7] text-black/70 hover:bg-primary hover:text-white border border-black/5 rounded-full text-[12px] font-medium transition-all"
                             onClick={() => runSimulation(reply.scenarioId)}
                             disabled={isRunning.current}
                         >
