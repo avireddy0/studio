@@ -1,85 +1,125 @@
 'use client';
 
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Activity, Wifi, Monitor } from "lucide-react";
+import { Activity, Wifi, Monitor, Layers, Terminal, Database, Zap, Map as MapIcon, Home, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 type DashboardHeaderProps = {
   title?: string;
 };
 
+const navItems = [
+  { href: "/#hero", label: "01_VISION", icon: Home },
+  { href: "/#metrics", label: "02_METRICS", icon: Activity },
+  { href: "/#intel", label: "03_INTEL", icon: Terminal },
+  { href: "/#tactical-bim", label: "04_BIM", icon: Layers },
+  { href: "/#ingestion", label: "05_INGEST", icon: Database },
+  { href: "/#fusion", label: "06_FUSION", icon: Zap },
+  { href: "/site-intel", label: "07_SITE", icon: MapIcon },
+  { href: "/documents", label: "08_DOCS", icon: FileText },
+];
+
 export function DashboardHeader({ title }: DashboardHeaderProps) {
   const [mounted, setMounted] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const pathname = usePathname();
 
   useEffect(() => {
     setMounted(true);
+    const handleScroll = () => {
+      const container = document.getElementById('main-scroll-container');
+      if (container) {
+        const progress = (container.scrollTop / (container.scrollHeight - container.clientHeight)) * 100;
+        setScrollProgress(progress);
+      }
+    };
+
+    const container = document.getElementById('main-scroll-container');
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+    }
+    return () => container?.removeEventListener('scroll', handleScroll);
   }, []);
 
   if (!mounted) {
     return (
-      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b px-6 bg-[#0A0A0F] border-white/10">
-        <div className="flex items-center gap-6">
-          <SidebarTrigger className="text-muted-foreground" />
-        </div>
-      </header>
+      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b px-6 bg-[#0A0A0F] border-white/10" />
     );
   }
 
   const isHome = pathname === '/' || pathname === '';
+  const isDarkSection = scrollProgress > 15; // Rough threshold for when we hit the obsidian sections
   
-  const bgColor = isHome ? 'bg-white/90' : 'bg-[#0A0A0F]/90';
-  const textColor = isHome ? 'text-black' : 'text-primary';
+  const bgColor = (isHome && !isDarkSection) ? 'bg-white/95' : 'bg-[#0A0A0F]/95';
+  const textColor = (isHome && !isDarkSection) ? 'text-black' : 'text-primary';
   const mutedColor = 'text-muted-foreground';
-  const borderColor = isHome ? 'border-black/5' : 'border-white/10';
-  const iconColor = isHome ? 'text-black/60' : 'text-muted-foreground';
+  const borderColor = (isHome && !isDarkSection) ? 'border-black/5' : 'border-white/10';
+  const iconColor = (isHome && !isDarkSection) ? 'text-black/60' : 'text-muted-foreground';
 
   return (
     <header className={cn(
-        "sticky top-0 z-50 flex h-16 items-center justify-between border-b px-6 backdrop-blur-md transition-all duration-300",
+        "sticky top-0 z-50 flex h-16 items-center justify-between border-b px-6 backdrop-blur-md transition-all duration-500",
         borderColor,
         bgColor
     )}>
-      <div className="flex items-center gap-6">
-        <SidebarTrigger className={cn(
-            "hover:text-primary transition-colors",
-            iconColor
-        )} />
-        <div className={cn("hidden md:flex items-center gap-6 border-l pl-6", borderColor)}>
+      <div className="flex items-center gap-8">
+        <Link href="/" className="flex items-center gap-3 group">
+            <Monitor className={cn("size-5 transition-colors", (isHome && !isDarkSection) ? "text-primary" : "text-primary")} />
+            <span className={cn(
+                "text-xs font-bold tracking-[0.3em] uppercase",
+                (isHome && !isDarkSection) ? "text-black" : "text-white"
+            )}>Envision OS</span>
+        </Link>
+        
+        {/* HORIZONTAL NAVIGATION */}
+        <nav className={cn("hidden lg:flex items-center gap-6 border-l pl-8", borderColor)}>
+            {navItems.map((item) => (
+                <Link 
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                        "flex items-center gap-2 group transition-all",
+                        "hover:opacity-100 opacity-60"
+                    )}
+                >
+                    <item.icon className={cn("size-3 transition-colors", (isHome && !isDarkSection) ? "group-hover:text-primary" : "group-hover:text-primary")} />
+                    <span className={cn(
+                        "text-[9px] font-mono font-bold uppercase tracking-widest",
+                        (isHome && !isDarkSection) ? "text-black" : "text-white"
+                    )}>{item.label}</span>
+                </Link>
+            ))}
+        </nav>
+      </div>
+      
+      <div className="flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6">
             <div className="flex items-center gap-2">
                 <div className="size-1.5 rounded-full animate-status bg-primary" />
                 <span className={cn(
                     "text-[10px] font-mono font-bold uppercase tracking-widest",
-                    isHome ? "text-black" : "text-primary"
+                    (isHome && !isDarkSection) ? "text-black" : "text-primary"
                 )}>
-                    System Online
+                    Node: Active
                 </span>
             </div>
-            <div className="flex items-center gap-2">
-                <Wifi className={cn("size-3", isHome ? "text-black/40" : "text-primary/60")} />
-                <span className={cn("text-[10px] font-mono uppercase tracking-widest", mutedColor)}>Data Sync Active</span>
+            <div className={cn(
+                "flex items-center gap-3 font-mono text-[10px] font-bold tracking-[0.3em] px-4 py-1.5 border transition-all",
+                (isHome && !isDarkSection) ? "text-black bg-black/5 border-black/10" : "text-primary bg-primary/5 border-primary/20"
+            )}>
+                {title || '00:00:00'}
             </div>
         </div>
       </div>
-      
-      <div className="flex items-center gap-8">
-        <div className="hidden lg:flex items-center gap-3">
-            <Activity className={cn("size-3", isHome ? "text-black/20" : "text-primary/40")} />
-            <div className={cn("h-1.5 w-32 overflow-hidden bg-secondary")}>
-                <div className={cn(
-                    "h-full animate-pulse w-3/4 bg-primary"
-                )} />
-            </div>
-        </div>
-        <div className={cn(
-            "flex items-center gap-3 font-mono text-[10px] font-bold tracking-[0.3em] px-4 py-1.5 border transition-all",
-            isHome ? "text-black bg-black/5 border-black/10" : "text-primary bg-primary/5 border-primary/20"
-        )}>
-            <Monitor className="size-3" />
-            {title || '00:00:00'}
-        </div>
+
+      {/* PROGRESS BAR */}
+      <div className="absolute bottom-0 left-0 h-[2px] bg-primary/20 w-full overflow-hidden">
+        <div 
+            className="h-full bg-primary transition-all duration-300 ease-out"
+            style={{ width: `${scrollProgress}%` }}
+        />
       </div>
     </header>
   );

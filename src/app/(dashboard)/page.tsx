@@ -11,7 +11,6 @@ import {
   Activity,
   Map as MapIcon,
   Zap,
-  Circle,
   Layers
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -19,6 +18,7 @@ import { ChatInterface } from "@/components/query/chat-interface";
 import { PdfExtractor } from "@/components/ingestion/pdf-extractor";
 import { ContextSummarizer } from "@/components/context/context-summarizer";
 import { TacticalBimOverlay } from "@/components/visualizations/tactical-bim-overlay";
+import { cn } from "@/lib/utils";
 
 export default function UnifiedPage() {
   const [mounted, setMounted] = useState(false);
@@ -32,7 +32,10 @@ export default function UnifiedPage() {
   }
 
   return (
-    <div className="flex flex-col w-full selection:bg-primary/20 font-sans snap-y snap-mandatory overflow-y-auto h-[calc(100vh-64px)] no-scrollbar scroll-smooth">
+    <div 
+        id="main-scroll-container"
+        className="flex flex-col w-full selection:bg-primary/20 font-sans snap-y snap-mandatory overflow-y-auto h-[calc(100vh-64px)] no-scrollbar scroll-smooth"
+    >
       
       {/* SECTION 01: INSTITUTIONAL HERO (WHITE) */}
       <section id="hero" className="snap-start relative flex flex-col items-center justify-center p-6 bg-white text-black overflow-hidden min-h-screen w-full">
@@ -76,7 +79,7 @@ export default function UnifiedPage() {
         <div className="relative z-10 w-full max-w-7xl">
             <div className="flex items-center gap-3 mb-8">
                 <Activity className="size-4 text-primary" />
-                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">01_REALTIME_TELEMETRY</h2>
+                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">02_REALTIME_TELEMETRY</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
@@ -107,7 +110,7 @@ export default function UnifiedPage() {
         <div className="relative z-10 w-full max-w-7xl h-full flex flex-col justify-center">
             <div className="flex items-center gap-3 mb-6 shrink-0">
                 <Terminal className="size-4 text-primary" />
-                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">02_INTEL_TERMINAL_CORE</h2>
+                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">03_INTEL_TERMINAL_CORE</h2>
             </div>
             <Card className="bg-[#12121A] border-[#1E1E2E] h-[70vh] flex flex-col overflow-hidden">
                 <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-3 shrink-0">
@@ -132,7 +135,7 @@ export default function UnifiedPage() {
         <div className="relative z-10 w-full max-w-7xl h-full flex flex-col justify-center">
             <div className="flex items-center gap-3 mb-6 shrink-0">
                 <Layers className="size-4 text-primary" />
-                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">03_TACTICAL_LIDAR_BIM</h2>
+                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">04_TACTICAL_LIDAR_BIM</h2>
             </div>
             <TacticalBimOverlay />
         </div>
@@ -144,7 +147,7 @@ export default function UnifiedPage() {
           <div className="relative z-10 w-full max-w-7xl flex flex-col">
               <div className="flex items-center gap-3 mb-6 shrink-0">
                   <Database className="size-4 text-primary" />
-                  <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">04_DATA_INGESTION_PIPELINE</h2>
+                  <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">05_DATA_INGESTION_PIPELINE</h2>
               </div>
               <Card className="bg-[#12121A] border-[#1E1E2E]">
                   <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-6">
@@ -169,7 +172,7 @@ export default function UnifiedPage() {
           <div className="relative z-10 w-full max-w-7xl flex flex-col">
               <div className="flex items-center gap-3 mb-6 shrink-0">
                   <Zap className="size-4 text-primary" />
-                  <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">05_CONTEXT_FUSION_ENGINE</h2>
+                  <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">06_CONTEXT_FUSION_ENGINE</h2>
               </div>
               <Card className="bg-[#12121A] border-[#1E1E2E]">
                   <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-6">
