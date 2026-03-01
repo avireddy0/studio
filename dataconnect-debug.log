@@ -1,45 +1,20 @@
-I0301 15:12:01.814399    4228 load.go:31] Reloading schema and connectors...
-W0301 15:12:02.125386    4228 control.go:74] [projects/emulator/locations/emulator/services/studio d8b3] connector "example" has errors: example/queries.gql:40:5: Cannot query field "id" on type "Project_KeyOutput".
+I0301 15:18:54.645984    9376 load.go:31] Reloading schema and connectors...
+W0301 15:18:54.937678    9376 control.go:74] [/emulator/studio 5dab] connector "example" has errors: example/queries.gql:40:5: Cannot query field "id" on type "Project_KeyOutput".
 example/queries.gql:28:3: Field "project_insert" must not have a selection since type "Project_KeyOutput" has no subfields.
 example/queries.gql:51:5: Cannot query field "id" on type "Comment_KeyOutput".
 example/queries.gql:45:3: Field "comment_insert" must not have a selection since type "Comment_KeyOutput" has no subfields.
 
 sources: example/queries.gql [1260B] 
-I0301 15:12:02.125479    4228 control.go:100] [projects/emulator/locations/emulator/services/studio d8b3] UpdateResources(): done
+I0301 15:18:54.937767    9376 control.go:100] [/emulator/studio 5dab] UpdateResources(): done
 Main schema: sources: schema/schema.gql [734B] 
 Connector "example": sources: example/queries.gql [1260B] 
-E0301 15:12:02.141952    4228 load.go:73] Could not load sources: 
+E0301 15:18:54.942074    9376 load.go:73] Could not load sources: 
 Errors: example/queries.gql:40:5: Cannot query field "id" on type "Project_KeyOutput".
 example/queries.gql:28:3: Field "project_insert" must not have a selection since type "Project_KeyOutput" has no subfields.
 example/queries.gql:51:5: Cannot query field "id" on type "Comment_KeyOutput".
 example/queries.gql:45:3: Field "comment_insert" must not have a selection since type "Comment_KeyOutput" has no subfields.
-I0301 15:12:02.154887    4228 collector.go:107] schema extensions wrote into "/home/user/studio/dataconnect/.dataconnect/schema"
-Generated sources: main/mutation.gql [16419B] prelude.gql [80730B] main/implicit.gql [2439B] main/input.gql [44487B] main/relation.gql [22274B] main/query.gql [6117B] 
-I0301 15:12:02.154963    4228 load.go:74] Finished reloading
-I0301 15:12:02.173666    4228 dev.go:104] Listening on address (HTTP + gRPC): 127.0.0.1:9399
-I0301 15:12:18.708011    4228 migrate.go:24] RunnI0301 15:12:21.494267    2892 engine.go:208] [/emulator/studio 39a3] ExecuteGraphqlRead IntrospectionQuery: succeeded. 
-T NULL DEFAULT uuid_generate_v4(), "bio" text NULL, "created_at" timestamptz NOT NULL, "display_name" text NOT NULL, "email" text NOT NULL, "photo_url" text NULL, "social_links" text[] NULL, PRIMARY KEY ("id"))
-Step 3: CREATE TABLE "public"."project" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "user_id" uuid NOT NULL, "app_store_link" text NULL, "created_at" timestamptz NOT NULL, "description" text NOT NULL, "github_link" text NULL, "screenshots" text[] NULL, "tags" text[] NULL, "title" text NOT NULL, "updated_at" timestamptz NOT NULL, "video_link" text NULL, PRIMARY KEY ("id"), CONSTRAINT "project_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE)
-Step 4: CREATE INDEX "project_userId_idx" ON "public"."project" ("user_id")
-Step 5: CREATE TABLE "public"."comment" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "project_id" uuid NOT NULL, "user_id" uuid NOT NULL, "content" text NOT NULL, "created_at" timestamptz NOT NULL, PRIMARY KEY ("id"), CONSTRAINT "comment_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "public"."project" ("id") ON DELETE CASCADE, CONSTRAINT "comment_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE)
-Step 6: CREATE INDEX "comment_projectId_idx" ON "public"."comment" ("project_id")
-Step 7: CREATE INDEX "comment_userId_idx" ON "public"."comment" ("user_id")
-Step 8: CREATE TABLE "public"."like" ("user_id" uuid NOT NULL, "project_id" uuid NOT NULL, "created_at" timestamptz NOT NULL, PRIMARY KEY ("user_id", "project_id"), CONSTRAINT "like_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "public"."project" ("id") ON DELETE CASCADE, CONSTRAINT "like_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE)
-Step 9: CREATE INDEX "like_projectId_idx" ON "public"."like" ("project_id")
-Step 10: CREATE INDEX "like_userId_idx" ON "public"."like" ("user_id")
-Step 11: CREATE TABLE "public"."post" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "user_id" uuid NOT NULL, "content" text NOT NULL, "created_at" timestamptz NOT NULL, "tags" text[] NULL, "title" text NOT NULL, "type" text NOT NULL, "updated_at" timestamptz NOT NULL, PRIMARY KEY ("id"), CONSTRAINT "post_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id") ON DELETE CASCADE)
-Step 12: CREATE INDEX "post_userId_idx" ON "public"."post" ("user_id")
-W0301 15:12:20.631055    4228 control.go:74] [projects/emulator/locations/emulator/services/studio 66f0] connector "example" has errors: example/queries.gql:40:5: Cannot query field "id" on type "Project_KeyOutput".
-example/queries.gql:28:3: Field "project_insert" must not have a selection since type "Project_KeyOutput" has no subfields.
-example/queries.gql:51:5: Cannot query field "id" on type "Comment_KeyOutput".
-example/queries.gql:45:3: Field "comment_insert" must not have a selection since type "Comment_KeyOutput" has no subfields.
-
-sources: example/queries.gql [1260B] 
-I0301 15:12:20.631164    4228 control.go:100] [projects/emulator/locations/emulator/services/studio 66f0] UpdateResources(): done
-Main schema: sources: schema/schema.gql [734B] 
-Connector "example": sources: example/queries.gql [1260B] 
-I0301 15:12:20.631201    4228 service.go:185] [projects/emulator/locations/emulator/services/studio 66f0] while configuring to server.Settings{ConnectionString:"dbname='fdcdb' host='127.0.0.1' port='5432' sslmode='disable' dbname='fdcdb'", MaxOpenConnection:0, UseDummy:false, EnableGoogleMLIntegration:false, SchemaSettings:esql.Settings{SchemaValidationMode:"", SchemaName:""}}, failed to reload last live sources: 
-Errors: example/queries.gql:40:5: Cannot query field "id" on type "Project_KeyOutput".
-example/queries.gql:28:3: Field "project_insert" must not have a selection since type "Project_KeyOutput" has no subfields.
-example/queries.gql:51:5: Cannot query field "id" on type "Comment_KeyOutput".
-example/queries.gql:45:3: Field "comment_insert" must not have a selection since type "Comment_KeyOutput" has no subfields.
+I0301 15:18:54.943952    9376 collector.go:107] schema extensions wrote into "/home/user/studio/dataconnect/.dataconnect/schema"
+Generated sources: main/mutation.gql [16419B] prelude.gql [80731B] main/implicit.gql [2439B] main/input.gql [44487B] main/relation.gql [22274B] main/query.gql [6117B] 
+I0301 15:18:54.944050    9376 load.go:74] Finished reloading
+I0301 15:18:55.025760    9376 dev.go:104] Listening on address (HTTP + gRPC): 127.0.0.1:50002
+I0301 15:18:55.374100    9376 engine.go:208] [/emulator/studio 5dab] ExecuteGraphqlRead IntrospectionQuery: succeeded. 
