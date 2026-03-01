@@ -15,7 +15,9 @@ import {
   FileSpreadsheet,
   FileCode,
   FileSignature,
-  FileCheck
+  Mail,
+  Phone,
+  MessageSquare
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ChatInterface } from "@/components/query/chat-interface";
@@ -40,17 +42,18 @@ export default function UnifiedPage() {
 
   const satelliteImage = PlaceHolderImages.find(img => img.id === 'satellite-map');
 
-  // Chaotic Tornado Generator - 120 elements for maximum anxiety
-  const chaoticInputs = Array.from({ length: 120 }).map((_, i) => {
-    const icons = [FileText, FileSpreadsheet, FileCode, FileSignature];
+  // High-Density Tornado Generator - 160 elements for maximum anxiety
+  const chaoticInputs = Array.from({ length: 160 }).map((_, i) => {
+    const icons = [FileText, FileSpreadsheet, FileCode, FileSignature, Mail, Phone, MessageSquare];
     const Icon = icons[i % icons.length];
     return {
       Icon,
-      delay: `${(Math.random() * 3).toFixed(2)}s`,
-      duration: `${(0.6 + Math.random() * 0.8).toFixed(2)}s`,
+      delay: `${(Math.random() * 4).toFixed(2)}s`,
+      duration: `${(0.4 + Math.random() * 0.6).toFixed(2)}s`,
       top: `${(Math.random() * 100).toFixed(2)}%`,
-      yOffset: `${(Math.random() * 200 - 100).toFixed(2)}px`,
-      size: i % 5 === 0 ? "size-6" : "size-4",
+      // Funnel towards center: icons start far out and move to y=0
+      yOffset: `${(Math.random() * 300 - 150).toFixed(2)}px`,
+      size: i % 10 === 0 ? "size-6" : "size-4",
     };
   });
 
@@ -89,7 +92,7 @@ export default function UnifiedPage() {
         </div>
       </section>
 
-      {/* SECTION 02: INGESTION PIPELINE (WHITE) - TORNADO OF CHAOS */}
+      {/* SECTION 02: INGESTION PIPELINE (WHITE) - THE FUNNEL OF CHAOS */}
       <section id="ingestion" className="snap-start relative min-h-screen w-full bg-white text-black flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
           <div className="relative z-10 w-full max-w-7xl flex flex-col gap-12">
@@ -98,63 +101,63 @@ export default function UnifiedPage() {
                   <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/40">02_DATA_INGESTION_PIPELINE</h2>
               </div>
               
-              <div className="relative w-full h-[500px] flex items-center justify-between px-12 bg-gray-50/30 border border-black/5 overflow-hidden group">
-                  {/* LEFT: TORNADO OF CONSTRUCTION DOCUMENTS */}
-                  <div className="relative w-5/12 h-full flex items-center justify-center overflow-hidden">
-                      {chaoticInputs.map((item, i) => (
-                          <div 
-                            key={i} 
-                            className="absolute left-[-60px] animate-tornado opacity-0 text-muted-foreground/40"
-                            style={{ 
-                                "--delay": item.delay,
-                                "--duration": item.duration,
-                                "--y-offset": item.yOffset,
-                                top: item.top
-                            } as React.CSSProperties}
-                          >
-                              <item.Icon className={item.size} />
-                          </div>
-                      ))}
-                      <div className="absolute right-0 top-0 bottom-0 w-48 bg-gradient-to-r from-transparent to-gray-50/50 z-10" />
-                  </div>
-
-                  {/* CENTER: AI PARSER CORE (THE FOCAL POINT) */}
-                  <div className="relative flex flex-col items-center gap-6 z-20 shrink-0">
-                      <div className="size-44 rounded-full bg-primary/5 border-2 border-primary/20 flex items-center justify-center animate-status shadow-[0_0_50px_rgba(0,124,90,0.1)]">
-                          <div className="relative">
-                            <Database className="size-20 text-primary" />
-                            <div className="absolute inset-0 size-20 bg-primary/20 blur-2xl animate-pulse" />
-                          </div>
-                      </div>
-                      <div className="flex flex-col items-center gap-1">
-                          <span className="text-[11px] font-mono font-bold text-primary uppercase tracking-[0.5em]">PARSER_CORE_V4</span>
-                          <span className="text-[8px] font-mono text-muted-foreground uppercase tracking-widest animate-pulse">SYNTHESIZING_SIGNALS...</span>
-                      </div>
-                      {/* FUNNEL GUIDES */}
-                      <div className="absolute -left-[400px] top-1/2 -translate-y-1/2 w-[400px] h-[500px] border-y border-r border-primary/10 rounded-r-full pointer-events-none opacity-20" />
-                  </div>
-
-                  {/* RIGHT: DISCIPLINED SINGLE DATA LINE */}
-                  <div className="relative w-4/12 h-full flex flex-col justify-center items-start overflow-hidden">
-                      <div className="absolute left-0 top-0 bottom-0 w-48 bg-gradient-to-l from-transparent to-gray-50/50 z-10" />
-                      <div className="flex flex-col gap-3 w-full pl-16">
-                          {[
-                            "{ id: 'RFI_9912', type: 'PDF', status: 'VERIFIED' }",
-                            "{ id: 'SCHED_V4', type: 'XLS', status: 'NORMALIZED' }",
-                            "{ id: 'CONTRACT_A', type: 'SIG', status: 'ARCHIVED' }",
-                            "{ id: 'SPEC_08_G', type: 'RFI', status: 'MAPPED' }",
-                            "{ id: 'BIM_MOD_7', type: 'CODE', status: 'SYNCED' }",
-                            "{ id: 'LOG_EVT_1', type: 'SYS', status: 'CLEAN' }",
-                            "{ id: 'NODE_ALPHA', type: 'INT', status: 'STABLE' }"
-                          ].map((str, i) => (
+              <div className="relative w-full h-[500px] flex items-center bg-gray-50/30 border border-black/5 overflow-hidden">
+                  {/* FULL WIDTH ANIMATION LAYER */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                      
+                      {/* THE CHAOTIC FUNNEL (LEFT TO CENTER) */}
+                      <div className="absolute left-0 w-1/2 h-full overflow-hidden pointer-events-none">
+                        {chaoticInputs.map((item, i) => (
                             <div 
-                                key={i} 
-                                className="animate-data-stream opacity-0 text-[10px] font-mono text-primary font-bold whitespace-nowrap bg-primary/5 px-4 py-2 border-l-4 border-primary shadow-sm" 
-                                style={{ animationDelay: `${i * 0.5}s` }}
+                              key={i} 
+                              className="absolute left-[-50px] animate-tornado opacity-0 text-muted-foreground/30"
+                              style={{ 
+                                  "--delay": item.delay,
+                                  "--duration": item.duration,
+                                  "--y-offset": item.yOffset,
+                                  top: item.top
+                              } as React.CSSProperties}
                             >
-                                {str}
+                                <item.Icon className={item.size} />
                             </div>
-                          ))}
+                        ))}
+                      </div>
+
+                      {/* THE PARSER CORE (CENTER) */}
+                      <div className="relative z-20 flex flex-col items-center gap-4">
+                          <div className="size-36 rounded-full bg-primary/5 border-2 border-primary/20 flex items-center justify-center animate-status shadow-[0_0_60px_rgba(0,124,90,0.15)] bg-white/50 backdrop-blur-sm">
+                              <div className="relative">
+                                <Database className="size-16 text-primary" />
+                                <div className="absolute inset-0 size-16 bg-primary/20 blur-2xl animate-pulse" />
+                              </div>
+                          </div>
+                          <div className="flex flex-col items-center gap-0.5">
+                              <span className="text-[10px] font-mono font-bold text-primary uppercase tracking-[0.4em]">PARSER_CORE</span>
+                              <span className="text-[7px] font-mono text-muted-foreground uppercase tracking-widest animate-pulse">SYNTHESIZING...</span>
+                          </div>
+                      </div>
+
+                      {/* THE SINGLE LINE (CENTER TO RIGHT) */}
+                      <div className="absolute right-0 w-1/2 h-full overflow-hidden pointer-events-none">
+                          <div className="flex flex-col justify-center h-full gap-4 pl-12">
+                              {[
+                                "0x1A2B_RFI_VERIFIED",
+                                "0x3C4D_CONTRACT_SIGNED",
+                                "0x5E6F_BIM_SYNCED",
+                                "0x7G8H_XLS_NORMALIZED",
+                                "0x9I0J_LOG_ARCHIVED",
+                                "0xAK1L_NODE_STABLE",
+                                "0xCM2N_SIGNAL_CLEAN"
+                              ].map((str, i) => (
+                                <div 
+                                    key={i} 
+                                    className="animate-data-stream-single opacity-0 text-[9px] font-mono text-primary font-bold whitespace-nowrap bg-primary/5 px-3 py-1.5 border-l-2 border-primary shadow-sm" 
+                                    style={{ animationDelay: `${i * 0.4}s` }}
+                                >
+                                    {str}
+                                </div>
+                              ))}
+                          </div>
                       </div>
                   </div>
               </div>
@@ -163,7 +166,7 @@ export default function UnifiedPage() {
                   <div className="space-y-4">
                       <h3 className="text-4xl font-semibold tracking-tighter uppercase leading-tight">Chaos To Control <br/> Unified Intelligence</h3>
                       <p className="text-base text-black/60 max-w-md leading-relaxed">
-                          Slamming thousands of fragmented construction signals—RFIs, spreadsheets, and emails—into a verified institutional stream. Deterministic parsing for weapons-grade project accuracy.
+                          Slamming thousands of fragmented construction signals—emails, texts, and calls—into a verified institutional stream. Deterministic parsing for weapons-grade project accuracy.
                       </p>
                   </div>
                   <Card className="bg-white border-black/10 shadow-2xl rounded-none">
