@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -17,16 +18,16 @@ import {
   Terminal,
   ChevronRight,
   Home,
-  Settings
+  Layers
 } from "lucide-react";
 
 const navItems = [
   { href: "/#hero", label: "BRAND VISION", icon: Home },
   { href: "/#metrics", label: "METRICS", icon: Activity },
   { href: "/#intel", label: "INTEL CORE", icon: Terminal },
+  { href: "/#tactical-bim", label: "TACTICAL BIM", icon: Layers },
   { href: "/#ingestion", label: "INGESTION", icon: Database },
   { href: "/#fusion", label: "FUSION", icon: Zap },
-  { href: "/#initialize", label: "INITIALIZE", icon: Settings },
   { href: "/site-intel", label: "SITE INTEL", icon: MapIcon },
   { href: "/documents", label: "DOCUMENTS", icon: FileText },
 ];
@@ -38,13 +39,14 @@ export function SidebarNav() {
 
   useEffect(() => {
     setMounted(true);
-    setCurrentHash(window.location.hash.replace('#', ''));
-
     const handleHashChange = () => {
       setCurrentHash(window.location.hash.replace('#', ''));
     };
 
     window.addEventListener('hashchange', handleHashChange);
+    // Initial check
+    handleHashChange();
+    
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 

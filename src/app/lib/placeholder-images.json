@@ -1,0 +1,29 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "hero-abstract",
+      "description": "Abstract data visualization for construction",
+      "imageUrl": "https://images.unsplash.com/photo-1687564276177-ea1bf17b9d5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxhYnN0cmFjdCUyMGNvbnN0cnVjdGlvbnxlbnwwfHx8fDE3NzIxNjE2Nzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract construction"
+    },
+    {
+      "id": "ingestion-process",
+      "description": "Visual of digital data streams",
+      "imageUrl": "https://images.unsplash.com/photo-1674420888888-15f055ffb627?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkYXRhJTIwcGlwZWxpbmV8ZW58MHx8fHwxNzcyMTIwMzgwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "data pipeline"
+    },
+    {
+      "id": "tactical-bim",
+      "description": "Militant FLIR style LiDAR BIM overlay",
+      "imageUrl": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxNXx8Y29uc3RydWN0aW9uJTIwc2l0ZSUyMHNjYW58ZW58MHx8fHwxNzcyMTYzNjkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "construction scan"
+    },
+    {
+      "id": "satellite-map",
+      "description": "Satellite map of construction project",
+      "imageUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzYXRlbGxpdGUlMjBtYXB8ZW58MHx8fHwxNzcyMTYzNzI3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "satellite map"
+    }
+  ]
+}

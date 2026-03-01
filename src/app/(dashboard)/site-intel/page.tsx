@@ -2,11 +2,15 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { DashboardHeader } from "@/components/dashboard-header";
-import { Map as MapIcon, Crosshair, Target, Shield } from "lucide-react";
+import { Crosshair, Target, Shield, Map as MapIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function SiteIntelPage() {
+  const satelliteImage = PlaceHolderImages.find(img => img.id === 'satellite-map');
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-[#0A0A0F]">
       <DashboardHeader title="SITE_INTELLIGENCE_NODE" />
@@ -14,7 +18,7 @@ export default function SiteIntelPage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* TACTICAL MAP AREA */}
           <Card className="lg:col-span-3 bg-[#12121A] border-[#1E1E2E] rounded-none min-h-[600px] relative overflow-hidden">
-            <CardHeader className="border-b border-[#1E1E2E]/50">
+            <CardHeader className="border-b border-[#1E1E2E]/50 z-20 relative bg-black/40 backdrop-blur-md">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-[10px] tracking-[0.3em]">GEOSPATIAL_INTEL_FEED</CardTitle>
                 <div className="flex gap-4 text-[9px] font-mono text-primary uppercase tracking-widest">
@@ -23,21 +27,45 @@ export default function SiteIntelPage() {
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="p-0 relative h-full flex items-center justify-center">
-              <div className="absolute inset-0 tactical-grid opacity-20" />
-              {/* PLACEHOLDER FOR MAP VIZ */}
-              <div className="relative z-10 flex flex-col items-center gap-6">
-                <div className="size-64 rounded-full border border-primary/20 flex items-center justify-center animate-pulse">
-                  <div className="size-48 rounded-full border border-primary/40 flex items-center justify-center">
-                    <Crosshair className="size-12 text-primary/40" />
+            <CardContent className="p-0 relative h-[700px]">
+              {/* SATELLITE IMAGE MAP */}
+              <div className="absolute inset-0 grayscale contrast-125 brightness-75">
+                <Image 
+                  src={satelliteImage?.imageUrl || ''} 
+                  alt="Satellite Map" 
+                  fill 
+                  className="object-cover"
+                  data-ai-hint={satelliteImage?.imageHint}
+                />
+              </div>
+              <div className="absolute inset-0 tactical-grid opacity-20 pointer-events-none" />
+              
+              {/* INTERACTIVE MARKERS */}
+              <div className="absolute top-[40%] left-[30%] z-20">
+                <div className="relative">
+                  <div className="size-12 rounded-full border border-primary animate-ping absolute -inset-0 opacity-20" />
+                  <Target className="size-6 text-primary" />
+                  <div className="absolute left-8 top-0 bg-black/80 border border-primary/40 p-2 whitespace-nowrap">
+                    <p className="text-[8px] font-bold text-white uppercase">Sector_Alpha_01</p>
+                    <p className="text-[6px] font-mono text-primary uppercase">Status: Operational</p>
                   </div>
                 </div>
-                <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-[0.4em]">Initializing_Vector_Scan...</p>
+              </div>
+
+              <div className="absolute top-[60%] left-[70%] z-20">
+                <div className="relative">
+                  <div className="size-12 rounded-full border border-yellow-500 animate-ping absolute -inset-0 opacity-20" />
+                  <Target className="size-6 text-yellow-500" />
+                  <div className="absolute left-8 top-0 bg-black/80 border border-yellow-500/40 p-2 whitespace-nowrap">
+                    <p className="text-[8px] font-bold text-white uppercase">Site_B_Access</p>
+                    <p className="text-[6px] font-mono text-yellow-500 uppercase">Warning: Deviation_Detected</p>
+                  </div>
+                </div>
               </div>
               
               {/* TACTICAL HUD ELEMENTS */}
-              <div className="absolute top-10 left-10 p-4 border border-primary/20 bg-primary/5 space-y-2">
-                <p className="text-[10px] font-bold text-white uppercase tracking-widest">ACTIVE_SECTOR: ALPHA-01</p>
+              <div className="absolute top-10 left-10 p-4 border border-primary/20 bg-black/60 backdrop-blur-md space-y-2 z-20">
+                <p className="text-[10px] font-bold text-white uppercase tracking-widest">ACTIVE_SECTOR: MULTI-NODE</p>
                 <div className="flex items-center gap-2">
                   <div className="size-1.5 rounded-full bg-primary animate-status" />
                   <p className="text-[8px] font-mono text-primary uppercase">Signal_Strength: Nominal</p>
