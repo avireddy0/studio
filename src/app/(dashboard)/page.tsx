@@ -123,11 +123,11 @@ export default function UnifiedPage() {
               <div className="relative w-full flex-1 flex items-center bg-white/[0.02] border border-white/5 rounded-2xl overflow-hidden">
 
                   {/* FLYING DOCUMENT CARDS — VACUUMED FROM LEFT INTO AUDIT CORE */}
-                  <div className="absolute left-0 w-1/2 h-full pointer-events-none">
+                  <div className="absolute left-0 w-[55%] h-full pointer-events-none">
                     {ingestItems.map((item, i) => (
                       <div
                         key={i}
-                        className="absolute left-[-100px] sm:left-[-140px] animate-tornado"
+                        className="absolute left-[8px] sm:left-[12px] md:left-[20px] animate-tornado"
                         style={{
                           animationDelay: item.delay,
                           animationDuration: item.duration,
@@ -136,8 +136,8 @@ export default function UnifiedPage() {
                         } as React.CSSProperties}
                       >
                         <div className="bg-white rounded-lg shadow-2xl p-2 sm:p-3 md:p-4 flex flex-col items-center gap-1 sm:gap-1.5">
-                          <item.Icon className={cn("size-8 sm:size-10 md:size-14 lg:size-16", item.color)} />
-                          <span className="text-[7px] sm:text-[8px] md:text-[9px] font-bold text-gray-500 uppercase tracking-wider">{item.label}</span>
+                          <item.Icon className={cn("size-7 sm:size-10 md:size-14 lg:size-16", item.color)} />
+                          <span className="text-[6px] sm:text-[8px] md:text-[9px] font-bold text-gray-500 uppercase tracking-wider">{item.label}</span>
                         </div>
                       </div>
                     ))}
