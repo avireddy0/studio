@@ -88,17 +88,18 @@
     opacity: 0.6; 
   }
   50% {
-    /* Funnel point at Parser Core */
-    transform: translate(350px, var(--y-offset)) rotate(180deg) scale(0.8);
+    /* Chaos / Flurry Phase */
+    transform: translate(calc(50vw * 0.4), var(--y-offset)) rotate(180deg) scale(0.8);
     opacity: 1;
   }
-  90% { 
-    /* Converge to single point in parser */
-    transform: translate(450px, 0) rotate(360deg) scale(0.1); 
-    opacity: 0.8; 
+  85% { 
+    /* Funnel into Center (Parser) */
+    transform: translate(calc(50vw - 100px), 0) rotate(360deg) scale(0.2); 
+    opacity: 0.9; 
   }
   100% { 
-    transform: translate(500px, 0) scale(0); 
+    /* Disappear into core */
+    transform: translate(calc(50vw - 40px), 0) scale(0); 
     opacity: 0; 
   }
 }
@@ -111,10 +112,10 @@
   0% { transform: translateX(0); opacity: 0; }
   10% { opacity: 1; }
   90% { opacity: 1; }
-  100% { transform: translateX(600px); opacity: 0; }
+  100% { transform: translateX(calc(50vw + 100px)); opacity: 0; }
 }
 .animate-data-stream-single {
-  animation: data-stream-single 2.5s infinite linear;
+  animation: data-stream-single 4s infinite linear;
 }
 
 @keyframes pulse-status {
