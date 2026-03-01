@@ -10,8 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Space Grotesk', 'Inter', 'sans-serif'],
-        headline: ['Space Grotesk', 'sans-serif'],
+        sans: ['Helvetica Now Display', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+        headline: ['Helvetica Now Display', 'Helvetica Neue', 'sans-serif'],
         code: ['JetBrains Mono', 'monospace'],
       },
       colors: {
