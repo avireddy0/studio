@@ -4,45 +4,128 @@
 
 @layer base {
   :root {
-    --background: 0 0% 2%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 4%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 4%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 164 100% 40%; /* Emerald/Tactical Green */
-    --primary-foreground: 0 0% 0%;
-    --secondary: 200 100% 40%; /* Tactical Blue */
-    --secondary-foreground: 0 0% 0%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 60%;
-    --accent: 40 100% 50%; /* Tactical Amber */
-    --accent-foreground: 0 0% 0%;
-    --destructive: 0 100% 45%; /* Tactical Red */
+    --background: 0 0% 100%;
+    --foreground: 240 25% 4%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 25% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 25% 4%;
+    --primary: 164 100% 24%; /* #007C5A */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 21% 95%;
+    --secondary-foreground: 240 25% 4%;
+    --muted: 240 21% 96%;
+    --muted-foreground: 240 10% 45%;
+    --accent: 164 100% 24%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 100% 62%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 20%;
-    --input: 0 0% 10%;
-    --ring: 164 100% 40%;
-    --radius: 0rem; 
+    --border: 240 10% 90%;
+    --input: 240 10% 90%;
+    --ring: 164 100% 24%;
+    --radius: 0px;
   }
 
   .dark {
-    --background: 0 0% 2%;
-    --foreground: 0 0% 98%;
+    --background: 240 25% 4%; /* #0A0A0F */
+    --foreground: 210 20% 98%;
+    --card: 240 18% 9%; /* #12121A */
+    --card-foreground: 210 20% 98%;
+    --popover: 240 18% 9%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 164 100% 24%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 21% 15%; /* #1E1E2E */
+    --secondary-foreground: 210 20% 98%;
+    --muted: 240 21% 12%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 164 100% 24%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 100% 62%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 21% 18%; /* #1E1E2E */
+    --input: 240 21% 15%;
+    --ring: 164 100% 24%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
-    border-radius: 0 !important; /* Force strict angular UI */
+    @apply border-border rounded-none;
+  }
+  html {
+    scroll-behavior: smooth;
   }
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/20;
-    overflow-x: hidden;
+    @apply bg-background text-foreground antialiased selection:bg-primary/30 overflow-hidden;
+    font-family: 'Inter', sans-serif;
   }
 }
 
 .font-mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* TACTICAL HUD GRID */
+.tactical-grid {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+}
+
+.dark .tactical-grid {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+/* ANIMATIONS */
+@keyframes tornado-ingest {
+  0% { 
+    transform: translate(-300px, 0) scale(2.0); 
+    opacity: 1; 
+  }
+  100% { 
+    /* Funnel precisely into the central Parser Core with NO FADE until the very end */
+    transform: translate(calc(50vw - 80px), var(--y-offset)) scale(0); 
+    opacity: 1; 
+  }
+}
+.animate-tornado {
+  animation: tornado-ingest var(--duration) infinite linear;
+  animation-delay: var(--delay);
+}
+
+@keyframes data-stream-single {
+  0% { transform: translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(calc(50vw + 200px)); opacity: 0; }
+}
+.animate-data-stream-single {
+  animation: data-stream-single 5s infinite linear;
+}
+
+@keyframes pulse-status {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.9); }
+}
+.animate-status {
+  animation: pulse-status 2.5s infinite ease-in-out;
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+.animate-scan-line {
+  animation: scan-line 5s infinite linear;
+}
+
+/* CUSTOM SCROLLBAR */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
