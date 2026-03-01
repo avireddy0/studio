@@ -9,20 +9,20 @@ import {
 } from "@/components/ui/sidebar";
 import {
   LayoutDashboard,
-  MessageSquare,
   Database,
   Search,
   Zap,
   Shield,
   Settings,
-  FileText
+  FileText,
+  Map as MapIcon
 } from "lucide-react";
 
 const navItems = [
-  { href: "/", label: "OVERVIEW", icon: LayoutDashboard },
-  { href: "/query", label: "COMMAND", icon: MessageSquare },
-  { href: "/ingestion", label: "INGESTION", icon: Database },
-  { href: "/context", label: "FUSION", icon: Zap },
+  { href: "/dashboard", label: "OVERVIEW", icon: LayoutDashboard },
+  { href: "#site-intel", label: "SITE INTEL", icon: MapIcon },
+  { href: "/ingestion", label: "DATA INGESTION", icon: Database },
+  { href: "/context", label: "CONTEXT FUSION", icon: Zap },
   { href: "/visualizations", label: "TELEMETRY", icon: Search },
   { href: "#documents", label: "DOCUMENTS", icon: FileText },
   { href: "#settings", label: "SETTINGS", icon: Settings },

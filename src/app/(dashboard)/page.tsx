@@ -34,7 +34,7 @@ export default function LandingPage() {
                 <span className="hover:text-primary cursor-pointer transition-colors">02 Intelligence</span>
                 <span className="hover:text-primary cursor-pointer transition-colors">03 Audit</span>
             </div>
-            <Link href="/query" className="bg-white text-black px-6 py-2 text-[10px] font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
+            <Link href="/dashboard" className="bg-white text-black px-6 py-2 text-[10px] font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
                 ACCESS_GATEWAY
             </Link>
         </div>
@@ -61,7 +61,7 @@ export default function LandingPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 font-mono">
-                <Link href="/query" className="bg-primary text-white px-10 py-4 text-[11px] font-bold uppercase tracking-widest hover:bg-primary/80 transition-all flex items-center gap-3">
+                <Link href="/dashboard" className="bg-primary text-white px-10 py-4 text-[11px] font-bold uppercase tracking-widest hover:bg-primary/80 transition-all flex items-center gap-3">
                     INITIALIZE_COMMAND <ArrowRight className="size-4" />
                 </Link>
                 <button className="px-10 py-4 text-[11px] font-bold uppercase tracking-widest border border-white/10 hover:bg-white/5 transition-all">
