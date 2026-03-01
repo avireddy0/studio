@@ -11,3 +11,10 @@
 [debug] [2026-03-01T15:17:57.839Z] No OAuth tokens found
 [debug] [2026-03-01T15:17:57.842Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=1000
 [debug] [2026-03-01T15:17:57.961Z] [Firebase Plugin] VSCode notification server listening on port 40002
+[info] [Firebase Plugin] Starting Data Connect toolkit (version 3.1.4) on port 50002
+[info] i  dataconnect: downloading dataconnect-emulator-3.1.4... {"metadata":{"emulator":{"name":"dataconnect"},"message":"downloading dataconnect-emulator-3.1.4..."}}
+[debug] [2026-03-01T15:18:00.354Z] >>> [apiv2][query] GET https://storage.googleapis.com/firemat-preview-drop/emulator/dataconnect-emulator-linux-amd64-v3.1.4 
+[debug] [2026-03-01T15:18:00.837Z] <<< [apiv2][status] GET https://storage.googleapis.com/firemat-preview-drop/emulator/dataconnect-emulator-linux-amd64-v3.1.4 200
+[debug] [2026-03-01T15:18:00.842Z] <<< [apiv2][body] GET https://storage.googleapis.com/firemat-preview-drop/emulator/dataconnect-emulator-linux-amd64-v3.1.4 [stream]
+[debug] [2026-03-01T15:18:01.260Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2026-03-01T15:18:01.262Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
