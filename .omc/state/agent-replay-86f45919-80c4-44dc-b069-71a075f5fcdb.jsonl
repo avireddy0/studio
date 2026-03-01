@@ -3,3 +3,5 @@
 {"t":0,"agent":"ab7ce84","agent_type":"unknown","event":"agent_stop","success":true}
 {"t":0,"agent":"ac8e277","agent_type":"unknown","event":"agent_stop","success":true}
 {"t":0,"agent":"a5190aa","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"oh-my-claudecode:frontend-ui-ux"}
+{"t":0,"agent":"ab668d4","agent_type":"designer","event":"agent_start","parent_mode":"none"}

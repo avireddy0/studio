@@ -434,3 +434,101 @@ EOF
 lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1
 npm run dev
 sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+grep -E "framer-motion|@react-spring|react-transition" /Users/avireddy/GitHub/studio/package.json
+npm install framer-motion 2>&1 | tail -5
+npm run build 2>&1 | tail -25
+git add 'src/app/(dashboard)/page.tsx' src/components/visualizations/ingestion-funnel.tsx package.json package-lock.json src/app/globals.css && git commit -m "$(cat <<'EOF'
+feat: rewrite ingestion animation with framer-motion React components
+
+- Create IngestionFunnel component with framer-motion vacuum animation
+- 9 white cards (PDF, XLS, RFI, BIM, EMAIL, CALL, TEXT, INVOICE, PHOTO) fly from left into Audit Core
+- Cards scale down, rotate, and fade as they get sucked into center parser
+- Scan line on Audit Core and floating JSON output cards also use framer-motion
+- Container-aware animation calculates distances based on measured dimensions
+- Replace broken CSS keyframe approach with reliable React-driven animation
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1
+npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+xcrun simctl boot 1311D811-5479-4E95-B2FD-67CD57CE77F6 2>/dev/null; open -a Simulator; sleep 4 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002/?s=ingestion"
+sleep 3 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-framer.png
+npm run build 2>&1 | tail -25
+git add 'src/app/(dashboard)/page.tsx' src/components/visualizations/ingestion-funnel.tsx package.json package-lock.json && git commit -m "$(cat <<'EOF'
+feat: high-fidelity ingestion funnel with realistic document cards
+
+- Realistic paper document cards with accent stripes, icon headers, text lines, corner folds
+- Deep layered glow on Audit Core: radial gradients, pulse ring, inner grid, scan line with trail
+- 9 input types: PDF, XLS, RFI, BIM, EMAIL, CALL, SMS, INVOICE, PHOTO
+- Organic vacuum motion with 5-point bezier paths, tumble rotation, accelerating scale-down
+- 3 verified JSON output cards with status dots and staggered float animation
+- Atmospheric touches: subtle grid overlay, radial glow emanation from core
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1
+npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002 && xcrun simctl boot 1311D811-5479-4E95-B2FD-67CD57CE77F6 2>/dev/null; open -a Simulator; sleep 3 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002/?s=ingestion"
+sleep 3 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-hifi.png
+npm run build 2>&1 | tail -10
+git add src/components/visualizations/ingestion-funnel.tsx && git commit -m "$(cat <<'EOF'
+feat: physics-based ingestion animation with continuous card spawning
+
+- Replace static framer-motion loops with requestAnimationFrame physics engine
+- Cards continuously spawn every ~600ms from random left positions
+- Quadratic bezier curved flight paths with vacuum acceleration (easeInCubic)
+- Perpendicular wobble for organic motion feel
+- Glow trails behind each card that fade as they approach core
+- Pulsing concentric rings around Audit Core
+- Animated scan line with glow trail
+- Max 12 concurrent cards for performance
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1
+npm run dev
+cat package.json | grep -E '"(dependencies|devDependencies)"' -A 50 | head -80
+IPHONE_E="6D376F1D-2AB6-4314-ABA7-E874D263C943"
+IPHONE_PRO="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+IPAD="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138"
+
+rm -f /tmp/studio-responsive/*.png
+
+sections=(hero ingestion intel fusion tactical-bim site-docs)
+nums=(01 02 03 04 05 06)
+devices=("$IPHONE_E iphone16e" "$IPHONE_PRO iphone16pro" "$IPAD ipadair11")
+
+for i in 0 1 2 3 4 5; do
+  section="${sections[$i]}"
+  num="${nums[$i]}"
+  
+  if [ "$section" = "hero" ]; then
+    url="http://localhost:9002"
+  else
+    url="http://localhost:9002/?s=${section}"
+  fi
+  
+  for device in "${devices[@]}"; do
+    udid=$(echo "$device" | cut -d' ' -f1)
+    name=$(echo "$device" | cut -d' ' -f2)
+    
+    xcrun simctl openurl "$udid" "$url" 2>/dev/null
+    sleep 4
+    xcrun simctl io "$udid" screenshot "/tmp/studio-responsive/${num}_${section}_${name}.png" 2>/dev/null
+  done
+  echo "Section ${num} (${section}) captured on all devices"
+done
+
+echo ""
+echo "=== All screenshots ==="
+ls -lh /tmp/studio-responsive/
+# Reboot shutdown devices
+xcrun simctl boot "6D376F1D-2AB6-4314-ABA7-E874D263C943" 2>&1 || true
+xcrun simctl boot "4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" 2>&1 || true
+sleep 8
+xcrun simctl list devices booted
+npm run build 2>&1

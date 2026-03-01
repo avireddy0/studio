@@ -139,8 +139,14 @@
   "hotPaths": [
     {
       "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 60,
-      "lastAccessed": 1772407397240,
+      "accessCount": 68,
+      "lastAccessed": 1772408167731,
+      "type": "file"
+    },
+    {
+      "path": "src/app/globals.css",
+      "accessCount": 12,
+      "lastAccessed": 1772408172116,
       "type": "file"
     },
     {
@@ -150,9 +156,9 @@
       "type": "file"
     },
     {
-      "path": "src/app/globals.css",
-      "accessCount": 11,
-      "lastAccessed": 1772407491954,
+      "path": "src/components/visualizations/ingestion-funnel.tsx",
+      "accessCount": 6,
+      "lastAccessed": 1772408306099,
       "type": "file"
     },
     {
