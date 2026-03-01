@@ -1,4 +1,5 @@
 {
     "IDX.agenticWorkspace": true,
-    "IDX.aI.showChatInEditorTab": true
+    "IDX.aI.showChatInEditorTab": true,
+    "editor.fontFamily": "Helvetica Now Display, Helvetica Now Text, Helvetica Neue, Helvetica, Arial, sans-serif"
 }
