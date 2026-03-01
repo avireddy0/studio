@@ -36,9 +36,7 @@ mutation CreateNewProject($title: String!, $description: String!, $appStoreLink:
     tags: $tags,
     createdAt_expr: "request.time",
     updatedAt_expr: "request.time"
-  }) {
-    id
-  }
+  })
 }
 
 mutation AddCommentToProject($projectId: UUID!, $content: String!) @auth(level: USER) {
@@ -47,7 +45,5 @@ mutation AddCommentToProject($projectId: UUID!, $content: String!) @auth(level: 
     projectId: $projectId,
     content: $content,
     createdAt_expr: "request.time"
-  }) {
-    id
-  }
+  })
 }
