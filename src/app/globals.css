@@ -23,7 +23,7 @@
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 164 100% 24%;
-    --radius: 0.5rem;
+    --radius: 0.25rem;
   }
 
   .dark {
@@ -55,75 +55,71 @@
   }
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/20;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
   }
 }
 
 .font-mono {
-  font-family: 'JetBrains Mono', monospace;
+  @apply font-code;
 }
 
-/* MISSION CRITICAL ACCENTS */
+/* TACTICAL GRID OVERLAY */
 .tactical-grid {
-  background-size: 40px 40px;
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
 }
 
 .dark .tactical-grid {
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
-/* IMESSAGE STYLE BUBBLES */
+/* IMESSAGE STYLE BUBBLES - REFINED FOR MISSION CRITICAL */
 .imessage-bubble {
-  @apply relative px-5 py-2.5 rounded-[20px] max-w-[85%] text-[16px] leading-tight font-medium;
+  @apply relative px-5 py-3 rounded-[18px] max-w-[85%] text-[15px] leading-tight font-medium tracking-tight;
 }
 
 .imessage-user {
-  @apply bg-primary text-white rounded-br-none ml-auto;
+  @apply bg-primary text-white rounded-br-none ml-auto border border-primary/20 shadow-[0_4px_12px_rgba(0,124,90,0.2)];
 }
 
 .imessage-system {
-  @apply bg-[#E9E9EB] text-black rounded-bl-none mr-auto;
+  @apply bg-[#E9E9EB] text-black rounded-bl-none mr-auto border border-black/5;
 }
 
 .dark .imessage-system {
-  @apply bg-[#262629] text-white;
+  @apply bg-[#1C1C1E] text-white border-white/10;
 }
 
 /* ANIMATIONS */
-@keyframes fly-in {
-  0% { transform: translateX(-100%) translateY(0); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateX(100%) translateY(0); opacity: 0; }
+@keyframes fly-in-technical {
+  0% { transform: translateX(-150%) translateY(0); opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.8; }
+  100% { transform: translateX(150%) translateY(0); opacity: 0; }
 }
 
-.animate-fly-in {
-  animation: fly-in 4s infinite linear;
+.animate-fly-in-technical {
+  animation: fly-in-technical 3.5s infinite linear;
 }
 
-@keyframes pulse-ring {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 124, 90, 0.7); }
-  70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(0, 124, 90, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 124, 90, 0); }
+@keyframes scan-line {
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { opacity: 0.5; }
+  100% { transform: translateY(100%); opacity: 0; }
 }
 
-.pulse-ring {
-  animation: pulse-ring 2s infinite;
+.animate-scan {
+  animation: scan-line 3s infinite linear;
 }
 
-/* 3D STACK LAYERS */
-.arch-stack {
-    perspective: 2000px;
+/* DATA PULSE */
+@keyframes data-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.95); }
 }
 
-.stack-layer {
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    transform: rotateX(55deg) rotateZ(-15deg);
-}
-
-.stack-layer:hover {
-    transform: rotateX(55deg) rotateZ(-15deg) translateZ(50px);
+.animate-data-pulse {
+  animation: data-pulse 2s infinite ease-in-out;
 }

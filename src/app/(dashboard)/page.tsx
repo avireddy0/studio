@@ -4,36 +4,30 @@ import React, { useEffect, useRef, useCallback, useState } from 'react';
 import Chart from 'chart.js/auto';
 import { 
   Database, 
-  Layers, 
   Mail, 
   MessageSquare, 
-  FileText, 
-  Zap, 
-  Target, 
-  ShieldCheck, 
   Activity, 
   Cpu, 
   ChevronRight, 
-  Globe, 
   BarChart3, 
   Fingerprint, 
-  MousePointerClick, 
-  CheckCircle2, 
-  MessageCircle, 
+  ShieldCheck, 
   Lock,
-  Terminal,
   ArrowRight,
-  Crosshair,
   Shield,
-  Activity as Pulse,
-  Eye,
   BrainCircuit,
-  Settings,
   ShieldAlert,
   Smartphone,
-  Server,
   Cloud,
-  FileSearch
+  FileSearch,
+  Crosshair,
+  Terminal,
+  Eye,
+  Layers,
+  Zap,
+  Target,
+  CheckCircle2,
+  MessageCircle
 } from 'lucide-react';
 import { EnvisionOSLogo } from "@/components/icons";
 
@@ -68,7 +62,7 @@ export default function DashboardPage() {
     1: {
       query: 'Identify all active jobs exceeding budget thresholds.',
       answer: 'CRITICAL: Job 402 is 12.4% over variance. Dryer-wall rework identified as the primary cost driver. Subcontractor recovery protocols initiated.',
-      metric: "MARGIN PROTECTION: $124,500 secured.",
+      metric: "MARGIN PROTECTION: $124,500 SECURED.",
       meta: 'SOURCE: sage_finance, procore_api',
       followUp: [
         { text: "GET: Cost Code 14-550", scenarioId: 4 },
@@ -174,14 +168,14 @@ export default function DashboardPage() {
   useEffect(() => {
       if(messages.length === 0) {
         addMessage(
-            "ENVISION_OS_CONNECTED_V3.1. ACTIVE MONITORING: 23 PLATFORM STREAMS ONLINE.",
+            "ENVISION_OS_V3.1_NODE_CONNECTED. MISSION_CRITICAL_MODE_ACTIVE.",
             'system'
         );
       }
       
       setParticleStyles([...Array(10)].map((_, i) => ({
         top: `${15 + Math.random() * 70}%`,
-        delay: `${i * 0.4}s`
+        delay: `${i * 0.35}s`
       })));
   }, [addMessage]);
 
@@ -246,103 +240,121 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="flex flex-col w-full bg-white text-black overflow-x-hidden font-body selection:bg-primary/20">
-      {/* TACTICAL NAVIGATION */}
-      <nav className="fixed top-0 w-full z-[100] bg-white/80 backdrop-blur-xl border-b border-black/5 px-6 py-4 flex justify-between items-center transition-all">
-        <div className="flex items-center gap-2 font-black text-lg tracking-tighter uppercase">
+    <div className="flex flex-col w-full bg-white text-black overflow-x-hidden font-sans selection:bg-primary/20">
+      {/* MISSION CRITICAL NAVIGATION */}
+      <nav className="fixed top-0 w-full z-[100] bg-white/90 backdrop-blur-md border-b border-black/5 px-6 py-4 flex justify-between items-center transition-all">
+        <div className="flex items-center gap-2 font-bold text-lg tracking-tighter uppercase">
           <EnvisionOSLogo className="size-6 text-primary" />
           ENVISION OS
         </div>
-        <div className="hidden lg:flex gap-8 text-[10px] font-bold uppercase tracking-[0.3em] text-black/40 font-mono">
-          <a href="#command" className="hover:text-primary transition-colors">01_COMMAND</a>
-          <a href="#ingestion" className="hover:text-primary transition-colors">02_INGEST</a>
-          <a href="#fusion" className="hover:text-primary transition-colors">03_FUSION</a>
-          <a href="#architecture" className="hover:text-primary transition-colors">04_ARCHITECTURE</a>
+        <div className="hidden lg:flex gap-10 text-[10px] font-bold uppercase tracking-[0.4em] text-black/40 font-mono">
+          <a href="#command" className="hover:text-primary transition-colors flex items-center gap-2">01<span className="opacity-40">/</span>COMMAND</a>
+          <a href="#ingestion" className="hover:text-primary transition-colors flex items-center gap-2">02<span className="opacity-40">/</span>INGEST</a>
+          <a href="#fusion" className="hover:text-primary transition-colors flex items-center gap-2">03<span className="opacity-40">/</span>FUSION</a>
+          <a href="#architecture" className="hover:text-primary transition-colors flex items-center gap-2">04<span className="opacity-40">/</span>FABRIC</a>
         </div>
-        <button className="bg-black text-white px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-primary transition-all font-mono">ACCESS_GATEWAY</button>
+        <div className="flex items-center gap-4">
+            <span className="hidden md:block text-[9px] font-bold text-black/20 font-mono tracking-widest uppercase">NODE_8812_SECURE</span>
+            <button className="bg-black text-white px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-primary transition-all font-mono">ACCESS_GATEWAY</button>
+        </div>
       </nav>
 
-      {/* HERO SECTION - WHITE BLUEPRINT STYLE */}
+      {/* HERO SECTION - TACTICAL BLUEPRINT */}
       <section className="min-h-screen flex flex-col items-center justify-center pt-20 pb-20 text-center px-6 tactical-grid bg-white relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[600px] border border-black/5 rounded-full -z-0"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[400px] border border-black/[0.02] rounded-full -z-0"></div>
+        
         <div className="relative z-10 max-w-5xl">
-            <div className="inline-flex items-center gap-3 px-4 py-1.5 border border-black/10 bg-black/5 text-[9px] font-black uppercase tracking-[0.4em] text-black/60 mb-10 font-mono rounded-full">
-                <Shield className="size-3" />
+            <div className="inline-flex items-center gap-3 px-5 py-2 border border-black/10 bg-black/5 text-[10px] font-bold uppercase tracking-[0.5em] text-black/60 mb-12 font-mono rounded-sm">
+                <Crosshair className="size-3.5 text-primary" />
                 <span>INSTITUTIONAL_INTEL_SYSTEM_v3.1</span>
             </div>
-            <h1 className="text-6xl md:text-[8rem] font-black tracking-tighter leading-[0.9] mb-12 uppercase text-black">
-              Mission <br/><span className="text-primary underline decoration-4 underline-offset-8">Controlled</span> Data
+            <h1 className="text-6xl md:text-[9rem] font-bold tracking-tighter leading-[0.85] mb-14 uppercase text-black">
+              Verified <br/><span className="text-primary">Profit</span> Core
             </h1>
-            <p className="text-xl md:text-2xl text-black/50 max-w-3xl mx-auto leading-relaxed mb-16 font-medium">
-              Turning fragmented project noise into <span className="text-black font-bold">verified institutional intelligence</span> with absolute accuracy.
+            <p className="text-xl md:text-2xl text-black/40 max-w-3xl mx-auto leading-relaxed mb-20 font-medium">
+              Eliminating fragmented project noise with <span className="text-black font-bold">institutional-grade accuracy</span> and verified multi-platform data fusion.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="#command" className="bg-black text-white px-10 py-5 rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-primary transition-all font-mono flex items-center gap-3 shadow-xl">INITIALIZE_OS <ChevronRight className="size-4" /></a>
-                <button className="px-10 py-5 rounded-full text-[11px] font-black uppercase tracking-widest border border-black/10 hover:bg-black/5 transition-all font-mono">READ_PROTOCOL</button>
+            <div className="flex flex-col sm:flex-row gap-5 justify-center items-center font-mono">
+                <a href="#command" className="bg-black text-white px-12 py-5 rounded-sm text-[11px] font-bold uppercase tracking-widest hover:bg-primary transition-all flex items-center gap-3 shadow-2xl">INITIALIZE_OS <ArrowRight className="size-4" /></a>
+                <button className="px-12 py-5 rounded-sm text-[11px] font-bold uppercase tracking-widest border border-black/10 hover:bg-black/5 transition-all">PROTOCOL_AUDIT</button>
             </div>
         </div>
+        
+        {/* CORNER DECORATIONS */}
+        <div className="absolute top-24 left-10 text-[9px] font-bold text-black/10 font-mono tracking-[0.2em] hidden md:block">LAT_40.7128_LON_-74.0060</div>
+        <div className="absolute top-24 right-10 text-[9px] font-bold text-black/10 font-mono tracking-[0.2em] hidden md:block">TRUTH_VERIFIED_8.1.1</div>
       </section>
 
-      {/* COMMAND CENTER - OBSIDIAN MISSION CONTROL WITH IMESSAGE */}
-      <section id="command" className="py-40 bg-black text-white scroll-mt-20 overflow-hidden">
-        <div className="container mx-auto px-6 text-center mb-24">
-          <span className="text-primary text-[10px] font-black uppercase tracking-[0.5em] mb-4 block font-mono">// TACTICAL_INTERFACE</span>
-          <h2 className="text-5xl md:text-8xl font-black tracking-tighter mb-8 uppercase">Command Center</h2>
-          <p className="text-lg text-white/40 max-w-2xl mx-auto font-medium">
-            AI-driven project orchestration through a familiar, high-fidelity secure terminal interface.
+      {/* COMMAND CENTER - SECURE MISSION CONTROL */}
+      <section id="command" className="py-48 bg-black text-white scroll-mt-20 overflow-hidden relative">
+        <div className="absolute inset-0 tactical-grid opacity-20 pointer-events-none"></div>
+        
+        <div className="container mx-auto px-6 text-center mb-32 relative z-10">
+          <span className="text-primary text-[11px] font-bold uppercase tracking-[0.6em] mb-6 block font-mono">// SECURE_OS_TERMINAL</span>
+          <h2 className="text-5xl md:text-8xl font-bold tracking-tighter mb-10 uppercase">Command Center</h2>
+          <p className="text-xl text-white/30 max-w-2xl mx-auto font-medium leading-relaxed">
+            AI-driven project orchestration through a familiar, high-fidelity secure operating interface.
           </p>
         </div>
         
-        <div className="container mx-auto px-6 flex justify-center">
-          <div className="w-full max-w-4xl h-[750px] bg-[#0A0A0A] rounded-[40px] border border-white/10 shadow-2xl overflow-hidden flex flex-col relative">
-            <div className="p-6 border-b border-white/5 flex items-center justify-between bg-black/50 backdrop-blur-xl z-20">
-              <div className="flex items-center gap-4">
-                  <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
-                      <Smartphone className="size-5" />
+        <div className="container mx-auto px-6 flex justify-center relative z-20">
+          <div className="w-full max-w-5xl h-[800px] bg-[#0A0A0A] rounded-2xl border border-white/10 shadow-3xl overflow-hidden flex flex-col relative">
+            <div className="p-8 border-b border-white/5 flex items-center justify-between bg-black/80 backdrop-blur-2xl">
+              <div className="flex items-center gap-5">
+                  <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
+                      <Smartphone className="size-6" />
                   </div>
                   <div>
-                      <div className="font-bold text-sm text-white">Envision AI</div>
-                      <div className="text-[9px] text-primary font-black uppercase tracking-[0.2em] flex items-center gap-1.5 font-mono">
-                        <span className="size-1.5 rounded-full bg-primary animate-pulse"></span>
-                        SECURE_NODE_ONLINE
+                      <div className="font-bold text-base text-white tracking-tight">Envision OS AI</div>
+                      <div className="text-[10px] text-primary font-bold uppercase tracking-[0.3em] flex items-center gap-2 font-mono">
+                        <span className="size-2 rounded-full bg-primary animate-pulse"></span>
+                        SECURE_NODE_CONNECTED
                       </div>
                   </div>
               </div>
-              <div className="font-mono text-[9px] text-white/30 font-bold uppercase tracking-widest">
-                  AES-256 ENCRYPTED
+              <div className="flex items-center gap-8">
+                  <div className="hidden lg:block text-right">
+                      <div className="text-[9px] text-white/20 font-bold uppercase tracking-widest font-mono">SESSION_ID</div>
+                      <div className="text-[10px] text-white/60 font-bold font-mono">TX_99-102-X</div>
+                  </div>
+                  <div className="font-mono text-[10px] text-primary/40 font-bold uppercase tracking-widest border border-primary/20 px-3 py-1 rounded-sm">
+                      AES-256
+                  </div>
               </div>
             </div>
             
-            <div className="flex-1 p-6 md:p-10 overflow-y-auto flex flex-col gap-6 bg-black" ref={chatBodyRef}>
+            <div className="flex-1 p-8 md:p-12 overflow-y-auto flex flex-col gap-8 bg-black/40" ref={chatBodyRef}>
               {messages.map((msg, index) => {
                   if (msg.type === 'typing') {
                     return (
-                        <div key={msg.id} className="imessage-bubble imessage-system animate-pulse opacity-50 flex items-center gap-2">
-                            <span className="size-1 bg-white/40 rounded-full"></span>
-                            <span className="size-1 bg-white/40 rounded-full"></span>
-                            <span className="size-1 bg-white/40 rounded-full"></span>
+                        <div key={msg.id} className="imessage-bubble imessage-system opacity-40 flex items-center gap-2">
+                            <span className="size-1.5 bg-white/40 rounded-full animate-bounce"></span>
+                            <span className="size-1.5 bg-white/40 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                            <span className="size-1.5 bg-white/40 rounded-full animate-bounce [animation-delay:0.4s]"></span>
                         </div>
                     );
                   }
                   
                   const isUser = msg.type === 'user';
                   return (
-                      <div key={index} className={`flex flex-col w-full ${isUser ? 'items-end' : 'items-start'} animate-in slide-in-from-bottom-2`}>
+                      <div key={index} className={`flex flex-col w-full ${isUser ? 'items-end' : 'items-start'} animate-in slide-in-from-bottom-4 duration-500`}>
                           <div className={`imessage-bubble ${isUser ? 'imessage-user' : 'imessage-system'}`}>
                               {msg.content}
                           </div>
-                          {msg.metric && <div className="mt-2 text-[10px] text-primary font-black uppercase tracking-widest px-2 font-mono">{msg.metric}</div>}
-                          {msg.meta && <div className="mt-1 text-[9px] text-white/20 font-bold uppercase tracking-widest px-2 font-mono">{msg.meta}</div>}
+                          {msg.metric && <div className="mt-3 text-[11px] text-primary font-bold uppercase tracking-[0.3em] px-3 font-mono">{msg.metric}</div>}
+                          {msg.meta && <div className="mt-1 text-[10px] text-white/20 font-bold uppercase tracking-widest px-3 font-mono">{msg.meta}</div>}
                       </div>
                   );
               })}
             </div>
 
-            <div className="p-8 border-t border-white/5 bg-black/50 backdrop-blur-xl z-20">
-                <div className="flex flex-wrap gap-3 justify-center">
+            <div className="p-10 border-t border-white/5 bg-black/80 backdrop-blur-2xl">
+                <div className="flex flex-wrap gap-4 justify-center">
                     {suggestedReplies.map((reply, index) => (
                         <button
                             key={index}
-                            className="px-6 py-2.5 bg-white/5 text-white/60 hover:bg-primary hover:text-white border border-white/10 rounded-full text-[10px] font-black tracking-widest transition-all font-mono uppercase"
+                            className="px-8 py-3.5 bg-white/5 text-white/50 hover:bg-primary hover:text-white border border-white/10 rounded-sm text-[11px] font-bold tracking-[0.2em] transition-all font-mono uppercase"
                             onClick={() => runSimulation(reply.scenarioId)}
                             disabled={isRunning.current}
                         >
@@ -355,66 +367,73 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      {/* SENSOR INGESTION - WHITE TECHNICAL FLOW */}
-      <section id="ingestion" className="py-40 bg-white border-y border-black/5 scroll-mt-20 relative overflow-hidden">
-        <div className="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-20">
+      {/* SENSOR INGESTION - TECHNICAL BLUEPRINT */}
+      <section id="ingestion" className="py-48 bg-white border-y border-black/5 scroll-mt-20 relative overflow-hidden">
+        <div className="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-24 relative z-10">
           <div className="flex-1">
-            <span className="text-primary text-[10px] font-black uppercase tracking-[0.5em] mb-4 block font-mono">// SENSOR_INGESTION_PIPELINE</span>
-            <h2 className="text-5xl md:text-8xl font-black tracking-tighter mb-8 leading-none uppercase text-black">Data <br/> Ingestion</h2>
-            <p className="text-lg text-black/50 mb-12 leading-relaxed font-medium">
+            <span className="text-primary text-[11px] font-bold uppercase tracking-[0.6em] mb-6 block font-mono">// SENSOR_INGESTION_FLOW</span>
+            <h2 className="text-6xl md:text-[7rem] font-bold tracking-tighter mb-10 leading-none uppercase text-black">Data <br/> Ingestion</h2>
+            <p className="text-xl text-black/40 mb-14 leading-relaxed font-medium">
               Capturing fragmented project telemetry across 23 platforms and mapping them into a unified, high-fidelity intelligence stream.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="p-8 border border-black/5 bg-black/2 rounded-2xl group hover:border-primary/30 transition-all">
-                    <Cloud className="size-8 text-primary mb-6 group-hover:scale-110 transition-transform" />
-                    <h4 className="font-black text-base mb-2 text-black uppercase tracking-widest font-mono">Stream Mining</h4>
-                    <p className="text-xs text-black/40 leading-relaxed font-bold">Real-time parsing of fragmented data with institutional precision.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 font-mono">
+                <div className="p-10 border border-black/5 bg-black/[0.02] rounded-sm group hover:border-primary/40 transition-all">
+                    <Cloud className="size-10 text-primary mb-8 group-hover:scale-110 transition-transform" />
+                    <h4 className="font-bold text-lg mb-3 text-black uppercase tracking-widest">Stream Mining</h4>
+                    <p className="text-[11px] text-black/30 leading-relaxed font-bold uppercase tracking-widest">Real-time parsing of fragmented data with institutional precision.</p>
                 </div>
-                <div className="p-8 border border-black/5 bg-black/2 rounded-2xl flex flex-col justify-center">
-                    <div className="flex items-center gap-3 mb-3">
-                        <div className="size-1.5 rounded-full bg-primary animate-ping"></div>
-                        <span className="text-[9px] font-black uppercase tracking-[0.3em] text-black font-mono">NORMALIZING_AV4</span>
+                <div className="p-10 border border-black/5 bg-black/[0.02] rounded-sm flex flex-col justify-center">
+                    <div className="flex items-center gap-4 mb-4">
+                        <div className="size-2 rounded-full bg-primary animate-ping"></div>
+                        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-black">NORMALIZING_TEL_V4</span>
                     </div>
                     <div className="w-full h-1 bg-black/5 rounded-full overflow-hidden">
-                        <div className="h-full bg-primary animate-pulse w-2/3"></div>
+                        <div className="h-full bg-primary animate-pulse w-3/4"></div>
+                    </div>
+                    <div className="mt-4 flex justify-between text-[9px] font-bold text-black/20 tracking-widest">
+                        <span>SYNC_INIT</span>
+                        <span>88.4%</span>
                     </div>
                 </div>
             </div>
           </div>
+          
           <div className="flex-1 w-full">
-              <div className="w-full border border-black/10 bg-black/[0.02] p-8 md:p-12 h-[500px] rounded-3xl flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden">
-                <div className="flex flex-col gap-6 w-full md:w-1/3 z-10">
+              <div className="w-full border border-black/10 bg-black/[0.01] p-10 md:p-16 h-[550px] rounded-sm flex flex-col md:flex-row items-center justify-between gap-16 relative overflow-hidden shadow-sm">
+                <div className="absolute inset-0 tactical-grid opacity-20"></div>
+                
+                <div className="flex flex-col gap-8 w-full md:w-1/3 z-10">
                     {[
-                        { label: 'HASH_8812', icon: Mail, delay: '0s' },
-                        { label: 'PDF_X8', icon: FileSearch, delay: '1s' },
+                        { label: 'HASH_88A', icon: Mail, delay: '0s' },
+                        { label: 'PDF_DOC_X', icon: FileSearch, delay: '1s' },
                         { label: 'SAGE_LOG', icon: Activity, delay: '2s' },
                         { label: 'SLACK_ID', icon: MessageSquare, delay: '3s' }
                     ].map((s, i) => (
-                        <div key={i} className="px-5 py-4 border border-black/5 bg-white/50 backdrop-blur-md rounded-xl animate-fly-in flex items-center justify-between group" style={{ animationDelay: s.delay }}>
-                            <div className="flex items-center gap-3">
-                                <s.icon className="size-3.5 text-black/40" />
-                                <span className="text-[9px] font-black text-black font-mono">{s.label}</span>
+                        <div key={i} className="px-6 py-5 border border-black/5 bg-white shadow-sm rounded-sm animate-fly-in-technical flex items-center justify-between group" style={{ animationDelay: s.delay }}>
+                            <div className="flex items-center gap-4">
+                                <s.icon className="size-4 text-black/40" />
+                                <span className="text-[10px] font-bold text-black font-mono tracking-widest uppercase">{s.label}</span>
                             </div>
-                            <div className="size-1 rounded-full bg-primary"></div>
+                            <div className="size-1.5 rounded-full bg-primary"></div>
                         </div>
                     ))}
                 </div>
 
                 <div className="relative flex items-center justify-center z-20">
-                    <div className="size-32 bg-white border border-black/10 flex flex-col items-center justify-center shadow-2xl relative rounded-3xl group pulse-ring">
-                        <Cpu className="size-10 text-primary mb-2" />
-                        <span className="text-[8px] font-black tracking-[0.3em] text-black/40 uppercase font-mono">AI_PARSER</span>
+                    <div className="size-40 bg-white border border-black/10 flex flex-col items-center justify-center shadow-2xl relative rounded-sm group pulse-ring">
+                        <Cpu className="size-12 text-primary mb-3" />
+                        <span className="text-[9px] font-bold tracking-[0.4em] text-black/40 uppercase font-mono">AI_PARSER</span>
                         
                         <div className="absolute inset-0 flex items-center justify-center -z-10 pointer-events-none overflow-visible">
                             {particleStyles.map((style, i) => (
                                 <div 
                                     key={i} 
-                                    className="absolute size-1.5 bg-primary/40 rounded-full blur-[1px] animate-fly-in" 
+                                    className="absolute size-2 bg-primary/20 rounded-full blur-[2px] animate-fly-in-technical" 
                                     style={{ 
                                         animationDelay: style.delay, 
                                         top: style.top,
-                                        left: '-50px',
-                                        width: '100px'
+                                        left: '-80px',
+                                        width: '160px'
                                     }} 
                                 />
                             ))}
@@ -422,14 +441,14 @@ export default function DashboardPage() {
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-4 z-10 w-full md:w-1/3 items-end">
+                <div className="flex flex-col gap-5 z-10 w-full md:w-1/3 items-end font-mono">
                     {[...Array(6)].map((_, i) => (
-                        <div key={i} className="h-1 bg-primary/20 rounded-full w-full max-w-[140px] relative overflow-hidden">
+                        <div key={i} className="h-1 bg-primary/10 rounded-full w-full max-w-[160px] relative overflow-hidden">
                             <div className="absolute inset-0 bg-primary animate-pulse" style={{ animationDelay: `${i * 0.3}s` }}></div>
                         </div>
                     ))}
-                    <div className="mt-6 px-6 py-2.5 bg-primary text-white text-[9px] font-black uppercase tracking-[0.4em] font-mono flex items-center gap-2 rounded-full shadow-lg">
-                        <ShieldCheck className="size-3.5" />
+                    <div className="mt-8 px-8 py-3 bg-primary text-white text-[10px] font-bold uppercase tracking-[0.5em] flex items-center gap-3 rounded-sm shadow-xl">
+                        <ShieldCheck className="size-4" />
                         TRUTH_SYNC
                     </div>
                 </div>
@@ -438,60 +457,65 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      {/* CONTEXT FUSION - OBSIDIAN STORYTELLING */}
-      <section id="fusion" className="py-40 bg-black text-white scroll-mt-20 relative">
-        <div className="container mx-auto px-6 text-center mb-32">
-          <span className="text-primary text-[10px] font-black uppercase tracking-[0.5em] mb-4 block font-mono">// CONTEXT_FUSION_PROTOCOL</span>
-          <h2 className="text-5xl md:text-8xl font-black tracking-tighter mb-8 uppercase">Context Fusion</h2>
-          <p className="text-lg text-white/40 max-w-2xl mx-auto font-medium leading-relaxed">
-            Eliminating blind spots by cross-referencing thousands of multi-platform signals to verify institutional decisions.
+      {/* CONTEXT FUSION - MISSION CRITICAL STORYTELLING */}
+      <section id="fusion" className="py-48 bg-black text-white scroll-mt-20 relative">
+        <div className="absolute inset-0 tactical-grid opacity-20"></div>
+        
+        <div className="container mx-auto px-6 text-center mb-40 relative z-10">
+          <span className="text-primary text-[11px] font-bold uppercase tracking-[0.6em] mb-6 block font-mono">// CONTEXT_FUSION_PROTOCOL</span>
+          <h2 className="text-5xl md:text-8xl font-bold tracking-tighter mb-10 uppercase">Context Fusion</h2>
+          <p className="text-xl text-white/30 max-w-2xl mx-auto font-medium leading-relaxed">
+            Eliminating blind spots by cross-referencing multi-platform signals to verify mission-critical institutional decisions.
           </p>
         </div>
         
-        <div className="container mx-auto px-6 max-w-6xl">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-center">
-                <div className="space-y-6">
+        <div className="container mx-auto px-6 max-w-6xl relative z-20">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 items-center">
+                <div className="space-y-8 font-mono">
                     {[
                         { label: "OAC_RECORD", text: "Lobby upgrade authorization confirmed.", icon: MessageCircle, delay: "0s" },
                         { label: "SLACK_SYNC", text: "Marble lead time: 4 weeks verified.", icon: MessageSquare, delay: "0.2s" },
                         { label: "EMAIL_INTEL", text: "Shipment status confirmed by PM.", icon: Mail, delay: "0.4s" }
                     ].map((s, i) => (
-                        <div key={i} className="p-8 border border-white/10 bg-white/5 backdrop-blur-xl rounded-2xl animate-in slide-in-from-left duration-1000" style={{ animationDelay: s.delay }}>
-                            <div className="flex items-center gap-3 mb-3">
+                        <div key={i} className="p-10 border border-white/10 bg-white/[0.03] backdrop-blur-3xl rounded-sm animate-in slide-in-from-left duration-1000" style={{ animationDelay: s.delay }}>
+                            <div className="flex items-center gap-4 mb-4">
                                 <s.icon className="size-4 text-primary" />
-                                <span className="text-[9px] font-black uppercase tracking-widest text-primary font-mono">{s.label}</span>
+                                <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary">{s.label}</span>
                             </div>
-                            <p className="text-base text-white/80 font-bold italic">"{s.text}"</p>
+                            <p className="text-lg text-white/90 font-medium italic tracking-tight leading-relaxed">"{s.text}"</p>
                         </div>
                     ))}
                 </div>
 
-                <div className="relative flex items-center justify-center min-h-[300px]">
-                    <div className="size-40 bg-primary/20 border border-primary/40 rounded-full flex items-center justify-center shadow-[0_0_80px_rgba(0,124,90,0.3)] z-10">
-                        <BrainCircuit className="size-16 text-primary" />
+                <div className="relative flex items-center justify-center min-h-[400px]">
+                    <div className="size-48 bg-primary/10 border border-primary/30 rounded-full flex items-center justify-center shadow-[0_0_100px_rgba(0,124,90,0.2)] z-10 animate-data-pulse">
+                        <BrainCircuit className="size-20 text-primary" />
                     </div>
                     <div className="absolute inset-0 flex items-center justify-center -z-0">
-                        <div className="size-[400px] border border-white/5 rounded-full animate-pulse opacity-20"></div>
-                        <div className="size-[250px] border border-primary/20 rounded-full animate-ping opacity-10"></div>
+                        <div className="size-[500px] border border-white/5 rounded-full animate-pulse opacity-10"></div>
+                        <div className="size-[350px] border border-primary/20 rounded-full animate-ping opacity-5"></div>
                     </div>
                 </div>
 
                 <div className="flex justify-center lg:justify-end">
-                    <div className="p-10 border-2 border-primary bg-black shadow-2xl rounded-[32px] max-w-sm w-full animate-in zoom-in duration-1000">
-                        <div className="flex items-center gap-3 mb-8 text-primary">
-                            <ShieldCheck className="size-6" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.4em] font-mono">VERIFIED_TRUTH</span>
+                    <div className="p-12 border-2 border-primary bg-black shadow-3xl rounded-sm max-w-md w-full animate-in zoom-in duration-1000">
+                        <div className="flex items-center gap-4 mb-10 text-primary">
+                            <ShieldCheck className="size-8" />
+                            <span className="text-[11px] font-bold uppercase tracking-[0.5em] font-mono">VERIFIED_TRUTH</span>
                         </div>
-                        <h4 className="text-3xl font-black mb-10 tracking-tighter text-white uppercase leading-none">Lobby Upgrade</h4>
-                        <div className="space-y-6 border-t border-white/10 pt-8 font-mono">
-                            <div className="flex justify-between items-center text-[10px]">
-                                <span className="text-white/40 uppercase font-bold">STATUS</span>
-                                <span className="text-primary font-black">AUTHORIZED</span>
+                        <h4 className="text-4xl font-bold mb-12 tracking-tighter text-white uppercase leading-none">Lobby Upgrade</h4>
+                        <div className="space-y-8 border-t border-white/10 pt-10 font-mono">
+                            <div className="flex justify-between items-center text-[11px]">
+                                <span className="text-white/40 uppercase font-bold tracking-widest">STATUS</span>
+                                <span className="text-primary font-bold tracking-widest">AUTHORIZED</span>
                             </div>
-                            <div className="flex justify-between items-center text-[10px]">
-                                <span className="text-white/40 uppercase font-bold">CONFIDENCE</span>
-                                <span className="text-white font-black text-xl">99.2%</span>
+                            <div className="flex justify-between items-center text-[11px]">
+                                <span className="text-white/40 uppercase font-bold tracking-widest">CONFIDENCE</span>
+                                <span className="text-white font-bold text-2xl tracking-tighter">99.2%</span>
                             </div>
+                        </div>
+                        <div className="mt-12 p-4 bg-primary/5 border border-primary/20 rounded-sm">
+                            <p className="text-[9px] text-primary font-bold uppercase tracking-[0.3em] text-center">INSTITUTIONAL_LOCK_ENGAGED</p>
                         </div>
                     </div>
                 </div>
@@ -499,73 +523,75 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      {/* ARCHITECTURE - WHITE BLUEPRINT */}
-      <section id="architecture" className="py-40 bg-white border-t border-black/5 scroll-mt-20">
-        <div className="container mx-auto px-6 text-center mb-28">
-          <span className="text-primary text-[10px] font-black uppercase tracking-[0.5em] mb-4 block font-mono">// SYSTEM_ARCHITECTURE</span>
-          <h2 className="text-5xl md:text-8xl font-black tracking-tighter mb-8 text-black uppercase">Telemetry Fabric</h2>
-          <p className="text-lg text-black/50 max-w-2xl mx-auto font-medium">
+      {/* FABRIC ARCHITECTURE - TECHNICAL STACK */}
+      <section id="architecture" className="py-48 bg-white border-t border-black/5 scroll-mt-20 relative">
+        <div className="container mx-auto px-6 text-center mb-32 relative z-10">
+          <span className="text-primary text-[11px] font-bold uppercase tracking-[0.6em] mb-6 block font-mono">// TELEMETRY_FABRIC</span>
+          <h2 className="text-5xl md:text-8xl font-bold tracking-tighter mb-10 text-black uppercase">Technical Fabric</h2>
+          <p className="text-xl text-black/40 max-w-2xl mx-auto font-medium leading-relaxed">
             High-fidelity institutional nervous system mapping multi-platform telemetry into unified project intelligence.
           </p>
         </div>
-        <div className="container mx-auto px-6 max-w-5xl">
-            <div className="arch-stack space-y-4">
+        
+        <div className="container mx-auto px-6 max-w-5xl relative z-20">
+            <div className="arch-stack space-y-5">
                 {[
                     { id: "L4: ACTION", name: "GATEWAY", desc: "Real-time orchestration across 23 platforms with absolute verification.", icon: Eye },
                     { id: "L3: LOGIC", name: "HEURISTIC", desc: "Vector reasoning across project layers for mission-critical signal validation.", icon: BrainCircuit },
                     { id: "L2: MEMORY", name: "CONTEXT", desc: "Unified high-frequency project memory for deterministic data grounding.", icon: Database },
                     { id: "L1: TRUTH", name: "IMMUTABLE", desc: "Sovereign data core secured via SOC2 and isolated high-end encryption.", icon: Fingerprint }
                 ].map((layer, i) => (
-                    <div key={i} className="stack-layer p-8 border border-black/5 bg-white shadow-xl flex items-center gap-8 group hover:border-primary/50 cursor-pointer rounded-2xl">
-                        <div className="size-14 rounded-2xl bg-primary/5 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                            <layer.icon className="size-7" />
+                    <div key={i} className="stack-layer p-10 border border-black/5 bg-white shadow-xl flex items-center gap-10 group hover:border-primary/50 cursor-pointer rounded-sm">
+                        <div className="size-16 rounded-sm bg-primary/5 flex items-center justify-center text-primary group-hover:scale-110 transition-transform border border-primary/10">
+                            <layer.icon className="size-8" />
                         </div>
                         <div className="flex-1 min-w-0">
-                            <span className="text-[9px] font-black text-primary uppercase tracking-[0.3em] font-mono mb-1 block">{layer.id}</span>
-                            <h4 className="text-xl font-black text-black uppercase tracking-widest font-mono">{layer.name}</h4>
-                            <p className="text-[11px] text-black/40 font-bold leading-relaxed">{layer.desc}</p>
+                            <span className="text-[10px] font-bold text-primary uppercase tracking-[0.4em] font-mono mb-2 block">{layer.id}</span>
+                            <h4 className="text-2xl font-bold text-black uppercase tracking-widest font-mono">{layer.name}</h4>
+                            <p className="text-xs text-black/40 font-bold leading-relaxed uppercase tracking-widest mt-1">{layer.desc}</p>
                         </div>
-                        <ArrowRight className="size-5 text-black/20 group-hover:text-primary transition-colors" />
+                        <ArrowRight className="size-6 text-black/20 group-hover:text-primary transition-colors" />
                     </div>
                 ))}
             </div>
         </div>
       </section>
 
-      {/* METRICS - OBSIDIAN WAR ROOM */}
-      <section className="py-40 bg-black text-white scroll-mt-20">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 border border-white/5 bg-white/[0.02] p-12 md:p-16 rounded-[40px]">
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-8">
+      {/* METRICS - INSTITUTIONAL AUDIT */}
+      <section className="py-48 bg-black text-white scroll-mt-20 relative overflow-hidden">
+        <div className="absolute inset-0 tactical-grid opacity-20"></div>
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+              <div className="lg:col-span-2 border border-white/10 bg-white/[0.02] p-16 md:p-20 rounded-sm backdrop-blur-3xl">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-20 gap-10">
                       <div>
-                          <h3 className="text-4xl font-black mb-4 flex items-center gap-4 text-white uppercase font-mono"><BarChart3 className="text-primary size-8" /> AUDIT_VELOCITY</h3>
-                          <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest">Time to identify project variance.</p>
+                          <h3 className="text-5xl font-bold mb-5 flex items-center gap-6 text-white uppercase font-mono tracking-tighter"><BarChart3 className="text-primary size-10" /> Audit Velocity</h3>
+                          <p className="text-white/30 text-[11px] font-bold uppercase tracking-[0.4em] font-mono">Telemetry sync latency across all nodes.</p>
                       </div>
-                      <div className="text-right">
-                          <p className="text-8xl font-black text-primary tracking-tighter leading-none font-mono">0.01s</p>
-                          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mt-4 font-mono">LEGACY: 14_DAYS</p>
+                      <div className="text-right font-mono">
+                          <p className="text-9xl font-bold text-primary tracking-tighter leading-none">0.01s</p>
+                          <p className="text-[11px] font-bold uppercase tracking-[0.5em] text-white/10 mt-6">LEGACY_BASELINE: 14_DAYS</p>
                       </div>
                   </div>
-                  <div className="h-[400px] w-full"><canvas ref={latencyChartRef}></canvas></div>
+                  <div className="h-[450px] w-full"><canvas ref={latencyChartRef}></canvas></div>
               </div>
               
-              <div className="border border-white/5 bg-white/[0.02] p-12 md:p-16 flex flex-col items-center justify-center text-center rounded-[40px]">
-                  <div className="size-20 rounded-[28px] bg-primary/10 flex items-center justify-center text-primary mb-10 border border-primary/20 shadow-2xl"><Lock className="size-10" /></div>
-                  <h3 className="text-[10px] font-black mb-12 uppercase tracking-[0.5em] text-primary font-mono">GOVERNANCE_PROTOCOL</h3>
-                  <div className="relative size-60 mb-12">
+              <div className="border border-white/10 bg-white/[0.02] p-16 md:p-20 flex flex-col items-center justify-center text-center rounded-sm backdrop-blur-3xl">
+                  <div className="size-24 rounded-sm bg-primary/10 flex items-center justify-center text-primary mb-12 border border-primary/20 shadow-2xl animate-data-pulse"><Lock className="size-12" /></div>
+                  <h3 className="text-[11px] font-bold mb-14 uppercase tracking-[0.6em] text-primary font-mono">// GOVERNANCE_PROTOCOL</h3>
+                  <div className="relative size-72 mb-14">
                       <canvas ref={coverageChartRef}></canvas>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                          <span className="text-6xl font-black text-white leading-none font-mono">98%</span>
-                          <span className="text-[10px] text-white/40 uppercase font-black tracking-widest mt-4 font-mono">PROTECTED</span>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none font-mono">
+                          <span className="text-7xl font-bold text-white leading-none tracking-tighter">98%</span>
+                          <span className="text-[11px] text-white/30 uppercase font-bold tracking-[0.5em] mt-6">PROTECTED</span>
                       </div>
                   </div>
-                  <div className="p-8 bg-white/5 border border-white/10 text-left w-full rounded-3xl">
-                      <div className="flex items-center gap-3 mb-4">
-                          <ShieldAlert className="size-4 text-primary" />
-                          <h4 className="text-base font-black text-white uppercase tracking-widest font-mono">DLP Enforcement</h4>
+                  <div className="p-10 bg-white/5 border border-white/10 text-left w-full rounded-sm font-mono">
+                      <div className="flex items-center gap-4 mb-5">
+                          <ShieldAlert className="size-5 text-primary" />
+                          <h4 className="text-base font-bold text-white uppercase tracking-[0.4em]">DLP Enforcement</h4>
                       </div>
-                      <p className="text-[10px] text-white/40 leading-relaxed font-bold uppercase">Sovereign data integrity and RBAC enforced at every project node. Continuous compliance audit cycles.</p>
+                      <p className="text-[10px] text-white/30 leading-relaxed font-bold uppercase tracking-[0.2em]">Sovereign data integrity and RBAC enforced at every project node. Continuous compliance audit cycles.</p>
                   </div>
               </div>
           </div>
@@ -573,14 +599,15 @@ export default function DashboardPage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-white border-t border-black/5 py-32 text-center">
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-center gap-3 font-black text-2xl tracking-tighter uppercase mb-6">
-            <EnvisionOSLogo className="size-8 text-primary" />
+      <footer className="bg-white border-t border-black/5 py-36 text-center relative overflow-hidden">
+        <div className="absolute inset-0 tactical-grid opacity-10"></div>
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="flex items-center justify-center gap-4 font-bold text-3xl tracking-tighter uppercase mb-8">
+            <EnvisionOSLogo className="size-10 text-primary" />
             ENVISION OS
           </div>
-          <p className="max-w-xl mx-auto text-black/50 text-lg font-bold mb-12 leading-relaxed tracking-tight uppercase">Unified Source of Truth for Institutional Assets.</p>
-          <div className="inline-block px-8 py-3 bg-black text-white text-[10px] font-black uppercase tracking-[0.4em] font-mono rounded-full">
+          <p className="max-w-2xl mx-auto text-black/40 text-xl font-bold mb-16 leading-relaxed tracking-tight uppercase">Institutional Truth for the Future of Construction.</p>
+          <div className="inline-block px-10 py-4 bg-black text-white text-[11px] font-bold uppercase tracking-[0.6em] font-mono rounded-sm shadow-2xl">
             PROTOCOL_ACTIVE: MISSION_CRITICAL
           </div>
         </div>
