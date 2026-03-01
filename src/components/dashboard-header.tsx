@@ -13,9 +13,11 @@ type DashboardHeaderProps = {
 
 export function DashboardHeader({ title }: DashboardHeaderProps) {
   const [timestamp, setTimestamp] = useState('');
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
+    setMounted(true);
     setTimestamp(new Date().toLocaleTimeString('en-US', { hour12: false }));
     const timer = setInterval(() => {
       setTimestamp(new Date().toLocaleTimeString('en-US', { hour12: false }));
@@ -23,17 +25,28 @@ export function DashboardHeader({ title }: DashboardHeaderProps) {
     return () => clearInterval(timer);
   }, []);
 
+  // Prevent hydration mismatch by returning a simplified header if not mounted
+  if (!mounted) {
+    return (
+      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b px-6 bg-background border-border">
+        <div className="flex items-center gap-6">
+          <SidebarTrigger className="text-muted-foreground" />
+        </div>
+      </header>
+    );
+  }
+
   const isQuery = pathname === '/query';
-  const isDashboard = pathname === '/dashboard';
+  // All dashboard routes except query and the landing page follow the dark tactical theme
+  const isDarkAtmosphere = pathname !== '/' && !isQuery;
   
-  // THREE-ATMOSPHERE LOGIC
   let bgColor = 'bg-white/80';
   let textColor = 'text-black';
   let mutedColor = 'text-black/40';
   let borderColor = 'border-black/5';
   let iconColor = 'text-black/60';
 
-  if (isDashboard) {
+  if (isDarkAtmosphere) {
     bgColor = 'bg-[#12121A]/80';
     textColor = 'text-primary';
     mutedColor = 'text-muted-foreground';
@@ -72,7 +85,7 @@ export function DashboardHeader({ title }: DashboardHeaderProps) {
                 </span>
             </div>
             <div className="flex items-center gap-2">
-                <Wifi className={cn("size-3", isQuery ? "text-white/40" : isDashboard ? "text-primary" : "text-black/40")} />
+                <Wifi className={cn("size-3", isQuery ? "text-white/40" : isDarkAtmosphere ? "text-primary" : "text-black/40")} />
                 <span className={cn("text-[10px] font-mono uppercase tracking-widest", mutedColor)}>Data Sync Active</span>
             </div>
         </div>
@@ -80,8 +93,8 @@ export function DashboardHeader({ title }: DashboardHeaderProps) {
       
       <div className="flex items-center gap-8">
         <div className="hidden lg:flex items-center gap-3">
-            <Activity className={cn("size-3", isQuery ? "text-white/20" : isDashboard ? "text-primary/40" : "text-black/10")} />
-            <div className={cn("h-1.5 w-32 overflow-hidden", isDashboard ? "bg-secondary" : isQuery ? "bg-white/10" : "bg-black/5")}>
+            <Activity className={cn("size-3", isQuery ? "text-white/20" : isDarkAtmosphere ? "text-primary/40" : "text-black/10")} />
+            <div className={cn("h-1.5 w-32 overflow-hidden", isDarkAtmosphere ? "bg-secondary" : isQuery ? "bg-white/10" : "bg-black/5")}>
                 <div className={cn(
                     "h-full animate-pulse w-3/4",
                     isQuery ? "bg-white" : "bg-primary"
@@ -92,7 +105,7 @@ export function DashboardHeader({ title }: DashboardHeaderProps) {
             "flex items-center gap-3 font-mono text-[10px] font-bold tracking-[0.3em] px-4 py-1.5 border transition-all",
             isQuery 
                 ? "text-white bg-white/10 border-white/20" 
-                : isDashboard 
+                : isDarkAtmosphere 
                     ? "text-primary bg-primary/5 border-primary/20" 
                     : "text-black bg-black/5 border-black/10"
         )}>

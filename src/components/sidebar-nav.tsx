@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -10,22 +11,23 @@ import {
 import {
   LayoutDashboard,
   Database,
-  Search,
   Zap,
-  Shield,
   Settings,
   FileText,
-  Map as MapIcon
+  Map as MapIcon,
+  Activity,
+  Terminal
 } from "lucide-react";
 
 const navItems = [
   { href: "/dashboard", label: "OVERVIEW", icon: LayoutDashboard },
-  { href: "#site-intel", label: "SITE INTEL", icon: MapIcon },
+  { href: "/site-intel", label: "SITE INTEL", icon: MapIcon },
   { href: "/ingestion", label: "DATA INGESTION", icon: Database },
   { href: "/context", label: "CONTEXT FUSION", icon: Zap },
-  { href: "/visualizations", label: "TELEMETRY", icon: Search },
-  { href: "#documents", label: "DOCUMENTS", icon: FileText },
-  { href: "#settings", label: "SETTINGS", icon: Settings },
+  { href: "/visualizations", label: "TELEMETRY", icon: Activity },
+  { href: "/query", label: "INTEL TERMINAL", icon: Terminal },
+  { href: "/documents", label: "DOCUMENTS", icon: FileText },
+  { href: "/settings", label: "SETTINGS", icon: Settings },
 ];
 
 export function SidebarNav() {
