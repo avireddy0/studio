@@ -602,3 +602,8 @@ curl -s "http://localhost:9002" -w "\nHTTP: %{http_code}" 2>&1 | tail -5 && slee
 xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002/?s=ingestion" && sleep 5 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-v2.png && echo "done"
 xcrun simctl openurl 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138 "http://localhost:9002/?s=ingestion" && sleep 5 && xcrun simctl io 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138 screenshot /tmp/ingestion-ipad.png && echo "done"
 npm run build 2>&1 | tail -25
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002/?s=ingestion" && xcrun simctl openurl 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138 "http://localhost:9002/?s=ingestion" && sleep 6 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-iphone-v3.png && xcrun simctl io 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138 screenshot /tmp/ingestion-ipad-v3.png && echo "screenshots done"
+cat /private/tmp/claude-501/-Users-avireddy-GitHub-studio/tasks/bqf28yeq5.output 2>/dev/null | tail -20
+curl -s -w "%{http_code}" http://localhost:9002 -o /dev/null 2>/dev/null
+pkill -f "next dev" 2>/dev/null; rm -rf /Users/avireddy/GitHub/studio/.next && echo "cleaned"
+npm run dev 2>&1
