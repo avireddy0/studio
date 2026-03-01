@@ -81,18 +81,17 @@
 /* ANIMATIONS */
 @keyframes tornado-ingest {
   0% { 
-    transform: translate(-300px, 0) scale(2.0); 
+    transform: translate(0, 0) scale(2.0); 
     opacity: 1; 
   }
   100% { 
-    /* Funnel precisely into the central Parser Core with NO FADE until the very end */
-    transform: translate(calc(50vw - 80px), var(--y-offset)) scale(0); 
+    /* Converge from WIDE flurry into a singular point at the middle center */
+    transform: translate(calc(50vw - 40px), var(--y-offset)) scale(0); 
     opacity: 1; 
   }
 }
 .animate-tornado {
   animation: tornado-ingest var(--duration) infinite linear;
-  animation-delay: var(--delay);
 }
 
 @keyframes data-stream-single {
@@ -128,4 +127,18 @@
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* 3D PERSPECTIVE */
+.perspective-intel {
+  perspective: 2000px;
+}
+.translate-z-active {
+  transform: translateZ(100px);
+}
+.translate-z-base {
+  transform: translateZ(0px);
+}
+.translate-z-low {
+  transform: translateZ(-100px);
 }

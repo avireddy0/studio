@@ -42,7 +42,7 @@ export default function UnifiedPage() {
   const satelliteImage = PlaceHolderImages.find(img => img.id === 'satellite-map');
 
   // Realistic Signal Tornado - Converging into a > point in the center
-  const chaoticInputs = Array.from({ length: 70 }).map((_, i) => {
+  const chaoticInputs = Array.from({ length: 60 }).map((_, i) => {
     const icons = [
         { Icon: FileText, color: "text-blue-400", label: "PDF" },
         { Icon: FileSpreadsheet, color: "text-green-400", label: "XLS" },
@@ -54,15 +54,17 @@ export default function UnifiedPage() {
     ];
     const item = icons[i % icons.length];
     const topPercent = Math.random() * 100;
-    const yOffsetValue = 50 - topPercent; // Mathematically funnel to center
+    // Calculate yOffset relative to vertical center (50%) to form a aggressive > shape
+    const yOffsetValue = 50 - topPercent; 
     
     return {
       ...item,
-      delay: `-${(Math.random() * 10).toFixed(2)}s`, // Negative delay for zero startup wait
-      duration: `${(7.0 + Math.random() * 5.0).toFixed(2)}s`, // 40% slower trajectory
+      // NEGATIVE DELAY to ensure icons are present immediately on load
+      delay: `-${(Math.random() * 8).toFixed(2)}s`, 
+      duration: `${(8.0 + Math.random() * 6.0).toFixed(2)}s`, // 40% slower than base
       top: `${topPercent.toFixed(2)}%`,
-      yOffset: `${(yOffsetValue * 8).toFixed(2)}px`,
-      size: "size-16 md:size-20", // Larger icons on left
+      yOffset: `${(yOffsetValue * 6).toFixed(2)}px`, // Aggressive funnel factor
+      size: "size-16 md:size-20", 
     };
   });
 
@@ -113,7 +115,7 @@ export default function UnifiedPage() {
                   </div>
                   <h3 className="text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Chaos to Control.</h3>
                   <p className="text-lg text-white/60 max-w-2xl leading-relaxed font-medium">
-                      Slamming fragmented construction signals—PDFs, emails, calls, and spreadsheets—into a verified institutional stream. Deterministic parsing for weapons-grade project accuracy.
+                      Slamming fragmented construction signals into a verified institutional stream. Deterministic parsing for weapons-grade project accuracy.
                   </p>
               </div>
               
@@ -125,19 +127,19 @@ export default function UnifiedPage() {
                         {chaoticInputs.map((item, i) => (
                             <div 
                               key={i} 
-                              className="absolute left-[-200px] animate-tornado"
+                              className="absolute left-[-250px] animate-tornado"
                               style={{ 
-                                  "--delay": item.delay,
-                                  "--duration": item.duration,
+                                  animationDelay: item.delay,
+                                  animationDuration: item.duration,
                                   "--y-offset": item.yOffset,
                                   top: item.top
                               } as React.CSSProperties}
                             >
-                                <div className="flex flex-col items-center gap-1 group">
-                                    <div className={cn("p-4 border bg-black/80 border-white/10 shadow-2xl transition-transform hover:scale-110", item.color)}>
+                                <div className="flex flex-col items-center gap-1">
+                                    <div className={cn("p-4 border bg-black/90 border-white/10 shadow-2xl transition-transform hover:scale-110", item.color)}>
                                         <item.Icon className={item.size} />
                                     </div>
-                                    <span className="text-[9px] font-mono text-white/60 font-bold uppercase tracking-[0.2em]">{item.label}</span>
+                                    <span className="text-[9px] font-mono text-white/40 font-bold uppercase tracking-[0.2em]">{item.label}</span>
                                 </div>
                             </div>
                         ))}
@@ -153,7 +155,7 @@ export default function UnifiedPage() {
                           </div>
                           <div className="flex flex-col items-center gap-0.5">
                               <span className="text-[11px] font-mono font-bold text-primary uppercase tracking-[0.4em]">Parser_Core_Active</span>
-                              <span className="text-[8px] font-mono text-white/40 uppercase tracking-widest animate-pulse">Orchestrating_Intelligence...</span>
+                              <span className="text-[8px] font-mono text-white/40 uppercase tracking-widest animate-pulse">Synthesizing_Intelligence...</span>
                           </div>
                       </div>
 
