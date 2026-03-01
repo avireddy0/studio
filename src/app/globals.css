@@ -35,7 +35,7 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/30;
+    @apply bg-background text-foreground antialiased selection:bg-primary/30 overflow-hidden;
     font-family: 'Inter', sans-serif;
   }
 }
@@ -79,13 +79,10 @@
 }
 
 /* CUSTOM SCROLLBAR */
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
-::-webkit-scrollbar-track {
-  @apply bg-background;
-}
-::-webkit-scrollbar-thumb {
-  @apply bg-secondary hover:bg-primary/50 transition-colors;
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
