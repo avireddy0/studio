@@ -12,6 +12,9 @@ import {
   Map as MapIcon,
   Layers,
   FileText,
+  Mail,
+  MessageSquare,
+  Phone,
   Code
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -72,7 +75,7 @@ export default function UnifiedPage() {
         </div>
       </section>
 
-      {/* SECTION 02: INGESTION PIPELINE (WHITE) - FLURRY ANIMATION */}
+      {/* SECTION 02: INGESTION PIPELINE (WHITE) - CHAOTIC FLURRY */}
       <section id="ingestion" className="snap-start relative min-h-screen w-full bg-white text-black flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
           <div className="relative z-10 w-full max-w-7xl flex flex-col gap-12">
@@ -81,37 +84,65 @@ export default function UnifiedPage() {
                   <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/40">02_DATA_INGESTION_PIPELINE</h2>
               </div>
               
-              <div className="relative w-full h-80 flex items-center justify-between px-12 bg-gray-50/50 border border-black/5 overflow-hidden">
-                  {/* LEFT: DOCUMENT FLURRY */}
-                  <div className="flex flex-col gap-6 relative">
-                      {[1, 2, 3, 4, 5].map((i) => (
-                          <div key={i} className={cn("animate-float-in opacity-0", `delay-${i * 150}`)} style={{ animationDelay: `${i * 0.5}s` }}>
-                              <FileText className={cn("text-primary/40", i % 2 === 0 ? "size-8" : "size-6")} />
+              <div className="relative w-full h-[400px] flex items-center justify-between px-12 bg-gray-50/50 border border-black/5 overflow-hidden group">
+                  {/* LEFT: CHAOTIC INPUT CLOUD */}
+                  <div className="relative w-1/3 h-full flex items-center justify-center overflow-hidden">
+                      {[
+                        { Icon: Mail, delay: 0.2, top: '20%' },
+                        { Icon: MessageSquare, delay: 0.8, top: '45%' },
+                        { Icon: Phone, delay: 1.5, top: '70%' },
+                        { Icon: FileText, delay: 0.5, top: '30%' },
+                        { Icon: Mail, delay: 2.1, top: '60%' },
+                        { Icon: MessageSquare, delay: 1.2, top: '15%' },
+                        { Icon: Phone, delay: 2.8, top: '80%' },
+                        { Icon: FileText, delay: 3.2, top: '40%' },
+                      ].map((item, i) => (
+                          <div 
+                            key={i} 
+                            className="absolute left-[-50px] animate-float-in opacity-0 text-muted-foreground/30"
+                            style={{ 
+                                animationDelay: `${item.delay}s`,
+                                top: item.top
+                            }}
+                          >
+                              <item.Icon className={cn(i % 2 === 0 ? "size-6" : "size-4")} />
                           </div>
                       ))}
+                      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-r from-transparent to-gray-50/50 z-10" />
                   </div>
 
-                  {/* CENTER: AI PARSER */}
-                  <div className="relative flex flex-col items-center gap-4">
-                      <div className="size-24 rounded-full bg-primary/10 border-2 border-primary/20 flex items-center justify-center animate-status">
-                          <Database className="size-10 text-primary" />
+                  {/* CENTER: AI PARSER CORE */}
+                  <div className="relative flex flex-col items-center gap-4 z-20">
+                      <div className="size-32 rounded-full bg-primary/5 border-2 border-primary/20 flex items-center justify-center animate-status shadow-2xl">
+                          <Database className="size-12 text-primary" />
                       </div>
-                      <span className="text-[10px] font-mono font-bold text-primary uppercase tracking-[0.5em]">PARSER_CORE_V4</span>
-                      <div className="absolute -inset-4 border border-primary/10 rounded-full animate-ping opacity-20" />
+                      <div className="flex flex-col items-center gap-1">
+                          <span className="text-[10px] font-mono font-bold text-primary uppercase tracking-[0.5em]">PARSER_CORE_V4</span>
+                          <span className="text-[7px] font-mono text-muted-foreground uppercase tracking-widest animate-pulse">DECODING_STREAM...</span>
+                      </div>
+                      <div className="absolute -inset-6 border border-primary/10 rounded-full animate-ping opacity-20" />
                   </div>
 
-                  {/* RIGHT: DATA STRINGS */}
-                  <div className="flex flex-col gap-6 items-end relative overflow-hidden max-w-[300px]">
-                      {[
-                        "{ id: 'RFI_9912', status: 'VERIFIED' }",
-                        "{ node: 'PHX_A', delta: '-1.2%' }",
-                        "{ auth: 'SUCCESS', sig: 'AES256' }",
-                        "{ type: 'STRUCTURAL', risk: 'LOW' }"
-                      ].map((str, i) => (
-                        <div key={i} className="animate-slide-right opacity-0 text-[10px] font-mono text-primary font-bold whitespace-nowrap" style={{ animationDelay: `${i * 0.8}s` }}>
-                            {str}
-                        </div>
-                      ))}
+                  {/* RIGHT: CLEAN DATA LINE */}
+                  <div className="relative w-1/3 h-full flex flex-col justify-center items-start overflow-hidden">
+                      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-l from-transparent to-gray-50/50 z-10" />
+                      <div className="flex flex-col gap-4 w-full pl-8">
+                          {[
+                            "{ rfi: '9912', status: 'VERIFIED' }",
+                            "{ email: 'SYNC', node: 'PHX_A' }",
+                            "{ call: 'LOGGED', dur: '4:22' }",
+                            "{ sms: 'ARCHIVE', auth: 'OK' }",
+                            "{ doc: 'STRUCT', delta: '-1.2%' }"
+                          ].map((str, i) => (
+                            <div 
+                                key={i} 
+                                className="animate-slide-right opacity-0 text-[10px] font-mono text-primary font-bold whitespace-nowrap bg-primary/5 px-3 py-1 border-l-2 border-primary" 
+                                style={{ animationDelay: `${i * 1.2}s` }}
+                            >
+                                {str}
+                            </div>
+                          ))}
+                      </div>
                   </div>
               </div>
 
@@ -119,7 +150,7 @@ export default function UnifiedPage() {
                   <div className="space-y-4">
                       <h3 className="text-3xl font-semibold tracking-tighter uppercase">Deterministic <br/> Signal Ingest</h3>
                       <p className="text-sm text-black/60 max-w-md leading-relaxed">
-                          Extract structured intelligence from fragmented noise. Automated normalization of PDFs, RFIs, and project data into a verified institutional stream.
+                          Extract structured intelligence from multi-platform noise. Automated normalization of PDFs, Emails, Calls, and SMS logs into a verified institutional stream.
                       </p>
                   </div>
                   <Card className="bg-white border-black/10 shadow-xl rounded-none">
