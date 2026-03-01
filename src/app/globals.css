@@ -79,24 +79,39 @@
 }
 
 /* ANIMATIONS */
-@keyframes ingest-chaos {
-  0% { transform: translate(-100px, 0); opacity: 0; }
-  10% { opacity: 0.6; }
-  80% { transform: translate(350px, 0) scale(0.5); opacity: 0.8; }
-  100% { transform: translate(450px, 0) scale(0.1); opacity: 0; }
+@keyframes tornado-ingest {
+  0% { 
+    transform: translate(-100px, 0) rotate(0deg) scale(1.5); 
+    opacity: 0; 
+  }
+  15% { 
+    opacity: 0.8; 
+  }
+  40% {
+    transform: translate(150px, var(--y-offset)) rotate(180deg) scale(1.2);
+  }
+  80% { 
+    transform: translate(350px, 0) rotate(720deg) scale(0.1); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translate(450px, 0) scale(0); 
+    opacity: 0; 
+  }
 }
-.animate-ingest-chaos {
-  animation: ingest-chaos 1.5s infinite ease-in;
+.animate-tornado {
+  animation: tornado-ingest var(--duration) infinite ease-in;
+  animation-delay: var(--delay);
 }
 
 @keyframes data-stream {
   0% { transform: translateX(-20px); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
+  5% { opacity: 1; }
+  95% { opacity: 1; }
   100% { transform: translateX(500px); opacity: 0; }
 }
 .animate-data-stream {
-  animation: data-stream 4s infinite linear;
+  animation: data-stream 3s infinite linear;
 }
 
 @keyframes pulse-status {
