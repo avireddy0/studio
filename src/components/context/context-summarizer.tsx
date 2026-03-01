@@ -37,8 +37,7 @@ export function ContextSummarizer() {
             <span>Operational_Fusion_Gate</span>
         </div>
         <h2 className="text-4xl md:text-6xl font-semibold tracking-tighter text-white uppercase leading-tight">
-          Context is <br/>
-          <span className="text-primary">Everything.</span>
+          Context is Everything
         </h2>
         <p className="text-muted-foreground text-sm font-medium leading-relaxed max-w-lg mx-auto">
           Data without context is dangerous. Envision OS multi-platform correlation 

@@ -41,8 +41,8 @@ export default function UnifiedPage() {
 
   const satelliteImage = PlaceHolderImages.find(img => img.id === 'satellite-map');
 
-  // Realistic Signal Tornado - Converging into a > point in the center
-  const chaoticInputs = Array.from({ length: 60 }).map((_, i) => {
+  // Realistic Signal Funnel - Wide on left, Converging into center
+  const chaoticInputs = Array.from({ length: 30 }).map((_, i) => {
     const icons = [
         { Icon: FileText, color: "text-blue-400", label: "PDF" },
         { Icon: FileSpreadsheet, color: "text-green-400", label: "XLS" },
@@ -53,18 +53,18 @@ export default function UnifiedPage() {
         { Icon: MessageSquare, color: "text-pink-400", label: "TEXT" },
     ];
     const item = icons[i % icons.length];
-    const topPercent = Math.random() * 100;
+    const topPercent = (i / 30) * 100;
     // Calculate yOffset relative to vertical center (50%) to form a aggressive > shape
     const yOffsetValue = 50 - topPercent; 
     
     return {
       ...item,
       // NEGATIVE DELAY to ensure icons are present immediately on load
-      delay: `-${(Math.random() * 8).toFixed(2)}s`, 
-      duration: `${(8.0 + Math.random() * 6.0).toFixed(2)}s`, // 40% slower than base
+      delay: `-${(Math.random() * 12).toFixed(2)}s`, 
+      duration: `${(10.0 + Math.random() * 8.0).toFixed(2)}s`, // 40% slower trajectory
       top: `${topPercent.toFixed(2)}%`,
-      yOffset: `${(yOffsetValue * 6).toFixed(2)}px`, // Aggressive funnel factor
-      size: "size-16 md:size-20", 
+      yOffset: `${(yOffsetValue * 4.5).toFixed(2)}px`, // Funnel factor
+      size: "size-20 md:size-24", 
     };
   });
 
@@ -75,7 +75,7 @@ export default function UnifiedPage() {
     >
       
       {/* SECTION 01: INSTITUTIONAL HERO (WHITE) */}
-      <section id="hero" className="snap-start relative flex flex-col items-center justify-center p-6 bg-white text-black h-screen w-full shrink-0">
+      <section id="hero" className="snap-start relative flex flex-col items-center justify-center p-6 bg-white text-black h-[calc(100vh-64px)] w-full shrink-0">
         <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] tactical-grid" />
         <div className="relative z-10 max-w-6xl w-full">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-primary/20 bg-primary/5 text-[9px] font-bold uppercase tracking-[0.4em] text-primary mb-12">
@@ -104,7 +104,7 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 02: INGESTION PIPELINE (OBSIDIAN) - CHAOS TO CONTROL */}
-      <section id="ingestion" className="snap-start relative h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden shrink-0">
+      <section id="ingestion" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden shrink-0">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
           <div className="relative z-10 w-full max-w-7xl h-full flex flex-col justify-between py-12 gap-8">
               
@@ -122,12 +122,12 @@ export default function UnifiedPage() {
               <div className="relative w-full flex-1 flex items-center bg-white/[0.02] border border-white/5 overflow-hidden">
                   <div className="absolute inset-0 flex items-center justify-center">
                       
-                      {/* THE CHAOTIC TORNADO FUNNEL (LEFT TO CENTER) */}
+                      {/* THE CHAOTIC FUNNEL (LEFT TO CENTER) */}
                       <div className="absolute left-0 w-1/2 h-full pointer-events-none">
                         {chaoticInputs.map((item, i) => (
                             <div 
                               key={i} 
-                              className="absolute left-[-250px] animate-tornado"
+                              className="absolute left-[-200px] animate-tornado"
                               style={{ 
                                   animationDelay: item.delay,
                                   animationDuration: item.duration,
@@ -136,10 +136,10 @@ export default function UnifiedPage() {
                               } as React.CSSProperties}
                             >
                                 <div className="flex flex-col items-center gap-1">
-                                    <div className={cn("p-4 border bg-black/90 border-white/10 shadow-2xl transition-transform hover:scale-110", item.color)}>
+                                    <div className={cn("p-6 border bg-black/90 border-white/10 shadow-2xl transition-transform hover:scale-110", item.color)}>
                                         <item.Icon className={item.size} />
                                     </div>
-                                    <span className="text-[9px] font-mono text-white/40 font-bold uppercase tracking-[0.2em]">{item.label}</span>
+                                    <span className="text-[10px] font-mono text-white/40 font-bold uppercase tracking-[0.2em]">{item.label}</span>
                                 </div>
                             </div>
                         ))}
@@ -147,10 +147,10 @@ export default function UnifiedPage() {
 
                       {/* THE PARSER CORE (CENTER) */}
                       <div className="relative z-20 flex flex-col items-center gap-4 px-12">
-                          <div className="size-56 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_100px_rgba(0,124,90,0.3)] bg-[#0A0A0F]/80 backdrop-blur-xl">
+                          <div className="size-64 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_100px_rgba(0,124,90,0.3)] bg-[#0A0A0F]/80 backdrop-blur-xl">
                               <div className="relative">
-                                <Database className="size-24 text-primary" />
-                                <div className="absolute inset-0 size-24 bg-primary/30 blur-3xl animate-pulse" />
+                                <Database className="size-28 text-primary" />
+                                <div className="absolute inset-0 size-28 bg-primary/30 blur-3xl animate-pulse" />
                               </div>
                           </div>
                           <div className="flex flex-col items-center gap-0.5">
@@ -187,7 +187,7 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 03: INTELLIGENCE COMMAND (WHITE) */}
-      <section id="intel" className="snap-start relative h-screen w-full bg-white text-black flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden shrink-0">
+      <section id="intel" className="snap-start relative h-[calc(100vh-64px)] w-full bg-white text-black flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden shrink-0">
         <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] tactical-grid" />
         <div className="relative z-10 w-full max-w-7xl h-full flex flex-col">
             <div className="flex items-center gap-3 mb-6 shrink-0">
@@ -218,7 +218,7 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 04: CONTEXT FUSION (OBSIDIAN) */}
-      <section id="fusion" className="snap-start relative h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 shrink-0">
+      <section id="fusion" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 shrink-0">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
           <div className="relative z-10 w-full max-w-7xl flex flex-col h-full">
               <div className="flex items-center gap-3 mb-6 shrink-0">
@@ -230,7 +230,7 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 05: BIM + TELEMETRY (OBSIDIAN) */}
-      <section id="tactical-bim" className="snap-start relative h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 shrink-0">
+      <section id="tactical-bim" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 shrink-0">
         <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
         <div className="relative z-10 w-full max-w-7xl h-full grid grid-cols-1 lg:grid-cols-3 gap-6 overflow-hidden">
             <div className="lg:col-span-2 flex flex-col h-full">
@@ -272,7 +272,7 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 06: SITE + DOCUMENTS (OBSIDIAN) */}
-      <section id="site-docs" className="snap-start relative h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 shrink-0">
+      <section id="site-docs" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 shrink-0">
         <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
         <div className="relative z-10 w-full max-w-7xl h-full flex flex-col gap-12 overflow-hidden">
             <div className="flex items-center gap-3 mb-2 shrink-0">

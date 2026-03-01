@@ -81,12 +81,12 @@
 /* ANIMATIONS */
 @keyframes tornado-ingest {
   0% { 
-    transform: translate(0, 0) scale(2.0); 
+    transform: translate(0, 0) scale(1.5); 
     opacity: 1; 
   }
   100% { 
-    /* Converge from WIDE flurry into a singular point at the middle center */
-    transform: translate(calc(50vw - 40px), var(--y-offset)) scale(0); 
+    /* Converge into a singular point at the middle center of the left half */
+    transform: translate(calc(50vw + 100px), var(--y-offset)) scale(0); 
     opacity: 1; 
   }
 }

@@ -81,6 +81,7 @@ export function ChatInterface() {
       setMessages((prev) => [...prev, { role: "user", content: query }]);
       setMessages((prev) => [...prev, { role: "status", content: "ORCHESTRATING_INTEL..." }]);
       
+      // Wrapped in startTransition to resolve React 19 useActionState error
       startTransition(() => {
         formAction(formData);
       });
