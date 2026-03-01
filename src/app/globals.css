@@ -81,12 +81,12 @@
 /* ANIMATIONS */
 @keyframes tornado-ingest {
   0% { 
-    transform: translate(-200px, 0) rotate(0deg) scale(1.6); 
+    transform: translate(-300px, 0) scale(1.4); 
     opacity: 1; 
   }
   100% { 
-    /* Funnel into the center. y-offset is calculated in the component to target center of parser */
-    transform: translate(calc(50vw - 40px), var(--y-offset)) rotate(360deg) scale(0); 
+    /* Funnel precisely into the central Parser Core */
+    transform: translate(calc(50vw - 60px), var(--y-offset)) scale(0); 
     opacity: 1; 
   }
 }
@@ -99,18 +99,18 @@
   0% { transform: translateX(0); opacity: 0; }
   10% { opacity: 1; }
   90% { opacity: 1; }
-  100% { transform: translateX(calc(50vw + 100px)); opacity: 0; }
+  100% { transform: translateX(calc(50vw + 200px)); opacity: 0; }
 }
 .animate-data-stream-single {
-  animation: data-stream-single 4s infinite linear;
+  animation: data-stream-single 5s infinite linear;
 }
 
 @keyframes pulse-status {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.85); }
+  50% { opacity: 0.4; transform: scale(0.9); }
 }
 .animate-status {
-  animation: pulse-status 2s infinite ease-in-out;
+  animation: pulse-status 2.5s infinite ease-in-out;
 }
 
 @keyframes scan-line {
@@ -118,7 +118,7 @@
   100% { transform: translateY(100%); }
 }
 .animate-scan-line {
-  animation: scan-line 4s infinite linear;
+  animation: scan-line 5s infinite linear;
 }
 
 /* CUSTOM SCROLLBAR */

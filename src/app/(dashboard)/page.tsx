@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -42,21 +41,29 @@ export default function UnifiedPage() {
 
   const satelliteImage = PlaceHolderImages.find(img => img.id === 'satellite-map');
 
-  // High-Density Tornado Generator - 160 elements funneling into center, 40% slower
-  const chaoticInputs = Array.from({ length: 160 }).map((_, i) => {
-    const icons = [FileText, FileSpreadsheet, FileCode, FileSignature, Mail, Phone, MessageSquare];
-    const Icon = icons[i % icons.length];
+  // Realistic Signal Tornado - 180 elements funneling aggressively into center, 40% slower
+  const chaoticInputs = Array.from({ length: 180 }).map((_, i) => {
+    const icons = [
+        { Icon: FileText, color: "text-blue-400", label: "PDF" },
+        { Icon: FileSpreadsheet, color: "text-green-400", label: "XLS" },
+        { Icon: FileSignature, color: "text-amber-400", label: "RFI" },
+        { Icon: FileCode, color: "text-purple-400", label: "BIM" },
+        { Icon: Mail, color: "text-sky-400", label: "MAIL" },
+        { Icon: Phone, color: "text-emerald-400", label: "CALL" },
+        { Icon: MessageSquare, color: "text-pink-400", label: "TEXT" },
+    ];
+    const item = icons[i % icons.length];
     const topPercent = Math.random() * 100;
-    // Calculate yOffset to meet at the vertical middle (50% of the container)
+    // Calculate yOffset to meet precisely at the vertical middle (50% of the container)
     const yOffsetValue = 50 - topPercent;
     
     return {
-      Icon,
-      delay: `${(Math.random() * 8).toFixed(2)}s`,
-      duration: `${(7.0 + Math.random() * 5.0).toFixed(2)}s`, // 40% slower than previous base
+      ...item,
+      delay: `${(Math.random() * 12).toFixed(2)}s`,
+      duration: `${(8.0 + Math.random() * 6.0).toFixed(2)}s`, // 40% slower trajectory
       top: `${topPercent.toFixed(2)}%`,
-      yOffset: `${(yOffsetValue * 6).toFixed(2)}px`, // Scaling factor for the translation
-      size: i % 10 === 0 ? "size-18" : "size-12", // Significantly bigger icons
+      yOffset: `${(yOffsetValue * 8.5).toFixed(2)}px`, // Converge to center coordinate
+      size: i % 12 === 0 ? "size-10" : "size-7", // Varied visual magnitude
     };
   });
 
@@ -107,7 +114,7 @@ export default function UnifiedPage() {
                   </div>
                   <h3 className="text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Chaos to Control.</h3>
                   <p className="text-lg text-white/60 max-w-2xl leading-relaxed font-medium">
-                      Slamming thousands of fragmented construction signals—emails, texts, and calls—into a verified institutional stream. Deterministic parsing for weapons-grade project accuracy.
+                      Slamming fragmented construction signals—PDFs, emails, calls, and spreadsheets—into a verified institutional stream. Deterministic parsing for weapons-grade project accuracy.
                   </p>
               </div>
               
@@ -119,7 +126,7 @@ export default function UnifiedPage() {
                         {chaoticInputs.map((item, i) => (
                             <div 
                               key={i} 
-                              className="absolute left-[-150px] animate-tornado text-white"
+                              className="absolute left-[-150px] animate-tornado"
                               style={{ 
                                   "--delay": item.delay,
                                   "--duration": item.duration,
@@ -127,17 +134,22 @@ export default function UnifiedPage() {
                                   top: item.top
                               } as React.CSSProperties}
                             >
-                                <item.Icon className={item.size} />
+                                <div className="flex flex-col items-center gap-1 group">
+                                    <div className={cn("p-1 border bg-black/40 border-white/10", item.color)}>
+                                        <item.Icon className={item.size} />
+                                    </div>
+                                    <span className="text-[6px] font-mono opacity-40 font-bold uppercase tracking-tighter">{item.label}</span>
+                                </div>
                             </div>
                         ))}
                       </div>
 
                       {/* THE PARSER CORE (CENTER) */}
                       <div className="relative z-20 flex flex-col items-center gap-4 px-12">
-                          <div className="size-48 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_80px_rgba(0,124,90,0.2)] bg-[#0A0A0F]/50 backdrop-blur-sm">
+                          <div className="size-40 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_80px_rgba(0,124,90,0.2)] bg-[#0A0A0F]/50 backdrop-blur-sm">
                               <div className="relative">
-                                <Database className="size-24 text-primary" />
-                                <div className="absolute inset-0 size-24 bg-primary/30 blur-3xl animate-pulse" />
+                                <Database className="size-20 text-primary" />
+                                <div className="absolute inset-0 size-20 bg-primary/30 blur-3xl animate-pulse" />
                               </div>
                           </div>
                           <div className="flex flex-col items-center gap-0.5">
@@ -161,7 +173,7 @@ export default function UnifiedPage() {
                                 <div 
                                     key={i} 
                                     className="animate-data-stream-single opacity-0 text-[10px] font-mono text-primary font-bold whitespace-nowrap bg-primary/5 px-4 py-2 border-l-2 border-primary shadow-sm" 
-                                    style={{ animationDelay: `${i * 0.6}s` }}
+                                    style={{ animationDelay: `${i * 0.7}s` }}
                                 >
                                     {str}
                                 </div>

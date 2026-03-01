@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useRef, useEffect, useActionState, startTransition } from "react";
@@ -39,7 +38,6 @@ function SubmitButton() {
 }
 
 export function ChatInterface() {
-  const pathname = usePathname();
   const [messages, setMessages] = useState<Message[]>([
     { 
       role: "ai", 
@@ -83,9 +81,12 @@ export function ChatInterface() {
     if (query.trim()) {
       setMessages((prev) => [...prev, { role: "user", content: query }]);
       setMessages((prev) => [...prev, { role: "status", content: "ORCHESTRATING_INTEL..." }]);
+      
+      // Ensure the action is called within a transition for React 19 compliance
       startTransition(() => {
         formAction(formData);
       });
+      
       formRef.current?.reset();
     }
   };
