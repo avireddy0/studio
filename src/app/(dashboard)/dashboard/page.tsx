@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -8,8 +9,6 @@ import {
   Zap, 
   ShieldAlert, 
   Map as MapIcon, 
-  Clock,
-  ChevronRight,
   Circle
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +17,7 @@ export default function DashboardPage() {
   const [timestamp, setTimestamp] = useState('');
 
   useEffect(() => {
+    setTimestamp(new Date().toLocaleTimeString('en-US', { hour12: false }));
     const timer = setInterval(() => {
       setTimestamp(new Date().toLocaleTimeString('en-US', { hour12: false }));
     }, 1000);
@@ -25,7 +25,7 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 bg-[#0A0A0F] min-h-screen">
       {/* MONOSPACE METRICS GRID */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
@@ -40,7 +40,7 @@ export default function DashboardPage() {
                 <span className="text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase">{metric.label}</span>
                 <metric.icon className="size-3 text-primary/40" />
               </div>
-              <div className="text-3xl font-mono font-bold tracking-tighter mt-2">
+              <div className="text-3xl font-mono font-bold tracking-tighter mt-2 text-white">
                 {metric.value}
               </div>
             </CardContent>
@@ -91,7 +91,7 @@ export default function DashboardPage() {
               ].map((site, i) => (
                 <div key={i} className="flex items-center justify-between group">
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-bold tracking-widest">{site.name}</span>
+                    <span className="text-[10px] font-bold tracking-widest text-white/90">{site.name}</span>
                     <span className="text-[8px] font-mono text-muted-foreground uppercase">Threat_Level: {site.risk}</span>
                   </div>
                   <div className="flex items-center gap-4">
@@ -113,9 +113,9 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="p-6">
             <div className="space-y-4">
-              <div className="flex items-center justify-between text-[9px] font-mono uppercase tracking-widest">
+              <div className="flex items-center justify-between text-[9px] font-mono uppercase tracking-widest text-white/60">
                 <span>Total_Throughput</span>
-                <span className="text-primary">884.2 GB/s</span>
+                <span className="text-primary font-bold">884.2 GB/s</span>
               </div>
               <div className="h-1 w-full bg-secondary">
                 <div className="h-full bg-primary w-4/5" />
@@ -165,10 +165,10 @@ export default function DashboardPage() {
           <CardContent className="p-6 flex flex-col items-center justify-center text-center gap-4">
             <Zap className="size-8 text-primary animate-pulse" />
             <div className="space-y-1">
-                <p className="text-sm font-bold tracking-tight">ENGINE_CORE_NOMINAL</p>
+                <p className="text-sm font-bold tracking-tight text-white">ENGINE_CORE_NOMINAL</p>
                 <p className="text-[9px] text-muted-foreground uppercase tracking-[0.3em]">99.8% Correlation_Confidence</p>
             </div>
-            <button className="mt-4 px-6 py-2 border border-primary/20 text-[9px] font-bold uppercase tracking-widest hover:bg-primary/10 transition-colors">
+            <button className="mt-4 px-6 py-2 border border-primary/20 text-[9px] font-bold uppercase tracking-widest text-primary hover:bg-primary/10 transition-colors">
                 Initialize_Milling
             </button>
           </CardContent>

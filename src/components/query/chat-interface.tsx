@@ -6,7 +6,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { handleQuery } from "@/lib/actions";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Send, Loader2, Zap, ArrowRight } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage, type Message } from "@/components/query/chat-message";
 import { useToast } from "@/hooks/use-toast";
@@ -27,14 +27,13 @@ const SUGGESTED_PROMPTS = [
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button 
+    <button 
       type="submit" 
-      size="icon" 
       disabled={pending}
-      className="bg-[#007C5A] text-white hover:bg-[#007C5A]/90 rounded-full h-8 w-8 transition-all shrink-0"
+      className="bg-[#007C5A] text-white hover:bg-[#007C5A]/90 rounded-full h-8 w-8 flex items-center justify-center transition-all shrink-0"
     >
       {pending ? <Loader2 className="animate-spin size-4" /> : <Send className="size-4" />}
-    </Button>
+    </button>
   );
 }
 
@@ -53,7 +52,7 @@ export function ChatInterface() {
   useEffect(() => {
     if (formState?.data) {
       setMessages((prev) => [
-        ...prev,
+        ...prev.filter(m => m.role !== 'status'),
         { role: "ai", content: formState.data },
       ]);
     }
@@ -63,22 +62,18 @@ export function ChatInterface() {
         title: "System Error",
         description: "Protocol interruption detected. Re-attempt transmission.",
       });
-      // Remove the loading message if it exists
-      setMessages((prev) => prev.filter(m => m.content !== "ORCHESTRATING_INTEL..."));
+      setMessages((prev) => prev.filter(m => m.role !== 'status'));
     }
   }, [formState, toast]);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
-        setTimeout(() => {
-            const viewport = scrollAreaRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
-            if (viewport) {
-                viewport.scrollTop = viewport.scrollHeight;
-            }
-        }, 100);
+        const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+        if (viewport) {
+            viewport.scrollTop = viewport.scrollHeight;
+        }
     }
   }, [messages]);
-
 
   const handleFormSubmit = async (formData: FormData) => {
     const query = formData.get("query") as string;
@@ -97,21 +92,21 @@ export function ChatInterface() {
   };
 
   return (
-    <div className="flex h-full flex-col bg-transparent relative z-10">
+    <div className="flex h-full flex-col bg-white relative z-10">
       <ScrollArea className="flex-1 px-4 md:px-8 py-6" ref={scrollAreaRef}>
-        <div className="max-w-3xl mx-auto w-full space-y-2">
+        <div className="max-w-3xl mx-auto w-full space-y-4">
             {messages.map((msg, index) => <ChatMessage key={index} message={msg} />)}
         </div>
       </ScrollArea>
 
       <div className="bg-white/80 backdrop-blur-xl p-4 md:p-6 border-t border-black/5">
-        {/* SUGGESTED PROMPTS */}
+        {/* SUGGESTED PROMPTS - GREY PILLS */}
         <div className="max-w-3xl mx-auto flex gap-2 overflow-x-auto pb-4 no-scrollbar">
             {SUGGESTED_PROMPTS.map((prompt, i) => (
                 <button
                     key={i}
                     onClick={() => handleSuggestedClick(prompt)}
-                    className="px-4 py-1.5 bg-secondary/50 hover:bg-secondary border border-black/5 text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap text-black/60 hover:text-black"
+                    className="px-4 py-1.5 bg-[#F2F2F7] hover:bg-[#E5E5EA] border border-black/5 text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap text-black/60 rounded-full"
                 >
                     {prompt}
                 </button>
