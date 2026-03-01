@@ -46,7 +46,7 @@ export function ContextSummarizer() {
       </div>
 
       {/* INTERACTIVE LAYER STACK */}
-      <div className="relative w-full max-w-4xl h-[450px] flex items-center justify-center perspective-intel">
+      <div className="relative w-full max-w-4xl h-[280px] sm:h-[350px] md:h-[400px] lg:h-[450px] flex items-center justify-center perspective-intel">
         
         {/* THE STACK */}
         <div className="relative w-full h-full flex flex-col items-center justify-center">
@@ -54,14 +54,14 @@ export function ContextSummarizer() {
             {/* LAYER 03: CONTEXT VERIFICATION (TOP) */}
             <div 
                 className={cn(
-                    "absolute w-full max-w-xl p-8 border-2 border-primary bg-primary/10 backdrop-blur-xl transition-all duration-1000 ease-in-out flex flex-col items-center gap-6 shadow-[0_0_80px_rgba(0,124,90,0.3)] z-30",
+                    "absolute w-full max-w-xl p-4 sm:p-6 md:p-8 border-2 border-primary bg-primary/10 backdrop-blur-xl transition-all duration-1000 ease-in-out flex flex-col items-center gap-6 shadow-[0_0_80px_rgba(0,124,90,0.3)] z-30",
                     activeLayer === 2 ? "translate-y-0 opacity-100 scale-100" : "-translate-y-48 opacity-0 scale-110 pointer-events-none"
                 )}
             >
                 <div className="flex items-center justify-between w-full">
                     <div className="flex items-center gap-2">
                         <ShieldCheck className="size-5 text-primary" />
-                        <span className="text-[11px] font-mono font-bold text-primary uppercase tracking-widest">LAYER_03: SOVEREIGN_TRUTH</span>
+                        <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono font-bold text-primary uppercase tracking-widest">LAYER_03: SOVEREIGN_TRUTH</span>
                     </div>
                     <span className="text-[9px] font-mono text-primary/60">NODE_VERIFIED</span>
                 </div>
@@ -80,11 +80,11 @@ export function ContextSummarizer() {
                 
                 <div className="grid grid-cols-2 gap-4 w-full">
                     <div className="p-3 border border-primary/10 bg-primary/5">
-                        <p className="text-[8px] text-primary/60 uppercase mb-1">Correlation</p>
+                        <p className="text-[10px] md:text-[8px] text-primary/60 uppercase mb-1">Correlation</p>
                         <p className="text-[11px] font-bold text-white uppercase">0.99 SIGMA</p>
                     </div>
                     <div className="p-3 border border-primary/10 bg-primary/5">
-                        <p className="text-[8px] text-primary/60 uppercase mb-1">Risk_Delta</p>
+                        <p className="text-[10px] md:text-[8px] text-primary/60 uppercase mb-1">Risk_Delta</p>
                         <p className="text-[11px] font-bold text-white uppercase">-94.2%</p>
                     </div>
                 </div>
@@ -93,7 +93,7 @@ export function ContextSummarizer() {
             {/* LAYER 02: CROSS_CORRELATION (MIDDLE) */}
             <div 
                 className={cn(
-                    "absolute w-full max-w-lg p-6 border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-1000 ease-in-out flex flex-col items-center gap-4 z-20",
+                    "absolute w-full max-w-lg p-4 sm:p-6 border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-1000 ease-in-out flex flex-col items-center gap-4 z-20",
                     activeLayer === 1 ? "translate-y-0 opacity-100 scale-100" : activeLayer === 2 ? "translate-y-16 opacity-40 scale-95" : "-translate-y-32 opacity-0 scale-105 pointer-events-none"
                 )}
             >
@@ -114,7 +114,7 @@ export function ContextSummarizer() {
             {/* LAYER 01: RAW_SIGNAL_CHAOS (BOTTOM) */}
             <div 
                 className={cn(
-                    "absolute w-full max-w-md p-6 border border-destructive/20 bg-destructive/5 transition-all duration-1000 ease-in-out flex flex-col items-center gap-4 z-10",
+                    "absolute w-full max-w-md p-4 sm:p-6 border border-destructive/20 bg-destructive/5 transition-all duration-1000 ease-in-out flex flex-col items-center gap-4 z-10",
                     activeLayer === 0 ? "translate-y-0 opacity-100 scale-100" : "translate-y-24 opacity-20 scale-90 pointer-events-none"
                 )}
             >
@@ -125,7 +125,7 @@ export function ContextSummarizer() {
                 
                 <div className="flex flex-wrap gap-2 justify-center py-4">
                     {["RFI_LOST", "BIM_LAG", "DATA_NOISE", "PDF_ERR", "VOID_REF"].map((str, i) => (
-                        <div key={i} className="px-2 py-0.5 border border-destructive/20 text-[8px] font-mono text-destructive uppercase animate-pulse">
+                        <div key={i} className="px-2 py-0.5 border border-destructive/20 text-[10px] md:text-[8px] font-mono text-destructive uppercase animate-pulse">
                             {str}
                         </div>
                     ))}
@@ -133,7 +133,7 @@ export function ContextSummarizer() {
                 
                 <div className="text-center">
                     <p className="text-[11px] font-bold text-destructive uppercase tracking-widest">High_Operational_Risk</p>
-                    <p className="text-[8px] font-mono text-destructive/40 uppercase">Unverified_Signal_Stream</p>
+                    <p className="text-[10px] md:text-[8px] font-mono text-destructive/40 uppercase">Unverified_Signal_Stream</p>
                 </div>
             </div>
 
@@ -141,7 +141,7 @@ export function ContextSummarizer() {
       </div>
 
       {/* LAYER NAVIGATION HUD */}
-      <div className="flex gap-4 z-20">
+      <div className="flex gap-2 sm:gap-3 md:gap-4 z-20">
           {[
               { id: 0, label: "RAW_CHAOS", icon: AlertTriangle, color: "text-destructive" },
               { id: 1, label: "CORRELATION", icon: Cpu, color: "text-white/40" },
@@ -151,7 +151,7 @@ export function ContextSummarizer() {
                 key={layer.id}
                 onClick={() => setActiveLayer(layer.id)}
                 className={cn(
-                    "flex flex-col items-center gap-2 p-4 border transition-all min-w-[140px]",
+                    "flex flex-col items-center gap-2 p-2 sm:p-3 md:p-4 border transition-all min-w-[90px] sm:min-w-[110px] md:min-w-[140px]",
                     activeLayer === layer.id ? "bg-white/10 border-white/20" : "bg-transparent border-white/5 opacity-40 hover:opacity-60"
                 )}
               >

@@ -1,10 +1,11 @@
 'use client';
 
-import { Monitor, Home, Database, Terminal, Zap, Layers, Map as MapIcon } from "lucide-react";
+import { Monitor, Home, Database, Terminal, Zap, Layers, Map as MapIcon, Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 
 const navItems = [
   { href: "#hero", label: "01_VISION", icon: Home },
@@ -18,6 +19,7 @@ const navItems = [
 export function DashboardHeader({ title }: { title?: string }) {
   const [mounted, setMounted] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -56,6 +58,39 @@ export function DashboardHeader({ title }: { title?: string }) {
         bgColor
     )}>
       <div className="flex items-center gap-8">
+        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+          <SheetTrigger asChild>
+            <button className={cn("lg:hidden p-2 -ml-2", textColor)}>
+              <Menu className="size-5" />
+            </button>
+          </SheetTrigger>
+          <SheetContent side="left" className={cn(
+            "w-72 p-0",
+            isDarkSection ? "bg-[#0A0A0F] border-white/10" : "bg-white border-black/5"
+          )}>
+            <SheetTitle className="sr-only">Navigation</SheetTitle>
+            <div className="flex items-center gap-3 px-6 py-5 border-b border-inherit">
+              <Monitor className="size-5 text-primary" />
+              <span className={cn("text-xs font-bold tracking-[0.3em] uppercase", textColor)}>Envision OS</span>
+            </div>
+            <nav className="flex flex-col py-2">
+              {navItems.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setSheetOpen(false)}
+                  className={cn(
+                    "flex items-center gap-4 px-6 py-4 transition-all hover:bg-primary/5",
+                    textColor, "opacity-70 hover:opacity-100"
+                  )}
+                >
+                  <item.icon className="size-4 text-primary" />
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em]">{item.label}</span>
+                </a>
+              ))}
+            </nav>
+          </SheetContent>
+        </Sheet>
         <Link href="/" className="flex items-center gap-3 group">
             <Monitor className="size-5 text-primary" />
             <span className={cn(

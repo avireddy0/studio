@@ -80,14 +80,13 @@
 
 /* ANIMATIONS */
 @keyframes tornado-ingest {
-  0% { 
-    transform: translate(0, 0) scale(1.5); 
-    opacity: 1; 
+  0% {
+    transform: translate(0, 0) scale(1.5);
+    opacity: 1;
   }
-  100% { 
-    /* Converge into a singular point at the middle center of the left half */
-    transform: translate(calc(50vw + 100px), var(--y-offset)) scale(0); 
-    opacity: 1; 
+  100% {
+    transform: translate(min(50vw, 300px), var(--y-offset)) scale(0);
+    opacity: 1;
   }
 }
 .animate-tornado {
@@ -98,7 +97,7 @@
   0% { transform: translateX(0); opacity: 0; }
   10% { opacity: 1; }
   90% { opacity: 1; }
-  100% { transform: translateX(calc(50vw + 200px)); opacity: 0; }
+  100% { transform: translateX(min(50vw, 400px)); opacity: 0; }
 }
 .animate-data-stream-single {
   animation: data-stream-single 5s infinite linear;

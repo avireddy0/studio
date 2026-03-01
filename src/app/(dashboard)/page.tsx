@@ -42,7 +42,7 @@ export default function UnifiedPage() {
   const satelliteImage = PlaceHolderImages.find(img => img.id === 'satellite-map');
 
   // Realistic Signal Funnel - Wide on left, Converging into center
-  const chaoticInputs = Array.from({ length: 30 }).map((_, i) => {
+  const chaoticInputs = Array.from({ length: 15 }).map((_, i) => {
     const icons = [
         { Icon: FileText, color: "text-blue-400", label: "PDF" },
         { Icon: FileSpreadsheet, color: "text-green-400", label: "XLS" },
@@ -53,7 +53,7 @@ export default function UnifiedPage() {
         { Icon: MessageSquare, color: "text-pink-400", label: "TEXT" },
     ];
     const item = icons[i % icons.length];
-    const topPercent = (i / 30) * 100;
+    const topPercent = (i / 15) * 100;
     // Calculate yOffset relative to vertical center (50%) to form a aggressive > shape
     const yOffsetValue = 50 - topPercent; 
     
@@ -64,7 +64,7 @@ export default function UnifiedPage() {
       duration: `${(10.0 + Math.random() * 8.0).toFixed(2)}s`, // 40% slower trajectory
       top: `${topPercent.toFixed(2)}%`,
       yOffset: `${(yOffsetValue * 4.5).toFixed(2)}px`, // Funnel factor
-      size: "size-20 md:size-24", 
+      size: "size-10 sm:size-14 md:size-20 lg:size-24",
     };
   });
 
@@ -136,7 +136,7 @@ export default function UnifiedPage() {
                               } as React.CSSProperties}
                             >
                                 <div className="flex flex-col items-center gap-1">
-                                    <div className={cn("p-6 border bg-black/90 border-white/10 shadow-2xl transition-transform hover:scale-110", item.color)}>
+                                    <div className={cn("p-3 sm:p-4 md:p-6 border bg-black/90 border-white/10 shadow-2xl transition-transform hover:scale-110", item.color)}>
                                         <item.Icon className={item.size} />
                                     </div>
                                     <span className="text-[10px] font-mono text-white/40 font-bold uppercase tracking-[0.2em]">{item.label}</span>
@@ -146,22 +146,22 @@ export default function UnifiedPage() {
                       </div>
 
                       {/* THE PARSER CORE (CENTER) */}
-                      <div className="relative z-20 flex flex-col items-center gap-4 px-12">
-                          <div className="size-64 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_100px_rgba(0,124,90,0.3)] bg-[#0A0A0F]/80 backdrop-blur-xl">
+                      <div className="relative z-20 flex flex-col items-center gap-4 px-4 sm:px-8 md:px-12">
+                          <div className="size-28 sm:size-40 md:size-48 lg:size-64 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_100px_rgba(0,124,90,0.3)] bg-[#0A0A0F]/80 backdrop-blur-xl">
                               <div className="relative">
-                                <Database className="size-28 text-primary" />
-                                <div className="absolute inset-0 size-28 bg-primary/30 blur-3xl animate-pulse" />
+                                <Database className="size-12 sm:size-16 md:size-20 lg:size-28 text-primary" />
+                                <div className="absolute inset-0 size-12 sm:size-16 md:size-20 lg:size-28 bg-primary/30 blur-3xl animate-pulse" />
                               </div>
                           </div>
                           <div className="flex flex-col items-center gap-0.5">
                               <span className="text-[11px] font-mono font-bold text-primary uppercase tracking-[0.4em]">Parser_Core_Active</span>
-                              <span className="text-[8px] font-mono text-white/40 uppercase tracking-widest animate-pulse">Synthesizing_Intelligence...</span>
+                              <span className="text-[10px] md:text-[8px] font-mono text-white/40 uppercase tracking-widest animate-pulse">Synthesizing_Intelligence...</span>
                           </div>
                       </div>
 
                       {/* THE SINGLE FILE LINE (CENTER TO RIGHT) */}
                       <div className="absolute right-0 w-1/2 h-full overflow-hidden pointer-events-none">
-                          <div className="flex flex-col justify-center h-full gap-4 pl-12">
+                          <div className="flex flex-col justify-center h-full gap-4 pl-4 sm:pl-8 md:pl-12">
                               {[
                                 "0x1A2B_RFI_VERIFIED",
                                 "0x3C4D_CONTRACT_SIGNED",
@@ -173,7 +173,7 @@ export default function UnifiedPage() {
                               ].map((str, i) => (
                                 <div 
                                     key={i} 
-                                    className="animate-data-stream-single opacity-0 text-[11px] font-mono text-primary font-bold whitespace-nowrap bg-primary/5 px-6 py-3 border-l-4 border-primary shadow-sm" 
+                                    className="animate-data-stream-single opacity-0 text-[9px] sm:text-[10px] md:text-[11px] font-mono text-primary font-bold whitespace-nowrap bg-primary/5 px-3 py-2 sm:px-4 md:px-6 md:py-3 border-l-4 border-primary shadow-sm"
                                     style={{ animationDelay: `${i * 0.7}s` }}
                                 >
                                     {str}
@@ -286,7 +286,7 @@ export default function UnifiedPage() {
                     <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-3 relative z-20 shrink-0">
                         <div className="flex items-center justify-between">
                             <CardTitle className="text-[10px] tracking-[0.3em]">Geospatial_Intel_Feed</CardTitle>
-                            <span className="text-[8px] font-mono text-primary uppercase">LAT: 34.0522° N</span>
+                            <span className="text-[10px] md:text-[8px] font-mono text-primary uppercase">LAT: 34.0522° N</span>
                         </div>
                     </CardHeader>
                     <CardContent className="p-0 relative h-full">
@@ -345,7 +345,7 @@ export default function UnifiedPage() {
                                                 "size-1 rounded-full",
                                                 doc.status === 'VERIFIED' ? 'bg-primary' : doc.status === 'AUDIT' ? 'bg-yellow-500' : 'bg-muted-foreground'
                                             )} />
-                                            <span className="text-[8px] font-bold uppercase tracking-widest text-white/70">{doc.status}</span>
+                                            <span className="text-[10px] md:text-[8px] font-bold uppercase tracking-widest text-white/70">{doc.status}</span>
                                         </div>
                                     </TableCell>
                                     <TableCell className="text-right text-[9px] font-mono text-muted-foreground uppercase">{doc.sync}</TableCell>
