@@ -409,3 +409,27 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 EOF
 )" && git push
 xcrun simctl boot 1311D811-5479-4E95-B2FD-67CD57CE77F6 2>/dev/null; open -a Simulator; sleep 6 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion"
+xcrun simctl boot 1311D811-5479-4E95-B2FD-67CD57CE77F6 2>/dev/null; open -a Simulator; sleep 6 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion"
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1
+npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion"
+xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-check.png
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002"
+sleep 3 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002/?s=ingestion"
+sleep 2 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-check2.png
+npm run build 2>&1 | tail -5
+git add 'src/app/(dashboard)/page.tsx' src/app/globals.css && git commit -m "$(cat <<'EOF'
+fix: make ingestion cards visible by starting inside container bounds
+
+- Move card starting position from left:-100px (clipped) to left:8px (visible)
+- Adjust tornado animation to fade in from 0 opacity and translate 40vw
+- Add subtle rotation to vacuum effect for more dynamic feel
+- Reduce card sizes slightly for mobile fit
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1
+npm run dev

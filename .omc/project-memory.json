@@ -139,8 +139,8 @@
   "hotPaths": [
     {
       "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 58,
-      "lastAccessed": 1772406241286,
+      "accessCount": 60,
+      "lastAccessed": 1772407397240,
       "type": "file"
     },
     {
@@ -151,8 +151,8 @@
     },
     {
       "path": "src/app/globals.css",
-      "accessCount": 8,
-      "lastAccessed": 1772406125478,
+      "accessCount": 10,
+      "lastAccessed": 1772407374643,
       "type": "file"
     },
     {
