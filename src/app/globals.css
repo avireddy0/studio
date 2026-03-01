@@ -81,22 +81,17 @@
 /* ANIMATIONS */
 @keyframes tornado-ingest {
   0% { 
-    transform: translate(-200px, 0) rotate(0deg) scale(3.5); 
+    transform: translate(-200px, 0) rotate(0deg) scale(1.6); 
     opacity: 1; 
   }
-  50% {
-    /* Funnel shape convergence point */
-    transform: translate(calc(50vw * 0.4), var(--y-offset)) rotate(180deg) scale(1.5);
-    opacity: 1;
-  }
   100% { 
-    /* Hits the center core without fading until absorption */
-    transform: translate(calc(50vw - 30px), 0) rotate(360deg) scale(0); 
+    /* Funnel into the center. y-offset is calculated in the component to target center of parser */
+    transform: translate(calc(50vw - 40px), var(--y-offset)) rotate(360deg) scale(0); 
     opacity: 1; 
   }
 }
 .animate-tornado {
-  animation: tornado-ingest var(--duration) infinite ease-in;
+  animation: tornado-ingest var(--duration) infinite linear;
   animation-delay: var(--delay);
 }
 

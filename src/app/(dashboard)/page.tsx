@@ -41,17 +41,22 @@ export default function UnifiedPage() {
 
   const satelliteImage = PlaceHolderImages.find(img => img.id === 'satellite-map');
 
-  // High-Density Tornado Generator - 160 elements for maximum anxiety, slowed down by 40%
+  // High-Density Tornado Generator - 160 elements funneling into center, 40% slower
   const chaoticInputs = Array.from({ length: 160 }).map((_, i) => {
     const icons = [FileText, FileSpreadsheet, FileCode, FileSignature, Mail, Phone, MessageSquare];
     const Icon = icons[i % icons.length];
+    const topPercent = Math.random() * 100;
+    // Calculate yOffset to meet at the vertical middle (50% of the container)
+    // If top is 20%, yOffset needs to be +30% of height to reach 50%
+    const yOffsetValue = 50 - topPercent;
+    
     return {
       Icon,
       delay: `${(Math.random() * 8).toFixed(2)}s`,
-      duration: `${(5.0 + Math.random() * 4.5).toFixed(2)}s`, // Slowed down by 40%
-      top: `${(Math.random() * 100).toFixed(2)}%`,
-      yOffset: `${(Math.random() * 400 - 200).toFixed(2)}px`,
-      size: i % 10 === 0 ? "size-10" : "size-7", // SIGNIFICANTLY BIGGER ICONS
+      duration: `${(7.0 + Math.random() * 5.0).toFixed(2)}s`, // 40% slower than previous base
+      top: `${topPercent.toFixed(2)}%`,
+      yOffset: `${(yOffsetValue * 6).toFixed(2)}px`, // Scaling factor for the translation
+      size: i % 10 === 0 ? "size-14" : "size-10", // Significantly bigger icons
     };
   });
 
@@ -62,7 +67,7 @@ export default function UnifiedPage() {
     >
       
       {/* SECTION 01: INSTITUTIONAL HERO (WHITE) */}
-      <section id="hero" className="snap-start relative flex flex-col items-center justify-center p-6 bg-white text-black overflow-hidden min-h-screen w-full">
+      <section id="hero" className="snap-start relative flex flex-col items-center justify-center p-6 bg-white text-black overflow-hidden h-screen w-full shrink-0">
         <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] tactical-grid" />
         <div className="relative z-10 max-w-6xl w-full">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-primary/20 bg-primary/5 text-[9px] font-bold uppercase tracking-[0.4em] text-primary mb-12">
@@ -91,7 +96,7 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 02: INGESTION PIPELINE (OBSIDIAN) - CHAOS TO CONTROL */}
-      <section id="ingestion" className="snap-start relative h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden">
+      <section id="ingestion" className="snap-start relative h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden shrink-0">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
           <div className="relative z-10 w-full max-w-7xl h-full flex flex-col justify-between py-12 gap-8">
               
@@ -106,7 +111,7 @@ export default function UnifiedPage() {
                   </p>
               </div>
               
-              <div className="relative w-full flex-1 flex items-center bg-white/[0.02] border border-white/5">
+              <div className="relative w-full flex-1 flex items-center bg-white/[0.02] border border-white/5 overflow-hidden">
                   <div className="absolute inset-0 flex items-center justify-center">
                       
                       {/* THE CHAOTIC TORNADO FUNNEL (LEFT TO CENTER) */}
@@ -114,7 +119,7 @@ export default function UnifiedPage() {
                         {chaoticInputs.map((item, i) => (
                             <div 
                               key={i} 
-                              className="absolute left-[-100px] animate-tornado text-white/30"
+                              className="absolute left-[-150px] animate-tornado text-white/40"
                               style={{ 
                                   "--delay": item.delay,
                                   "--duration": item.duration,
@@ -169,15 +174,15 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 03: INTELLIGENCE COMMAND (WHITE) */}
-      <section id="intel" className="snap-start relative min-h-screen w-full bg-white text-black flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden">
+      <section id="intel" className="snap-start relative h-screen w-full bg-white text-black flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden shrink-0">
         <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] tactical-grid" />
-        <div className="relative z-10 w-full max-w-7xl h-[85vh] flex flex-col">
+        <div className="relative z-10 w-full max-w-7xl h-full flex flex-col">
             <div className="flex items-center gap-3 mb-6 shrink-0">
                 <Terminal className="size-4 text-primary" />
                 <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/40">03_Intelligence_Terminal_Core</h2>
             </div>
             
-            <div className="mb-8">
+            <div className="mb-8 shrink-0">
               <h2 className="text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Intelligence Command.</h2>
               <p className="text-black/60 max-w-xl text-lg font-medium mt-4">Verified institutional oracle. Direct access to cross-platform project truth.</p>
             </div>
@@ -200,15 +205,15 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 04: CONTEXT FUSION (OBSIDIAN) */}
-      <section id="fusion" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
+      <section id="fusion" className="snap-start relative h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 shrink-0">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
-          <div className="relative z-10 w-full max-w-7xl flex flex-col">
+          <div className="relative z-10 w-full max-w-7xl flex flex-col h-full">
               <div className="flex items-center gap-3 mb-6 shrink-0">
                   <Zap className="size-4 text-primary" />
                   <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">04_Context_Fusion_Engine</h2>
               </div>
-              <Card className="bg-[#12121A] border-[#1E1E2E]">
-                  <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-10">
+              <Card className="bg-[#12121A] border-[#1E1E2E] flex-1 flex flex-col overflow-hidden">
+                  <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-10 shrink-0">
                       <div className="flex items-center justify-between">
                           <div className="flex flex-col gap-1">
                               <CardTitle className="text-[16px] tracking-[0.3em]">Context Is Everything</CardTitle>
@@ -217,7 +222,7 @@ export default function UnifiedPage() {
                           <span className="text-[9px] font-mono text-muted-foreground uppercase">Correlation: 0.94 Sigma</span>
                       </div>
                   </CardHeader>
-                  <CardContent className="p-8 md:p-16">
+                  <CardContent className="p-8 md:p-16 flex-1 overflow-auto">
                       <ContextSummarizer />
                   </CardContent>
               </Card>
@@ -225,24 +230,24 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 05: BIM + TELEMETRY (OBSIDIAN) */}
-      <section id="tactical-bim" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
+      <section id="tactical-bim" className="snap-start relative h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 shrink-0">
         <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
-        <div className="relative z-10 w-full max-w-7xl h-[85vh] grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 flex flex-col">
+        <div className="relative z-10 w-full max-w-7xl h-full grid grid-cols-1 lg:grid-cols-3 gap-6 overflow-hidden">
+            <div className="lg:col-span-2 flex flex-col h-full">
                 <div className="flex items-center gap-3 mb-4 shrink-0">
                     <Layers className="size-4 text-primary" />
                     <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">05_Tactical_Lidar_Bim</h2>
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 overflow-hidden">
                     <TacticalBimOverlay />
                 </div>
             </div>
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6 h-full">
                 <div className="flex items-center gap-3 mb-4 shrink-0">
                     <Activity className="size-4 text-primary" />
                     <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">Realtime_Telemetry</h2>
                 </div>
-                <div className="grid grid-cols-1 gap-4 flex-1">
+                <div className="grid grid-cols-1 gap-4 flex-1 overflow-auto no-scrollbar">
                     {[
                     { label: 'TOTAL_PROJECTS', value: '47', icon: Target },
                     { label: 'ACTIVE_SITES', value: '12', icon: MapIcon },
@@ -259,7 +264,7 @@ export default function UnifiedPage() {
                             {metric.value}
                         </div>
                         </CardContent>
-                    </Card>
+                    </Card> Metric
                     ))}
                 </div>
             </div>
@@ -267,9 +272,9 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 06: SITE + DOCUMENTS (OBSIDIAN) */}
-      <section id="site-docs" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
+      <section id="site-docs" className="snap-start relative h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 shrink-0">
         <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
-        <div className="relative z-10 w-full max-w-7xl h-[85vh] flex flex-col gap-12">
+        <div className="relative z-10 w-full max-w-7xl h-full flex flex-col gap-12 overflow-hidden">
             <div className="flex items-center gap-3 mb-2 shrink-0">
                 <MapIcon className="size-4 text-primary" />
                 <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">06_Site_Doc_Repository</h2>
@@ -278,7 +283,7 @@ export default function UnifiedPage() {
             <div className="flex-1 overflow-hidden flex flex-col gap-8">
                 {/* SATELLITE MAP (TOP HALF) */}
                 <Card className="bg-[#12121A] border-[#1E1E2E] relative overflow-hidden flex-1 min-h-[300px]">
-                    <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-3 relative z-20">
+                    <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-3 relative z-20 shrink-0">
                         <div className="flex items-center justify-between">
                             <CardTitle className="text-[10px] tracking-[0.3em]">Geospatial_Intel_Feed</CardTitle>
                             <span className="text-[8px] font-mono text-primary uppercase">LAT: 34.0522° N</span>
@@ -306,7 +311,7 @@ export default function UnifiedPage() {
 
                 {/* DOCUMENTS TABLE (BOTTOM HALF) */}
                 <Card className="bg-[#12121A] border-[#1E1E2E] overflow-hidden flex-1 min-h-[300px] flex flex-col">
-                    <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-3">
+                    <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-3 shrink-0">
                         <CardTitle className="text-[10px] tracking-[0.3em]">Document_Intel_Vault</CardTitle>
                     </CardHeader>
                     <CardContent className="p-0 flex-1 overflow-auto no-scrollbar">
