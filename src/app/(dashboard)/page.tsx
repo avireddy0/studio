@@ -23,6 +23,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChatInterface } from "@/components/query/chat-interface";
 import { ContextSummarizer } from "@/components/context/context-summarizer";
 import { TacticalBimOverlay } from "@/components/visualizations/tactical-bim-overlay";
+import { IngestionFunnel } from "@/components/visualizations/ingestion-funnel";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 
@@ -45,29 +46,6 @@ export default function UnifiedPage() {
     return <div className="min-h-screen bg-white" />;
   }
 
-  // Ingestion funnel — white cards with icons vacuumed from left into audit core
-  const ingestItems = [
-    { Icon: FileText, label: "PDF", color: "text-red-500" },
-    { Icon: FileSpreadsheet, label: "XLS", color: "text-green-600" },
-    { Icon: FileSignature, label: "RFI", color: "text-amber-500" },
-    { Icon: FileCode, label: "BIM", color: "text-purple-500" },
-    { Icon: Mail, label: "EMAIL", color: "text-blue-500" },
-    { Icon: Phone, label: "CALL", color: "text-emerald-500" },
-    { Icon: MessageSquare, label: "TEXT", color: "text-pink-500" },
-    { Icon: FileText, label: "INVOICE", color: "text-orange-500" },
-    { Icon: Target, label: "PHOTO", color: "text-sky-500" },
-  ].map((item, i) => {
-    const topPercent = 2 + (i / 8) * 96;
-    const yOffset = (50 - topPercent) * 5.5;
-    const duration = 5.2 + i * 0.25;
-    return {
-      ...item,
-      delay: `-${((i / 9) * duration).toFixed(2)}s`,
-      duration: `${duration.toFixed(2)}s`,
-      top: `${topPercent.toFixed(1)}%`,
-      yOffset: `${yOffset.toFixed(1)}px`,
-    };
-  });
 
   return (
     <div
@@ -120,49 +98,8 @@ export default function UnifiedPage() {
                   </p>
               </div>
 
-              <div className="relative w-full flex-1 flex items-center bg-white/[0.02] border border-white/5 rounded-2xl overflow-hidden">
-
-                  {/* FLYING DOCUMENT CARDS — VACUUMED FROM LEFT INTO AUDIT CORE */}
-                  <div className="absolute left-0 w-[55%] h-full pointer-events-none">
-                    {ingestItems.map((item, i) => (
-                      <div
-                        key={i}
-                        className="absolute left-[8px] sm:left-[12px] md:left-[20px] animate-tornado"
-                        style={{
-                          animationDelay: item.delay,
-                          animationDuration: item.duration,
-                          "--y-offset": item.yOffset,
-                          top: item.top,
-                        } as React.CSSProperties}
-                      >
-                        <div className="bg-white rounded-lg shadow-2xl p-2 sm:p-3 md:p-4 flex flex-col items-center gap-1 sm:gap-1.5">
-                          <item.Icon className={cn("size-7 sm:size-10 md:size-14 lg:size-16", item.color)} />
-                          <span className="text-[6px] sm:text-[8px] md:text-[9px] font-bold text-gray-500 uppercase tracking-wider">{item.label}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* AUDIT CORE — CENTER (ROUNDED RECTANGLE WITH INDIGO GLOW) */}
-                  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-                    <div className="relative w-32 sm:w-44 md:w-56 lg:w-64 h-36 sm:h-48 md:h-56 lg:h-64 rounded-3xl bg-[#0A0A14] border border-indigo-500/30 shadow-[0_0_80px_rgba(99,102,241,0.15)] flex flex-col items-center justify-center overflow-hidden">
-                      {/* Horizontal scan line */}
-                      <div className="absolute inset-x-0 h-[2px] bg-indigo-400/60 shadow-[0_0_20px_rgba(99,102,241,0.5)] animate-scan-line" />
-                      <span className="text-3xl sm:text-4xl md:text-5xl font-mono text-indigo-300/50 mb-2 sm:mb-3">&#123; &#125;</span>
-                      <span className="text-[9px] sm:text-[11px] md:text-sm font-bold uppercase tracking-[0.3em] text-white/80">Audit Core</span>
-                    </div>
-                  </div>
-
-                  {/* VERIFIED JSON OUTPUT — RIGHT SIDE */}
-                  <div className="absolute right-[3%] sm:right-[5%] md:right-[8%] top-1/2 -translate-y-1/2 flex flex-col gap-2 sm:gap-3">
-                    <div className="bg-primary/10 border border-primary/20 rounded-lg px-3 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4 shadow-lg animate-float-doc" style={{ animationDelay: '-1s' }}>
-                      <pre className="text-[7px] sm:text-[9px] md:text-[11px] font-mono text-primary leading-relaxed whitespace-pre">{`{ "permit": "F1",\n  "status": "PASS" }`}</pre>
-                    </div>
-                    <div className="bg-primary/10 border border-primary/20 rounded-lg px-3 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4 shadow-lg opacity-50 translate-x-2 animate-float-doc" style={{ animationDelay: '-3s' }}>
-                      <pre className="text-[7px] sm:text-[9px] md:text-[11px] font-mono text-primary leading-relaxed whitespace-pre">{`{ "rfi": "042",\n  "stage": "DRAFT" }`}</pre>
-                    </div>
-                  </div>
-
+              <div className="relative w-full flex-1 min-h-0">
+                  <IngestionFunnel />
               </div>
           </div>
       </section>
