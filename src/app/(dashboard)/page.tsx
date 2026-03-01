@@ -31,6 +31,14 @@ export default function UnifiedPage() {
 
   useEffect(() => {
     setMounted(true);
+    // Auto-scroll to section via query param (for Simulator screenshots)
+    const params = new URLSearchParams(window.location.search);
+    const section = params.get('s');
+    if (section) {
+      setTimeout(() => {
+        document.getElementById(section)?.scrollIntoView({ behavior: 'instant' });
+      }, 500);
+    }
   }, []);
 
   if (!mounted) {
@@ -282,77 +290,85 @@ export default function UnifiedPage() {
                             <span className="text-[8px] font-mono text-primary uppercase hidden sm:inline">LAT: 34.0522° N | LONG: -118.2437° W</span>
                         </div>
                     </CardHeader>
-                    <CardContent className="p-0 relative h-full">
-                        <svg viewBox="0 0 800 400" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
-                            <rect width="800" height="400" fill="#0D1117" />
+                    <CardContent className="p-0 relative h-full overflow-hidden">
+                        {/* Satellite imagery background (ESRI World Imagery — downtown LA construction corridor) */}
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                            src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=-118.2475,34.0495,-118.2395,34.0555&bboxSR=4326&size=1600,800&format=png&f=image"
+                            alt=""
+                            className="absolute inset-0 w-full h-full object-cover"
+                            loading="lazy"
+                        />
+                        {/* Dark tactical tint */}
+                        <div className="absolute inset-0 bg-[#0A0A0F]/60 mix-blend-multiply" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0F]/40 via-transparent to-[#0A0A0F]/50" />
 
-                            {/* Grid */}
+                        {/* Tactical SVG overlay */}
+                        <svg viewBox="0 0 800 400" className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice">
+                            {/* Grid overlay */}
                             {Array.from({length: 21}).map((_, i) => (
                               <g key={`g-${i}`}>
-                                <line x1={i * 40} y1={0} x2={i * 40} y2={400} stroke="rgba(0,124,90,0.06)" strokeWidth="0.5" />
-                                <line x1={0} y1={i * 40} x2={800} y2={i * 40} stroke="rgba(0,124,90,0.06)" strokeWidth="0.5" />
+                                <line x1={i * 40} y1={0} x2={i * 40} y2={400} stroke="rgba(0,124,90,0.12)" strokeWidth="0.5" />
+                                <line x1={0} y1={i * 40} x2={800} y2={i * 40} stroke="rgba(0,124,90,0.12)" strokeWidth="0.5" />
                               </g>
                             ))}
 
-                            {/* Roads */}
-                            <line x1={0} y1={200} x2={800} y2={200} stroke="rgba(255,255,255,0.08)" strokeWidth="4" />
-                            <line x1={400} y1={0} x2={400} y2={400} stroke="rgba(255,255,255,0.08)" strokeWidth="3" />
-                            <line x1={100} y1={0} x2={700} y2={400} stroke="rgba(255,255,255,0.04)" strokeWidth="2" />
-                            <line x1={200} y1={400} x2={600} y2={0} stroke="rgba(255,255,255,0.03)" strokeWidth="2" />
-
                             {/* Building footprints */}
-                            <rect x={280} y={100} width={120} height={80} fill="rgba(0,124,90,0.15)" stroke="rgba(0,124,90,0.5)" strokeWidth="1.5" />
-                            <text x={340} y={135} fill="rgba(0,124,90,0.8)" fontSize="8" fontFamily="monospace" textAnchor="middle" fontWeight="bold">PHOENIX_A</text>
-                            <text x={340} y={148} fill="rgba(0,124,90,0.5)" fontSize="6" fontFamily="monospace" textAnchor="middle">ACTIVE SITE</text>
+                            <rect x={280} y={100} width={120} height={80} fill="rgba(0,124,90,0.2)" stroke="rgba(0,124,90,0.7)" strokeWidth="1.5" />
+                            <text x={340} y={132} fill="rgba(0,124,90,1)" fontSize="8" fontFamily="monospace" textAnchor="middle" fontWeight="bold">PHOENIX_A</text>
+                            <text x={340} y={145} fill="rgba(0,124,90,0.7)" fontSize="6" fontFamily="monospace" textAnchor="middle">ACTIVE SITE</text>
 
-                            <rect x={450} y={120} width={80} height={60} fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-                            <text x={490} y={155} fill="rgba(255,255,255,0.15)" fontSize="6" fontFamily="monospace" textAnchor="middle">BLDG_B</text>
+                            <rect x={450} y={120} width={80} height={60} fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+                            <text x={490} y={155} fill="rgba(255,255,255,0.35)" fontSize="6" fontFamily="monospace" textAnchor="middle">BLDG_B</text>
 
-                            <rect x={180} y={230} width={100} height={70} fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-                            <text x={230} y={270} fill="rgba(255,255,255,0.15)" fontSize="6" fontFamily="monospace" textAnchor="middle">WAREHOUSE</text>
+                            <rect x={180} y={230} width={100} height={70} fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+                            <text x={230} y={270} fill="rgba(255,255,255,0.35)" fontSize="6" fontFamily="monospace" textAnchor="middle">WAREHOUSE</text>
 
-                            <rect x={500} y={250} width={140} height={90} fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-                            <text x={570} y={300} fill="rgba(255,255,255,0.15)" fontSize="6" fontFamily="monospace" textAnchor="middle">PARKING_STR</text>
+                            <rect x={500} y={250} width={140} height={90} fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+                            <text x={570} y={300} fill="rgba(255,255,255,0.35)" fontSize="6" fontFamily="monospace" textAnchor="middle">PARKING_STR</text>
 
-                            <rect x={120} y={80} width={60} height={50} fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-                            <rect x={600} y={60} width={90} height={55} fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-                            <rect x={650} y={280} width={70} height={50} fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+                            <rect x={120} y={80} width={60} height={50} fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
+                            <rect x={600} y={60} width={90} height={55} fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
+                            <rect x={650} y={280} width={70} height={50} fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
 
                             {/* Active site pulsing marker */}
-                            <circle cx={340} cy={140} r={25} fill="none" stroke="rgba(0,124,90,0.4)" strokeWidth="1">
-                              <animate attributeName="r" values="25;40;25" dur="3s" repeatCount="indefinite" />
-                              <animate attributeName="opacity" values="0.4;0.05;0.4" dur="3s" repeatCount="indefinite" />
+                            <circle cx={340} cy={140} r={25} fill="none" stroke="rgba(0,124,90,0.5)" strokeWidth="1.5">
+                              <animate attributeName="r" values="25;45;25" dur="3s" repeatCount="indefinite" />
+                              <animate attributeName="opacity" values="0.5;0.05;0.5" dur="3s" repeatCount="indefinite" />
                             </circle>
-                            <circle cx={340} cy={140} r={15} fill="none" stroke="rgba(0,124,90,0.2)" strokeWidth="0.5">
-                              <animate attributeName="r" values="15;30;15" dur="3s" repeatCount="indefinite" />
-                              <animate attributeName="opacity" values="0.3;0;0.3" dur="3s" repeatCount="indefinite" />
+                            <circle cx={340} cy={140} r={15} fill="none" stroke="rgba(0,124,90,0.3)" strokeWidth="0.5">
+                              <animate attributeName="r" values="15;35;15" dur="3s" repeatCount="indefinite" />
+                              <animate attributeName="opacity" values="0.4;0;0.4" dur="3s" repeatCount="indefinite" />
                             </circle>
-                            <circle cx={340} cy={140} r={4} fill="rgba(0,124,90,1)" />
+                            <circle cx={340} cy={140} r={5} fill="rgba(0,124,90,1)" />
+                            <circle cx={340} cy={140} r={8} fill="none" stroke="rgba(0,124,90,0.8)" strokeWidth="1" />
 
                             {/* Secondary markers */}
-                            <circle cx={490} cy={150} r={3} fill="rgba(255,255,255,0.25)" />
-                            <circle cx={230} cy={265} r={3} fill="rgba(255,255,255,0.25)" />
-                            <circle cx={570} cy={295} r={3} fill="rgba(245,158,11,0.5)" />
+                            <circle cx={490} cy={150} r={3} fill="rgba(255,255,255,0.4)" />
+                            <circle cx={230} cy={265} r={3} fill="rgba(255,255,255,0.4)" />
+                            <circle cx={570} cy={295} r={4} fill="rgba(245,158,11,0.7)" />
+                            <circle cx={570} cy={295} r={8} fill="none" stroke="rgba(245,158,11,0.3)" strokeWidth="0.5" strokeDasharray="3 2" />
 
                             {/* Zone boundary */}
-                            <rect x={250} y={70} width={200} height={140} fill="none" stroke="rgba(0,124,90,0.2)" strokeWidth="1" strokeDasharray="6 3" />
-                            <text x={255} y={63} fill="rgba(0,124,90,0.4)" fontSize="7" fontFamily="monospace">ZONE_ALPHA — CONTROLLED ACCESS</text>
-
-                            {/* Topographic contour hints */}
-                            <path d="M50,300 Q200,275 350,310 Q500,345 700,285" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-                            <path d="M30,330 Q180,305 330,340 Q500,370 720,310" fill="none" stroke="rgba(255,255,255,0.025)" strokeWidth="1" />
-                            <path d="M80,100 Q250,80 400,95 Q550,110 750,75" fill="none" stroke="rgba(255,255,255,0.02)" strokeWidth="1" />
+                            <rect x={250} y={70} width={200} height={140} fill="none" stroke="rgba(0,124,90,0.35)" strokeWidth="1" strokeDasharray="6 3" />
+                            <text x={255} y={63} fill="rgba(0,124,90,0.6)" fontSize="7" fontFamily="monospace">ZONE_ALPHA — CONTROLLED ACCESS</text>
 
                             {/* Coordinates */}
-                            <text x={12} y={15} fill="rgba(255,255,255,0.12)" fontSize="8" fontFamily="monospace">34.0530°N</text>
-                            <text x={12} y={395} fill="rgba(255,255,255,0.12)" fontSize="8" fontFamily="monospace">34.0510°N</text>
-                            <text x={700} y={15} fill="rgba(255,255,255,0.12)" fontSize="8" fontFamily="monospace">-118.2420°W</text>
-                            <text x={700} y={395} fill="rgba(255,255,255,0.12)" fontSize="8" fontFamily="monospace">-118.2450°W</text>
+                            <text x={12} y={15} fill="rgba(255,255,255,0.3)" fontSize="8" fontFamily="monospace">34.0530°N</text>
+                            <text x={12} y={395} fill="rgba(255,255,255,0.3)" fontSize="8" fontFamily="monospace">34.0510°N</text>
+                            <text x={700} y={15} fill="rgba(255,255,255,0.3)" fontSize="8" fontFamily="monospace">-118.2420°W</text>
+                            <text x={700} y={395} fill="rgba(255,255,255,0.3)" fontSize="8" fontFamily="monospace">-118.2450°W</text>
+
+                            {/* Scan line */}
+                            <line x1={0} y1={0} x2={800} y2={0} stroke="rgba(0,124,90,0.4)" strokeWidth="1">
+                              <animate attributeName="y1" values="0;400;0" dur="8s" repeatCount="indefinite" />
+                              <animate attributeName="y2" values="0;400;0" dur="8s" repeatCount="indefinite" />
+                            </line>
                         </svg>
 
-                        <div className="absolute inset-0 tactical-grid opacity-10 pointer-events-none" />
+                        <div className="absolute inset-0 tactical-grid opacity-[0.06] pointer-events-none" />
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-                            <Target className="size-8 text-primary/20" />
+                            <Target className="size-8 text-primary/30" />
                         </div>
                     </CardContent>
                 </Card>
