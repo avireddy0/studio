@@ -519,7 +519,7 @@ export default function DashboardPage() {
         <div className="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-24">
           <div className="flex-1 text-left">
             <span className="text-accent-violet text-[11px] font-black uppercase tracking-[0.3em] mb-6 block">Multi-Stream Normalization</span>
-            <h2 className="text-6xl md:text-8xl font-bold tracking-tighter mb-10 leading-tight">From Chaos <br/> to Intelligence</h2>
+            <h2 className="text-6xl md:text-8xl font-bold tracking-tighter mb-10 leading-tight">From Chaos <br/> to Control</h2>
             <p className="text-2xl text-slate-400 mb-14 leading-relaxed font-medium">
               Construction data lives in silos: thousands of emails, field notes, and broken PDFs. Envision OS ingests it all simultaneously.
             </p>
@@ -560,7 +560,6 @@ export default function DashboardPage() {
 
                 {/* Center: AI Parser Core */}
                 <div className="relative flex items-center justify-center z-20 order-1 md:order-2">
-                    {/* Flow Particles - Hydration Safe */}
                     <div className="absolute inset-0 flex items-center justify-center -z-10 pointer-events-none overflow-visible">
                         {particleStyles.map((style, i) => (
                             <div 
@@ -613,7 +612,6 @@ export default function DashboardPage() {
           </div>
           
           <div className="relative min-h-[650px] w-full flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-0">
-              {/* SOURCE SIGNALS */}
               <div className="flex flex-col gap-6 w-full lg:w-1/3 z-20">
                   {[
                       { label: "Meeting Note: OAC", text: "Authorize lobby upgrade. Use premium marble.", icon: MessageCircle, color: "text-blue-400", delay: "0s" },
@@ -626,12 +624,10 @@ export default function DashboardPage() {
                               <span className={`text-[11px] font-black uppercase tracking-widest ${s.color}`}>{s.label}</span>
                           </div>
                           <p className="text-lg text-slate-300 font-medium leading-relaxed italic">"{s.text}"</p>
-                          <div className="absolute right-0 top-0 bottom-0 w-1 bg-current opacity-20 transition-all group-hover:w-full group-hover:opacity-5"></div>
                       </div>
                   ))}
               </div>
 
-              {/* FUSION CORE */}
               <div className="relative flex items-center justify-center w-full lg:w-1/3 min-h-[300px] lg:min-h-[450px] flex-1">
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                       <div className="size-[250px] lg:size-[400px] border border-primary/20 rounded-full animate-pulse-slow"></div>
@@ -640,13 +636,8 @@ export default function DashboardPage() {
                   <div className="size-36 lg:size-56 bg-primary rounded-full flex items-center justify-center shadow-[0_0_120px_rgba(59,130,246,0.5)] animate-bounce-slow z-10">
                       <Zap className="size-16 lg:size-20 text-white" />
                   </div>
-                  {/* DATA STREAMS */}
-                  <div className="absolute inset-0 flex items-center justify-center -z-0">
-                      <div className="w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent animate-shimmer"></div>
-                  </div>
               </div>
 
-              {/* VERIFIED OUTPUT */}
               <div className="w-full lg:w-1/3 flex justify-center lg:justify-end z-20">
                   <div className="p-10 lg:p-14 rounded-[48px] bg-white text-slate-900 shadow-[0_60px_120px_-30px_rgba(0,0,0,0.6)] animate-in zoom-in duration-1000 delay-1000 border-t-[10px] border-accent-emerald max-w-sm w-full relative overflow-hidden">
                       <div className="flex items-center gap-3 mb-10 text-accent-emerald">
@@ -664,16 +655,13 @@ export default function DashboardPage() {
                               <span className="text-slate-900 font-black text-xl">99.2%</span>
                           </div>
                       </div>
-                      <div className="mt-12 pt-6 flex gap-1.5 justify-center opacity-30">
-                          {[...Array(6)].map((_, i) => <div key={i} className="size-1.5 bg-slate-400 rounded-full"></div>)}
-                      </div>
                   </div>
               </div>
           </div>
         </div>
       </section>
 
-      {/* TELEMETRY FABRIC (DIGITAL TWIN) */}
+      {/* TELEMETRY FABRIC */}
       <section id="architecture" className="py-40 border-t border-white/5 scroll-mt-24">
         <div className="container mx-auto px-6 text-center mb-32">
           <span className="text-accent-violet text-[11px] font-black uppercase tracking-[0.3em] mb-6 block">Digital Twin & Real-time Telemetry</span>
@@ -686,7 +674,7 @@ export default function DashboardPage() {
             <div className="arch-stack">
                 {[
                     { id: "L4: ACTION GATEWAY", name: "Multi-Platform Orchestrator", desc: "Real-time orchestration across 390+ field sensors and platform streams.", icon: Activity, color: "text-blue-400", cls: "layer-high" },
-                    { id: "L3: COGNITIVE FABRIC", name: "Heuristic reasoning engine for data validation.", desc: "Dynamic reasoning across project layers.", icon: Layers, color: "text-violet-400", cls: "layer-mid-high" },
+                    { id: "L3: COGNITIVE FABRIC", name: "Heuristic reasoning engine", desc: "Dynamic reasoning across project layers for data validation.", icon: Layers, color: "text-violet-400", cls: "layer-mid-high" },
                     { id: "L2: UNIFIED CONTEXT", name: "Vector Memory Hub", desc: "Unified vector memory for high-frequency construction telemetry.", icon: Database, color: "text-amber-400", cls: "layer-mid-low" },
                     { id: "L1: TRUTH CORE", name: "Normalized Data Core", desc: "Normalized immutable truth core, secured via SOC2 and AES-256.", icon: Fingerprint, color: "text-emerald-400", cls: "layer-low" }
                 ].map((layer, i) => (
@@ -701,22 +689,14 @@ export default function DashboardPage() {
                                 <h4 className="text-2xl font-bold mb-2 text-white">{layer.name}</h4>
                                 <p className="layer-description">{layer.desc}</p>
                             </div>
-                            <div className="flex flex-col items-end gap-2 shrink-0">
-                                <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Status</span>
-                                <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-accent-emerald text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5">
-                                    <span className="size-1 bg-accent-emerald rounded-full animate-pulse"></span>
-                                    Syncing
-                                </div>
-                            </div>
                         </div>
-                        <div className="layer-glow"></div>
                     </div>
                 ))}
             </div>
         </div>
       </section>
 
-      {/* NEURAL HUB (ECOSYSTEM) */}
+      {/* NEURAL HUB */}
       <section id="ecosystem" className="py-40 border-t border-white/5 scroll-mt-24">
         <div className="container mx-auto px-6 text-center mb-32">
           <span className="text-accent-emerald text-[11px] font-black uppercase tracking-[0.3em] mb-6 block">Connectivity Hub</span>
@@ -769,7 +749,7 @@ export default function DashboardPage() {
                   </div>
                   <div className="p-10 bg-black/40 rounded-[40px] border border-white/5 text-left w-full backdrop-blur-2xl">
                       <h4 className="text-2xl font-bold text-white mb-5">Data Loss Prevention</h4>
-                      <p className="text-lg text-slate-400 leading-relaxed font-medium">Institutional-grade DLP and granular Access Control ensure high-fidelity sensitive data protection. Continuous SOC2/ISO compliance monitoring across 23 data streams.</p>
+                      <p className="text-lg text-slate-400 leading-relaxed font-medium">Institutional-grade DLP and granular Access Control ensure high-fidelity sensitive data protection. Continuous SOC2/ISO compliance monitoring.</p>
                   </div>
               </div>
           </div>
