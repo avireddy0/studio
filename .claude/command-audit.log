@@ -532,3 +532,65 @@ xcrun simctl boot "4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" 2>&1 || true
 sleep 8
 xcrun simctl list devices booted
 npm run build 2>&1
+IPHONE_E="6D376F1D-2AB6-4314-ABA7-E874D263C943"
+IPHONE_PRO="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+IPAD="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138"
+
+rm -f /tmp/studio-responsive/*.png
+
+# Use explicit pairs to avoid zsh indexing issues
+declare -A section_map
+section_map=(
+  [01]="hero"
+  [02]="ingestion"
+  [03]="intel"
+  [04]="fusion"
+  [05]="tactical-bim"
+  [06]="site-docs"
+)
+
+# Process iPhone 16 Pro (already loaded, just needs section 06)
+# Process iPhone 16e and iPad Air (need all sections)
+for num in 01 02 03 04 05 06; do
+  section="${section_map[$num]}"
+  
+  if [ "$section" = "hero" ]; then
+    url="http://localhost:9002"
+  else
+    url="http://localhost:9002/?s=${section}"
+  fi
+
+  # iPhone 16e
+  xcrun simctl openurl "$IPHONE_E" "$url" 2>/dev/null
+  sleep 4
+  xcrun simctl io "$IPHONE_E" screenshot "/tmp/studio-responsive/${num}_${section}_iphone16e.png" 2>/dev/null
+  
+  # iPad Air
+  xcrun simctl openurl "$IPAD" "$url" 2>/dev/null
+  sleep 4
+  xcrun simctl io "$IPAD" screenshot "/tmp/studio-responsive/${num}_${section}_ipadair11.png" 2>/dev/null
+  
+  # iPhone 16 Pro
+  xcrun simctl openurl "$IPHONE_PRO" "$url" 2>/dev/null
+  sleep 4
+  xcrun simctl io "$IPHONE_PRO" screenshot "/tmp/studio-responsive/${num}_${section}_iphone16pro.png" 2>/dev/null
+
+  echo "Section ${num} (${section}) done"
+done
+
+echo ""
+echo "=== All screenshots ==="
+ls -lh /tmp/studio-responsive/
+# Restart the dev server
+kill $(lsof -ti:9002) 2>/dev/null || true
+sleep 2
+npm run dev > /dev/null 2>&1 &
+sleep 8
+curl -s -o /dev/null -w "Server: %{http_code}\n" http://localhost:9002
+npm run build 2>&1
+npm run dev --prefix /Users/avireddy/GitHub/studio 2>&1 &
+sleep 4 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002 2>/dev/null
+curl -s http://localhost:9002 2>&1 | head -20
+cat /private/tmp/claude-501/-Users-avireddy-GitHub-studio/tasks/bts9wnr0o.output 2>/dev/null | tail -30
+xcrun simctl list devices | grep -E "Booted" | head -5
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion" && sleep 4 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-funnel-check.png && echo "screenshot taken"
