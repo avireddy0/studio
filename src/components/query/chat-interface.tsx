@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -5,7 +6,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { handleQuery } from "@/lib/actions";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Send, Loader2, MessageSquare, Zap } from "lucide-react";
+import { Send, Loader2, Zap, ArrowRight } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage, type Message } from "@/components/query/chat-message";
 import { useToast } from "@/hooks/use-toast";
@@ -16,23 +17,34 @@ const initialState = {
   error: null,
 };
 
+const SUGGESTED_PROMPTS = [
+  "Analyze RFI #202",
+  "Summarize last meeting",
+  "Predict schedule delay",
+  "Check budget variance"
+];
+
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
     <Button 
       type="submit" 
       size="icon" 
-      aria-label="Send message" 
       disabled={pending}
-      className="bg-white text-[#007C5A] hover:bg-white/90 rounded-none h-10 w-10"
+      className="bg-[#007C5A] text-white hover:bg-[#007C5A]/90 rounded-full h-8 w-8 transition-all shrink-0"
     >
-      {pending ? <Loader2 className="animate-spin" /> : <Send className="size-4" />}
+      {pending ? <Loader2 className="animate-spin size-4" /> : <Send className="size-4" />}
     </Button>
   );
 }
 
 export function ChatInterface() {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    { 
+      role: "ai", 
+      content: "Protocol initialized. Envision OS Intelligence Core is active. Awaiting instruction set." 
+    }
+  ]);
   const [formState, formAction] = useFormState(handleQuery, initialState);
   const formRef = useRef<HTMLFormElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -51,7 +63,8 @@ export function ChatInterface() {
         title: "System Error",
         description: "Protocol interruption detected. Re-attempt transmission.",
       });
-      setMessages((prev) => prev.slice(0, -1)); // Remove the loading message
+      // Remove the loading message if it exists
+      setMessages((prev) => prev.filter(m => m.content !== "ORCHESTRATING_INTEL..."));
     }
   }, [formState, toast]);
 
@@ -77,39 +90,49 @@ export function ChatInterface() {
     }
   };
 
+  const handleSuggestedClick = (prompt: string) => {
+    const formData = new FormData();
+    formData.append("query", prompt);
+    handleFormSubmit(formData);
+  };
+
   return (
-    <div className="flex h-full flex-col bg-transparent">
-      <ScrollArea className="flex-1 p-6" ref={scrollAreaRef}>
-        <div className="max-w-4xl mx-auto w-full">
-            {messages.length === 0 ? (
-                <div className="flex flex-col items-center justify-center min-h-[60vh] text-center text-white/60">
-                    <Zap size={64} className="mb-6 text-white/20 animate-pulse" />
-                    <h2 className="text-3xl font-bold text-white mb-2 uppercase tracking-tighter">AI_COMMAND_INIT</h2>
-                    <p className="text-xs font-mono uppercase tracking-[0.3em]">Awaiting Instruction_Set</p>
-                </div>
-            ) : (
-                messages.map((msg, index) => <ChatMessage key={index} message={msg} />)
-            )}
+    <div className="flex h-full flex-col bg-transparent relative z-10">
+      <ScrollArea className="flex-1 px-4 md:px-8 py-6" ref={scrollAreaRef}>
+        <div className="max-w-3xl mx-auto w-full space-y-2">
+            {messages.map((msg, index) => <ChatMessage key={index} message={msg} />)}
         </div>
       </ScrollArea>
-      <div className="bg-black/20 backdrop-blur-md p-6 border-t border-white/10">
+
+      <div className="bg-white/80 backdrop-blur-xl p-4 md:p-6 border-t border-black/5">
+        {/* SUGGESTED PROMPTS */}
+        <div className="max-w-3xl mx-auto flex gap-2 overflow-x-auto pb-4 no-scrollbar">
+            {SUGGESTED_PROMPTS.map((prompt, i) => (
+                <button
+                    key={i}
+                    onClick={() => handleSuggestedClick(prompt)}
+                    className="px-4 py-1.5 bg-secondary/50 hover:bg-secondary border border-black/5 text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap text-black/60 hover:text-black"
+                >
+                    {prompt}
+                </button>
+            ))}
+        </div>
+
         <form
           ref={formRef}
           action={handleFormSubmit}
-          className="relative mx-auto max-w-4xl"
+          className="relative mx-auto max-w-3xl flex items-center gap-2 bg-[#F2F2F7] rounded-[24px] px-2 py-1.5 border border-black/5"
         >
           <Input
             name="query"
-            placeholder="ENTER COMMAND OR QUERY..."
-            className="bg-white/10 border-white/20 text-white placeholder:text-white/40 h-14 rounded-none pr-16 focus-visible:ring-white/30 font-mono text-sm tracking-widest"
+            placeholder="iMessage"
+            className="bg-transparent border-none text-black placeholder:text-black/30 h-10 focus-visible:ring-0 font-sans text-base shadow-none"
             autoComplete="off"
           />
-          <div className="absolute right-2 top-1/2 -translate-y-1/2">
-            <SubmitButton />
-          </div>
+          <SubmitButton />
         </form>
         <div className="mt-4 flex justify-center">
-            <p className="text-[8px] font-mono text-white/30 uppercase tracking-[0.5em]">Secure_Institutional_Node_Locked</p>
+            <p className="text-[8px] font-mono text-black/20 uppercase tracking-[0.5em]">Institutional Intelligence Gateway</p>
         </div>
       </div>
     </div>
