@@ -1,8 +1,8 @@
 
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useState, useRef, useEffect, useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { handleQuery } from "@/lib/actions";
 import { Input } from "@/components/ui/input";
 import { Send, Loader2 } from "lucide-react";
@@ -40,7 +40,7 @@ function SubmitButton() {
 
 export function ChatInterface() {
   const pathname = usePathname();
-  const isDashboard = pathname === '/dashboard';
+  const isDashboard = pathname === '/dashboard' || pathname === '/';
   
   const [messages, setMessages] = useState<Message[]>([
     { 
@@ -48,7 +48,8 @@ export function ChatInterface() {
       content: "Protocol initialized. Envision OS Intelligence Core is active. Awaiting instruction set." 
     }
   ]);
-  const [formState, formAction] = useFormState(handleQuery, initialState);
+  
+  const [formState, formAction] = useActionState(handleQuery, initialState);
   const formRef = useRef<HTMLFormElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
