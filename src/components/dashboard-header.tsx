@@ -1,6 +1,7 @@
+
 'use client';
 
-import { Activity, Wifi, Monitor, Layers, Terminal, Database, Zap, Map as MapIcon, Home, FileText } from "lucide-react";
+import { Activity, Monitor, Layers, Terminal, Database, Zap, Map as MapIcon, Home, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -12,13 +13,11 @@ type DashboardHeaderProps = {
 
 const navItems = [
   { href: "/#hero", label: "01_VISION", icon: Home },
-  { href: "/#metrics", label: "02_METRICS", icon: Activity },
-  { href: "/#intel", label: "03_INTEL", icon: Terminal },
-  { href: "/#tactical-bim", label: "04_BIM", icon: Layers },
-  { href: "/#ingestion", label: "05_INGEST", icon: Database },
-  { href: "/#fusion", label: "06_FUSION", icon: Zap },
-  { href: "/site-intel", label: "07_SITE", icon: MapIcon },
-  { href: "/documents", label: "08_DOCS", icon: FileText },
+  { href: "/#intel", label: "02_INTEL", icon: Terminal },
+  { href: "/#ingestion", label: "03_INGEST", icon: Database },
+  { href: "/#fusion", label: "04_FUSION", icon: Zap },
+  { href: "/#tactical-bim", label: "05_BIM", icon: Layers },
+  { href: "/#site-docs", label: "06_SITE", icon: MapIcon },
 ];
 
 export function DashboardHeader({ title }: DashboardHeaderProps) {
@@ -50,13 +49,11 @@ export function DashboardHeader({ title }: DashboardHeaderProps) {
   }
 
   const isHome = pathname === '/' || pathname === '';
-  const isDarkSection = scrollProgress > 15; // Rough threshold for when we hit the obsidian sections
+  const isDarkSection = scrollProgress > 25; // Transition after Hero and Intel sections
   
   const bgColor = (isHome && !isDarkSection) ? 'bg-white/95' : 'bg-[#0A0A0F]/95';
   const textColor = (isHome && !isDarkSection) ? 'text-black' : 'text-primary';
-  const mutedColor = 'text-muted-foreground';
   const borderColor = (isHome && !isDarkSection) ? 'border-black/5' : 'border-white/10';
-  const iconColor = (isHome && !isDarkSection) ? 'text-black/60' : 'text-muted-foreground';
 
   return (
     <header className={cn(
@@ -73,7 +70,6 @@ export function DashboardHeader({ title }: DashboardHeaderProps) {
             )}>Envision OS</span>
         </Link>
         
-        {/* HORIZONTAL NAVIGATION */}
         <nav className={cn("hidden lg:flex items-center gap-6 border-l pl-8", borderColor)}>
             {navItems.map((item) => (
                 <Link 
@@ -114,7 +110,6 @@ export function DashboardHeader({ title }: DashboardHeaderProps) {
         </div>
       </div>
 
-      {/* PROGRESS BAR */}
       <div className="absolute bottom-0 left-0 h-[2px] bg-primary/20 w-full overflow-hidden">
         <div 
             className="h-full bg-primary transition-all duration-300 ease-out"
