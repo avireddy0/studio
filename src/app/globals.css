@@ -4,13 +4,36 @@
 
 @layer base {
   :root {
+    --background: 0 0% 100%;
+    --foreground: 240 25% 4%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 25% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 25% 4%;
+    --primary: 164 100% 24%; /* #007C5A */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 21% 95%;
+    --secondary-foreground: 240 25% 4%;
+    --muted: 240 21% 96%;
+    --muted-foreground: 240 10% 45%;
+    --accent: 164 100% 24%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 100% 62%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 10% 90%;
+    --input: 240 10% 90%;
+    --ring: 164 100% 24%;
+    --radius: 0px;
+  }
+
+  .dark {
     --background: 240 25% 4%; /* #0A0A0F */
     --foreground: 210 20% 98%;
     --card: 240 18% 9%; /* #12121A */
     --card-foreground: 210 20% 98%;
     --popover: 240 18% 9%;
     --popover-foreground: 210 20% 98%;
-    --primary: 164 100% 24%; /* #007C5A */
+    --primary: 164 100% 24%;
     --primary-foreground: 0 0% 100%;
     --secondary: 240 21% 15%; /* #1E1E2E */
     --secondary-foreground: 210 20% 98%;
@@ -18,12 +41,11 @@
     --muted-foreground: 215 20% 65%;
     --accent: 164 100% 24%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 100% 62%; /* #FF3B3B */
+    --destructive: 0 100% 62%;
     --destructive-foreground: 0 0% 100%;
     --border: 240 21% 18%; /* #1E1E2E */
     --input: 240 21% 15%;
     --ring: 164 100% 24%;
-    --radius: 0px;
   }
 }
 
@@ -47,34 +69,48 @@
 /* TACTICAL HUD GRID */
 .tactical-grid {
   background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+}
+
+.dark .tactical-grid {
   background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
                     linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
 }
 
-.section-header {
-  @apply text-[10px] font-bold uppercase tracking-[0.5em] text-muted-foreground;
+/* ANIMATIONS */
+@keyframes float-in {
+  0% { transform: translateX(-100px); opacity: 0; }
+  50% { opacity: 0.5; }
+  100% { transform: translateX(50px); opacity: 0; }
+}
+.animate-float-in {
+  animation: float-in 3s infinite linear;
 }
 
-/* ANIMATIONS */
+@keyframes slide-right {
+  0% { transform: translateX(-50px); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateX(100px); opacity: 0; }
+}
+.animate-slide-right {
+  animation: slide-right 4s infinite linear;
+}
+
 @keyframes pulse-status {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.4; transform: scale(0.8); }
 }
-
 .animate-status {
   animation: pulse-status 2s infinite ease-in-out;
 }
 
 @keyframes scan-line {
-  0% { transform: translateY(-100%); opacity: 0; }
-  50% { opacity: 0.1; }
-  100% { transform: translateY(100%); opacity: 0; }
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
 }
-
-.scan-overlay::after {
-  content: "";
-  @apply absolute inset-0 pointer-events-none;
-  background: linear-gradient(to bottom, transparent, rgba(0, 212, 255, 0.05), transparent);
+.animate-scan-line {
   animation: scan-line 4s infinite linear;
 }
 

@@ -1,26 +1,21 @@
-
 'use client';
 
-import { Activity, Monitor, Layers, Terminal, Database, Zap, Map as MapIcon, Home, FileText } from "lucide-react";
+import { Monitor, Home, Database, Terminal, Zap, Layers, Map as MapIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-type DashboardHeaderProps = {
-  title?: string;
-};
-
 const navItems = [
-  { href: "/#hero", label: "01_VISION", icon: Home },
-  { href: "/#intel", label: "02_INTEL", icon: Terminal },
-  { href: "/#ingestion", label: "03_INGEST", icon: Database },
-  { href: "/#fusion", label: "04_FUSION", icon: Zap },
-  { href: "/#tactical-bim", label: "05_BIM", icon: Layers },
-  { href: "/#site-docs", label: "06_SITE", icon: MapIcon },
+  { href: "#hero", label: "01_VISION", icon: Home },
+  { href: "#ingestion", label: "02_INGEST", icon: Database },
+  { href: "#intel", label: "03_INTEL", icon: Terminal },
+  { href: "#fusion", label: "04_FUSION", icon: Zap },
+  { href: "#tactical-bim", label: "05_BIM", icon: Layers },
+  { href: "#site-docs", label: "06_SITE", icon: MapIcon },
 ];
 
-export function DashboardHeader({ title }: DashboardHeaderProps) {
+export function DashboardHeader({ title }: { title?: string }) {
   const [mounted, setMounted] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const pathname = usePathname();
@@ -44,16 +39,15 @@ export function DashboardHeader({ title }: DashboardHeaderProps) {
 
   if (!mounted) {
     return (
-      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b px-6 bg-[#0A0A0F] border-white/10" />
+      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b px-6 bg-white border-black/5" />
     );
   }
 
-  const isHome = pathname === '/' || pathname === '';
-  const isDarkSection = scrollProgress > 25; // Transition after Hero and Intel sections
+  const isDarkSection = scrollProgress > 45; // Transitions to Obsidian roughly after Intel section
   
-  const bgColor = (isHome && !isDarkSection) ? 'bg-white/95' : 'bg-[#0A0A0F]/95';
-  const textColor = (isHome && !isDarkSection) ? 'text-black' : 'text-primary';
-  const borderColor = (isHome && !isDarkSection) ? 'border-black/5' : 'border-white/10';
+  const bgColor = isDarkSection ? 'bg-[#0A0A0F]/95' : 'bg-white/95';
+  const textColor = isDarkSection ? 'text-white' : 'text-black';
+  const borderColor = isDarkSection ? 'border-white/10' : 'border-black/5';
 
   return (
     <header className={cn(
@@ -63,29 +57,26 @@ export function DashboardHeader({ title }: DashboardHeaderProps) {
     )}>
       <div className="flex items-center gap-8">
         <Link href="/" className="flex items-center gap-3 group">
-            <Monitor className={cn("size-5 transition-colors", (isHome && !isDarkSection) ? "text-primary" : "text-primary")} />
+            <Monitor className="size-5 text-primary" />
             <span className={cn(
-                "text-xs font-bold tracking-[0.3em] uppercase",
-                (isHome && !isDarkSection) ? "text-black" : "text-white"
+                "text-xs font-bold tracking-[0.3em] uppercase transition-colors",
+                textColor
             )}>Envision OS</span>
         </Link>
         
         <nav className={cn("hidden lg:flex items-center gap-6 border-l pl-8", borderColor)}>
             {navItems.map((item) => (
-                <Link 
+                <a 
                     key={item.href}
                     href={item.href}
                     className={cn(
-                        "flex items-center gap-2 group transition-all",
-                        "hover:opacity-100 opacity-60"
+                        "flex items-center gap-2 group transition-all opacity-60 hover:opacity-100",
+                        textColor
                     )}
                 >
-                    <item.icon className={cn("size-3 transition-colors", (isHome && !isDarkSection) ? "group-hover:text-primary" : "group-hover:text-primary")} />
-                    <span className={cn(
-                        "text-[9px] font-mono font-bold uppercase tracking-widest",
-                        (isHome && !isDarkSection) ? "text-black" : "text-white"
-                    )}>{item.label}</span>
-                </Link>
+                    <item.icon className="size-3 text-primary" />
+                    <span className="text-[9px] font-mono font-bold uppercase tracking-widest">{item.label}</span>
+                </a>
             ))}
         </nav>
       </div>
@@ -96,14 +87,14 @@ export function DashboardHeader({ title }: DashboardHeaderProps) {
                 <div className="size-1.5 rounded-full animate-status bg-primary" />
                 <span className={cn(
                     "text-[10px] font-mono font-bold uppercase tracking-widest",
-                    (isHome && !isDarkSection) ? "text-black" : "text-primary"
+                    isDarkSection ? "text-primary" : "text-black"
                 )}>
                     Node: Active
                 </span>
             </div>
             <div className={cn(
                 "flex items-center gap-3 font-mono text-[10px] font-bold tracking-[0.3em] px-4 py-1.5 border transition-all",
-                (isHome && !isDarkSection) ? "text-black bg-black/5 border-black/10" : "text-primary bg-primary/5 border-primary/20"
+                isDarkSection ? "text-primary bg-primary/5 border-primary/20" : "text-black bg-black/5 border-black/10"
             )}>
                 {title || '00:00:00'}
             </div>

@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -13,7 +12,7 @@ import {
   Map as MapIcon,
   Layers,
   FileText,
-  Shield
+  Code
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ChatInterface } from "@/components/query/chat-interface";
@@ -46,11 +45,7 @@ export default function UnifiedPage() {
       
       {/* SECTION 01: INSTITUTIONAL HERO (WHITE) */}
       <section id="hero" className="snap-start relative flex flex-col items-center justify-center p-6 bg-white text-black overflow-hidden min-h-screen w-full">
-        <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03]" style={{ 
-          backgroundImage: `linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)`,
-          backgroundSize: '40px 40px'
-        }}></div>
-
+        <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] tactical-grid" />
         <div className="relative z-10 max-w-6xl w-full">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-primary/20 bg-primary/5 text-[9px] font-bold uppercase tracking-[0.4em] text-primary mb-12">
                 <Crosshair className="size-3" />
@@ -70,23 +65,79 @@ export default function UnifiedPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 font-mono">
-                <a href="#intel" className="bg-primary text-white px-10 py-4 text-[11px] font-bold uppercase tracking-widest hover:bg-primary/90 transition-all flex items-center gap-3 rounded-none shadow-[4px_4px_0px_rgba(0,124,90,0.2)]">
-                    ACCESS_INTEL_CORE <ArrowRight className="size-4" />
+                <a href="#ingestion" className="bg-primary text-white px-10 py-4 text-[11px] font-bold uppercase tracking-widest hover:bg-primary/90 transition-all flex items-center gap-3 rounded-none shadow-[4px_4px_0px_rgba(0,124,90,0.2)]">
+                    INITIALIZE_SYSTEM <ArrowRight className="size-4" />
                 </a>
             </div>
         </div>
       </section>
 
-      {/* SECTION 02: COMMAND INTERFACE (WHITE) */}
+      {/* SECTION 02: INGESTION PIPELINE (WHITE) - FLURRY ANIMATION */}
+      <section id="ingestion" className="snap-start relative min-h-screen w-full bg-white text-black flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden">
+          <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
+          <div className="relative z-10 w-full max-w-7xl flex flex-col gap-12">
+              <div className="flex items-center gap-3 mb-2 shrink-0">
+                  <Database className="size-4 text-primary" />
+                  <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/40">02_DATA_INGESTION_PIPELINE</h2>
+              </div>
+              
+              <div className="relative w-full h-80 flex items-center justify-between px-12 bg-gray-50/50 border border-black/5 overflow-hidden">
+                  {/* LEFT: DOCUMENT FLURRY */}
+                  <div className="flex flex-col gap-6 relative">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                          <div key={i} className={cn("animate-float-in opacity-0", `delay-${i * 150}`)} style={{ animationDelay: `${i * 0.5}s` }}>
+                              <FileText className={cn("text-primary/40", i % 2 === 0 ? "size-8" : "size-6")} />
+                          </div>
+                      ))}
+                  </div>
+
+                  {/* CENTER: AI PARSER */}
+                  <div className="relative flex flex-col items-center gap-4">
+                      <div className="size-24 rounded-full bg-primary/10 border-2 border-primary/20 flex items-center justify-center animate-status">
+                          <Database className="size-10 text-primary" />
+                      </div>
+                      <span className="text-[10px] font-mono font-bold text-primary uppercase tracking-[0.5em]">PARSER_CORE_V4</span>
+                      <div className="absolute -inset-4 border border-primary/10 rounded-full animate-ping opacity-20" />
+                  </div>
+
+                  {/* RIGHT: DATA STRINGS */}
+                  <div className="flex flex-col gap-6 items-end relative overflow-hidden max-w-[300px]">
+                      {[
+                        "{ id: 'RFI_9912', status: 'VERIFIED' }",
+                        "{ node: 'PHX_A', delta: '-1.2%' }",
+                        "{ auth: 'SUCCESS', sig: 'AES256' }",
+                        "{ type: 'STRUCTURAL', risk: 'LOW' }"
+                      ].map((str, i) => (
+                        <div key={i} className="animate-slide-right opacity-0 text-[10px] font-mono text-primary font-bold whitespace-nowrap" style={{ animationDelay: `${i * 0.8}s` }}>
+                            {str}
+                        </div>
+                      ))}
+                  </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                  <div className="space-y-4">
+                      <h3 className="text-3xl font-semibold tracking-tighter uppercase">Deterministic <br/> Signal Ingest</h3>
+                      <p className="text-sm text-black/60 max-w-md leading-relaxed">
+                          Extract structured intelligence from fragmented noise. Automated normalization of PDFs, RFIs, and project data into a verified institutional stream.
+                      </p>
+                  </div>
+                  <Card className="bg-white border-black/10 shadow-xl rounded-none">
+                      <CardContent className="p-8">
+                          <PdfExtractor />
+                      </CardContent>
+                  </Card>
+              </div>
+          </div>
+      </section>
+
+      {/* SECTION 03: COMMAND INTERFACE (WHITE) */}
       <section id="intel" className="snap-start relative min-h-screen w-full bg-white text-black flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03]" style={{ 
-          backgroundImage: `linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)`,
-          backgroundSize: '40px 40px'
-        }}></div>
+        <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] tactical-grid" />
         <div className="relative z-10 w-full max-w-7xl h-[80vh] flex flex-col">
             <div className="flex items-center gap-3 mb-6 shrink-0">
                 <Terminal className="size-4 text-primary" />
-                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/40">02_COMMAND_INTERFACE_CORE</h2>
+                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/40">03_COMMAND_INTERFACE_CORE</h2>
             </div>
             <Card className="bg-white border-black/5 shadow-2xl h-full flex flex-col overflow-hidden rounded-none">
                 <CardHeader className="border-b border-black/5 bg-gray-50/50 py-3 shrink-0">
@@ -105,32 +156,7 @@ export default function UnifiedPage() {
         </div>
       </section>
 
-      {/* SECTION 03: INGESTION PIPELINE (OBSIDIAN) */}
-      <section id="ingestion" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
-          <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
-          <div className="relative z-10 w-full max-w-7xl flex flex-col">
-              <div className="flex items-center gap-3 mb-6 shrink-0">
-                  <Database className="size-4 text-primary" />
-                  <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">03_DATA_INGESTION_PIPELINE</h2>
-              </div>
-              <Card className="bg-[#12121A] border-[#1E1E2E]">
-                  <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-10">
-                      <div className="flex items-center justify-between">
-                          <div className="flex flex-col gap-1">
-                              <CardTitle className="text-[16px] tracking-[0.3em]">FROM CHAOS TO CONTROL</CardTitle>
-                              <CardDescription className="text-[10px] font-mono text-primary/60 uppercase tracking-widest">Deterministic Signal Ingest</CardDescription>
-                          </div>
-                          <span className="text-[9px] font-mono text-muted-foreground uppercase">Buffer: 99.8%</span>
-                      </div>
-                  </CardHeader>
-                  <CardContent className="p-8 md:p-16">
-                      <PdfExtractor />
-                  </CardContent>
-              </Card>
-          </div>
-      </section>
-
-      {/* SECTION 04: CONTEXT IS EVERYTHING (OBSIDIAN) */}
+      {/* SECTION 04: CONTEXT FUSION (OBSIDIAN) */}
       <section id="fusion" className="snap-start relative min-h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
           <div className="relative z-10 w-full max-w-7xl flex flex-col">
