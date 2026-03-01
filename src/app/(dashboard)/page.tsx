@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -55,7 +56,7 @@ export default function UnifiedPage() {
       duration: `${(7.0 + Math.random() * 5.0).toFixed(2)}s`, // 40% slower than previous base
       top: `${topPercent.toFixed(2)}%`,
       yOffset: `${(yOffsetValue * 6).toFixed(2)}px`, // Scaling factor for the translation
-      size: i % 10 === 0 ? "size-14" : "size-10", // Significantly bigger icons
+      size: i % 10 === 0 ? "size-18" : "size-12", // Significantly bigger icons
     };
   });
 
@@ -118,7 +119,7 @@ export default function UnifiedPage() {
                         {chaoticInputs.map((item, i) => (
                             <div 
                               key={i} 
-                              className="absolute left-[-150px] animate-tornado text-white/40"
+                              className="absolute left-[-150px] animate-tornado text-white"
                               style={{ 
                                   "--delay": item.delay,
                                   "--duration": item.duration,

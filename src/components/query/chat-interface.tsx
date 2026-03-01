@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useRef, useEffect, useActionState } from "react";
+import { useState, useRef, useEffect, useActionState, startTransition } from "react";
 import { useFormStatus } from "react-dom";
 import { handleQuery } from "@/lib/actions";
 import { Input } from "@/components/ui/input";
@@ -83,7 +83,9 @@ export function ChatInterface() {
     if (query.trim()) {
       setMessages((prev) => [...prev, { role: "user", content: query }]);
       setMessages((prev) => [...prev, { role: "status", content: "ORCHESTRATING_INTEL..." }]);
-      formAction(formData);
+      startTransition(() => {
+        formAction(formData);
+      });
       formRef.current?.reset();
     }
   };
