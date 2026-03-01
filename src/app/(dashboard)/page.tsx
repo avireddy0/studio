@@ -1,7 +1,6 @@
-
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Crosshair, 
   ArrowRight, 
@@ -23,6 +22,24 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export default function UnifiedPage() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className="flex flex-col w-full bg-white h-[calc(100vh-64px)]">
+        <section className="flex flex-col items-center justify-center p-6 h-full w-full">
+            <h1 className="text-5xl md:text-8xl font-semibold tracking-tighter leading-none text-black">
+                Where Development <br/> Meets Data
+            </h1>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col w-full selection:bg-primary/20 font-sans snap-y snap-mandatory overflow-y-auto h-[calc(100vh-64px)] no-scrollbar scroll-smooth">
       

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
   SidebarMenu,
   SidebarMenuItem,
@@ -33,14 +34,32 @@ const navItems = [
 
 export function SidebarNav() {
   const pathname = usePathname();
+  const [currentHash, setCurrentHash] = useState("");
+
+  useEffect(() => {
+    // Handle initial hash
+    setCurrentHash(window.location.hash.replace('#', ''));
+
+    // Listen for hash changes
+    const handleHashChange = () => {
+      setCurrentHash(window.location.hash.replace('#', ''));
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   return (
     <SidebarMenu className="gap-2">
       {navItems.map((item) => {
         const isAnchor = item.href.includes('#');
-        // For anchors, we check if we are on the home page
+        const itemHash = isAnchor ? item.href.split('#')[1] : null;
+        
+        // Active state logic:
+        // 1. For anchors: Must be on home page AND hash must match
+        // 2. For standard links: Pathname must match exactly
         const isActive = isAnchor 
-          ? pathname === '/' && typeof window !== 'undefined' && window.location.hash === item.href.split('#')[1]
+          ? pathname === '/' && currentHash === itemHash
           : pathname === item.href;
 
         return (
