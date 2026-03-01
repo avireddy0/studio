@@ -45,15 +45,29 @@ export default function UnifiedPage() {
     return <div className="min-h-screen bg-white" />;
   }
 
-  // Document cards for the ingestion funnel — scattered on the left, flying into parser
-  const docCards = [
-    { label: "DOC", rotate: -15, top: "10%", left: "2%", smLeft: "5%", delay: "0s" },
-    { label: "PDF", rotate: -20, top: "40%", left: "0%", smLeft: "2%", delay: "-3s" },
-    { label: "EMAIL", rotate: 8, top: "55%", left: "8%", smLeft: "12%", delay: "-2s" },
-    { label: "XLS", rotate: 18, top: "5%", left: "12%", smLeft: "15%", delay: "-5s" },
-    { label: "CALL", rotate: -5, top: "30%", left: "15%", smLeft: "20%", delay: "-4s" },
-    { label: "TEXT", rotate: 12, top: "75%", left: "5%", smLeft: "10%", delay: "-1s" },
-  ];
+  // Ingestion funnel — white cards with icons vacuumed from left into audit core
+  const ingestItems = [
+    { Icon: FileText, label: "PDF", color: "text-red-500" },
+    { Icon: FileSpreadsheet, label: "XLS", color: "text-green-600" },
+    { Icon: FileSignature, label: "RFI", color: "text-amber-500" },
+    { Icon: FileCode, label: "BIM", color: "text-purple-500" },
+    { Icon: Mail, label: "EMAIL", color: "text-blue-500" },
+    { Icon: Phone, label: "CALL", color: "text-emerald-500" },
+    { Icon: MessageSquare, label: "TEXT", color: "text-pink-500" },
+    { Icon: FileText, label: "INVOICE", color: "text-orange-500" },
+    { Icon: Target, label: "PHOTO", color: "text-sky-500" },
+  ].map((item, i) => {
+    const topPercent = 2 + (i / 8) * 96;
+    const yOffset = (50 - topPercent) * 5.5;
+    const duration = 5.2 + i * 0.25;
+    return {
+      ...item,
+      delay: `-${((i / 9) * duration).toFixed(2)}s`,
+      duration: `${duration.toFixed(2)}s`,
+      top: `${topPercent.toFixed(1)}%`,
+      yOffset: `${yOffset.toFixed(1)}px`,
+    };
+  });
 
   return (
     <div
@@ -108,30 +122,26 @@ export default function UnifiedPage() {
 
               <div className="relative w-full flex-1 flex items-center bg-white/[0.02] border border-white/5 rounded-2xl overflow-hidden">
 
-                  {/* FLOATING DOCUMENT CARDS — LEFT SIDE */}
-                  {docCards.map((card, i) => (
-                    <div
-                      key={i}
-                      className="absolute animate-float-doc"
-                      style={{
-                        top: card.top,
-                        left: card.left,
-                        animationDelay: card.delay,
-                      }}
-                    >
+                  {/* FLYING DOCUMENT CARDS — VACUUMED FROM LEFT INTO AUDIT CORE */}
+                  <div className="absolute left-0 w-1/2 h-full pointer-events-none">
+                    {ingestItems.map((item, i) => (
                       <div
-                        className="bg-white rounded-lg shadow-2xl p-2.5 sm:p-3 md:p-4 w-14 sm:w-20 md:w-28"
-                        style={{ transform: `rotate(${card.rotate}deg)` }}
+                        key={i}
+                        className="absolute left-[-100px] sm:left-[-140px] animate-tornado"
+                        style={{
+                          animationDelay: item.delay,
+                          animationDuration: item.duration,
+                          "--y-offset": item.yOffset,
+                          top: item.top,
+                        } as React.CSSProperties}
                       >
-                        <div className="flex flex-col gap-1 mb-1.5 sm:mb-2">
-                          <div className="w-full h-[3px] sm:h-1 bg-gray-200 rounded" />
-                          <div className="w-3/4 h-[3px] sm:h-1 bg-gray-200 rounded" />
-                          <div className="w-full h-[3px] sm:h-1 bg-gray-100 rounded" />
+                        <div className="bg-white rounded-lg shadow-2xl p-2 sm:p-3 md:p-4 flex flex-col items-center gap-1 sm:gap-1.5">
+                          <item.Icon className={cn("size-8 sm:size-10 md:size-14 lg:size-16", item.color)} />
+                          <span className="text-[7px] sm:text-[8px] md:text-[9px] font-bold text-gray-500 uppercase tracking-wider">{item.label}</span>
                         </div>
-                        <span className="block text-center text-[7px] sm:text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-wider">{card.label}</span>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
 
                   {/* AUDIT CORE — CENTER (ROUNDED RECTANGLE WITH INDIGO GLOW) */}
                   <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
