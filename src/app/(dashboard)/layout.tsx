@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -19,7 +20,6 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
   const [timestamp, setTimestamp] = useState('');
 
   useEffect(() => {
@@ -28,10 +28,6 @@ export default function DashboardLayout({
     }, 1000);
     return () => clearInterval(timer);
   }, []);
-
-  if (pathname === '/') {
-    return <>{children}</>;
-  }
 
   return (
     <SidebarProvider>

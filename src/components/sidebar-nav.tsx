@@ -17,16 +17,18 @@ import {
   Map as MapIcon,
   Activity,
   Terminal,
-  ChevronRight
+  ChevronRight,
+  Home
 } from "lucide-react";
 
 const navItems = [
-  { href: "/dashboard", label: "OVERVIEW", icon: LayoutDashboard },
-  { href: "/dashboard#intel", label: "INTEL CORE", icon: Terminal },
-  { href: "/dashboard#ingestion", label: "INGESTION", icon: Database },
-  { href: "/dashboard#fusion", label: "FUSION", icon: Zap },
+  { href: "/", label: "BRAND VISION", icon: Home },
+  { href: "/#metrics", label: "METRICS", icon: Activity },
+  { href: "/#intel", label: "INTEL CORE", icon: Terminal },
+  { href: "/#ingestion", label: "INGESTION", icon: Database },
+  { href: "/#fusion", label: "FUSION", icon: Zap },
+  { href: "/#initialize", label: "INITIALIZE", icon: LayoutDashboard },
   { href: "/site-intel", label: "SITE INTEL", icon: MapIcon },
-  { href: "/visualizations", label: "TELEMETRY", icon: Activity },
   { href: "/documents", label: "DOCUMENTS", icon: FileText },
   { href: "/settings", label: "SETTINGS", icon: Settings },
 ];
@@ -40,11 +42,11 @@ export function SidebarNav() {
         <SidebarMenuItem key={item.href}>
           <SidebarMenuButton
             asChild
-            isActive={pathname === item.href.split('#')[0]}
+            isActive={pathname === item.href.split('#')[0] && !item.href.includes('#')}
             tooltip={item.label}
             className={`
                 h-10 px-4 transition-all group
-                ${pathname === item.href.split('#')[0]
+                ${pathname === item.href.split('#')[0] && !item.href.includes('#')
                     ? "bg-primary/10 text-primary border-l-2 border-primary" 
                     : "text-muted-foreground hover:bg-white/5 hover:text-white"
                 }

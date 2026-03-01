@@ -12,23 +12,16 @@ type DashboardHeaderProps = {
 };
 
 export function DashboardHeader({ title }: DashboardHeaderProps) {
-  const [timestamp, setTimestamp] = useState('');
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
     setMounted(true);
-    setTimestamp(new Date().toLocaleTimeString('en-US', { hour12: false }));
-    const timer = setInterval(() => {
-      setTimestamp(new Date().toLocaleTimeString('en-US', { hour12: false }));
-    }, 1000);
-    return () => clearInterval(timer);
   }, []);
 
-  // Prevent hydration mismatch by returning a simplified header if not mounted
   if (!mounted) {
     return (
-      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b px-6 bg-background border-border">
+      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b px-6 bg-[#0A0A0F] border-white/10">
         <div className="flex items-center gap-6">
           <SidebarTrigger className="text-muted-foreground" />
         </div>
@@ -36,33 +29,20 @@ export function DashboardHeader({ title }: DashboardHeaderProps) {
     );
   }
 
+  // Navigation context
   const isQuery = pathname === '/query';
-  // All dashboard routes except query and the landing page follow the dark tactical theme
-  const isDarkAtmosphere = pathname !== '/' && !isQuery;
   
-  let bgColor = 'bg-white/80';
-  let textColor = 'text-black';
-  let mutedColor = 'text-black/40';
-  let borderColor = 'border-black/5';
-  let iconColor = 'text-black/60';
-
-  if (isDarkAtmosphere) {
-    bgColor = 'bg-[#12121A]/80';
-    textColor = 'text-primary';
-    mutedColor = 'text-muted-foreground';
-    borderColor = 'border-white/10';
-    iconColor = 'text-muted-foreground';
-  } else if (isQuery) {
-    bgColor = 'bg-primary'; // Envision Green
-    textColor = 'text-white';
-    mutedColor = 'text-white/70';
-    borderColor = 'border-white/10';
-    iconColor = 'text-white/80';
-  }
+  // Header styles based on atmosphere
+  // Default to Obsidian atmosphere for consistent operation
+  const bgColor = isQuery ? 'bg-primary' : 'bg-[#0A0A0F]/90';
+  const textColor = isQuery ? 'text-white' : 'text-primary';
+  const mutedColor = isQuery ? 'text-white/70' : 'text-muted-foreground';
+  const borderColor = isQuery ? 'border-white/10' : 'border-white/10';
+  const iconColor = isQuery ? 'text-white/80' : 'text-muted-foreground';
 
   return (
     <header className={cn(
-        "sticky top-0 z-50 flex h-16 items-center justify-between border-b px-6 backdrop-blur-md transition-colors duration-300",
+        "sticky top-0 z-50 flex h-16 items-center justify-between border-b px-6 backdrop-blur-md transition-all duration-300",
         borderColor,
         bgColor
     )}>
@@ -85,7 +65,7 @@ export function DashboardHeader({ title }: DashboardHeaderProps) {
                 </span>
             </div>
             <div className="flex items-center gap-2">
-                <Wifi className={cn("size-3", isQuery ? "text-white/40" : isDarkAtmosphere ? "text-primary" : "text-black/40")} />
+                <Wifi className={cn("size-3", isQuery ? "text-white/40" : "text-primary")} />
                 <span className={cn("text-[10px] font-mono uppercase tracking-widest", mutedColor)}>Data Sync Active</span>
             </div>
         </div>
@@ -93,8 +73,8 @@ export function DashboardHeader({ title }: DashboardHeaderProps) {
       
       <div className="flex items-center gap-8">
         <div className="hidden lg:flex items-center gap-3">
-            <Activity className={cn("size-3", isQuery ? "text-white/20" : isDarkAtmosphere ? "text-primary/40" : "text-black/10")} />
-            <div className={cn("h-1.5 w-32 overflow-hidden", isDarkAtmosphere ? "bg-secondary" : isQuery ? "bg-white/10" : "bg-black/5")}>
+            <Activity className={cn("size-3", isQuery ? "text-white/20" : "text-primary/40")} />
+            <div className={cn("h-1.5 w-32 overflow-hidden", isQuery ? "bg-white/10" : "bg-secondary")}>
                 <div className={cn(
                     "h-full animate-pulse w-3/4",
                     isQuery ? "bg-white" : "bg-primary"
@@ -105,12 +85,10 @@ export function DashboardHeader({ title }: DashboardHeaderProps) {
             "flex items-center gap-3 font-mono text-[10px] font-bold tracking-[0.3em] px-4 py-1.5 border transition-all",
             isQuery 
                 ? "text-white bg-white/10 border-white/20" 
-                : isDarkAtmosphere 
-                    ? "text-primary bg-primary/5 border-primary/20" 
-                    : "text-black bg-black/5 border-black/10"
+                : "text-primary bg-primary/5 border-primary/20"
         )}>
             <Monitor className="size-3" />
-            {title || timestamp || '00:00:00'}
+            {title || '00:00:00'}
         </div>
       </div>
     </header>
