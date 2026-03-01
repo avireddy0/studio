@@ -146,18 +146,18 @@ export function ContextSummarizer() {
   };
 
   return (
-    <div className="relative w-full h-full flex flex-col gap-6 py-6">
+    <div className="relative w-full h-full flex flex-col gap-3 md:gap-6 py-3 md:py-6">
 
       {/* Header */}
-      <div className="text-center space-y-4 shrink-0 z-20">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-primary/20 bg-primary/5 text-[10px] font-bold uppercase tracking-[0.4em] text-primary">
+      <div className="text-center space-y-2 md:space-y-4 shrink-0 z-20">
+        <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 border border-primary/20 bg-primary/5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.3em] sm:tracking-[0.4em] text-primary">
           <Zap className="size-3" />
           <span>Context_Fusion_Engine</span>
         </div>
-        <h2 className="text-4xl md:text-6xl font-semibold tracking-tighter text-white leading-tight">
+        <h2 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter text-white leading-tight">
           Context is Everything
         </h2>
-        <p className="text-muted-foreground text-sm font-medium leading-relaxed max-w-xl mx-auto">
+        <p className="text-muted-foreground text-xs sm:text-sm font-medium leading-relaxed max-w-xl mx-auto">
           Data without context is <span className="text-red-400 font-bold">dangerous</span>.
           Envision OS fuses fragmented signals into verified project truth —
           eliminating liability through multi-platform correlation.
@@ -166,7 +166,7 @@ export function ContextSummarizer() {
 
       {/* 3D Layer Stack */}
       <div
-        className="relative flex-1 flex items-center justify-center min-h-[320px] px-4"
+        className="relative flex-1 flex items-center justify-center min-h-[220px] md:min-h-[320px] px-2 sm:px-4"
         style={{ perspective: "1800px", perspectiveOrigin: "50% 40%" }}
       >
         {layers.map((layer) => {
@@ -189,9 +189,9 @@ export function ContextSummarizer() {
                 transition: "all 0.7s cubic-bezier(0.4, 0, 0.2, 1)",
               }}
             >
-              <div className="p-4 sm:p-6 md:p-8">
+              <div className="p-3 sm:p-5 md:p-8">
                 {/* Layer Header */}
-                <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center justify-between mb-3 sm:mb-5">
                   <div className="flex items-center gap-3">
                     <div className={cn(
                       "size-9 border flex items-center justify-center shrink-0",
@@ -210,7 +210,7 @@ export function ContextSummarizer() {
                 </div>
 
                 {/* Signal Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 mb-5">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 sm:gap-3 mb-3 sm:mb-5">
                   {layer.signals.map((signal, i) => (
                     <div key={i} className={cn(
                       "p-2.5 sm:p-3 border transition-all",
@@ -242,13 +242,13 @@ export function ContextSummarizer() {
       </div>
 
       {/* Layer Navigation */}
-      <div className="flex justify-center gap-2 sm:gap-3 shrink-0 z-20">
+      <div className="flex justify-start sm:justify-center gap-2 sm:gap-3 shrink-0 z-20 overflow-x-auto no-scrollbar px-1">
         {layers.map((layer) => (
           <button
             key={layer.id}
             onClick={() => handleLayerClick(layer.id)}
             className={cn(
-              "flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 border transition-all min-w-[100px] sm:min-w-[130px]",
+              "flex items-center gap-2 px-2.5 sm:px-4 py-2 sm:py-3 border transition-all min-w-[90px] sm:min-w-[130px] shrink-0",
               activeLayer === layer.id
                 ? cn("bg-white/10 border-white/20", layer.activeGlow)
                 : "bg-transparent border-white/5 opacity-40 hover:opacity-70"

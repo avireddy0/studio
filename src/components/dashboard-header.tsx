@@ -53,7 +53,7 @@ export function DashboardHeader({ title }: { title?: string }) {
 
   return (
     <header className={cn(
-        "sticky top-0 z-50 flex h-16 items-center justify-between border-b px-6 backdrop-blur-md transition-all duration-500",
+        "sticky top-0 z-50 flex h-16 items-center justify-between border-b px-3 sm:px-6 backdrop-blur-md transition-all duration-500",
         borderColor,
         bgColor
     )}>

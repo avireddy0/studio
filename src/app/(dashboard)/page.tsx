@@ -68,28 +68,28 @@ export default function UnifiedPage() {
     >
 
       {/* SECTION 01: INSTITUTIONAL HERO (WHITE) */}
-      <section id="hero" className="snap-start relative flex flex-col items-center justify-center p-6 bg-white text-black h-[calc(100vh-64px)] w-full shrink-0">
+      <section id="hero" className="snap-start relative flex flex-col items-center justify-center p-4 sm:p-6 bg-white text-black h-[calc(100vh-64px)] w-full shrink-0 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] tactical-grid" />
         <div className="relative z-10 max-w-6xl w-full">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-primary/20 bg-primary/5 text-[9px] font-bold uppercase tracking-[0.4em] text-primary mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-primary/20 bg-primary/5 text-[9px] font-bold uppercase tracking-[0.4em] text-primary mb-6 md:mb-12">
                 <Crosshair className="size-3" />
                 <span>Institutional Intel System v4.0</span>
             </div>
 
-            <div className="space-y-4 mb-16">
-                <h1 className="text-5xl md:text-8xl font-semibold tracking-tighter leading-none">
+            <div className="space-y-2 sm:space-y-4 mb-6 sm:mb-8 md:mb-16">
+                <h1 className="text-4xl sm:text-5xl md:text-8xl font-semibold tracking-tighter leading-none">
                     Where <br/>
                     <span className="text-primary">Development</span> <br/>
                     Meets Data
                 </h1>
             </div>
 
-            <p className="text-lg md:text-xl text-black/60 max-w-2xl mb-16 leading-relaxed font-medium">
+            <p className="text-sm sm:text-base md:text-xl text-black/60 max-w-2xl mb-6 sm:mb-8 md:mb-16 leading-relaxed font-medium">
                 Sovereign project orchestration. Eliminating fragmented noise with <span className="text-black font-bold uppercase">weapons-grade accuracy</span> and verified multi-platform data fusion.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 font-mono">
-                <a href="#ingestion" className="bg-primary text-white px-10 py-4 text-[11px] font-bold uppercase tracking-widest hover:bg-primary/90 transition-all flex items-center gap-3 rounded-none shadow-[4px_4px_0px_rgba(0,124,90,0.2)]">
+                <a href="#ingestion" className="bg-primary text-white px-6 py-3 sm:px-10 sm:py-4 text-[10px] sm:text-[11px] font-bold uppercase tracking-widest hover:bg-primary/90 transition-all flex items-center gap-3 rounded-none shadow-[4px_4px_0px_rgba(0,124,90,0.2)]">
                     INITIALIZE_SYSTEM <ArrowRight className="size-4" />
                 </a>
             </div>
@@ -97,17 +97,17 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 02: INGESTION PIPELINE (OBSIDIAN) - CHAOS TO CONTROL */}
-      <section id="ingestion" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden shrink-0">
+      <section id="ingestion" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-4 sm:p-6 md:p-12 overflow-hidden shrink-0">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
-          <div className="relative z-10 w-full max-w-7xl h-full flex flex-col justify-between py-12 gap-8">
+          <div className="relative z-10 w-full max-w-7xl h-full flex flex-col justify-between py-6 md:py-12 gap-4 md:gap-8">
 
-              <div className="space-y-4 shrink-0">
-                  <div className="flex items-center gap-3 mb-2">
-                      <Database className="size-4 text-primary" />
-                      <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">02_Data_Ingestion_Pipeline</h2>
+              <div className="space-y-2 sm:space-y-4 shrink-0">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+                      <Database className="size-3 sm:size-4 text-primary" />
+                      <h2 className="text-[9px] sm:text-[10px] font-bold tracking-[0.3em] sm:tracking-[0.4em] uppercase text-white/40">02_Data_Ingestion_Pipeline</h2>
                   </div>
-                  <h3 className="text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Chaos to Control.</h3>
-                  <p className="text-lg text-white/60 max-w-2xl leading-relaxed font-medium">
+                  <h3 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Chaos to Control.</h3>
+                  <p className="text-sm sm:text-base md:text-lg text-white/60 max-w-2xl leading-relaxed font-medium">
                       Slamming fragmented construction signals into a verified institutional stream. Deterministic parsing for weapons-grade project accuracy.
                   </p>
               </div>
@@ -180,17 +180,17 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 03: INTELLIGENCE COMMAND (WHITE) */}
-      <section id="intel" className="snap-start relative h-[calc(100vh-64px)] w-full bg-white text-black flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden shrink-0">
+      <section id="intel" className="snap-start relative h-[calc(100vh-64px)] w-full bg-white text-black flex flex-col items-center justify-center p-4 sm:p-6 md:p-12 overflow-hidden shrink-0">
         <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] tactical-grid" />
         <div className="relative z-10 w-full max-w-7xl h-full flex flex-col">
-            <div className="flex items-center gap-3 mb-6 shrink-0">
+            <div className="flex items-center gap-3 mb-3 md:mb-6 shrink-0">
                 <Terminal className="size-4 text-primary" />
                 <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/40">03_Intelligence_Terminal_Core</h2>
             </div>
 
-            <div className="mb-8 shrink-0">
-              <h2 className="text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Intelligence Command.</h2>
-              <p className="text-black/60 max-w-xl text-lg font-medium mt-4">Verified institutional oracle. Direct access to cross-platform project truth.</p>
+            <div className="mb-4 md:mb-8 shrink-0">
+              <h2 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Intelligence Command.</h2>
+              <p className="text-black/60 max-w-xl text-base sm:text-lg font-medium mt-2 md:mt-4">Verified institutional oracle. Direct access to cross-platform project truth.</p>
             </div>
 
             <Card className="bg-white border-black/5 shadow-2xl flex-1 flex flex-col overflow-hidden rounded-none">
@@ -211,10 +211,10 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 04: CONTEXT FUSION (OBSIDIAN) */}
-      <section id="fusion" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 shrink-0">
+      <section id="fusion" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-4 sm:p-6 md:p-12 shrink-0 overflow-hidden">
           <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
           <div className="relative z-10 w-full max-w-7xl flex flex-col h-full">
-              <div className="flex items-center gap-3 mb-6 shrink-0">
+              <div className="flex items-center gap-3 mb-3 md:mb-6 shrink-0">
                   <Zap className="size-4 text-primary" />
                   <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">04_Context_Fusion_Engine</h2>
               </div>
@@ -223,24 +223,24 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 05: BIM + TELEMETRY (OBSIDIAN) */}
-      <section id="tactical-bim" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 shrink-0">
+      <section id="tactical-bim" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center p-4 sm:p-6 md:p-12 shrink-0 overflow-hidden">
         <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
-        <div className="relative z-10 w-full max-w-7xl h-full grid grid-cols-1 lg:grid-cols-3 gap-6 overflow-hidden">
-            <div className="lg:col-span-2 flex flex-col h-full">
-                <div className="flex items-center gap-3 mb-4 shrink-0">
+        <div className="relative z-10 w-full max-w-7xl h-full flex flex-col lg:grid lg:grid-cols-3 gap-3 lg:gap-6 overflow-hidden">
+            <div className="lg:col-span-2 flex flex-col flex-1 lg:h-full min-h-0">
+                <div className="flex items-center gap-3 mb-2 lg:mb-4 shrink-0">
                     <Layers className="size-4 text-primary" />
                     <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">05_Tactical_Lidar_Bim</h2>
                 </div>
-                <div className="flex-1 overflow-hidden">
+                <div className="flex-1 overflow-hidden min-h-[200px] sm:min-h-[250px]">
                     <TacticalBimOverlay />
                 </div>
             </div>
-            <div className="flex flex-col gap-6 h-full">
-                <div className="flex items-center gap-3 mb-4 shrink-0">
+            <div className="flex flex-col gap-2 lg:gap-6 lg:h-full min-h-0">
+                <div className="flex items-center gap-3 shrink-0">
                     <Activity className="size-4 text-primary" />
                     <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">Realtime_Telemetry</h2>
                 </div>
-                <div className="grid grid-cols-1 gap-4 flex-1 overflow-auto no-scrollbar">
+                <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 lg:gap-4 flex-1 overflow-auto no-scrollbar">
                     {[
                     { label: 'TOTAL_PROJECTS', value: '47', icon: Target },
                     { label: 'ACTIVE_SITES', value: '12', icon: MapIcon },
@@ -248,12 +248,12 @@ export default function UnifiedPage() {
                     { label: 'VARIANCE_DELTA', value: '-1.2%', icon: Zap, color: 'text-primary' },
                     ].map((metric, i) => (
                     <Card key={i} className="bg-[#12121A] border-[#1E1E2E] hover:border-primary/40 transition-colors">
-                        <CardContent className="p-6 flex flex-col gap-2">
+                        <CardContent className="p-3 sm:p-4 lg:p-6 flex flex-col gap-1 lg:gap-2">
                         <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase">{metric.label}</span>
+                            <span className="text-[9px] lg:text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase">{metric.label}</span>
                             <metric.icon className="size-3 text-primary/40" />
                         </div>
-                        <div className="text-3xl font-mono font-bold tracking-tighter mt-2 text-white">
+                        <div className="text-xl sm:text-2xl lg:text-3xl font-mono font-bold tracking-tighter mt-1 lg:mt-2 text-white">
                             {metric.value}
                         </div>
                         </CardContent>
@@ -265,21 +265,21 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 06: SITE + DOCUMENTS (OBSIDIAN) */}
-      <section id="site-docs" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 shrink-0">
+      <section id="site-docs" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center p-4 sm:p-6 md:p-12 shrink-0 overflow-hidden">
         <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
-        <div className="relative z-10 w-full max-w-7xl h-full flex flex-col gap-12 overflow-hidden">
-            <div className="flex items-center gap-3 mb-2 shrink-0">
+        <div className="relative z-10 w-full max-w-7xl h-full flex flex-col gap-4 md:gap-8 overflow-hidden">
+            <div className="flex items-center gap-3 shrink-0">
                 <MapIcon className="size-4 text-primary" />
                 <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">06_Site_Doc_Repository</h2>
             </div>
 
-            <div className="flex-1 overflow-hidden flex flex-col gap-8">
+            <div className="flex-1 overflow-hidden flex flex-col gap-3 md:gap-6">
                 {/* GEOSPATIAL TACTICAL MAP */}
-                <Card className="bg-[#12121A] border-[#1E1E2E] relative overflow-hidden flex-1 min-h-[300px]">
+                <Card className="bg-[#12121A] border-[#1E1E2E] relative overflow-hidden flex-1 min-h-0 md:min-h-[250px]">
                     <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-3 relative z-20 shrink-0">
                         <div className="flex items-center justify-between">
                             <CardTitle className="text-[10px] tracking-[0.3em]">Geospatial_Intel_Feed</CardTitle>
-                            <span className="text-[8px] font-mono text-primary uppercase">LAT: 34.0522° N | LONG: -118.2437° W</span>
+                            <span className="text-[8px] font-mono text-primary uppercase hidden sm:inline">LAT: 34.0522° N | LONG: -118.2437° W</span>
                         </div>
                     </CardHeader>
                     <CardContent className="p-0 relative h-full">
@@ -358,7 +358,7 @@ export default function UnifiedPage() {
                 </Card>
 
                 {/* DOCUMENTS TABLE */}
-                <Card className="bg-[#12121A] border-[#1E1E2E] overflow-hidden flex-1 min-h-[300px] flex flex-col">
+                <Card className="bg-[#12121A] border-[#1E1E2E] overflow-hidden flex-1 min-h-0 md:min-h-[250px] flex flex-col">
                     <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-3 shrink-0">
                         <CardTitle className="text-[10px] tracking-[0.3em]">Document_Intel_Vault</CardTitle>
                     </CardHeader>
