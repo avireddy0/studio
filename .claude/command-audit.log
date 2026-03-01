@@ -433,3 +433,4 @@ EOF
 )" && git push
 lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1
 npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002

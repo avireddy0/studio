@@ -96,7 +96,10 @@
   }
 }
 .animate-tornado {
-  animation: tornado-ingest var(--duration) infinite linear;
+  animation-name: tornado-ingest;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
 
 /* VERIFIED OUTPUT STREAM — clean data flowing right */
