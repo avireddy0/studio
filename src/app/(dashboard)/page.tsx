@@ -1,568 +1,378 @@
 'use client';
 
-import React, { useEffect, useRef, useCallback, useState } from 'react';
-import Chart from 'chart.js/auto';
+import React, { useState, useEffect } from 'react';
 import { 
+  Crosshair, 
+  ArrowRight, 
   Database, 
-  Mail, 
-  MessageSquare, 
-  Activity, 
-  Cpu, 
-  ChevronRight, 
-  BarChart3, 
-  Fingerprint, 
-  ShieldCheck, 
-  Lock,
-  ArrowRight,
-  Shield,
-  BrainCircuit,
-  ShieldAlert,
-  Smartphone,
-  Cloud,
-  FileSearch,
-  Crosshair,
-  Terminal,
-  Eye,
-  Layers,
-  Zap,
+  Zap, 
   Target,
-  CheckCircle2,
-  MessageCircle,
-  Hash,
+  Terminal,
+  Activity,
+  Map as MapIcon,
+  Layers,
   FileText,
-  MapPin,
-  AlertTriangle,
-  Globe,
-  RadioTower,
-  Box,
-  CornerRightDown,
-  Camera
+  FileSpreadsheet,
+  FileCode,
+  FileSignature,
+  Mail,
+  Phone,
+  MessageSquare
 } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { ChatInterface } from "@/components/query/chat-interface";
+import { ContextSummarizer } from "@/components/context/context-summarizer";
+import { TacticalBimOverlay } from "@/components/visualizations/tactical-bim-overlay";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { cn } from "@/lib/utils";
 
-export default function DashboardPage() {
-  const chatBodyRef = useRef<HTMLDivElement>(null);
-  const latencyChartRef = useRef<HTMLCanvasElement>(null);
-  const coverageChartRef = useRef<HTMLCanvasElement>(null);
-  const [messages, setMessages] = useState<any[]>([]);
-  const [inputValue, setInputValue] = useState("");
-  const isRunning = useRef(false);
-
-  // --- C2 Terminal Logic ---
-  const scrollToBottom = useCallback(() => {
-    if (chatBodyRef.current) {
-      chatBodyRef.current.scrollTo({
-        top: chatBodyRef.current.scrollHeight,
-        behavior: 'smooth',
-      });
-    }
-  }, []);
-
-  const addMessage = useCallback((content: string, type: 'user' | 'system', meta = '', metric = '') => {
-    setMessages(prev => [...prev, {id: Date.now() + Math.random(), content, type, meta, metric}])
-  }, []);
-
-  const handleTerminalSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputValue.trim() || isRunning.current) return;
-    
-    const cmd = inputValue.trim();
-    setInputValue("");
-    isRunning.current = true;
-    
-    addMessage(`> ${cmd}`, 'user');
-    scrollToBottom();
-    
-    // Simulate processing
-    await new Promise(r => setTimeout(r, 600));
-    
-    let response = "COMMAND_NOT_RECOGNIZED. Type 'HELP' for available protocols.";
-    let metric = "ERR_CODE: 404";
-    let meta = "SYSTEM_NODE_88";
-
-    if (cmd.toUpperCase().includes("AUDIT") || cmd.toUpperCase().includes("COST") || cmd.toUpperCase().includes("BUDGET")) {
-        response = "CRITICAL_ALERT: Job 402 is 12.4% over variance. Dryer-wall rework identified as the primary cost driver. Subcontractor recovery protocols initiated.";
-        metric = "MARGIN_PROTECTION: $124.5K SECURED";
-        meta = "FUSION_SOURCE: SAGE_FINANCE, PROCORE_API";
-    } else if (cmd.toUpperCase().includes("STATUS") || cmd.toUpperCase().includes("FLOW") || cmd.toUpperCase().includes("CO")) {
-        response = "ESTIMATED_CO: MARCH 14. Fire safety systems verified by Inspector Davis at 10:42 AM. Schedule integrity remains nominal.";
-        metric = "SCHEDULE_CONFIDENCE: 98.4%";
-        meta = "FUSION_SOURCE: PERMIT_LOGS, FIELD_REPORTS";
-    } else if (cmd.toUpperCase() === "HELP") {
-        response = "AVAILABLE_PROTOCOLS: \n- AUDIT [target]\n- STATUS [project_id]\n- CLEAR (wipe terminal)\n- INITIALIZE_NODE (reboot sequence)";
-        metric = "SYS_OP_MANUAL";
-        meta = "ENVISION_CORE_v3";
-    } else if (cmd.toUpperCase() === "CLEAR") {
-        setMessages([{id: Date.now(), content: "TERMINAL_CLEARED.", type: 'system', meta: 'SYS_MSG', metric: 'OK'}]);
-        isRunning.current = false;
-        return;
-    }
-
-    addMessage(response, 'system', meta, metric);
-    scrollToBottom();
-    isRunning.current = false;
-  };
+export default function UnifiedPage() {
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-      if(messages.length === 0) {
-        addMessage(
-            "ENVISION_OS_v3.1_CONNECTED. SECURE_PROTOCOL_ENGAGED.\nAwaiting operator input...",
-            'system',
-            'AUTH_SUCCESS: ADMIN_NODE',
-            'ENC: AES-256'
-        );
-      }
-  }, [addMessage]);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, scrollToBottom]);
-
-  // --- Charts Logic ---
-  useEffect(() => {
-    const chartInstances: Chart[] = [];
-    
-    // Global chart defaults for tactical look
-    Chart.defaults.color = '#00FF41';
-    Chart.defaults.font.family = 'monospace';
-
-    if (latencyChartRef.current) {
-        const ctx = latencyChartRef.current.getContext('2d');
-        if (ctx) {
-            chartInstances.push(new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['MANUAL_AUDIT', 'LEGACY_CRM', 'ENVISION_OS'],
-                    datasets: [{
-                        label: 'LATENCY_DAYS',
-                        data: [45, 14, 0.01], 
-                        backgroundColor: ['rgba(255,0,0,0.5)', 'rgba(255,165,0,0.5)', 'rgba(0,255,65,0.8)'],
-                        borderColor: ['#FF0000', '#FFA500', '#00FF41'],
-                        borderWidth: 1,
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { 
-                            grid: { color: 'rgba(0,255,65,0.1)' }, 
-                            ticks: { color: '#00FF41' } 
-                        },
-                        y: { 
-                            grid: { display: false }, 
-                            ticks: { color: '#00FF41', font: { size: 10 } } 
-                        }
-                    }
-                }
-            }));
-        }
-    }
-    
-    if (coverageChartRef.current) {
-        const ctx = coverageChartRef.current.getContext('2d');
-        if (ctx) {
-            chartInstances.push(new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['VERIFIED_DATA', 'UNVERIFIED_NOISE'],
-                    datasets: [{
-                        data: [98.2, 1.8],
-                        backgroundColor: ['rgba(0,255,65,0.8)', 'rgba(255,0,0,0.3)'],
-                        borderColor: '#00FF41',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '80%',
-                    plugins: { legend: { display: false } }
-                }
-            }));
-        }
-    }
-
-    return () => chartInstances.forEach(chart => chart.destroy());
+    setMounted(true);
   }, []);
+
+  if (!mounted) {
+    return <div className="min-h-screen bg-white" />;
+  }
+
+  const satelliteImage = PlaceHolderImages.find(img => img.id === 'satellite-map');
+
+  // Realistic Signal Tornado - 180 elements funneling aggressively into center, 40% slower
+  const chaoticInputs = Array.from({ length: 180 }).map((_, i) => {
+    const icons = [
+        { Icon: FileText, color: "text-blue-400", label: "PDF" },
+        { Icon: FileSpreadsheet, color: "text-green-400", label: "XLS" },
+        { Icon: FileSignature, color: "text-amber-400", label: "RFI" },
+        { Icon: FileCode, color: "text-purple-400", label: "BIM" },
+        { Icon: Mail, color: "text-sky-400", label: "MAIL" },
+        { Icon: Phone, color: "text-emerald-400", label: "CALL" },
+        { Icon: MessageSquare, color: "text-pink-400", label: "TEXT" },
+    ];
+    const item = icons[i % icons.length];
+    const topPercent = Math.random() * 100;
+    // Calculate yOffset to meet precisely at the vertical middle (50% of the container)
+    // The target is 50%. The distance from topPercent to 50% is (50 - topPercent).
+    // Multiply by a factor to match the container height visually (8.5 is a heuristic for 100vh height / icons)
+    const yOffsetValue = 50 - topPercent;
+    
+    return {
+      ...item,
+      delay: `${(Math.random() * 12).toFixed(2)}s`,
+      duration: `${(8.0 + Math.random() * 6.0).toFixed(2)}s`, // 40% slower trajectory
+      top: `${topPercent.toFixed(2)}%`,
+      yOffset: `${(yOffsetValue * 8.5).toFixed(2)}px`, // Converge to center coordinate
+      size: i % 12 === 0 ? "size-10" : "size-7", // Varied visual magnitude
+    };
+  });
 
   return (
-    <div className="flex flex-col w-full min-h-screen text-[#00FF41] selection:bg-[#00FF41] selection:text-black">
+    <div 
+        id="main-scroll-container"
+        className="flex flex-col w-full selection:bg-primary/20 font-sans snap-y snap-mandatory overflow-y-auto h-[calc(100vh-64px)] no-scrollbar scroll-smooth"
+    >
       
-      {/* C2 HUD TOP BAR */}
-      <nav className="fixed top-0 w-full z-[100] bg-black border-b border-[#00FF41]/30 px-6 py-2 flex justify-between items-center text-[10px] uppercase font-bold tracking-widest">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-white glitch" data-text="ENVISION_OS">
-            <Target className="size-4 text-[#00FF41]" />
-            ENVISION_OS
-          </div>
-          <span className="hidden md:inline-block px-2 py-0.5 bg-[#00FF41]/20 text-[#00FF41] border border-[#00FF41]/50">SYS.VER: 3.1.8</span>
-        </div>
-        <div className="hidden lg:flex gap-8 text-[#00FF41]/60">
-            <a href="#overview" className="hover:text-[#00FF41] transition-colors">INTEL_OVERVIEW</a>
-            <a href="#ingestion" className="hover:text-[#00FF41] transition-colors">DATA_PIPELINE</a>
-            <a href="#fusion" className="hover:text-[#00FF41] transition-colors">CONTEXT_FUSION</a>
-        </div>
-        <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-                <span className="size-2 bg-red-500 rounded-full animate-pulse"></span>
-                <span className="text-red-500">REC</span>
+      {/* SECTION 01: INSTITUTIONAL HERO (WHITE) */}
+      <section id="hero" className="snap-start relative flex flex-col items-center justify-center p-6 bg-white text-black overflow-hidden h-screen w-full shrink-0">
+        <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] tactical-grid" />
+        <div className="relative z-10 max-w-6xl w-full">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-primary/20 bg-primary/5 text-[9px] font-bold uppercase tracking-[0.4em] text-primary mb-12">
+                <Crosshair className="size-3" />
+                <span>Institutional Intel System v4.0</span>
             </div>
-            <div className="px-3 py-1 border border-[#00FF41] bg-[#00FF41]/10 text-[#00FF41] cursor-pointer hover:bg-[#00FF41] hover:text-black transition-colors">
-                SYS_ADMIN
-            </div>
-        </div>
-      </nav>
-
-      {/* BLOOMBERG TERMINAL / C2 LANDING VIEW */}
-      <section id="overview" className="min-h-screen pt-16 p-4 tactical-grid relative flex flex-col">
-        <div className="absolute top-20 right-8 text-right opacity-50 z-0 pointer-events-none hidden lg:block">
-            <p className="text-[6rem] font-bold leading-none">C2</p>
-            <p className="tracking-[1em] uppercase">Command_&_Control</p>
-        </div>
-
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 relative z-10">
             
-            {/* LEFT COLUMN: INTEL FEED & RISK MATRIX */}
-            <div className="lg:col-span-3 flex flex-col gap-4 h-full">
-                
-                {/* PROJECT OVERVIEW PANEL */}
-                <div className="c2-panel flex-1 min-h-[250px] flex flex-col">
-                    <div className="c2-panel-header">
-                        <span>SYS.OP // PROJECT_OVERVIEW</span>
-                        <BarChart3 className="size-3" />
-                    </div>
-                    <div className="p-4 grid grid-cols-2 gap-4 h-full">
-                        <div className="border border-[#333] p-2 flex flex-col justify-between">
-                            <span className="text-[8px] text-[#888]">ACTIVE_NODES</span>
-                            <span className="text-3xl font-bold text-white">42</span>
-                        </div>
-                        <div className="border border-[#333] p-2 flex flex-col justify-between">
-                            <span className="text-[8px] text-[#888]">RISK_ALERTS</span>
-                            <span className="text-3xl font-bold text-red-500 glitch" data-text="03">03</span>
-                        </div>
-                        <div className="border border-[#333] p-2 flex flex-col justify-between col-span-2 bg-[#00FF41]/5">
-                            <span className="text-[8px] text-[#888]">CAPITAL_TRACKED</span>
-                            <span className="text-4xl font-bold text-[#00FF41]">$1.4B</span>
-                            <span className="text-[8px] text-[#00FF41]/60">VARIANCE: +1.2% THRESHOLD_NOMINAL</span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* RISK MATRIX PANEL */}
-                <div className="c2-panel flex-1 min-h-[250px] flex flex-col">
-                    <div className="c2-panel-header">
-                        <span className="text-red-500">THREAT_INTEL // RISK_MATRIX</span>
-                        <AlertTriangle className="size-3 text-red-500" />
-                    </div>
-                    <div className="p-4 space-y-2 overflow-y-auto">
-                        {[
-                            { id: "J-402", issue: "Budget Variance > 10%", loc: "Drywall Rev. C", status: "CRITICAL", color: "text-red-500", bg: "bg-red-500/10", border: "border-red-500/30" },
-                            { id: "J-118", issue: "Steel Lead Time +2 Wks", loc: "Procurement", status: "ELEVATED", color: "text-amber-500", bg: "bg-amber-500/10", border: "border-amber-500/30" },
-                            { id: "J-092", issue: "RFI Response Latency", loc: "Structural", status: "MONITOR", color: "text-[#00FF41]", bg: "bg-[#00FF41]/10", border: "border-[#00FF41]/30" },
-                            { id: "J-092", issue: "RFI Response Latency", loc: "Structural", status: "MONITOR", color: "text-[#00FF41]", bg: "bg-[#00FF41]/10", border: "border-[#00FF41]/30" },
-                        ].map((risk, i) => (
-                            <div key={i} className={`p-2 border ${risk.border} ${risk.bg} flex justify-between items-center hover:bg-white/5 cursor-crosshair transition-colors`}>
-                                <div>
-                                    <div className={`text-[10px] font-bold ${risk.color}`}>{risk.id} // {risk.status}</div>
-                                    <div className="text-[12px] text-white">{risk.issue}</div>
-                                </div>
-                                <CornerRightDown className={`size-3 ${risk.color}`} />
-                            </div>
-                        ))}
-                    </div>
-                </div>
+            <div className="space-y-4 mb-16">
+                <h1 className="text-5xl md:text-8xl font-semibold tracking-tighter leading-none">
+                    Where <br/>
+                    <span className="text-primary">Development</span> <br/>
+                    Meets Data
+                </h1>
             </div>
 
-            {/* CENTER COLUMN: GEOSPATIAL & BIM (MOCK) */}
-            <div className="lg:col-span-6 flex flex-col gap-4 h-[800px] lg:h-auto">
-                <div className="c2-panel flex-1 flex flex-col relative">
-                    <div className="c2-panel-header absolute top-0 w-full z-20 bg-black/80 backdrop-blur-md">
-                        <span>SAT.COM // SITE_INTELLIGENCE</span>
-                        <div className="flex gap-2">
-                            <span className="px-2 border border-[#00FF41] text-[#00FF41] bg-[#00FF41]/20">GEO</span>
-                            <span className="px-2 border border-[#333] text-[#888] hover:text-white cursor-pointer">BIM</span>
-                        </div>
-                    </div>
-                    
-                    {/* Mock Map Background */}
-                    <div className="absolute inset-0 z-0 overflow-hidden bg-[#0A1015]">
-                        {/* Fake satellite texture using radial gradients */}
-                        <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 30% 40%, #1A2530 0%, transparent 40%), radial-gradient(circle at 70% 60%, #152A15 0%, transparent 50%)' }}></div>
-                        {/* Topo lines mock */}
-                        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 20px, #00FF41 21px, #00FF41 22px)' }}></div>
-                        {/* Radar sweep */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[600px] border border-[#00FF41]/20 rounded-full">
-                            <div className="absolute inset-0 radar-sweep-element"></div>
-                        </div>
-                        
-                        {/* Map Pins */}
-                        <div className="absolute top-[30%] left-[40%] flex flex-col items-center group cursor-crosshair">
-                            <div className="size-4 border-2 border-red-500 bg-red-500/20 rounded-full animate-ping absolute"></div>
-                            <MapPin className="size-6 text-red-500 relative z-10" />
-                            <div className="mt-1 px-2 py-0.5 bg-black border border-red-500 text-[8px] text-red-500 hidden group-hover:block whitespace-nowrap z-20">J-402 // VARIANCE ALERT</div>
-                        </div>
-                        
-                        <div className="absolute top-[60%] left-[65%] flex flex-col items-center group cursor-crosshair">
-                            <div className="size-3 bg-[#00FF41] rounded-full shadow-[0_0_15px_#00FF41]"></div>
-                            <div className="mt-1 px-2 py-0.5 bg-black border border-[#00FF41] text-[8px] text-[#00FF41] hidden group-hover:block whitespace-nowrap z-20">J-092 // NOMINAL</div>
-                        </div>
+            <p className="text-lg md:text-xl text-black/60 max-w-2xl mb-16 leading-relaxed font-medium">
+                Sovereign project orchestration. Eliminating fragmented noise with <span className="text-black font-bold uppercase">weapons-grade accuracy</span> and verified multi-platform data fusion.
+            </p>
 
-                         <div className="absolute top-[20%] left-[75%] flex flex-col items-center group cursor-crosshair">
-                            <div className="size-3 bg-amber-500 rounded-full shadow-[0_0_15px_#FFA500]"></div>
-                            <div className="mt-1 px-2 py-0.5 bg-black border border-amber-500 text-[8px] text-amber-500 hidden group-hover:block whitespace-nowrap z-20">J-118 // ELEVATED</div>
-                        </div>
-                    </div>
-
-                    {/* Overlay Info */}
-                    <div className="absolute bottom-4 left-4 z-10 space-y-2">
-                        <div className="p-2 bg-black/80 border border-[#00FF41]/30 backdrop-blur-sm text-[10px]">
-                            <div className="text-white mb-1">TARGET_LOCK: <span className="text-[#00FF41]">J-402</span></div>
-                            <div className="text-[#888]">COORD: 40.7128° N, 74.0060° W</div>
-                            <div className="text-[#888]">ELEV: 14M ASL</div>
-                        </div>
-                    </div>
-                </div>
+            <div className="flex flex-col sm:flex-row gap-4 font-mono">
+                <a href="#ingestion" className="bg-primary text-white px-10 py-4 text-[11px] font-bold uppercase tracking-widest hover:bg-primary/90 transition-all flex items-center gap-3 rounded-none shadow-[4px_4px_0px_rgba(0,124,90,0.2)]">
+                    INITIALIZE_SYSTEM <ArrowRight className="size-4" />
+                </a>
             </div>
+        </div>
+      </section>
 
-            {/* RIGHT COLUMN: COMMAND TERMINAL */}
-            <div className="lg:col-span-3 flex flex-col gap-4 h-full">
-                <div className="c2-panel flex-1 flex flex-col">
-                    <div className="c2-panel-header bg-[#00FF41]/10 border-b-[#00FF41]/30 text-[#00FF41]">
-                        <span>OP.COM // SECURE_TERMINAL</span>
-                        <Terminal className="size-3" />
-                    </div>
-                    
-                    {/* Chat Output */}
-                    <div className="flex-1 p-4 overflow-y-auto font-mono text-[11px] space-y-4" ref={chatBodyRef}>
-                        {messages.map((msg) => (
-                            <div key={msg.id} className={`flex flex-col ${msg.type === 'user' ? 'text-white' : 'text-[#00FF41]'}`}>
-                                <div className="break-words">
-                                    {msg.content.split('\n').map((line: string, i: number) => (
-                                        <p key={i}>{line}</p>
-                                    ))}
-                                </div>
-                                {(msg.metric || msg.meta) && (
-                                    <div className="mt-2 p-2 border border-[#333] bg-black">
-                                        {msg.metric && <div className="text-amber-500">{msg.metric}</div>}
-                                        {msg.meta && <div className="text-[#888]">{msg.meta}</div>}
+      {/* SECTION 02: INGESTION PIPELINE (OBSIDIAN) - CHAOS TO CONTROL */}
+      <section id="ingestion" className="snap-start relative h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden shrink-0">
+          <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
+          <div className="relative z-10 w-full max-w-7xl h-full flex flex-col justify-between py-12 gap-8">
+              
+              <div className="space-y-4 shrink-0">
+                  <div className="flex items-center gap-3 mb-2">
+                      <Database className="size-4 text-primary" />
+                      <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">02_Data_Ingestion_Pipeline</h2>
+                  </div>
+                  <h3 className="text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Chaos to Control.</h3>
+                  <p className="text-lg text-white/60 max-w-2xl leading-relaxed font-medium">
+                      Slamming fragmented construction signals—PDFs, emails, calls, and spreadsheets—into a verified institutional stream. Deterministic parsing for weapons-grade project accuracy.
+                  </p>
+              </div>
+              
+              <div className="relative w-full flex-1 flex items-center bg-white/[0.02] border border-white/5 overflow-hidden">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                      
+                      {/* THE CHAOTIC TORNADO FUNNEL (LEFT TO CENTER) */}
+                      <div className="absolute left-0 w-1/2 h-full pointer-events-none">
+                        {chaoticInputs.map((item, i) => (
+                            <div 
+                              key={i} 
+                              className="absolute left-[-150px] animate-tornado"
+                              style={{ 
+                                  "--delay": item.delay,
+                                  "--duration": item.duration,
+                                  "--y-offset": item.yOffset,
+                                  top: item.top
+                              } as React.CSSProperties}
+                            >
+                                <div className="flex flex-col items-center gap-1 group">
+                                    <div className={cn("p-1 border bg-black/40 border-white/10", item.color)}>
+                                        <item.Icon className={item.size} />
                                     </div>
-                                )}
+                                    <span className="text-[6px] font-mono opacity-40 font-bold uppercase tracking-tighter">{item.label}</span>
+                                </div>
                             </div>
                         ))}
-                    </div>
+                      </div>
 
-                    {/* Chat Input */}
-                    <div className="p-2 border-t border-[#333] bg-black">
-                        <form onSubmit={handleTerminalSubmit} className="flex gap-2">
-                            <span className="text-white p-2">{'>'}</span>
-                            <input 
-                                type="text" 
-                                value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)}
-                                placeholder="AWAITING_COMMAND..." 
-                                className="w-full bg-transparent outline-none text-[#00FF41] placeholder:text-[#333] uppercase"
-                                autoFocus
-                                disabled={isRunning.current}
-                            />
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+                      {/* THE PARSER CORE (CENTER) */}
+                      <div className="relative z-20 flex flex-col items-center gap-4 px-12">
+                          <div className="size-40 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center animate-status shadow-[0_0_80px_rgba(0,124,90,0.2)] bg-[#0A0A0F]/50 backdrop-blur-sm">
+                              <div className="relative">
+                                <Database className="size-20 text-primary" />
+                                <div className="absolute inset-0 size-20 bg-primary/30 blur-3xl animate-pulse" />
+                              </div>
+                          </div>
+                          <div className="flex flex-col items-center gap-0.5">
+                              <span className="text-[10px] font-mono font-bold text-primary uppercase tracking-[0.4em]">Parser_Core</span>
+                              <span className="text-[7px] font-mono text-white/40 uppercase tracking-widest animate-pulse">Synthesizing...</span>
+                          </div>
+                      </div>
+
+                      {/* THE SINGLE FILE LINE (CENTER TO RIGHT) */}
+                      <div className="absolute right-0 w-1/2 h-full overflow-hidden pointer-events-none">
+                          <div className="flex flex-col justify-center h-full gap-4 pl-12">
+                              {[
+                                "0x1A2B_RFI_VERIFIED",
+                                "0x3C4D_CONTRACT_SIGNED",
+                                "0x5E6F_BIM_SYNCED",
+                                "0x7G8H_XLS_NORMALIZED",
+                                "0x9I0J_LOG_ARCHIVED",
+                                "0xAK1L_NODE_STABLE",
+                                "0xCM2N_SIGNAL_CLEAN"
+                              ].map((str, i) => (
+                                <div 
+                                    key={i} 
+                                    className="animate-data-stream-single opacity-0 text-[10px] font-mono text-primary font-bold whitespace-nowrap bg-primary/5 px-4 py-2 border-l-2 border-primary shadow-sm" 
+                                    style={{ animationDelay: `${i * 0.7}s` }}
+                                >
+                                    {str}
+                                </div>
+                              ))}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
       </section>
 
-      {/* DATA INGESTION PIPELINE */}
-      <section id="ingestion" className="py-20 p-4 relative border-t border-[#333] bg-black">
-        <div className="c2-panel">
-            <div className="c2-panel-header">
-                <span>SYS.ARCH // INGESTION_PIPELINE</span>
-                <RadioTower className="size-3" />
-            </div>
-            <div className="p-10 flex flex-col md:flex-row items-center justify-between gap-10 min-h-[400px]">
-                
-                {/* WIDE FLURRY OF ICONS ON THE LEFT */}
-                <div className="relative w-full md:w-1/3 h-[300px] border border-[#333] overflow-hidden bg-[#0A0A0A]">
-                    <div className="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMOCA4Wk04IDBMMCA4WiIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjEiPjwvcGF0aD4KPC9zdmc+')]"></div>
-                    
-                    {[
-                        { icon: Mail, label: 'EMAIL_SMTP', top: '10%' },
-                        { icon: FileText, label: 'PDF_PARSE', top: '30%' },
-                        { icon: MessageSquare, label: 'SLACK_API', top: '50%' },
-                        { icon: Camera, label: 'SITE_CAM', top: '70%' },
-                        { icon: Database, label: 'ERP_SYNC', top: '90%' }
-                    ].map((item, i) => (
-                        <div 
-                            key={i} 
-                            className="absolute left-0 flex items-center gap-2 p-2 border border-[#00FF41]/30 bg-black animate-funnel text-[#00FF41]"
-                            style={{ 
-                                top: item.top, 
-                                animationDelay: `${i * 0.4}s` 
-                            }}
-                        >
-                            <item.icon className="size-6" />
-                            <span className="text-[10px] hidden sm:block">{item.label}</span>
-                        </div>
-                    ))}
-                </div>
-
-                {/* CENTRAL PARSER */}
-                <div className="relative z-10">
-                    <div className="size-32 border-2 border-amber-500 bg-amber-500/10 flex flex-col items-center justify-center p-4 shadow-[0_0_30px_rgba(255,165,0,0.3)] relative">
-                        {/* Connecting lines from left container to parser - visual mock */}
-                        <div className="absolute w-10 h-0.5 bg-amber-500/50 -left-10 top-1/2"></div>
-
-                        <Cpu className="size-12 text-amber-500 mb-2" />
-                        <span className="text-[10px] text-amber-500 text-center font-bold">NORMALIZATION<br/>ENGINE</span>
-                        
-                        {/* Output stream */}
-                        <div className="absolute w-20 h-1 bg-amber-500 -right-20 top-1/2 flex items-center overflow-hidden">
-                            <div className="w-full h-full bg-white animate-scan-horizontal"></div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* STRUCTURED OUTPUT */}
-                <div className="w-full md:w-1/3 flex flex-col gap-2 relative z-10 pl-10 md:pl-20">
-                    <div className="text-[10px] text-[#888] mb-2">VERIFIED_DATA_STREAM</div>
-                    {[...Array(4)].map((_, i) => (
-                        <div key={i} className="h-6 border border-[#00FF41] bg-[#00FF41]/10 flex items-center px-2 overflow-hidden relative">
-                            <div className="absolute inset-0 bg-[#00FF41] opacity-20 animate-pulse" style={{ animationDelay: `${i * 0.2}s` }}></div>
-                            <span className="text-[8px] text-white z-10 relative">0x{Math.random().toString(16).substr(2, 8).toUpperCase()} // SYNC_OK</span>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
-      </section>
-
-      {/* CONTEXT FUSION - 3D LAYERING */}
-      <section id="fusion" className="py-20 p-4 border-t border-[#333] bg-black">
-        <div className="c2-panel">
-            <div className="c2-panel-header">
-                <span className="text-secondary">SYS.LOGIC // CONTEXT_FUSION_ENGINE</span>
-                <Layers className="size-3 text-secondary" />
+      {/* SECTION 03: INTELLIGENCE COMMAND (WHITE) */}
+      <section id="intel" className="snap-start relative h-screen w-full bg-white text-black flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden shrink-0">
+        <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] tactical-grid" />
+        <div className="relative z-10 w-full max-w-7xl h-full flex flex-col">
+            <div className="flex items-center gap-3 mb-6 shrink-0">
+                <Terminal className="size-4 text-primary" />
+                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/40">03_Intelligence_Terminal_Core</h2>
             </div>
             
-            <div className="p-10 flex flex-col lg:flex-row items-center justify-center gap-20 min-h-[600px]">
-                
-                {/* 3D Visualizer */}
-                <div className="context-container relative w-[300px] h-[400px] perspective-1000">
-                    
-                    {/* Layer 1: Raw Data (Danger without context) */}
-                    <div className="context-layer layer-bottom absolute inset-0 border-2 border-red-500 bg-black/80 p-4 flex flex-col justify-between shadow-[0_20px_50px_rgba(255,0,0,0.2)]">
-                        <div className="text-red-500 text-[10px] border-b border-red-500/30 pb-2 flex justify-between">
-                            <span>L1: RAW_ISOLATED_DATA</span>
-                            <AlertTriangle className="size-3" />
-                        </div>
-                        <div className="text-center font-mono space-y-2">
-                            <div className="bg-red-500/20 border border-red-500 p-2 text-white text-[10px]">INVOICE: $50,000</div>
-                            <div className="text-[8px] text-red-500">STATUS: UNVERIFIED. High risk of duplicate payment or out-of-scope work.</div>
+            <div className="mb-8 shrink-0">
+              <h2 className="text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Intelligence Command.</h2>
+              <p className="text-black/60 max-w-xl text-lg font-medium mt-4">Verified institutional oracle. Direct access to cross-platform project truth.</p>
+            </div>
+
+            <Card className="bg-white border-black/5 shadow-2xl flex-1 flex flex-col overflow-hidden rounded-none">
+                <CardHeader className="border-b border-black/5 bg-gray-50/50 py-3 shrink-0">
+                    <div className="flex items-center justify-between">
+                        <CardTitle className="text-[10px] tracking-[0.3em] text-black/60">Secure_Command_Interface</CardTitle>
+                        <div className="flex items-center gap-2">
+                            <div className="size-1.5 rounded-full bg-primary animate-status" />
+                            <span className="text-[9px] font-mono text-primary uppercase tracking-widest">Signal_Nominal</span>
                         </div>
                     </div>
+                </CardHeader>
+                <CardContent className="p-0 flex-1 overflow-hidden relative">
+                    <ChatInterface />
+                </CardContent>
+            </Card>
+        </div>
+      </section>
 
-                    {/* Layer 2: Relational Data */}
-                    <div className="context-layer layer-middle absolute inset-0 border-2 border-amber-500 bg-black/80 p-4 flex flex-col justify-between shadow-[0_20px_50px_rgba(255,165,0,0.2)]">
-                         <div className="text-amber-500 text-[10px] border-b border-amber-500/30 pb-2 flex justify-between">
-                            <span>L2: RELATIONAL_GRAPH</span>
-                            <Database className="size-3" />
-                        </div>
-                         <div className="text-center font-mono space-y-2">
-                            <div className="text-[10px] text-white">MATCH: PO_9921</div>
-                            <div className="text-[8px] text-amber-500">VENDOR: Acme Corp. Subcontract sum aligns, but field work status unknown.</div>
-                        </div>
-                    </div>
+      {/* SECTION 04: CONTEXT FUSION (OBSIDIAN) */}
+      <section id="fusion" className="snap-start relative h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 shrink-0">
+          <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
+          <div className="relative z-10 w-full max-w-7xl flex flex-col h-full">
+              <div className="flex items-center gap-3 mb-6 shrink-0">
+                  <Zap className="size-4 text-primary" />
+                  <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">04_Context_Fusion_Engine</h2>
+              </div>
+              <Card className="bg-[#12121A] border-[#1E1E2E] flex-1 flex flex-col overflow-hidden">
+                  <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-10 shrink-0">
+                      <div className="flex items-center justify-between">
+                          <div className="flex flex-col gap-1">
+                              <CardTitle className="text-[16px] tracking-[0.3em]">Context Is Everything</CardTitle>
+                              <CardDescription className="text-[10px] font-mono text-primary/60 uppercase tracking-widest">Multi-Platform Correlation</CardDescription>
+                          </div>
+                          <span className="text-[9px] font-mono text-muted-foreground uppercase">Correlation: 0.94 Sigma</span>
+                      </div>
+                  </CardHeader>
+                  <CardContent className="p-8 md:p-16 flex-1 overflow-auto">
+                      <ContextSummarizer />
+                  </CardContent>
+              </Card>
+          </div>
+      </section>
 
-                    {/* Layer 3: Verified Context (The OS Layer) */}
-                    <div className="context-layer layer-top absolute inset-0 border-2 border-[#00FF41] bg-[#00FF41]/10 backdrop-blur-md p-4 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,255,65,0.4)]">
-                        <div className="text-[#00FF41] text-[10px] border-b border-[#00FF41]/30 pb-2 flex justify-between">
-                            <span className="font-bold">L3: VERIFIED_CONTEXT</span>
-                            <ShieldCheck className="size-3" />
+      {/* SECTION 05: BIM + TELEMETRY (OBSIDIAN) */}
+      <section id="tactical-bim" className="snap-start relative h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 shrink-0">
+        <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
+        <div className="relative z-10 w-full max-w-7xl h-full grid grid-cols-1 lg:grid-cols-3 gap-6 overflow-hidden">
+            <div className="lg:col-span-2 flex flex-col h-full">
+                <div className="flex items-center gap-3 mb-4 shrink-0">
+                    <Layers className="size-4 text-primary" />
+                    <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">05_Tactical_Lidar_Bim</h2>
+                </div>
+                <div className="flex-1 overflow-hidden">
+                    <TacticalBimOverlay />
+                </div>
+            </div>
+            <div className="flex flex-col gap-6 h-full">
+                <div className="flex items-center gap-3 mb-4 shrink-0">
+                    <Activity className="size-4 text-primary" />
+                    <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">Realtime_Telemetry</h2>
+                </div>
+                <div className="grid grid-cols-1 gap-4 flex-1 overflow-auto no-scrollbar">
+                    {[
+                    { label: 'TOTAL_PROJECTS', value: '47', icon: Target },
+                    { label: 'ACTIVE_SITES', value: '12', icon: MapIcon },
+                    { label: 'BUDGET_TRACKED', value: '$2.3B', icon: Activity },
+                    { label: 'VARIANCE_DELTA', value: '-1.2%', icon: Zap, color: 'text-primary' },
+                    ].map((metric, i) => (
+                    <Card key={i} className="bg-[#12121A] border-[#1E1E2E] hover:border-primary/40 transition-colors">
+                        <CardContent className="p-6 flex flex-col gap-2">
+                        <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase">{metric.label}</span>
+                            <metric.icon className="size-3 text-primary/40" />
                         </div>
-                        <div className="text-center font-mono space-y-2">
-                            <div className="bg-[#00FF41] text-black font-bold p-2 text-[12px] uppercase">PAYMENT_AUTHORIZED</div>
-                            <div className="text-[8px] text-white text-left space-y-1">
-                                <p>&gt; PM Daily Log confirms work complete.</p>
-                                <p>&gt; Geo-tagged photo attached to RFI #12.</p>
-                                <p>&gt; Budget variance: 0%.</p>
+                        <div className="text-3xl font-mono font-bold tracking-tighter mt-2 text-white">
+                            {metric.value}
+                        </div>
+                        </CardContent>
+                    </Card>
+                    ))}
+                </div>
+            </div>
+        </div>
+      </section>
+
+      {/* SECTION 06: SITE + DOCUMENTS (OBSIDIAN) */}
+      <section id="site-docs" className="snap-start relative h-screen w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-6 md:p-12 shrink-0">
+        <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
+        <div className="relative z-10 w-full max-w-7xl h-full flex flex-col gap-12 overflow-hidden">
+            <div className="flex items-center gap-3 mb-2 shrink-0">
+                <MapIcon className="size-4 text-primary" />
+                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">06_Site_Doc_Repository</h2>
+            </div>
+            
+            <div className="flex-1 overflow-hidden flex flex-col gap-8">
+                {/* SATELLITE MAP (TOP HALF) */}
+                <Card className="bg-[#12121A] border-[#1E1E2E] relative overflow-hidden flex-1 min-h-[300px]">
+                    <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-3 relative z-20 shrink-0">
+                        <div className="flex items-center justify-between">
+                            <CardTitle className="text-[10px] tracking-[0.3em]">Geospatial_Intel_Feed</CardTitle>
+                            <span className="text-[8px] font-mono text-primary uppercase">LAT: 34.0522° N</span>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="p-0 relative h-full">
+                        {satelliteImage?.imageUrl && (
+                            <Image 
+                                src={satelliteImage.imageUrl} 
+                                alt="Satellite Map" 
+                                fill 
+                                className="object-cover grayscale contrast-125 brightness-75"
+                                data-ai-hint={satelliteImage.imageHint}
+                            />
+                        )}
+                        <div className="absolute inset-0 tactical-grid opacity-20 pointer-events-none" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                            <div className="relative">
+                                <div className="size-16 rounded-full border border-primary animate-ping absolute -inset-0 opacity-20" />
+                                <Target className="size-8 text-primary" />
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </CardContent>
+                </Card>
 
-                {/* Explanation text */}
-                <div className="max-w-md space-y-6">
-                    <h3 className="text-4xl font-bold text-white uppercase tracking-tighter">Context is Everything.</h3>
-                    <p className="text-[#888] text-sm leading-relaxed">
-                        Raw data without context is a liability. Our fusion engine correlates isolated events—invoices, field logs, emails—into a verified reality graph.
-                    </p>
-                    <div className="p-4 border border-[#333] bg-[#111] space-y-4">
-                        <div className="flex items-center gap-4">
-                            <div className="size-8 border border-red-500 text-red-500 flex items-center justify-center font-bold">1</div>
-                            <div className="text-[10px] text-white">Isolated data creates false positives.</div>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <div className="size-8 border border-amber-500 text-amber-500 flex items-center justify-center font-bold">2</div>
-                            <div className="text-[10px] text-white">Basic matching lacks field reality.</div>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <div className="size-8 border border-[#00FF41] bg-[#00FF41]/20 text-[#00FF41] flex items-center justify-center font-bold">3</div>
-                            <div className="text-[10px] text-[#00FF41]">Envision OS provides absolute verification.</div>
-                        </div>
-                    </div>
-                </div>
-
+                {/* DOCUMENTS TABLE (BOTTOM HALF) */}
+                <Card className="bg-[#12121A] border-[#1E1E2E] overflow-hidden flex-1 min-h-[300px] flex flex-col">
+                    <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-3 shrink-0">
+                        <CardTitle className="text-[10px] tracking-[0.3em]">Document_Intel_Vault</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-0 flex-1 overflow-auto no-scrollbar">
+                        <Table>
+                            <TableHeader className="bg-[#0A0A0F] sticky top-0 z-10">
+                                <TableRow className="border-[#1E1E2E] hover:bg-transparent">
+                                    <TableHead className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">Document_ID</TableHead>
+                                    <TableHead className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">Status</TableHead>
+                                    <TableHead className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground text-right">Last_Sync</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {[
+                                { id: 'RFI_9912_STRUCTURAL', status: 'VERIFIED', sync: '14:22:01' },
+                                { id: 'BIM_MODEL_V4_LOD400', status: 'ACTIVE', sync: '12:05:44' },
+                                { id: 'SPEC_08_GLASS_V2', status: 'AUDIT', sync: '09:15:22' },
+                                { id: 'SITE_REPORT_W24', status: 'VERIFIED', sync: 'Yesterday' },
+                                { id: 'AS_BUILT_ELECTRICAL', status: 'PENDING', sync: '2 Days Ago' },
+                                { id: 'STEEL_CERT_202', status: 'VERIFIED', sync: '3 Days Ago' },
+                                ].map((doc, i) => (
+                                <TableRow key={i} className="border-[#1E1E2E] hover:bg-white/5 transition-colors cursor-pointer group">
+                                    <TableCell className="py-4">
+                                        <div className="flex items-center gap-3">
+                                            <FileText className="size-3 text-primary/40 group-hover:text-primary transition-colors" />
+                                            <span className="text-[10px] font-mono text-white/90 font-bold uppercase">{doc.id}</span>
+                                        </div>
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className="flex items-center gap-2">
+                                            <div className={cn(
+                                                "size-1 rounded-full",
+                                                doc.status === 'VERIFIED' ? 'bg-primary' : doc.status === 'AUDIT' ? 'bg-yellow-500' : 'bg-muted-foreground'
+                                            )} />
+                                            <span className="text-[8px] font-bold uppercase tracking-widest text-white/70">{doc.status}</span>
+                                        </div>
+                                    </TableCell>
+                                    <TableCell className="text-right text-[9px] font-mono text-muted-foreground uppercase">{doc.sync}</TableCell>
+                                </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
             </div>
         </div>
       </section>
 
-      {/* METRICS - INSTITUTIONAL AUDIT */}
-      <section className="py-20 p-4 border-t border-[#333] bg-black">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            
-            <div className="c2-panel p-8 min-h-[400px] flex flex-col">
-                <div className="flex justify-between items-start mb-8 border-b border-[#333] pb-4">
-                    <div>
-                        <h3 className="text-2xl font-bold text-white uppercase tracking-widest">Audit Latency</h3>
-                        <p className="text-[#888] text-[10px] uppercase">Time to identify project field variances.</p>
-                    </div>
-                    <span className="text-4xl font-bold text-[#00FF41]">0.01s</span>
-                </div>
-                <div className="flex-1 relative">
-                    <canvas ref={latencyChartRef}></canvas>
-                </div>
-            </div>
-
-            <div className="c2-panel p-8 min-h-[400px] flex flex-col items-center justify-center">
-                <Shield className="size-16 text-[#00FF41] mb-8" />
-                <div className="relative size-48 mb-8">
-                    <canvas ref={coverageChartRef}></canvas>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-4xl font-bold text-white">98%</span>
-                        <span className="text-[8px] text-[#00FF41] uppercase">Protection_Engaged</span>
-                    </div>
-                </div>
-                <div className="w-full border-t border-[#333] pt-4 text-center">
-                    <h4 className="text-white font-bold uppercase mb-2">Institutional DLP</h4>
-                    <p className="text-[#888] text-[10px]">Continuous SOC2 compliance monitoring across all linked nodes.</p>
-                </div>
-            </div>
-
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="bg-[#050505] border-t border-[#333] p-10 text-center relative z-10">
-        <div className="flex items-center justify-center gap-2 text-white text-xl font-bold tracking-[0.5em] mb-4">
-            <Target className="size-6 text-[#00FF41]" />
-            ENVISION_OS
-        </div>
-        <p className="text-[#888] text-[10px] uppercase tracking-widest mb-8">Weapons-grade construction intelligence.</p>
-        <div className="inline-block border border-[#00FF41] text-[#00FF41] px-4 py-2 text-[10px] uppercase hover:bg-[#00FF41] hover:text-black transition-colors cursor-pointer">
-            INITIATE_HANDSHAKE
-        </div>
-      </footer>
     </div>
   );
 }
