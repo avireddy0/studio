@@ -47,7 +47,6 @@ export default function UnifiedPage() {
     const Icon = icons[i % icons.length];
     const topPercent = Math.random() * 100;
     // Calculate yOffset to meet at the vertical middle (50% of the container)
-    // If top is 20%, yOffset needs to be +30% of height to reach 50%
     const yOffsetValue = 50 - topPercent;
     
     return {
@@ -264,7 +263,7 @@ export default function UnifiedPage() {
                             {metric.value}
                         </div>
                         </CardContent>
-                    </Card> Metric
+                    </Card>
                     ))}
                 </div>
             </div>
