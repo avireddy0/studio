@@ -1,0 +1,44 @@
+type User @table {
+  displayName: String!
+  email: String!
+  createdAt: Timestamp!
+  photoUrl: String
+  bio: String
+  socialLinks: [String]
+}
+
+type Project @table {
+  user: User!
+  title: String!
+  description: String!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  appStoreLink: String
+  githubLink: String
+  videoLink: String
+  screenshots: [String]
+  tags: [String]
+}
+
+type Comment @table {
+  user: User!
+  project: Project!
+  content: String!
+  createdAt: Timestamp!
+}
+
+type Like @table(key: ["user", "project"]) {
+  user: User!
+  project: Project!
+  createdAt: Timestamp!
+}
+
+type Post @table {
+  user: User!
+  title: String!
+  content: String!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  type: String!
+  tags: [String]
+}

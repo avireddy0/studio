@@ -1,0 +1,53 @@
+query ListAllProjects @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  projects {
+    id
+    title
+    description
+    user {
+      id
+      displayName
+    }
+    createdAt
+    tags
+  }
+}
+
+query GetUserPosts($userId: UUID!) @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  posts(where: {userId: {eq: $userId}}) {
+    id
+    title
+    content
+    createdAt
+    updatedAt
+    type
+    tags
+  }
+}
+
+mutation CreateNewProject($title: String!, $description: String!, $appStoreLink: String, $githubLink: String, $videoLink: String, $screenshots: [String!], $tags: [String!]) @auth(level: USER) {
+  project_insert(data: {
+    userId_expr: "auth.uid",
+    title: $title,
+    description: $description,
+    appStoreLink: $appStoreLink,
+    githubLink: $githubLink,
+    videoLink: $videoLink,
+    screenshots: $screenshots,
+    tags: $tags,
+    createdAt_expr: "request.time",
+    updatedAt_expr: "request.time"
+  }) {
+    id
+  }
+}
+
+mutation AddCommentToProject($projectId: UUID!, $content: String!) @auth(level: USER) {
+  comment_insert(data: {
+    userId_expr: "auth.uid",
+    projectId: $projectId,
+    content: $content,
+    createdAt_expr: "request.time"
+  }) {
+    id
+  }
+}

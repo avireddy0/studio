@@ -1,0 +1,13 @@
+[debug] [2026-03-01T15:17:20.677Z] [Firebase Plugin] Activating Firebase extension.
+[debug] [2026-03-01T15:17:57.822Z] [Firebase Plugin] requireAuthWrapper
+[debug] [2026-03-01T15:17:57.825Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-03-01T15:17:57.827Z] > authorizing via signed-in user (avi@envsn.com)
+[debug] [2026-03-01T15:17:57.834Z] No OAuth tokens found
+[debug] [2026-03-01T15:17:57.835Z] No OAuth tokens found
+[debug] [2026-03-01T15:17:57.835Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-03-01T15:17:57.836Z] > authorizing via signed-in user (avi@envsn.com)
+[debug] [2026-03-01T15:17:57.837Z] [Firebase Plugin] User found:  avi@envsn.com
+[info] [Firebase Plugin] (Core:Project) New user detected, fetching projects
+[debug] [2026-03-01T15:17:57.839Z] No OAuth tokens found
+[debug] [2026-03-01T15:17:57.842Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=1000
+[debug] [2026-03-01T15:17:57.961Z] [Firebase Plugin] VSCode notification server listening on port 40002

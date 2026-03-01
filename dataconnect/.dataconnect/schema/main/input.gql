@@ -1,0 +1,1553 @@
+"""
+✨ `Comment_KeyOutput` returns the primary key fields of table type `Comment`.
+
+It has the same format as `Comment_Key`, but is only used as mutation return value.
+"""
+scalar Comment_KeyOutput
+"""
+✨ `Like_KeyOutput` returns the primary key fields of table type `Like`.
+
+It has the same format as `Like_Key`, but is only used as mutation return value.
+"""
+scalar Like_KeyOutput
+"""
+✨ `Post_KeyOutput` returns the primary key fields of table type `Post`.
+
+It has the same format as `Post_Key`, but is only used as mutation return value.
+"""
+scalar Post_KeyOutput
+"""
+✨ `Project_KeyOutput` returns the primary key fields of table type `Project`.
+
+It has the same format as `Project_Key`, but is only used as mutation return value.
+"""
+scalar Project_KeyOutput
+"""
+✨ `User_KeyOutput` returns the primary key fields of table type `User`.
+
+It has the same format as `User_Key`, but is only used as mutation return value.
+"""
+scalar User_KeyOutput
+"""
+✨ Generated data input type for table 'Comment'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Comment_Data {
+  """
+  ✨ Generated from Field `Comment`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Comment`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Comment`.`projectId` of type `UUID!`
+  """
+  projectId: UUID
+  """
+  ✨ `_expr` server value variant of `projectId` (✨ Generated from Field `Comment`.`projectId` of type `UUID!`)
+  """
+  projectId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Comment`.`userId` of type `UUID!`
+  """
+  userId: UUID
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Comment`.`userId` of type `UUID!`)
+  """
+  userId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Comment`.`project` of type `Project!`
+  """
+  project: Project_Key
+  """
+  ✨ Generated from Field `Comment`.`user` of type `User!`
+  """
+  user: User_Key
+  """
+  ✨ Generated from Field `Comment`.`content` of type `String!`
+  """
+  content: String
+  """
+  ✨ `_expr` server value variant of `content` (✨ Generated from Field `Comment`.`content` of type `String!`)
+  """
+  content_expr: String_Expr
+  """
+  ✨ Generated from Field `Comment`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `Comment`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_expr: Timestamp_Expr
+  """
+  ✨ `_time` server value variant of `createdAt` (✨ Generated from Field `Comment`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_time: Timestamp_Relative
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `Comment`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_update: [Timestamp_Update!]
+}
+"""
+✨ Generated filter input type for table 'Comment'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Comment_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Comment_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Comment_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Comment_Filter!]
+  """
+  ✨ Generated from Field `Comment`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Comment`.`projectId` of type `UUID!`
+  """
+  projectId: UUID_Filter
+  """
+  ✨ Generated from Field `Comment`.`userId` of type `UUID!`
+  """
+  userId: UUID_Filter
+  """
+  ✨ Generated from Field `Comment`.`project` of type `Project!`
+  """
+  project: Project_Filter
+  """
+  ✨ Generated from Field `Comment`.`user` of type `User!`
+  """
+  user: User_Filter
+  """
+  ✨ Generated from Field `Comment`.`content` of type `String!`
+  """
+  content: String_Filter
+  """
+  ✨ Generated from Field `Comment`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp_Filter
+}
+"""
+✨ Generated first-row input type for table 'Comment'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Comment_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Comment_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Comment_Filter
+}
+"""
+✨ Generated having input type for table 'Comment'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Comment_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Comment_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Comment_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Comment_Having!]
+  """
+  ✨ Generated from Field `Comment`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Comment`.`content_count` of type `Int!`
+  """
+  content_count: Int_Filter
+  """
+  ✨ Generated from Field `Comment`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Comment`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Comment`.`projectId_count` of type `Int!`
+  """
+  projectId_count: Int_Filter
+  """
+  ✨ Generated from Field `Comment`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `Comment`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Comment`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: Timestamp_Filter
+}
+"""
+✨ Generated key input type for table 'Comment'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Comment_Key {
+  """
+  ✨ Generated from Field `Comment`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Comment`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'Comment'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Comment_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Comment_Filter
+}
+"""
+✨ Generated order input type for table 'Comment'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Comment_Order {
+  """
+  ✨ Generated from Field `Comment`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Comment`.`projectId` of type `UUID!`
+  """
+  projectId: OrderDirection
+  """
+  ✨ Generated from Field `Comment`.`userId` of type `UUID!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `Comment`.`project` of type `Project!`
+  """
+  project: Project_Order
+  """
+  ✨ Generated from Field `Comment`.`user` of type `User!`
+  """
+  user: User_Order
+  """
+  ✨ Generated from Field `Comment`.`content` of type `String!`
+  """
+  content: OrderDirection
+  """
+  ✨ Generated from Field `Comment`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `Comment`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Comment`.`content_count` of type `Int!`
+  """
+  content_count: OrderDirection
+  """
+  ✨ Generated from Field `Comment`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `Comment`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Comment`.`projectId_count` of type `Int!`
+  """
+  projectId_count: OrderDirection
+  """
+  ✨ Generated from Field `Comment`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `Comment`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `Comment`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Like'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Like_Data {
+  """
+  ✨ Generated from Field `Like`.`userId` of type `UUID!`
+  """
+  userId: UUID
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Like`.`userId` of type `UUID!`)
+  """
+  userId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Like`.`projectId` of type `UUID!`
+  """
+  projectId: UUID
+  """
+  ✨ `_expr` server value variant of `projectId` (✨ Generated from Field `Like`.`projectId` of type `UUID!`)
+  """
+  projectId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Like`.`project` of type `Project!`
+  """
+  project: Project_Key
+  """
+  ✨ Generated from Field `Like`.`user` of type `User!`
+  """
+  user: User_Key
+  """
+  ✨ Generated from Field `Like`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `Like`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_expr: Timestamp_Expr
+  """
+  ✨ `_time` server value variant of `createdAt` (✨ Generated from Field `Like`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_time: Timestamp_Relative
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `Like`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_update: [Timestamp_Update!]
+}
+"""
+✨ Generated filter input type for table 'Like'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Like_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Like_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Like_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Like_Filter!]
+  """
+  ✨ Generated from Field `Like`.`userId` of type `UUID!`
+  """
+  userId: UUID_Filter
+  """
+  ✨ Generated from Field `Like`.`projectId` of type `UUID!`
+  """
+  projectId: UUID_Filter
+  """
+  ✨ Generated from Field `Like`.`project` of type `Project!`
+  """
+  project: Project_Filter
+  """
+  ✨ Generated from Field `Like`.`user` of type `User!`
+  """
+  user: User_Filter
+  """
+  ✨ Generated from Field `Like`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp_Filter
+}
+"""
+✨ Generated first-row input type for table 'Like'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Like_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Like_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Like_Filter
+}
+"""
+✨ Generated having input type for table 'Like'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Like_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Like_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Like_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Like_Having!]
+  """
+  ✨ Generated from Field `Like`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Like`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Like`.`projectId_count` of type `Int!`
+  """
+  projectId_count: Int_Filter
+  """
+  ✨ Generated from Field `Like`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `Like`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Like`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: Timestamp_Filter
+}
+"""
+✨ Generated key input type for table 'Like'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Like_Key {
+  """
+  ✨ Generated from Field `Like`.`userId` of type `UUID!`
+  """
+  userId: UUID
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Like`.`userId` of type `UUID!`)
+  """
+  userId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Like`.`projectId` of type `UUID!`
+  """
+  projectId: UUID
+  """
+  ✨ `_expr` server value variant of `projectId` (✨ Generated from Field `Like`.`projectId` of type `UUID!`)
+  """
+  projectId_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'Like'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Like_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Like_Filter
+}
+"""
+✨ Generated order input type for table 'Like'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Like_Order {
+  """
+  ✨ Generated from Field `Like`.`userId` of type `UUID!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `Like`.`projectId` of type `UUID!`
+  """
+  projectId: OrderDirection
+  """
+  ✨ Generated from Field `Like`.`project` of type `Project!`
+  """
+  project: Project_Order
+  """
+  ✨ Generated from Field `Like`.`user` of type `User!`
+  """
+  user: User_Order
+  """
+  ✨ Generated from Field `Like`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `Like`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Like`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `Like`.`projectId_count` of type `Int!`
+  """
+  projectId_count: OrderDirection
+  """
+  ✨ Generated from Field `Like`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `Like`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `Like`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Post'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Post_Data {
+  """
+  ✨ Generated from Field `Post`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Post`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Post`.`userId` of type `UUID!`
+  """
+  userId: UUID
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Post`.`userId` of type `UUID!`)
+  """
+  userId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Post`.`user` of type `User!`
+  """
+  user: User_Key
+  """
+  ✨ Generated from Field `Post`.`content` of type `String!`
+  """
+  content: String
+  """
+  ✨ `_expr` server value variant of `content` (✨ Generated from Field `Post`.`content` of type `String!`)
+  """
+  content_expr: String_Expr
+  """
+  ✨ Generated from Field `Post`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `Post`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_expr: Timestamp_Expr
+  """
+  ✨ `_time` server value variant of `createdAt` (✨ Generated from Field `Post`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_time: Timestamp_Relative
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `Post`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_update: [Timestamp_Update!]
+  """
+  ✨ Generated from Field `Post`.`tags` of type `[String]`
+  """
+  tags: [String!]
+  """
+  ✨ `_update` server value variant of `tags` (✨ Generated from Field `Post`.`tags` of type `[String]`)
+  """
+  tags_update: [String_ListUpdate!]
+  """
+  ✨ Generated from Field `Post`.`title` of type `String!`
+  """
+  title: String
+  """
+  ✨ `_expr` server value variant of `title` (✨ Generated from Field `Post`.`title` of type `String!`)
+  """
+  title_expr: String_Expr
+  """
+  ✨ Generated from Field `Post`.`type` of type `String!`
+  """
+  type: String
+  """
+  ✨ `_expr` server value variant of `type` (✨ Generated from Field `Post`.`type` of type `String!`)
+  """
+  type_expr: String_Expr
+  """
+  ✨ Generated from Field `Post`.`updatedAt` of type `Timestamp!`
+  """
+  updatedAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `Post`.`updatedAt` of type `Timestamp!`)
+  """
+  updatedAt_expr: Timestamp_Expr
+  """
+  ✨ `_time` server value variant of `updatedAt` (✨ Generated from Field `Post`.`updatedAt` of type `Timestamp!`)
+  """
+  updatedAt_time: Timestamp_Relative
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `Post`.`updatedAt` of type `Timestamp!`)
+  """
+  updatedAt_update: [Timestamp_Update!]
+}
+"""
+✨ Generated filter input type for table 'Post'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Post_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Post_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Post_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Post_Filter!]
+  """
+  ✨ Generated from Field `Post`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Post`.`userId` of type `UUID!`
+  """
+  userId: UUID_Filter
+  """
+  ✨ Generated from Field `Post`.`user` of type `User!`
+  """
+  user: User_Filter
+  """
+  ✨ Generated from Field `Post`.`content` of type `String!`
+  """
+  content: String_Filter
+  """
+  ✨ Generated from Field `Post`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp_Filter
+  """
+  ✨ Generated from Field `Post`.`tags` of type `[String]`
+  """
+  tags: String_ListFilter
+  """
+  ✨ Generated from Field `Post`.`title` of type `String!`
+  """
+  title: String_Filter
+  """
+  ✨ Generated from Field `Post`.`type` of type `String!`
+  """
+  type: String_Filter
+  """
+  ✨ Generated from Field `Post`.`updatedAt` of type `Timestamp!`
+  """
+  updatedAt: Timestamp_Filter
+}
+"""
+✨ Generated first-row input type for table 'Post'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Post_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Post_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Post_Filter
+}
+"""
+✨ Generated having input type for table 'Post'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Post_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Post_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Post_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Post_Having!]
+  """
+  ✨ Generated from Field `Post`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Post`.`content_count` of type `Int!`
+  """
+  content_count: Int_Filter
+  """
+  ✨ Generated from Field `Post`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Post`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Post`.`title_count` of type `Int!`
+  """
+  title_count: Int_Filter
+  """
+  ✨ Generated from Field `Post`.`type_count` of type `Int!`
+  """
+  type_count: Int_Filter
+  """
+  ✨ Generated from Field `Post`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Post`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `Post`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Post`.`updatedAt_min` of type `Timestamp`
+  """
+  updatedAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Post`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: Timestamp_Filter
+  """
+  ✨ Generated from Field `Post`.`updatedAt_max` of type `Timestamp`
+  """
+  updatedAt_max: Timestamp_Filter
+}
+"""
+✨ Generated key input type for table 'Post'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Post_Key {
+  """
+  ✨ Generated from Field `Post`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Post`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'Post'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Post_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Post_Filter
+}
+"""
+✨ Generated order input type for table 'Post'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Post_Order {
+  """
+  ✨ Generated from Field `Post`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`userId` of type `UUID!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`user` of type `User!`
+  """
+  user: User_Order
+  """
+  ✨ Generated from Field `Post`.`content` of type `String!`
+  """
+  content: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`title` of type `String!`
+  """
+  title: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`type` of type `String!`
+  """
+  type: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`updatedAt` of type `Timestamp!`
+  """
+  updatedAt: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`content_count` of type `Int!`
+  """
+  content_count: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`title_count` of type `Int!`
+  """
+  title_count: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`type_count` of type `Int!`
+  """
+  type_count: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`updatedAt_min` of type `Timestamp`
+  """
+  updatedAt_min: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `Post`.`updatedAt_max` of type `Timestamp`
+  """
+  updatedAt_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Project'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Project_Data {
+  """
+  ✨ Generated from Field `Project`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Project`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Project`.`userId` of type `UUID!`
+  """
+  userId: UUID
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Project`.`userId` of type `UUID!`)
+  """
+  userId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Project`.`user` of type `User!`
+  """
+  user: User_Key
+  """
+  ✨ Generated from Field `Project`.`appStoreLink` of type `String`
+  """
+  appStoreLink: String
+  """
+  ✨ `_expr` server value variant of `appStoreLink` (✨ Generated from Field `Project`.`appStoreLink` of type `String`)
+  """
+  appStoreLink_expr: String_Expr
+  """
+  ✨ Generated from Field `Project`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `Project`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_expr: Timestamp_Expr
+  """
+  ✨ `_time` server value variant of `createdAt` (✨ Generated from Field `Project`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_time: Timestamp_Relative
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `Project`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_update: [Timestamp_Update!]
+  """
+  ✨ Generated from Field `Project`.`description` of type `String!`
+  """
+  description: String
+  """
+  ✨ `_expr` server value variant of `description` (✨ Generated from Field `Project`.`description` of type `String!`)
+  """
+  description_expr: String_Expr
+  """
+  ✨ Generated from Field `Project`.`githubLink` of type `String`
+  """
+  githubLink: String
+  """
+  ✨ `_expr` server value variant of `githubLink` (✨ Generated from Field `Project`.`githubLink` of type `String`)
+  """
+  githubLink_expr: String_Expr
+  """
+  ✨ Generated from Field `Project`.`screenshots` of type `[String]`
+  """
+  screenshots: [String!]
+  """
+  ✨ `_update` server value variant of `screenshots` (✨ Generated from Field `Project`.`screenshots` of type `[String]`)
+  """
+  screenshots_update: [String_ListUpdate!]
+  """
+  ✨ Generated from Field `Project`.`tags` of type `[String]`
+  """
+  tags: [String!]
+  """
+  ✨ `_update` server value variant of `tags` (✨ Generated from Field `Project`.`tags` of type `[String]`)
+  """
+  tags_update: [String_ListUpdate!]
+  """
+  ✨ Generated from Field `Project`.`title` of type `String!`
+  """
+  title: String
+  """
+  ✨ `_expr` server value variant of `title` (✨ Generated from Field `Project`.`title` of type `String!`)
+  """
+  title_expr: String_Expr
+  """
+  ✨ Generated from Field `Project`.`updatedAt` of type `Timestamp!`
+  """
+  updatedAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `Project`.`updatedAt` of type `Timestamp!`)
+  """
+  updatedAt_expr: Timestamp_Expr
+  """
+  ✨ `_time` server value variant of `updatedAt` (✨ Generated from Field `Project`.`updatedAt` of type `Timestamp!`)
+  """
+  updatedAt_time: Timestamp_Relative
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `Project`.`updatedAt` of type `Timestamp!`)
+  """
+  updatedAt_update: [Timestamp_Update!]
+  """
+  ✨ Generated from Field `Project`.`videoLink` of type `String`
+  """
+  videoLink: String
+  """
+  ✨ `_expr` server value variant of `videoLink` (✨ Generated from Field `Project`.`videoLink` of type `String`)
+  """
+  videoLink_expr: String_Expr
+}
+"""
+✨ Generated filter input type for table 'Project'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Project_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Project_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Project_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Project_Filter!]
+  """
+  ✨ Generated from Field `Project`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Project`.`userId` of type `UUID!`
+  """
+  userId: UUID_Filter
+  """
+  ✨ Generated from Field `Project`.`user` of type `User!`
+  """
+  user: User_Filter
+  """
+  ✨ Generated from Field `Project`.`appStoreLink` of type `String`
+  """
+  appStoreLink: String_Filter
+  """
+  ✨ Generated from Field `Project`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp_Filter
+  """
+  ✨ Generated from Field `Project`.`description` of type `String!`
+  """
+  description: String_Filter
+  """
+  ✨ Generated from Field `Project`.`githubLink` of type `String`
+  """
+  githubLink: String_Filter
+  """
+  ✨ Generated from Field `Project`.`screenshots` of type `[String]`
+  """
+  screenshots: String_ListFilter
+  """
+  ✨ Generated from Field `Project`.`tags` of type `[String]`
+  """
+  tags: String_ListFilter
+  """
+  ✨ Generated from Field `Project`.`title` of type `String!`
+  """
+  title: String_Filter
+  """
+  ✨ Generated from Field `Project`.`updatedAt` of type `Timestamp!`
+  """
+  updatedAt: Timestamp_Filter
+  """
+  ✨ Generated from Field `Project`.`videoLink` of type `String`
+  """
+  videoLink: String_Filter
+  """
+  ✨ Generated from Field `Project`.`comments_on_project` of type `[Comment!]!`
+  """
+  comments_on_project: Comment_ListFilter
+  """
+  ✨ Generated from Field `Project`.`likes_on_project` of type `[Like!]!`
+  """
+  likes_on_project: Like_ListFilter
+  """
+  ✨ Generated from Field `Project`.`users_via_Like` of type `[User!]!`
+  """
+  users_via_Like: User_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'Project'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Project_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Project_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Project_Filter
+}
+"""
+✨ Generated having input type for table 'Project'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Project_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Project_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Project_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Project_Having!]
+  """
+  ✨ Generated from Field `Project`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Project`.`appStoreLink_count` of type `Int!`
+  """
+  appStoreLink_count: Int_Filter
+  """
+  ✨ Generated from Field `Project`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Project`.`description_count` of type `Int!`
+  """
+  description_count: Int_Filter
+  """
+  ✨ Generated from Field `Project`.`githubLink_count` of type `Int!`
+  """
+  githubLink_count: Int_Filter
+  """
+  ✨ Generated from Field `Project`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Project`.`title_count` of type `Int!`
+  """
+  title_count: Int_Filter
+  """
+  ✨ Generated from Field `Project`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Project`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `Project`.`videoLink_count` of type `Int!`
+  """
+  videoLink_count: Int_Filter
+  """
+  ✨ Generated from Field `Project`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Project`.`updatedAt_min` of type `Timestamp`
+  """
+  updatedAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Project`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: Timestamp_Filter
+  """
+  ✨ Generated from Field `Project`.`updatedAt_max` of type `Timestamp`
+  """
+  updatedAt_max: Timestamp_Filter
+}
+"""
+✨ Generated key input type for table 'Project'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Project_Key {
+  """
+  ✨ Generated from Field `Project`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Project`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'Project'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Project_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Project_Filter
+}
+"""
+✨ Generated order input type for table 'Project'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Project_Order {
+  """
+  ✨ Generated from Field `Project`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`userId` of type `UUID!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`user` of type `User!`
+  """
+  user: User_Order
+  """
+  ✨ Generated from Field `Project`.`appStoreLink` of type `String`
+  """
+  appStoreLink: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`description` of type `String!`
+  """
+  description: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`githubLink` of type `String`
+  """
+  githubLink: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`title` of type `String!`
+  """
+  title: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`updatedAt` of type `Timestamp!`
+  """
+  updatedAt: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`videoLink` of type `String`
+  """
+  videoLink: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`appStoreLink_count` of type `Int!`
+  """
+  appStoreLink_count: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`description_count` of type `Int!`
+  """
+  description_count: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`githubLink_count` of type `Int!`
+  """
+  githubLink_count: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`title_count` of type `Int!`
+  """
+  title_count: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`videoLink_count` of type `Int!`
+  """
+  videoLink_count: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`updatedAt_min` of type `Timestamp`
+  """
+  updatedAt_min: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `Project`.`updatedAt_max` of type `Timestamp`
+  """
+  updatedAt_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'User'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input User_Data {
+  """
+  ✨ Generated from Field `User`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `User`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `User`.`bio` of type `String`
+  """
+  bio: String
+  """
+  ✨ `_expr` server value variant of `bio` (✨ Generated from Field `User`.`bio` of type `String`)
+  """
+  bio_expr: String_Expr
+  """
+  ✨ Generated from Field `User`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `User`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_expr: Timestamp_Expr
+  """
+  ✨ `_time` server value variant of `createdAt` (✨ Generated from Field `User`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_time: Timestamp_Relative
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `User`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_update: [Timestamp_Update!]
+  """
+  ✨ Generated from Field `User`.`displayName` of type `String!`
+  """
+  displayName: String
+  """
+  ✨ `_expr` server value variant of `displayName` (✨ Generated from Field `User`.`displayName` of type `String!`)
+  """
+  displayName_expr: String_Expr
+  """
+  ✨ Generated from Field `User`.`email` of type `String!`
+  """
+  email: String
+  """
+  ✨ `_expr` server value variant of `email` (✨ Generated from Field `User`.`email` of type `String!`)
+  """
+  email_expr: String_Expr
+  """
+  ✨ Generated from Field `User`.`photoUrl` of type `String`
+  """
+  photoUrl: String
+  """
+  ✨ `_expr` server value variant of `photoUrl` (✨ Generated from Field `User`.`photoUrl` of type `String`)
+  """
+  photoUrl_expr: String_Expr
+  """
+  ✨ Generated from Field `User`.`socialLinks` of type `[String]`
+  """
+  socialLinks: [String!]
+  """
+  ✨ `_update` server value variant of `socialLinks` (✨ Generated from Field `User`.`socialLinks` of type `[String]`)
+  """
+  socialLinks_update: [String_ListUpdate!]
+}
+"""
+✨ Generated filter input type for table 'User'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input User_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [User_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: User_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [User_Filter!]
+  """
+  ✨ Generated from Field `User`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `User`.`bio` of type `String`
+  """
+  bio: String_Filter
+  """
+  ✨ Generated from Field `User`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp_Filter
+  """
+  ✨ Generated from Field `User`.`displayName` of type `String!`
+  """
+  displayName: String_Filter
+  """
+  ✨ Generated from Field `User`.`email` of type `String!`
+  """
+  email: String_Filter
+  """
+  ✨ Generated from Field `User`.`photoUrl` of type `String`
+  """
+  photoUrl: String_Filter
+  """
+  ✨ Generated from Field `User`.`socialLinks` of type `[String]`
+  """
+  socialLinks: String_ListFilter
+  """
+  ✨ Generated from Field `User`.`comments_on_user` of type `[Comment!]!`
+  """
+  comments_on_user: Comment_ListFilter
+  """
+  ✨ Generated from Field `User`.`likes_on_user` of type `[Like!]!`
+  """
+  likes_on_user: Like_ListFilter
+  """
+  ✨ Generated from Field `User`.`posts_on_user` of type `[Post!]!`
+  """
+  posts_on_user: Post_ListFilter
+  """
+  ✨ Generated from Field `User`.`projects_on_user` of type `[Project!]!`
+  """
+  projects_on_user: Project_ListFilter
+  """
+  ✨ Generated from Field `User`.`projects_via_Like` of type `[Project!]!`
+  """
+  projects_via_Like: Project_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'User'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input User_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [User_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: User_Filter
+}
+"""
+✨ Generated having input type for table 'User'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input User_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [User_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: User_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [User_Having!]
+  """
+  ✨ Generated from Field `User`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`bio_count` of type `Int!`
+  """
+  bio_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`displayName_count` of type `Int!`
+  """
+  displayName_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`email_count` of type `Int!`
+  """
+  email_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`photoUrl_count` of type `Int!`
+  """
+  photoUrl_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `User`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: Timestamp_Filter
+}
+"""
+✨ Generated key input type for table 'User'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input User_Key {
+  """
+  ✨ Generated from Field `User`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `User`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'User'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input User_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: User_Filter
+}
+"""
+✨ Generated order input type for table 'User'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input User_Order {
+  """
+  ✨ Generated from Field `User`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `User`.`bio` of type `String`
+  """
+  bio: OrderDirection
+  """
+  ✨ Generated from Field `User`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `User`.`displayName` of type `String!`
+  """
+  displayName: OrderDirection
+  """
+  ✨ Generated from Field `User`.`email` of type `String!`
+  """
+  email: OrderDirection
+  """
+  ✨ Generated from Field `User`.`photoUrl` of type `String`
+  """
+  photoUrl: OrderDirection
+  """
+  ✨ Generated from Field `User`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`bio_count` of type `Int!`
+  """
+  bio_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`displayName_count` of type `Int!`
+  """
+  displayName_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`email_count` of type `Int!`
+  """
+  email_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`photoUrl_count` of type `Int!`
+  """
+  photoUrl_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `User`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: OrderDirection
+}

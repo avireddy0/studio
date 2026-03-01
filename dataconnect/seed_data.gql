@@ -1,0 +1,59 @@
+mutation CreateDemoData @transaction @auth(level: USER, insecureReason: "This is a seed mutation and should only be run by an authenticated user with appropriate permissions during development or testing.") {
+  user1: user_insert(data: {
+    id: "a0000000-0000-4000-8000-000000000000",
+    displayName: "Alice Smith",
+    email: "alice@example.com",
+    createdAt: "2023-01-01T10:00:00Z",
+    bio: "Passionate developer and tech enthusiast."
+  })
+  user2: user_insert(data: {
+    id: "b1111111-1111-4111-8111-111111111111",
+    displayName: "Bob Johnson",
+    email: "bob@example.com",
+    createdAt: "2023-01-02T11:00:00Z",
+    photoUrl: "https://example.com/bob_profile.jpg"
+  })
+  project1: project_insert(data: {
+    id: "c2222222-2222-4222-8222-222222222222",
+    userId: "a0000000-0000-4000-8000-000000000000",
+    title: "Awesome Project Alpha",
+    description: "A revolutionary new app for productivity.",
+    createdAt: "2023-01-05T12:00:00Z",
+    updatedAt: "2023-01-05T12:00:00Z",
+    githubLink: "https://github.com/alice/project-alpha",
+    tags: ["mobile", "productivity", "AI"]
+  })
+  project2: project_insert(data: {
+    id: "d3333333-3333-4333-8333-333333333333",
+    userId: "b1111111-1111-4111-8111-111111111111",
+    title: "Innovative Game Beta",
+    description: "An immersive gaming experience.",
+    createdAt: "2023-01-10T13:00:00Z",
+    updatedAt: "2023-01-10T13:00:00Z",
+    videoLink: "https://youtube.com/gamebeta_trailer",
+    screenshots: ["https://example.com/game_screen1.jpg", "https://example.com/game_screen2.jpg"],
+    tags: ["game", "VR", "multiplayer"]
+  })
+  comment1: comment_insert(data: {
+    id: "e4444444-4444-4444-8444-444444444444",
+    userId: "b1111111-1111-4111-8111-111111111111",
+    projectId: "c2222222-2222-4222-8222-222222222222",
+    content: "This project looks amazing, Alice!",
+    createdAt: "2023-01-06T14:00:00Z"
+  })
+  like1: like_insert(data: {
+    userId: "a0000000-0000-4000-8000-000000000000",
+    projectId: "d3333333-3333-4333-8333-333333333333",
+    createdAt: "2023-01-11T15:00:00Z"
+  })
+  post1: post_insert(data: {
+    id: "f5555555-5555-4555-8555-555555555555",
+    userId: "a0000000-0000-4000-8000-000000000000",
+    title: "My Journey in App Development",
+    content: "Sharing my experiences building Project Alpha from scratch.",
+    createdAt: "2023-01-07T16:00:00Z",
+    updatedAt: "2023-01-07T16:00:00Z",
+    type: "blog",
+    tags: ["development", "learning", "tips"]
+  })
+}
