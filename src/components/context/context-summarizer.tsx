@@ -1,269 +1,213 @@
-"use client";
+"use client"
 
-import React, { useState, useEffect, useCallback } from "react";
-import {
-  ShieldCheck,
-  ShieldAlert,
-  Zap,
-  Cpu,
-  FileText,
-  Mail,
-  Phone,
-  Database,
-  Lock,
-  Link2
-} from "lucide-react";
-import { cn } from "@/lib/utils";
+import React, { useEffect, useState } from "react"
 
-const layers = [
-  {
-    id: 0,
-    label: "FRAGMENTED_LIABILITY",
-    title: "Raw Signal Chaos",
-    subtitle: "Unverified data from 12+ disconnected platforms",
-    icon: ShieldAlert,
-    borderColor: "border-red-500/30",
-    bgColor: "bg-red-950/40",
-    accentColor: "text-red-400",
-    activeGlow: "shadow-[0_0_80px_rgba(239,68,68,0.12)]",
-    barColor: "bg-red-500",
-    signals: [
-      { label: "RFI_LOST", icon: FileText, status: "UNRESOLVED" },
-      { label: "BIM_V3_STALE", icon: Database, status: "OUTDATED" },
-      { label: "EMAIL_BURIED", icon: Mail, status: "MISSED" },
-      { label: "CALL_NO_LOG", icon: Phone, status: "UNTRACKED" },
-    ],
-    metrics: [
-      { label: "Data Sources", value: "12+", trend: "Disconnected" },
-      { label: "Signal Noise", value: "73%", trend: "Critical" },
-      { label: "Liability Risk", value: "HIGH", trend: "Unmitigated" },
-    ],
-  },
-  {
-    id: 1,
-    label: "CROSS_CORRELATION",
-    title: "Platform Synthesis",
-    subtitle: "Connecting signals across systems in real-time",
-    icon: Cpu,
-    borderColor: "border-amber-500/30",
-    bgColor: "bg-amber-950/30",
-    accentColor: "text-amber-400",
-    activeGlow: "shadow-[0_0_80px_rgba(245,158,11,0.12)]",
-    barColor: "bg-amber-500",
-    signals: [
-      { label: "RFI ↔ SCHEDULE", icon: Link2, status: "LINKED" },
-      { label: "BIM ↔ BUDGET", icon: Link2, status: "SYNCING" },
-      { label: "EMAIL ↔ RFI", icon: Link2, status: "MATCHED" },
-      { label: "CALL ↔ LOG", icon: Link2, status: "CORRELATING" },
-    ],
-    metrics: [
-      { label: "Correlations", value: "847", trend: "Active" },
-      { label: "Match Rate", value: "94.2%", trend: "Improving" },
-      { label: "Coverage", value: "11/12", trend: "Near Complete" },
-    ],
-  },
-  {
-    id: 2,
-    label: "SOVEREIGN_TRUTH",
-    title: "Contextual Intelligence",
-    subtitle: "Verified cross-platform project truth — zero liability",
-    icon: ShieldCheck,
-    borderColor: "border-primary/30",
-    bgColor: "bg-primary/5",
-    accentColor: "text-primary",
-    activeGlow: "shadow-[0_0_100px_rgba(0,124,90,0.2)]",
-    barColor: "bg-primary",
-    signals: [
-      { label: "RFI_202_VERIFIED", icon: ShieldCheck, status: "LOCKED" },
-      { label: "BIM_V4_SYNCED", icon: ShieldCheck, status: "CURRENT" },
-      { label: "COMMS_INDEXED", icon: ShieldCheck, status: "COMPLETE" },
-      { label: "DECISIONS_LOGGED", icon: Lock, status: "IMMUTABLE" },
-    ],
-    metrics: [
-      { label: "Confidence", value: "0.99σ", trend: "Verified" },
-      { label: "Risk Delta", value: "-94.2%", trend: "Mitigated" },
-      { label: "Liability", value: "ZERO", trend: "Protected" },
-    ],
-  },
-];
+// ─── LAYOUT CONSTANTS ───────────────────────────────────────
+
+const HUB = { x: 500, y: 310 }
+
+const platforms = [
+  { id: "procore", label: "PROCORE", x: 140, y: 115, metric: "2.4K RFIs/mo" },
+  { id: "gmail", label: "GMAIL", x: 840, y: 95, metric: "12K Emails/mo" },
+  { id: "slack", label: "SLACK", x: 880, y: 370, metric: "8.7K Messages" },
+  { id: "sage", label: "SAGE INTACCT", x: 760, y: 545, metric: "$4.2M Tracked" },
+  { id: "zoom", label: "ZOOM", x: 230, y: 540, metric: "340 Hours/mo" },
+  { id: "drive", label: "GOOGLE DRIVE", x: 90, y: 390, metric: "1.2K Documents" },
+]
+
+const diamonds = [
+  { x: 310, y: 190, s: 8, o: 0.15 },
+  { x: 710, y: 170, s: 6, o: 0.1 },
+  { x: 340, y: 460, s: 7, o: 0.12 },
+  { x: 690, y: 455, s: 5, o: 0.08 },
+  { x: 175, y: 260, s: 5, o: 0.06 },
+  { x: 810, y: 250, s: 6, o: 0.07 },
+  { x: 430, y: 150, s: 4, o: 0.05 },
+  { x: 600, y: 500, s: 5, o: 0.06 },
+]
+
+// 3D disk helpers
+function diskSide(cx: number, cy: number, rx: number, ry: number, h: number) {
+  return `M${cx - rx},${cy} A${rx},${ry},0,0,0,${cx + rx},${cy} L${cx + rx},${cy + h} A${rx},${ry},0,0,1,${cx - rx},${cy + h} Z`
+}
+
+// ─── COMPONENT ──────────────────────────────────────────────
 
 export function ContextSummarizer() {
-  const [activeLayer, setActiveLayer] = useState(2);
-  const [mounted, setMounted] = useState(false);
-  const [isInteracting, setIsInteracting] = useState(false);
+  const [mounted, setMounted] = useState(false)
+  const [active, setActive] = useState(0)
+
+  useEffect(() => { setMounted(true) }, [])
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (!mounted) return
+    const t = setInterval(() => setActive(p => (p + 1) % platforms.length), 2500)
+    return () => clearInterval(t)
+  }, [mounted])
 
-  useEffect(() => {
-    if (isInteracting) return;
-    const interval = setInterval(() => {
-      setActiveLayer((prev) => (prev === 2 ? 0 : prev + 1));
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [isInteracting]);
-
-  const handleLayerClick = useCallback((id: number) => {
-    setActiveLayer(id);
-    setIsInteracting(true);
-    const timeout = setTimeout(() => setIsInteracting(false), 15000);
-    return () => clearTimeout(timeout);
-  }, []);
-
-  if (!mounted) return null;
-
-  const getLayerTransform = (layerIndex: number): React.CSSProperties => {
-    const diff = layerIndex - activeLayer;
-
-    if (diff === 0) {
-      return {
-        transform: "translateY(0px) translateZ(60px) rotateX(0deg) scale(1)",
-        opacity: 1,
-        zIndex: 30,
-        pointerEvents: "auto" as const,
-      };
-    }
-
-    if (diff < 0 || (activeLayer === 0 && layerIndex === 2)) {
-      // Layers below active — pushed back and down
-      const depth = activeLayer === 0 && layerIndex === 2 ? -2 : diff;
-      return {
-        transform: `translateY(${depth * -40 + 60}px) translateZ(${depth * 40 - 40}px) rotateX(6deg) scale(${0.94 + depth * 0.02})`,
-        opacity: 0.25,
-        zIndex: 10 + layerIndex,
-        pointerEvents: "auto" as const,
-      };
-    }
-
-    // Layers above active — pushed back and up
-    return {
-      transform: `translateY(${diff * -50 - 30}px) translateZ(${diff * -30}px) rotateX(-4deg) scale(${0.96 - diff * 0.02})`,
-      opacity: 0.2,
-      zIndex: 20 - diff,
-      pointerEvents: "auto" as const,
-    };
-  };
+  if (!mounted) return null
 
   return (
-    <div className="relative w-full h-full flex flex-col gap-3 md:gap-6 py-3 md:py-6">
-
+    <div className="relative w-full h-full flex flex-col">
       {/* Header */}
-      <div className="text-center space-y-2 md:space-y-4 shrink-0 z-20">
-        <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 border border-primary/20 bg-primary/5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.3em] sm:tracking-[0.4em] text-primary">
-          <Zap className="size-3" />
-          <span>Context_Fusion_Engine</span>
-        </div>
+      <div className="shrink-0 space-y-3 md:space-y-4 mb-2 md:mb-4">
         <h2 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter text-white leading-tight">
-          Context is Everything
+          Context is Everything.
         </h2>
-        <p className="text-muted-foreground text-xs sm:text-sm font-medium leading-relaxed max-w-xl mx-auto">
-          Data without context is <span className="text-red-400 font-bold">dangerous</span>.
-          Envision OS fuses fragmented signals into verified project truth —
-          eliminating liability through multi-platform correlation.
+        <p className="text-white/40 text-sm md:text-base font-medium max-w-2xl leading-relaxed">
+          12+ platforms. One truth. Envision OS fuses every signal into <span className="text-white font-semibold">verified intelligence</span>.
         </p>
       </div>
 
-      {/* 3D Layer Stack */}
-      <div
-        className="relative flex-1 flex items-center justify-center min-h-[220px] md:min-h-[320px] px-2 sm:px-4"
-        style={{ perspective: "1800px", perspectiveOrigin: "50% 40%" }}
-      >
-        {layers.map((layer) => {
-          const style = getLayerTransform(layer.id);
-          const isActive = activeLayer === layer.id;
+      {/* SVG Network Visualization */}
+      <div className="flex-1 relative min-h-0">
+        <svg viewBox="0 0 1000 620" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <style>{`
+              @keyframes flow { to { stroke-dashoffset: -30; } }
+              @keyframes flow-fast { to { stroke-dashoffset: -30; } }
+              @keyframes hub-breathe { 0%,100% { opacity: 0.06; } 50% { opacity: 0.14; } }
+              @keyframes dot-pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+              .conn { stroke-dasharray: 6 14; animation: flow 3s linear infinite; }
+              .conn-active { stroke-dasharray: 8 10; animation: flow-fast 1.2s linear infinite; }
+              .hub-breathe { animation: hub-breathe 4s ease-in-out infinite; }
+              .dot-pulse { animation: dot-pulse 2s ease-in-out infinite; }
+            `}</style>
+            <filter id="glow-sm">
+              <feGaussianBlur stdDeviation="4" result="b" />
+              <feComposite in="SourceGraphic" in2="b" operator="over" />
+            </filter>
+            <filter id="glow-lg">
+              <feGaussianBlur stdDeviation="12" result="b" />
+              <feComposite in="SourceGraphic" in2="b" operator="over" />
+            </filter>
+          </defs>
 
-          return (
-            <div
-              key={layer.id}
-              onClick={() => handleLayerClick(layer.id)}
-              className={cn(
-                "absolute w-full max-w-3xl cursor-pointer transition-all duration-700 ease-out border backdrop-blur-md",
-                layer.borderColor,
-                layer.bgColor,
-                isActive && layer.activeGlow,
-              )}
-              style={{
-                ...style,
-                transformStyle: "preserve-3d",
-                transition: "all 0.7s cubic-bezier(0.4, 0, 0.2, 1)",
-              }}
-            >
-              <div className="p-3 sm:p-5 md:p-8">
-                {/* Layer Header */}
-                <div className="flex items-center justify-between mb-3 sm:mb-5">
-                  <div className="flex items-center gap-3">
-                    <div className={cn(
-                      "size-9 border flex items-center justify-center shrink-0",
-                      layer.borderColor, layer.bgColor
-                    )}>
-                      <layer.icon className={cn("size-5", layer.accentColor)} />
-                    </div>
-                    <div>
-                      <span className={cn("text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-[0.3em] block", layer.accentColor)}>
-                        LAYER_0{layer.id + 1}: {layer.label}
-                      </span>
-                      <p className="text-white text-base sm:text-lg font-semibold tracking-tight mt-0.5">{layer.title}</p>
-                    </div>
-                  </div>
-                  <span className="text-[8px] font-mono text-white/20 uppercase hidden md:block max-w-[200px] text-right">{layer.subtitle}</span>
-                </div>
+          {/* ── Hub ambient glow ──────────────────────────── */}
+          <ellipse cx={HUB.x} cy={HUB.y} rx="160" ry="90" fill="#007C5A" className="hub-breathe" />
 
-                {/* Signal Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 sm:gap-3 mb-3 sm:mb-5">
-                  {layer.signals.map((signal, i) => (
-                    <div key={i} className={cn(
-                      "p-2.5 sm:p-3 border transition-all",
-                      layer.borderColor, "bg-black/30"
-                    )}>
-                      <signal.icon className={cn("size-3.5 mb-1.5", layer.accentColor)} />
-                      <p className="text-[9px] sm:text-[10px] font-mono font-bold text-white uppercase tracking-wider leading-tight">{signal.label}</p>
-                      <p className={cn("text-[8px] font-mono uppercase tracking-widest mt-1", layer.accentColor)}>{signal.status}</p>
-                    </div>
-                  ))}
-                </div>
+          {/* ── Connection lines ──────────────────────────── */}
+          {platforms.map((p, i) => {
+            const isActive = active === i
+            return (
+              <g key={p.id}>
+                <line
+                  x1={p.x} y1={p.y} x2={HUB.x} y2={HUB.y}
+                  stroke={isActive ? "#007C5A" : "rgba(255,255,255,0.03)"}
+                  strokeWidth={isActive ? 1.5 : 0.7}
+                  className={isActive ? "conn-active" : "conn"}
+                />
+                {isActive && (
+                  <circle r="3.5" fill="#007C5A" filter="url(#glow-sm)">
+                    <animateMotion
+                      dur="1.8s"
+                      repeatCount="indefinite"
+                      path={`M${p.x},${p.y} L${HUB.x},${HUB.y}`}
+                    />
+                  </circle>
+                )}
+              </g>
+            )
+          })}
 
-                {/* Metrics Row */}
-                <div className="flex gap-3 sm:gap-4 border-t border-white/5 pt-4">
-                  {layer.metrics.map((metric, i) => (
-                    <div key={i} className="flex-1 min-w-0">
-                      <p className="text-[8px] sm:text-[9px] text-white/25 uppercase tracking-widest mb-1 truncate">{metric.label}</p>
-                      <div className="flex items-baseline gap-1.5">
-                        <span className="text-lg sm:text-xl font-mono font-bold text-white">{metric.value}</span>
-                        <span className={cn("text-[8px] font-bold uppercase truncate", layer.accentColor)}>{metric.trend}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+          {/* ── Central Hub: 3D Stacked Disks ────────────── */}
 
-      {/* Layer Navigation */}
-      <div className="flex justify-start sm:justify-center gap-2 sm:gap-3 shrink-0 z-20 overflow-x-auto no-scrollbar px-1">
-        {layers.map((layer) => (
-          <button
-            key={layer.id}
-            onClick={() => handleLayerClick(layer.id)}
-            className={cn(
-              "flex items-center gap-2 px-2.5 sm:px-4 py-2 sm:py-3 border transition-all min-w-[90px] sm:min-w-[130px] shrink-0",
-              activeLayer === layer.id
-                ? cn("bg-white/10 border-white/20", layer.activeGlow)
-                : "bg-transparent border-white/5 opacity-40 hover:opacity-70"
-            )}
-          >
-            <layer.icon className={cn("size-4 shrink-0", layer.accentColor)} />
-            <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-white truncate">
-              {layer.label.replaceAll("_", " ")}
-            </span>
-            {activeLayer === layer.id && (
-              <div className={cn("h-4 w-0.5 ml-auto shrink-0", layer.barColor)} />
-            )}
-          </button>
-        ))}
+          {/* Bottom disk — RAW SIGNALS (red) */}
+          <path d={diskSide(HUB.x, HUB.y + 20, 112, 30, 18)} fill="rgba(239,68,68,0.2)" />
+          <ellipse cx={HUB.x} cy={HUB.y + 20} rx="112" ry="30"
+            fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.25)" strokeWidth="1" />
+          <text x={HUB.x} y={HUB.y + 25} textAnchor="middle"
+            fill="rgba(239,68,68,0.45)" fontSize="9" fontFamily="ui-monospace, monospace" fontWeight="700" letterSpacing="0.2em">
+            RAW SIGNALS
+          </text>
+
+          {/* Middle disk — CORRELATED (amber) */}
+          <path d={diskSide(HUB.x, HUB.y - 18, 107, 28, 18)} fill="rgba(245,158,11,0.22)" />
+          <ellipse cx={HUB.x} cy={HUB.y - 18} rx="107" ry="28"
+            fill="rgba(245,158,11,0.06)" stroke="rgba(245,158,11,0.3)" strokeWidth="1" />
+          <text x={HUB.x} y={HUB.y - 13} textAnchor="middle"
+            fill="rgba(245,158,11,0.55)" fontSize="9" fontFamily="ui-monospace, monospace" fontWeight="700" letterSpacing="0.2em">
+            CORRELATED
+          </text>
+
+          {/* Top disk — VERIFIED TRUTH (green) */}
+          <path d={diskSide(HUB.x, HUB.y - 56, 102, 26, 18)} fill="rgba(0,124,90,0.3)" />
+          <ellipse cx={HUB.x} cy={HUB.y - 56} rx="102" ry="26"
+            fill="rgba(0,124,90,0.1)" stroke="rgba(0,124,90,0.5)" strokeWidth="1.5" />
+          <text x={HUB.x} y={HUB.y - 51} textAnchor="middle"
+            fill="#007C5A" fontSize="10" fontFamily="ui-monospace, monospace" fontWeight="700" letterSpacing="0.25em">
+            VERIFIED TRUTH
+          </text>
+
+          {/* ── Hub label ────────────────────────────────── */}
+          <text x={HUB.x} y={HUB.y - 100} textAnchor="middle"
+            fill="#007C5A" fontSize="13" fontFamily="ui-monospace, monospace" fontWeight="700" letterSpacing="0.4em">
+            ENVISION OS
+          </text>
+          <circle cx={HUB.x + 62} cy={HUB.y - 104} r="3" fill="#007C5A" className="dot-pulse" />
+
+          {/* ── Platform nodes ───────────────────────────── */}
+          {platforms.map((p, i) => {
+            const isActive = active === i
+            const boxW = Math.max(p.label.length * 8.5 + 28, 90)
+            return (
+              <g key={p.id}>
+                <rect
+                  x={p.x - boxW / 2} y={p.y - 22}
+                  width={boxW} height="44" rx="2"
+                  fill={isActive ? "rgba(0,124,90,0.06)" : "rgba(255,255,255,0.015)"}
+                  stroke={isActive ? "rgba(0,124,90,0.3)" : "rgba(255,255,255,0.05)"}
+                  strokeWidth="1"
+                  style={{ transition: "all 0.5s ease-out" }}
+                />
+                {/* Active indicator bar */}
+                {isActive && (
+                  <rect x={p.x - boxW / 2} y={p.y - 22} width={boxW} height="2" rx="1" fill="#007C5A" opacity="0.6" />
+                )}
+                <text
+                  x={p.x} y={p.y - 3}
+                  textAnchor="middle"
+                  fill={isActive ? "#007C5A" : "rgba(255,255,255,0.2)"}
+                  fontSize="10" fontFamily="ui-monospace, monospace" fontWeight="700" letterSpacing="0.2em"
+                  style={{ transition: "fill 0.5s ease-out" }}
+                >
+                  {p.label}
+                </text>
+                <text
+                  x={p.x} y={p.y + 14}
+                  textAnchor="middle"
+                  fill={isActive ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.08)"}
+                  fontSize="8" fontFamily="ui-monospace, monospace" letterSpacing="0.1em"
+                  style={{ transition: "fill 0.5s ease-out" }}
+                >
+                  {p.metric}
+                </text>
+              </g>
+            )
+          })}
+
+          {/* ── Decorative diamonds ──────────────────────── */}
+          {diamonds.map((d, i) => (
+            <rect
+              key={i}
+              x={d.x - d.s / 2} y={d.y - d.s / 2}
+              width={d.s} height={d.s}
+              fill="#007C5A" opacity={d.o}
+              transform={`rotate(45 ${d.x} ${d.y})`}
+            />
+          ))}
+
+          {/* ── Floating metric badge ────────────────────── */}
+          <g>
+            <rect x="415" y="575" width="170" height="26" rx="2"
+              fill="rgba(0,124,90,0.05)" stroke="rgba(0,124,90,0.18)" strokeWidth="0.5" />
+            <text x="500" y="592" textAnchor="middle"
+              fill="#007C5A" fontSize="9" fontFamily="ui-monospace, monospace" fontWeight="700" letterSpacing="0.2em">
+              847 CORRELATIONS / SEC
+            </text>
+          </g>
+        </svg>
       </div>
     </div>
-  );
+  )
 }

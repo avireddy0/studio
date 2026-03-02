@@ -349,7 +349,7 @@ export default function UnifiedPage() {
                             src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=-118.2475,34.0495,-118.2395,34.0555&bboxSR=4326&size=1600,800&format=png&f=image"
                             alt=""
                             className="absolute inset-0 w-full h-full object-cover"
-                            loading="lazy"
+                            loading="eager"
                         />
                         {/* Dark tactical tint */}
                         <div className="absolute inset-0 bg-[#0A0A0F]/60 mix-blend-multiply" />
