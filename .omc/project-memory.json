@@ -156,6 +156,12 @@
       "type": "file"
     },
     {
+      "path": "src/components/query/chat-interface.tsx",
+      "accessCount": 14,
+      "lastAccessed": 1772419552246,
+      "type": "file"
+    },
+    {
       "path": "src/components/dashboard-header.tsx",
       "accessCount": 12,
       "lastAccessed": 1772417135601,
@@ -165,12 +171,6 @@
       "path": "src/components/context/context-summarizer.tsx",
       "accessCount": 11,
       "lastAccessed": 1772382712975,
-      "type": "file"
-    },
-    {
-      "path": "src/components/query/chat-interface.tsx",
-      "accessCount": 11,
-      "lastAccessed": 1772419520734,
       "type": "file"
     },
     {

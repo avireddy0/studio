@@ -18,10 +18,10 @@ const initialState = {
 };
 
 const INITIAL_PROMPTS = [
-  "Cost Variance",
-  "Tariff Impact",
-  "Schedule Risk",
-  "Meeting Minutes",
+  "Costs",
+  "Tariffs",
+  "Schedule",
+  "Minutes",
 ];
 
 function SubmitButton() {
