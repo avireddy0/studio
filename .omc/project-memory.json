@@ -139,14 +139,14 @@
   "hotPaths": [
     {
       "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 139,
-      "lastAccessed": 1772419976140,
+      "accessCount": 141,
+      "lastAccessed": 1772420251244,
       "type": "file"
     },
     {
       "path": "src/components/visualizations/ingestion-funnel.tsx",
-      "accessCount": 48,
-      "lastAccessed": 1772413466138,
+      "accessCount": 49,
+      "lastAccessed": 1772420255379,
       "type": "file"
     },
     {
@@ -162,15 +162,15 @@
       "type": "file"
     },
     {
-      "path": "src/components/dashboard-header.tsx",
-      "accessCount": 12,
-      "lastAccessed": 1772417135601,
+      "path": "src/components/context/context-summarizer.tsx",
+      "accessCount": 13,
+      "lastAccessed": 1772420250870,
       "type": "file"
     },
     {
-      "path": "src/components/context/context-summarizer.tsx",
-      "accessCount": 11,
-      "lastAccessed": 1772382712975,
+      "path": "src/components/dashboard-header.tsx",
+      "accessCount": 12,
+      "lastAccessed": 1772417135601,
       "type": "file"
     },
     {
