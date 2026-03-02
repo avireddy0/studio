@@ -40,13 +40,6 @@ const SIGNALS = [
     message:
       "Owner Weekly Sync — Team confirmed 5-day recovery plan to offset foundation delay.",
   },
-  {
-    platform: "GOOGLE DRIVE",
-    type: "New Document",
-    color: "#0F9D58",
-    message:
-      "Structural drawings Rev C uploaded to Tower B / Foundation. Engineer-approved stamp attached.",
-  },
 ]
 
 const VERDICT =
@@ -108,7 +101,7 @@ export function ContextSummarizer() {
           Context is Everything.
         </h2>
         <p className="text-zinc-400 text-xs md:text-sm font-medium max-w-xl leading-relaxed">
-          A single delay triggers 6 platforms. Envision OS correlates the noise
+          A single delay triggers 5 platforms. Envision OS correlates the noise
           into{" "}
           <span className="text-zinc-800 font-semibold">
             verified intelligence
@@ -186,7 +179,7 @@ export function ContextSummarizer() {
             <span className="w-1.5 h-1.5 rounded-full bg-[#007C5A] animate-bounce" style={{ animationDelay: "300ms" }} />
           </div>
           <span className="text-[9px] md:text-[10px] font-mono text-[#007C5A] font-medium tracking-wide">
-            Correlating 6 signals across platforms...
+            Correlating 5 signals across platforms...
           </span>
         </div>
 
