@@ -69,7 +69,6 @@ export function ContextSummarizer() {
   useEffect(() => {
     if (!mounted) return
 
-    // Reset for new cycle
     setAlertVisible(false)
     setVisibleSignals(0)
     setProcessing(false)
@@ -77,20 +76,16 @@ export function ContextSummarizer() {
 
     const t: ReturnType<typeof setTimeout>[] = []
 
-    // Phase 1: Alert
     t.push(setTimeout(() => setAlertVisible(true), 500))
 
-    // Phase 2: Signals appear one by one
     SIGNALS.forEach((_, i) => {
       t.push(setTimeout(() => setVisibleSignals(i + 1), 1800 + i * 800))
     })
 
     const afterSignals = 1800 + SIGNALS.length * 800
 
-    // Phase 3: Processing indicator
     t.push(setTimeout(() => setProcessing(true), afterSignals + 500))
 
-    // Phase 4: Verdict replaces processing
     t.push(
       setTimeout(() => {
         setProcessing(false)
@@ -98,7 +93,6 @@ export function ContextSummarizer() {
       }, afterSignals + 2200)
     )
 
-    // Loop: restart after reading time
     t.push(setTimeout(() => setCycle((c) => c + 1), afterSignals + 2200 + 5500))
 
     return () => t.forEach(clearTimeout)
@@ -107,13 +101,13 @@ export function ContextSummarizer() {
   if (!mounted) return null
 
   return (
-    <div className="relative w-full h-full flex flex-col">
+    <div className="relative w-full h-full flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="shrink-0 space-y-2 md:space-y-3 mb-4 md:mb-6">
-        <h2 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter text-zinc-900 leading-tight">
+      <div className="shrink-0 mb-3 md:mb-4">
+        <h2 className="text-2xl sm:text-3xl md:text-5xl font-semibold tracking-tighter text-zinc-900 leading-tight mb-1.5 md:mb-2">
           Context is Everything.
         </h2>
-        <p className="text-zinc-400 text-sm md:text-base font-medium max-w-2xl leading-relaxed">
+        <p className="text-zinc-400 text-xs md:text-sm font-medium max-w-xl leading-relaxed">
           A single delay triggers 6 platforms. Envision OS correlates the noise
           into{" "}
           <span className="text-zinc-800 font-semibold">
@@ -124,56 +118,56 @@ export function ContextSummarizer() {
       </div>
 
       {/* Scenario Flow */}
-      <div className="flex-1 min-h-0 flex flex-col gap-3 overflow-y-auto pr-1">
+      <div className="flex-1 min-h-0 flex flex-col gap-2 md:gap-2.5 overflow-hidden">
         {/* ── Alert Banner ────────────────────────────────── */}
         <div
-          className="p-3 md:p-4 rounded-xl border border-red-200 bg-red-50/80 transition-all duration-600"
+          className="shrink-0 p-2.5 md:p-3 rounded-lg border border-red-200 bg-red-50/80 transition-all duration-600"
           style={{
             opacity: alertVisible ? 1 : 0,
-            transform: alertVisible ? "translateY(0)" : "translateY(-12px)",
+            transform: alertVisible ? "translateY(0)" : "translateY(-8px)",
           }}
         >
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-0.5">
             <div className="relative flex shrink-0">
-              <span className="w-2 h-2 rounded-full bg-red-500" />
-              <span className="absolute inset-0 w-2 h-2 rounded-full bg-red-500 animate-ping" />
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+              <span className="absolute inset-0 w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
             </div>
-            <span className="text-[10px] md:text-xs font-mono font-bold text-red-600 uppercase tracking-wider">
+            <span className="text-[9px] md:text-[10px] font-mono font-bold text-red-600 uppercase tracking-wider">
               Schedule Risk Detected
             </span>
           </div>
-          <p className="text-xs md:text-sm text-red-800 font-medium">
+          <p className="text-[11px] md:text-xs text-red-800 font-medium">
             Concrete pour delayed 2 weeks — Tower B Foundation
           </p>
         </div>
 
         {/* ── Platform Signal Cards ───────────────────────── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2.5">
+        <div className="shrink-0 grid grid-cols-2 md:grid-cols-3 gap-2">
           {SIGNALS.map((signal, i) => {
             const visible = i < visibleSignals
             return (
               <div
                 key={signal.platform}
-                className="p-3 md:p-4 rounded-xl bg-white border border-zinc-200 shadow-[0_1px_4px_rgba(0,0,0,0.05)] transition-all duration-500"
+                className="p-2.5 md:p-3 rounded-lg bg-white border border-zinc-200 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-500"
                 style={{
                   opacity: visible ? 1 : 0,
-                  transform: visible ? "translateY(0)" : "translateY(12px)",
+                  transform: visible ? "translateY(0)" : "translateY(10px)",
                   borderLeftWidth: 3,
                   borderLeftColor: visible ? signal.color : "transparent",
                 }}
               >
-                <div className="flex items-center gap-2 mb-1.5">
+                <div className="flex items-center gap-1.5 mb-1">
                   <span
-                    className="text-[9px] md:text-[10px] font-mono font-bold uppercase tracking-wider"
+                    className="text-[8px] md:text-[9px] font-mono font-bold uppercase tracking-wider"
                     style={{ color: signal.color }}
                   >
                     {signal.platform}
                   </span>
-                  <span className="text-[9px] md:text-[10px] font-mono text-zinc-400">
+                  <span className="text-[8px] md:text-[9px] font-mono text-zinc-400 hidden sm:inline">
                     {signal.type}
                   </span>
                 </div>
-                <p className="text-[11px] md:text-xs text-zinc-600 leading-relaxed">
+                <p className="text-[10px] md:text-[11px] text-zinc-600 leading-snug line-clamp-2">
                   {signal.message}
                 </p>
               </div>
@@ -183,40 +177,37 @@ export function ContextSummarizer() {
 
         {/* ── Processing Indicator ────────────────────────── */}
         <div
-          className="flex items-center justify-center gap-2 py-3 transition-all duration-500"
-          style={{
-            opacity: processing ? 1 : 0,
-            height: processing ? "auto" : 0,
-          }}
+          className="shrink-0 flex items-center justify-center gap-2 py-2 transition-all duration-500"
+          style={{ opacity: processing ? 1 : 0 }}
         >
           <div className="flex gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-[#007C5A] animate-bounce" style={{ animationDelay: "0ms" }} />
             <span className="w-1.5 h-1.5 rounded-full bg-[#007C5A] animate-bounce" style={{ animationDelay: "150ms" }} />
             <span className="w-1.5 h-1.5 rounded-full bg-[#007C5A] animate-bounce" style={{ animationDelay: "300ms" }} />
           </div>
-          <span className="text-[10px] md:text-xs font-mono text-[#007C5A] font-medium tracking-wide">
+          <span className="text-[9px] md:text-[10px] font-mono text-[#007C5A] font-medium tracking-wide">
             Correlating 6 signals across platforms...
           </span>
         </div>
 
         {/* ── Envision OS Verdict ─────────────────────────── */}
         <div
-          className="p-4 md:p-5 rounded-xl border-2 border-[#007C5A]/25 bg-gradient-to-r from-[#007C5A]/[0.04] to-[#007C5A]/[0.08] transition-all duration-700"
+          className="shrink-0 p-3 md:p-4 rounded-lg border-2 border-[#007C5A]/25 bg-gradient-to-r from-[#007C5A]/[0.04] to-[#007C5A]/[0.08] transition-all duration-700"
           style={{
             opacity: verdictVisible ? 1 : 0,
-            transform: verdictVisible ? "translateY(0)" : "translateY(16px)",
+            transform: verdictVisible ? "translateY(0)" : "translateY(12px)",
           }}
         >
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-center gap-2 mb-1.5">
             <div className="relative flex shrink-0">
               <span className="w-2 h-2 rounded-full bg-[#007C5A]" />
               <span className="absolute inset-0 w-2 h-2 rounded-full bg-[#007C5A] animate-ping" />
             </div>
-            <span className="text-[10px] md:text-xs font-mono font-bold text-[#007C5A] uppercase tracking-wider">
+            <span className="text-[9px] md:text-[10px] font-mono font-bold text-[#007C5A] uppercase tracking-wider">
               Envision OS — Verified Intelligence
             </span>
           </div>
-          <p className="text-xs md:text-sm text-zinc-800 font-medium leading-relaxed">
+          <p className="text-[11px] md:text-xs text-zinc-800 font-medium leading-relaxed">
             {VERDICT}
           </p>
         </div>
