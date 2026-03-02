@@ -14,13 +14,14 @@ const initialState = {
   message: "",
   data: null,
   error: null,
+  followUps: null,
 };
 
-const SUGGESTED_PROMPTS = [
-  "Analyze RFI #202",
-  "Summarize last meeting",
-  "Predict schedule delay",
-  "Check budget variance"
+const INITIAL_PROMPTS = [
+  "Cost variance: steel tariff impact on Phoenix GMP",
+  "60-day schedule risk: RFIs, weather, supply chain",
+  "This week's owner-GC comms: unresolved items",
+  "Scenario: 15% lumber surge → cost & timeline impact",
 ];
 
 function SubmitButton() {
@@ -38,12 +39,13 @@ function SubmitButton() {
 
 export function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([
-    { 
-      role: "ai", 
-      content: "Protocol initialized. Envision OS Intelligence Core is active. Awaiting instruction set." 
+    {
+      role: "ai",
+      content: "Protocol initialized. Envision OS Intelligence Core is active. Awaiting instruction set."
     }
   ]);
-  
+  const [followUpPrompts, setFollowUpPrompts] = useState<string[] | null>(null);
+
   const [formState, formAction] = useActionState(handleQuery, initialState);
   const formRef = useRef<HTMLFormElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -55,6 +57,9 @@ export function ChatInterface() {
         ...prev.filter(m => m.role !== 'status'),
         { role: "ai", content: formState.data },
       ]);
+      if (formState.followUps) {
+        setFollowUpPrompts(formState.followUps);
+      }
     }
     if (formState?.error) {
        toast({
@@ -106,11 +111,16 @@ export function ChatInterface() {
 
       <div className="p-4 border-t bg-white/95 backdrop-blur-xl border-black/5">
         <div className="max-w-3xl mx-auto flex gap-2 overflow-x-auto pb-4 no-scrollbar">
-            {SUGGESTED_PROMPTS.map((prompt, i) => (
+            {(followUpPrompts || INITIAL_PROMPTS).map((prompt, i) => (
                 <button
-                    key={i}
+                    key={`${followUpPrompts ? 'fu' : 'init'}-${i}`}
                     onClick={() => handleSuggestedClick(prompt)}
-                    className="px-3 py-1 text-[9px] font-bold uppercase tracking-widest transition-all whitespace-nowrap rounded-full border bg-[#F2F2F7] border-black/5 text-black/60 hover:bg-[#E5E5EA]"
+                    className={cn(
+                      "px-3 py-1 text-[9px] font-bold uppercase tracking-widest transition-all whitespace-nowrap rounded-full border",
+                      followUpPrompts
+                        ? "bg-primary/5 border-primary/20 text-primary/80 hover:bg-primary/10"
+                        : "bg-[#F2F2F7] border-black/5 text-black/60 hover:bg-[#E5E5EA]"
+                    )}
                 >
                     {prompt}
                 </button>
