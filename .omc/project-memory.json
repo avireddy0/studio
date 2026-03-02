@@ -139,14 +139,20 @@
   "hotPaths": [
     {
       "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 141,
-      "lastAccessed": 1772420251244,
+      "accessCount": 147,
+      "lastAccessed": 1772421300747,
       "type": "file"
     },
     {
       "path": "src/components/visualizations/ingestion-funnel.tsx",
       "accessCount": 49,
       "lastAccessed": 1772420255379,
+      "type": "file"
+    },
+    {
+      "path": "src/components/context/context-summarizer.tsx",
+      "accessCount": 24,
+      "lastAccessed": 1772421659099,
       "type": "file"
     },
     {
@@ -162,16 +168,16 @@
       "type": "file"
     },
     {
-      "path": "src/components/context/context-summarizer.tsx",
-      "accessCount": 13,
-      "lastAccessed": 1772420250870,
-      "type": "file"
-    },
-    {
       "path": "src/components/dashboard-header.tsx",
       "accessCount": 12,
       "lastAccessed": 1772417135601,
       "type": "file"
+    },
+    {
+      "path": "src",
+      "accessCount": 6,
+      "lastAccessed": 1772420918438,
+      "type": "directory"
     },
     {
       "path": "src/components/visualizations/tactical-bim-overlay.tsx",
@@ -184,12 +190,6 @@
       "accessCount": 5,
       "lastAccessed": 1772414207198,
       "type": "file"
-    },
-    {
-      "path": "src",
-      "accessCount": 5,
-      "lastAccessed": 1772419967349,
-      "type": "directory"
     },
     {
       "path": "src/components/ui/table.tsx",

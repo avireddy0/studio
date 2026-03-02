@@ -1143,3 +1143,71 @@ xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002
 xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=intel&r=$(date +%s)"
 xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=intel&r=$(date +%s)"
 xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=intel&r=$(date +%s)"
+npm run build 2>&1
+npm run build 2>&1 | tail -5
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=fusion&r=$(date +%s)"
+npm run build 2>&1 | tail -10
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=fusion&r=$(date +%s)"
+kill -9 $(lsof -ti:9002) 2>/dev/null; npm run dev &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=fusion&r=$(date +%s)"
+git status
+git diff --stat
+git log --oneline -5
+npm run build 2>&1
+git add 'src/app/(dashboard)/page.tsx' src/components/context/context-summarizer.tsx
+git commit -m "$(cat <<'EOF'
+feat: redesign context fusion visualization and optimize satellite loading
+
+Rewrote context-summarizer as Baseten-inspired SVG hub-and-spoke network
+with animated connections and 3D stacked disks. Changed satellite terrain
+image to eager loading for faster appearance.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)"
+git push origin main
+grep -n "context\|Context\|Section 4\|section.*4\|context-summarizer" /Users/avireddy/GitHub/studio/src/app/\(dashboard\)/page.tsx | head -30
+npm run build 2>&1
+git add 'src/app/(dashboard)/page.tsx' src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+feat: redesign Context Fusion as scenario-driven animation on white bg
+
+Replaced hub-and-spoke SVG with an animated construction scenario showing
+a concrete pour delay being resolved through cross-platform signals
+(Procore, Gmail, Slack, Sage, Zoom, Drive) with Envision OS delivering
+verified intelligence. White background with proper contrast.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)"
+git push origin main
+npm run build 2>&1
+git add src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+fix: tighten context fusion layout to fit within 100vh
+
+Compact padding, gaps, and font sizes. Force 2-col grid on mobile,
+3-col on md+. Use overflow-hidden, shrink-0, and line-clamp to
+prevent content from exceeding viewport height.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main
+npm run build 2>&1
+git add src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+fix: remove Google Drive signal card from context fusion
+
+Drop to 5 platform signals for cleaner vertical fit. Updated subtitle
+and processing text to reflect 5 platforms.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main
+npm run build 2>&1
+git add src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+fix: stack context fusion signal cards vertically
+
+Changed from grid layout to vertical flex column for signal cards.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main
