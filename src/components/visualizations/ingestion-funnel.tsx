@@ -19,19 +19,25 @@ const FLOW_TYPES = [
 
 const ITEM_COUNT = 24
 const STAGGER = 0.14
-const DURATION = 3.5
+const DURATION = 3
 
 // ─── COMPONENT ──────────────────────────────────────────────
 export function IngestionFunnel() {
   const flowItems = useMemo(() => {
     const items = []
+    // Scrambled delay order so cards arrive randomly, not sequentially
+    const delaySlots = Array.from({ length: ITEM_COUNT }, (_, i) => i)
+    for (let i = delaySlots.length - 1; i > 0; i--) {
+      const j = ((i * 53 + 7) % (i + 1)) // deterministic shuffle
+      ;[delaySlots[i], delaySlots[j]] = [delaySlots[j], delaySlots[i]]
+    }
     for (let i = 0; i < ITEM_COUNT; i++) {
       const type = FLOW_TYPES[i % FLOW_TYPES.length]
-      // Random scatter across the left side
-      const topPct = 10 + ((i * 37 + 13) % 80) // pseudo-random 10-90%
+      const topPct = 10 + ((i * 37 + 13) % 80)
       const yToCenter = Math.round((50 - topPct) * 3)
-      const rotation = Math.round(((i * 53 + 7) % 30) - 15) // -15 to +15
-      const delay = i * STAGGER - DURATION
+      const rotation = Math.round(((i * 53 + 7) % 30) - 15)
+      // Scrambled delay — cards arrive in random order
+      const delay = delaySlots[i] * STAGGER - DURATION
       items.push({ ...type, topPct, yToCenter, rotation, delay, id: i })
     }
     return items

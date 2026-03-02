@@ -84,19 +84,23 @@
     transform: translateX(0) translateY(0) rotate(var(--r)) scale(1);
     opacity: 0;
   }
-  6% {
+  5% {
     opacity: 1;
   }
-  78% {
-    opacity: 0.85;
+  75% {
+    opacity: 0.8;
+  }
+  92% {
+    opacity: 0.3;
   }
   100% {
-    transform: translateX(min(46vw, 580px)) translateY(var(--yc)) rotate(0deg) scale(0.12);
+    /* Land exactly at the parser center: ~48% of container from left:2% start */
+    transform: translateX(min(46vw, 580px)) translateY(var(--yc)) rotate(0deg) scale(0);
     opacity: 0;
   }
 }
 .ingest-flow-item {
-  animation: ingest-flow 3.5s cubic-bezier(0.25, 0.05, 0.7, 0.35) infinite;
+  animation: ingest-flow 3s cubic-bezier(0.3, 0, 0.8, 0.3) infinite;
   animation-delay: var(--d);
   will-change: transform, opacity;
 }
