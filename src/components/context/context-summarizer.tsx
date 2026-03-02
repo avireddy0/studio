@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 // ─── SCENARIO DATA ───────────────────────────────────────
 
@@ -48,7 +48,8 @@ const VERDICT =
 // ─── COMPONENT ──────────────────────────────────────────
 
 export function ContextSummarizer() {
-  const [mounted, setMounted] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [inView, setInView] = useState(false)
   const [cycle, setCycle] = useState(0)
   const [alertVisible, setAlertVisible] = useState(false)
   const [visibleSignals, setVisibleSignals] = useState(0)
@@ -58,11 +59,18 @@ export function ContextSummarizer() {
   const [scenarioFaded, setScenarioFaded] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
+    const el = containerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setInView(true) },
+      { threshold: 0.3 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
   }, [])
 
   useEffect(() => {
-    if (!mounted) return
+    if (!inView) return
 
     setAlertVisible(false)
     setVisibleSignals(0)
@@ -109,12 +117,10 @@ export function ContextSummarizer() {
     t.push(setTimeout(() => setCycle((c) => c + 1), verdictTime + 6800 + 4000))
 
     return () => t.forEach(clearTimeout)
-  }, [mounted, cycle])
-
-  if (!mounted) return null
+  }, [inView, cycle])
 
   return (
-    <div className="relative w-full h-full flex flex-col overflow-hidden">
+    <div ref={containerRef} className="relative w-full h-full flex flex-col overflow-hidden">
       {/* Header */}
       <div className="shrink-0 mb-3 md:mb-4">
         <h2 className="text-2xl sm:text-3xl md:text-5xl font-semibold tracking-tighter text-zinc-900 leading-tight mb-1.5 md:mb-2">
