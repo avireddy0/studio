@@ -41,7 +41,7 @@ export function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "ai",
-      content: "Protocol initialized. Envision OS Intelligence Core is active. Awaiting instruction set."
+      content: "Envision OS active. Construction Intelligence live. Awaiting instructions."
     }
   ]);
   const [followUpPrompts, setFollowUpPrompts] = useState<string[] | null>(null);

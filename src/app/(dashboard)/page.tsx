@@ -251,7 +251,7 @@ export default function UnifiedPage() {
 
             <div className="mb-4 md:mb-8 shrink-0">
               <h2 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Intelligence Command.</h2>
-              <p className="text-black/60 max-w-xl text-base sm:text-lg font-medium mt-2 md:mt-4">Verified institutional oracle. Direct access to cross-platform project truth.</p>
+              <p className="text-black/60 max-w-xl text-base sm:text-lg font-medium mt-2 md:mt-4">Welcome to the future of Development.</p>
             </div>
 
             <Card className="bg-white border-black/5 shadow-2xl flex-1 flex flex-col overflow-hidden rounded-none">
@@ -260,7 +260,7 @@ export default function UnifiedPage() {
                         <CardTitle className="text-[10px] tracking-[0.3em] text-black/60">Secure_Command_Interface</CardTitle>
                         <div className="flex items-center gap-2">
                             <div className="size-1.5 rounded-full bg-primary animate-status" />
-                            <span className="text-[9px] font-mono text-primary uppercase tracking-widest">Signal_Nominal</span>
+                            <span className="text-[9px] font-mono text-primary uppercase tracking-widest">Live</span>
                         </div>
                     </div>
                 </CardHeader>

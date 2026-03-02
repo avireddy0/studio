@@ -139,8 +139,8 @@
   "hotPaths": [
     {
       "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 135,
-      "lastAccessed": 1772419376004,
+      "accessCount": 139,
+      "lastAccessed": 1772419976140,
       "type": "file"
     },
     {
@@ -157,8 +157,8 @@
     },
     {
       "path": "src/components/query/chat-interface.tsx",
-      "accessCount": 14,
-      "lastAccessed": 1772419552246,
+      "accessCount": 17,
+      "lastAccessed": 1772419806930,
       "type": "file"
     },
     {
@@ -184,6 +184,12 @@
       "accessCount": 5,
       "lastAccessed": 1772414207198,
       "type": "file"
+    },
+    {
+      "path": "src",
+      "accessCount": 5,
+      "lastAccessed": 1772419967349,
+      "type": "directory"
     },
     {
       "path": "src/components/ui/table.tsx",
