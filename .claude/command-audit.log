@@ -1036,3 +1036,92 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 EOF
 )"
 git push
+lsof -ti:9002 | xargs kill -9 2>/dev/null; true
+npm run dev
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=site-docs&t=$(date +%s)"
+npm run build 2>&1 | tail -5
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=site-docs&t=$(date +%s)"
+git add 'src/app/(dashboard)/page.tsx' && git commit -m "$(cat <<'EOF'
+style: add dark HUD panels behind zoning/building code overlays
+
+Military-style data panels with 75% opaque black backgrounds, colored
+accent borders, and left-edge indicator pips for improved legibility
+over satellite imagery.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+xcrun simctl shutdown 1311D811-5479-4E95-B2FD-67CD57CE77F6 2>/dev/null; xcrun simctl boot 1311D811-5479-4E95-B2FD-67CD57CE77F6
+open -a Simulator && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=site-docs&t=$(date +%s)"
+lsof -ti:9002
+kill -9 76822 2>/dev/null; true
+npm run dev
+sleep 4 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=site-docs&t=$(date +%s)"
+npm run build 2>&1 | tail -5
+git add src/components/ui/card.tsx && git commit -m "$(cat <<'EOF'
+fix: remove default hover from Card base component
+
+The hover:border-primary/30 and hover:bg-card/80 on the Card base was
+causing the entire Document_Intel_Vault section to highlight on hover
+instead of individual rows. Cards that need hover (telemetry) already
+have explicit hover classes in their className props.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+npm run build 2>&1 | tail -20
+git add src/components/dashboard-header.tsx src/app/globals.css && git commit -m "$(cat <<'EOF'
+feat: animated ENVISION OVERSIGHT → OS title with drone logo
+
+Header title types out "ENVISION OVERSIGHT" character by character,
+then drops letters V,E,R,I,G,H,T with a falling animation to reveal
+"ENVISION OS" in green with a power-on indicator light. Replaced
+Monitor icon with custom drone SVG matching the brand.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?t=$(date +%s)"
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?t=$(date +%s)"
+lsof -ti:9002 | xargs kill -9 2>/dev/null; echo "killed"
+npm run dev &
+sleep 4 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?t=$(date +%s)"
+npm run build 2>&1 | tail -20
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?t=$(date +%s)"
+xcrun simctl shutdown 1311D811-5479-4E95-B2FD-67CD57CE77F6 2>/dev/null; sleep 1; xcrun simctl boot 1311D811-5479-4E95-B2FD-67CD57CE77F6; sleep 3; xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?t=$(date +%s)"
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+lsof -ti:9002
+kill -9 83433 2>/dev/null; sleep 1
+npm run dev 2>&1 &; sleep 5; curl -s http://localhost:9002 2>&1 | head -50
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?v=$(date +%s)"
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?v=$(date +%s)"
+npm run build 2>&1 | tail -15
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?v=$(date +%s)"
+curl -s http://localhost:9002 2>&1 | head -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev 2>&1 | head -30 &; sleep 6; curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?v=$(date +%s)"
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?v=$(date +%s)"
+npm run build 2>&1 | tail -20
+npm run build 2>&1 | tail -10
+npm run build 2>&1 | tail -5
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?r=$(date +%s)"
+lsof -ti:9002
+kill -9 $(lsof -ti:9002) 2>/dev/null; npm run dev &
+sleep 4 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?r=$(date +%s)"
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?r=$(date +%s)"
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?r=$(date +%s)"
+npm run build 2>&1 | tail -10
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?r=$(date +%s)"
+kill -9 $(lsof -ti:9002) 2>/dev/null; npm run dev &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?r=$(date +%s)"
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?r=$(date +%s)"
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?r=$(date +%s)"
+npm run build 2>&1 | tail -5
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?r=$(date +%s)"
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?r=$(date +%s)"
+kill -9 $(lsof -ti:9002) 2>/dev/null; npm run dev &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?r=$(date +%s)"

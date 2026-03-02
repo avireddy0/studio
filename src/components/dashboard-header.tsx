@@ -16,7 +16,8 @@ const navItems = [
 ];
 
 const FULL_TEXT = "ENVISION OVERSIGHT";
-const DROP_INDICES = new Set([10, 11, 12, 14, 15, 16, 17]); // V,E,R from OVER + I,G,H,T from SIGHT
+const DROP_INDICES = new Set([10, 11, 12, 14, 15, 16, 17]);
+const DROP_ORDER = [10, 11, 12, 14, 15, 16, 17];
 
 function DroneIcon({ className }: { className?: string }) {
   return (
@@ -48,7 +49,7 @@ function DroneIcon({ className }: { className?: string }) {
 }
 
 function AnimatedTitle({ isDark }: { isDark: boolean }) {
-  const [phase, setPhase] = useState<'typing' | 'pause' | 'morphing' | 'done'>('typing');
+  const [phase, setPhase] = useState<'typing' | 'pause' | 'dropping' | 'settling' | 'done'>('typing');
   const [charIndex, setCharIndex] = useState(0);
 
   useEffect(() => {
@@ -61,69 +62,71 @@ function AnimatedTitle({ isDark }: { isDark: boolean }) {
       return () => clearTimeout(t);
     }
     if (phase === 'pause') {
-      const t = setTimeout(() => setPhase('morphing'), 900);
+      const t = setTimeout(() => setPhase('dropping'), 900);
       return () => clearTimeout(t);
     }
-    if (phase === 'morphing') {
-      const t = setTimeout(() => setPhase('done'), 800);
+    if (phase === 'dropping') {
+      const t = setTimeout(() => setPhase('settling'), 1000);
+      return () => clearTimeout(t);
+    }
+    if (phase === 'settling') {
+      const t = setTimeout(() => setPhase('done'), 600);
       return () => clearTimeout(t);
     }
   }, [phase, charIndex]);
 
+  const isDropping = phase === 'dropping' || phase === 'settling' || phase === 'done';
+  const isGreen = phase === 'settling' || phase === 'done';
+  const showPower = phase === 'done';
   const textColor = isDark ? 'text-white' : 'text-black';
 
-  if (phase === 'done') {
-    return (
-      <div className="flex items-center gap-2.5">
-        <span className="text-xs font-bold tracking-[0.3em] uppercase text-primary">
-          ENVISION OS
-        </span>
-        <div
-          className="size-1.5 rounded-full bg-primary shadow-[0_0_6px_rgba(0,124,90,0.9),0_0_12px_rgba(0,124,90,0.4)]"
-          style={{ animation: 'power-on 0.6s ease-out forwards' }}
-        />
-      </div>
-    );
-  }
-
-  const isMorphing = phase === 'morphing';
-
   return (
-    <div className="relative">
-      {/* Typing/morphing layer */}
-      <span
-        className={cn(
-          "text-xs font-bold tracking-[0.3em] uppercase transition-opacity duration-500",
-          isMorphing ? 'opacity-0' : 'opacity-100',
-          textColor
-        )}
-      >
+    <div className="flex items-center gap-2.5">
+      <span className={cn(
+        "text-xs font-bold uppercase transition-colors duration-500",
+        isGreen ? 'text-primary' : textColor
+      )}>
         {FULL_TEXT.split('').map((char, i) => {
-          const isDropped = DROP_INDICES.has(i);
+          const shouldDrop = DROP_INDICES.has(i);
+          const dropped = isDropping && shouldDrop;
+          const stagger = shouldDrop ? DROP_ORDER.indexOf(i) * 40 : 0;
+
           return (
             <span
               key={i}
-              className="inline-block transition-all duration-500 ease-in-out"
               style={{
-                opacity: i >= charIndex ? 0 : (isMorphing && isDropped) ? 0 : 1,
-                transform: (isMorphing && isDropped) ? 'translateY(10px)' : 'translateY(0)',
+                display: 'inline-block',
+                overflow: 'hidden',
+                verticalAlign: 'top',
+                transition: dropped
+                  ? `max-width 400ms ease-in-out ${250 + stagger}ms, margin-right 400ms ease-in-out ${250 + stagger}ms`
+                  : 'max-width 400ms ease-in-out, margin-right 400ms ease-in-out',
+                maxWidth: dropped ? 0 : '1em',
+                marginRight: dropped ? 0 : '0.3em',
               }}
             >
-              {char === ' ' ? '\u00A0' : char}
+              <span
+                style={{
+                  display: 'inline-block',
+                  transition: dropped
+                    ? `opacity 300ms ease-in-out ${stagger}ms, transform 350ms ease-in-out ${stagger}ms`
+                    : 'opacity 300ms ease-in-out, transform 350ms ease-in-out',
+                  opacity: i >= charIndex ? 0 : dropped ? 0 : 1,
+                  transform: dropped ? 'translateY(1.2em)' : 'translateY(0)',
+                }}
+              >
+                {char === ' ' ? '\u00A0' : char}
+              </span>
             </span>
           );
         })}
       </span>
-
-      {/* Final "ENVISION OS" layer — fades in during morphing */}
-      <span
-        className={cn(
-          "absolute left-0 top-0 text-xs font-bold tracking-[0.3em] uppercase text-primary transition-opacity duration-700 whitespace-nowrap",
-          isMorphing ? 'opacity-100' : 'opacity-0'
-        )}
-      >
-        ENVISION OS
-      </span>
+      {showPower && (
+        <div
+          className="size-1.5 rounded-full bg-primary shadow-[0_0_6px_rgba(0,124,90,0.9),0_0_12px_rgba(0,124,90,0.4)]"
+          style={{ animation: 'power-on 0.6s ease-out forwards' }}
+        />
+      )}
     </div>
   );
 }
@@ -164,14 +167,15 @@ export function DashboardHeader({ title }: { title?: string }) {
 
   return (
     <header className={cn(
-        "sticky top-0 z-50 flex h-16 items-center justify-between border-b px-3 sm:px-6 backdrop-blur-md transition-all duration-500",
+        "sticky top-0 z-50 flex h-16 items-center justify-center border-b px-3 sm:px-6 backdrop-blur-md transition-all duration-500 relative",
         borderColor,
         bgColor
     )}>
-      <div className="flex items-center gap-8">
+      {/* Mobile menu — pinned left */}
+      <div className="absolute left-3 sm:left-6 lg:hidden">
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <SheetTrigger asChild>
-            <button className={cn("lg:hidden p-2 -ml-2", textColor)}>
+            <button className={cn("p-2", textColor)}>
               <Menu className="size-5" />
             </button>
           </SheetTrigger>
@@ -203,6 +207,10 @@ export function DashboardHeader({ title }: { title?: string }) {
             </nav>
           </SheetContent>
         </Sheet>
+      </div>
+
+      {/* Center — logo + nav */}
+      <div className="flex items-center gap-8">
         <Link href="/" className="flex items-center gap-3 group">
             <DroneIcon className={cn("w-6 h-5 transition-colors", isDarkSection ? "text-primary" : "text-black")} />
             <AnimatedTitle isDark={isDarkSection} />
@@ -225,24 +233,23 @@ export function DashboardHeader({ title }: { title?: string }) {
         </nav>
       </div>
 
-      <div className="flex items-center gap-8">
-        <div className="hidden md:flex items-center gap-6">
-            <div className="flex items-center gap-2">
-                <div className="size-1.5 rounded-full animate-status bg-primary" />
-                <span className={cn(
-                    "text-[10px] font-mono font-bold uppercase tracking-widest",
-                    isDarkSection ? "text-primary" : "text-black"
-                )}>
-                    Node: Active
-                </span>
-            </div>
-            <div className={cn(
-                "flex items-center gap-3 font-mono text-[10px] font-bold tracking-[0.3em] px-4 py-1.5 border transition-all",
-                isDarkSection ? "text-primary bg-primary/5 border-primary/20" : "text-black bg-black/5 border-black/10"
-            )}>
-                {title || '00:00:00'}
-            </div>
-        </div>
+      {/* Right — status indicators, pinned right */}
+      <div className="absolute right-3 sm:right-6 hidden md:flex items-center gap-6">
+          <div className="flex items-center gap-2">
+              <div className="size-1.5 rounded-full animate-status bg-primary" />
+              <span className={cn(
+                  "text-[10px] font-mono font-bold uppercase tracking-widest",
+                  isDarkSection ? "text-primary" : "text-black"
+              )}>
+                  Node: Active
+              </span>
+          </div>
+          <div className={cn(
+              "flex items-center gap-3 font-mono text-[10px] font-bold tracking-[0.3em] px-4 py-1.5 border transition-all",
+              isDarkSection ? "text-primary bg-primary/5 border-primary/20" : "text-black bg-black/5 border-black/10"
+          )}>
+              {title || '00:00:00'}
+          </div>
       </div>
 
       <div className="absolute bottom-0 left-0 h-[2px] bg-primary/20 w-full overflow-hidden">

@@ -139,8 +139,8 @@
   "hotPaths": [
     {
       "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 76,
-      "lastAccessed": 1772413911480,
+      "accessCount": 128,
+      "lastAccessed": 1772417754402,
       "type": "file"
     },
     {
@@ -151,8 +151,14 @@
     },
     {
       "path": "src/app/globals.css",
-      "accessCount": 19,
-      "lastAccessed": 1772413243415,
+      "accessCount": 21,
+      "lastAccessed": 1772414947671,
+      "type": "file"
+    },
+    {
+      "path": "src/components/dashboard-header.tsx",
+      "accessCount": 12,
+      "lastAccessed": 1772417135601,
       "type": "file"
     },
     {
@@ -180,27 +186,27 @@
       "type": "file"
     },
     {
-      "path": "src/components/dashboard-header.tsx",
-      "accessCount": 4,
-      "lastAccessed": 1772382768603,
+      "path": "src/components/ui/table.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1772414664046,
       "type": "file"
     },
     {
+      "path": "src/components/ui/card.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1772414693714,
+      "type": "directory"
+    },
+    {
       "path": "src/app/(dashboard)/layout.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1772382465705,
+      "accessCount": 3,
+      "lastAccessed": 1772414771046,
       "type": "file"
     },
     {
       "path": "src/components/query/chat-message.tsx",
       "accessCount": 2,
       "lastAccessed": 1772413711357,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/table.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1772413931627,
       "type": "file"
     },
     {

@@ -10,3 +10,6 @@
 {"t":0,"agent":"afa64d0","agent_type":"Explore","event":"agent_start","parent_mode":"none"}
 {"t":0,"agent":"afa64d0","agent_type":"Explore","event":"agent_stop","success":true,"duration_ms":1379}
 {"t":0,"agent":"a0a5450","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"a8684e1","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"oh-my-claudecode:frontend-ui-ux"}
+{"t":0,"agent":"ae35775","agent_type":"unknown","event":"agent_stop","success":true}
