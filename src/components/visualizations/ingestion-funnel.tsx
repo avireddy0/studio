@@ -73,29 +73,39 @@ export function IngestionFunnel() {
         </div>
       ))}
 
-      {/* ── ENGINE CORE: small centered parser ── */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center gap-1">
-        <div className="absolute -inset-6 rounded-2xl bg-primary/10 blur-2xl ingest-core-pulse" />
-        <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-lg bg-[#0D0D15] border border-primary/25 flex items-center justify-center shadow-[0_0_24px_rgba(0,124,90,0.25),0_0_48px_rgba(0,124,90,0.08)]">
-          <span className="text-primary font-mono text-xs md:text-sm font-bold">{'{ }'}</span>
+      {/* ── ENGINE CORE: centered parser ── */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center gap-1.5">
+        <div className="absolute -inset-8 rounded-2xl bg-primary/10 blur-2xl ingest-core-pulse" />
+        <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-lg bg-[#0D0D15] border border-primary/30 flex items-center justify-center shadow-[0_0_30px_rgba(0,124,90,0.3),0_0_60px_rgba(0,124,90,0.1)]">
+          <span className="text-primary font-mono text-sm md:text-base font-bold">{'{ }'}</span>
         </div>
-        <span className="text-[6px] md:text-[7px] font-mono text-white/35 tracking-[0.2em] uppercase mt-0.5">
+        <span className="text-[7px] md:text-[8px] font-mono text-white/40 tracking-[0.2em] uppercase">
           Audit Core
         </span>
       </div>
 
       {/* ── BEAM: connection line from core → output ── */}
-      <div className="absolute left-1/2 top-1/2 -translate-y-px z-10 h-px w-[40%] bg-gradient-to-r from-primary/25 via-primary/12 to-transparent" />
+      <div className="absolute left-1/2 top-1/2 -translate-y-px z-10 h-px w-[42%] bg-gradient-to-r from-primary/25 via-primary/12 to-transparent" />
 
-      {/* ── OUTPUT: single verified data stream line ── */}
-      <div className="absolute left-[55%] md:left-[54%] top-1/2 -translate-y-1/2 z-10 ingest-data-out">
-        <div className="font-mono text-[8px] md:text-[10px] text-primary/70 flex items-center gap-2 whitespace-nowrap">
-          <span className="inline-block w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-primary/60 ingest-core-pulse" />
-          <span className="text-primary/40">▸</span>
-          <span>ENVISION_VERIFIED_STREAM.json</span>
-          <span className="text-primary/30 ml-1">—</span>
-          <span className="text-primary/40 text-[7px] md:text-[8px]">verified · deterministic · institutional-grade</span>
-        </div>
+      {/* ── OUTPUT: multiple verified data streams ── */}
+      <div className="absolute left-[56%] md:left-[55%] top-1/2 -translate-y-1/2 z-10 flex flex-col gap-1.5 md:gap-2">
+        {[
+          { text: 'rfi_verified.json', sub: 'status: VERIFIED' },
+          { text: 'budget_clean.json', sub: 'variance: -3.2%' },
+          { text: 'schedule_parsed.json', sub: 'on_track: TRUE' },
+          { text: 'submittals.json', sub: 'flagged: 0' },
+          { text: 'change_orders.json', sub: 'delta: $0' },
+        ].map((line, i) => (
+          <div
+            key={i}
+            className="ingest-data-out font-mono flex items-center gap-1.5 whitespace-nowrap"
+            style={{ '--out-d': `${i * 0.6}s` } as React.CSSProperties}
+          >
+            <span className="inline-block w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-primary/50 shrink-0" />
+            <span className="text-[7px] md:text-[9px] text-primary/65">{line.text}</span>
+            <span className="text-[6px] md:text-[7px] text-primary/30">{line.sub}</span>
+          </div>
+        ))}
       </div>
     </div>
   )
