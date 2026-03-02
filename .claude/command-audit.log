@@ -1352,3 +1352,48 @@ lsof -ti:9002 2>/dev/null | head -1
 curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
 lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1 && npm run dev 2>&1 &
 sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+npm run build 2>&1 | tail -25
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1 && npm run dev &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+curl -s -o /dev/null -w "%{http_code}" "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=-118.2475,34.0495,-118.2395,34.0555&bboxSR=4326&size=1600,800&format=png&f=image"
+curl -s http://localhost:9002/?s=site-docs 2>&1 | grep -i "error\|exception\|failed" | head -5
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null; sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/feasibility-check.png 2>/dev/null && echo "Screenshot saved"
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1 && npm run dev &
+sleep 6 && UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null; sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/feasibility-v2.png 2>/dev/null && echo "Done"
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 2 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null; sleep 8 && xcrun simctl io "$UDID" screenshot /tmp/feasibility-v3.png 2>/dev/null && echo "Done"
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1 && npm run dev &
+sleep 7 && UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null; sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/feasibility-v4.png 2>/dev/null && echo "Done"
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1 && npm run dev &
+sleep 6 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null; sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/cine-early.png 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/cine-zoomed.png 2>/dev/null && echo "Both captured"
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 2 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null; sleep 12 && xcrun simctl io "$UDID" screenshot /tmp/cine-long-wait.png 2>/dev/null && echo "Done"
+npm run build 2>&1 | tail -20
+lsof -ti:9002 | xargs kill -9 2>/dev/null || true
+npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 8 && xcrun simctl io "$UDID" screenshot /tmp/feasibility-check.png 2>/dev/null
+sleep 10 && UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl io "$UDID" screenshot /tmp/feasibility-check2.png 2>/dev/null
+git status
+git log --oneline -5
+git diff --stat src/components/sections/feasibility-section.tsx
+git add src/components/sections/feasibility-section.tsx
+git commit -m "$(cat <<'EOF'
+feat: cinematic tactical feasibility scanner with zoom, typewriter readouts, and progressive doc verification
+
+Rewrites the static feasibility section into an animated cinematic experience:
+- Immediate satellite imagery with tactical grid overlay
+- 20s looping cycle: TGT_ALPHA → TGT_BRAVO → SWEEP → COMPLETE
+- CSS transform-based zoom (2.4x/2.1x) with smooth cubic-bezier transitions
+- Typewriter ReadoutPanel components displaying zoning intel and risk flags
+- Progressive document status transitions (PENDING → RECEIVED → VERIFIED)
+- Bottom status bar with per-phase typewriter messages
+- Targeting corners, crosshairs, rotating reticle rings on SVG overlay
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)"
+git push

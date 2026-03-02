@@ -162,6 +162,12 @@
       "type": "file"
     },
     {
+      "path": "src/components/sections/feasibility-section.tsx",
+      "accessCount": 30,
+      "lastAccessed": 1772437434639,
+      "type": "file"
+    },
+    {
       "path": "src/app/globals.css",
       "accessCount": 21,
       "lastAccessed": 1772414947671,
@@ -177,12 +183,6 @@
       "path": "src/components/visualizations/tactical-bim-overlay.tsx",
       "accessCount": 16,
       "lastAccessed": 1772423736434,
-      "type": "file"
-    },
-    {
-      "path": "src/components/sections/feasibility-section.tsx",
-      "accessCount": 13,
-      "lastAccessed": 1772426159990,
       "type": "file"
     },
     {
