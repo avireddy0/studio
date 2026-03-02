@@ -127,8 +127,7 @@ export function ContextSummarizer() {
           Context is Everything.
         </h2>
         <p className="text-zinc-400 text-xs md:text-sm font-medium max-w-xl leading-relaxed">
-          A single delay triggers 5 platforms. Envision OS correlates the noise
-          into{" "}
+          Watch Envision OS correlate 5+ platform noises into{" "}
           <span className="text-zinc-800 font-semibold">
             verified intelligence
           </span>

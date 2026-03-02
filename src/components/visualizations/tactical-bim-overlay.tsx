@@ -46,9 +46,29 @@ const STATUS_TEXT: Record<string, string> = {
 
 export function TacticalBimOverlay() {
   const [selectedLevel, setSelectedLevel] = useState(5);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setInView(true); },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div className="relative w-full h-full overflow-hidden border border-primary/20 bg-[#050508]">
+    <div
+      ref={containerRef}
+      className="relative w-full h-full overflow-hidden border border-primary/20 bg-[#050508]"
+      style={{
+        transform: inView ? 'scale(1)' : 'scale(1.15)',
+        transition: 'transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
+      }}
+    >
       {/* 3D Canvas */}
       <BimScene selectedFloor={selectedLevel} onFloorSelect={setSelectedLevel} />
 

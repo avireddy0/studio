@@ -16,3 +16,4 @@
 {"t":0,"agent":"a1a4792","agent_type":"designer","event":"agent_start","parent_mode":"none"}
 {"t":0,"agent":"a1a4792","agent_type":"designer","event":"agent_stop","success":true,"duration_ms":96865}
 {"t":0,"agent":"a7861c6","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"ae46e96","agent_type":"unknown","event":"agent_stop","success":true}

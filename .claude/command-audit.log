@@ -1313,3 +1313,4 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 EOF
 )" && git push origin main
 ls /Users/avireddy/GitHub/studio/src/components/visualizations/
+npm run build 2>&1 | tail -20
