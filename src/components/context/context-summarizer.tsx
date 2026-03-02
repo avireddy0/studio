@@ -131,21 +131,14 @@ export function ContextSummarizer() {
       </div>
 
       {/* Scenario Flow */}
-      <div className="flex-1 min-h-0 relative overflow-hidden flex flex-col">
-        {/* ── Alert + Signals (fadeable) ──────────────────── */}
-        <div
-          className="flex flex-col gap-2 md:gap-2.5 transition-all duration-700 relative"
-          style={{
-            opacity: scenarioFaded ? 0 : 1,
-            maxHeight: scenarioFaded ? 0 : "1000px",
-            overflow: "hidden",
-          }}
-        >
+      <div className="flex-1 min-h-0 relative overflow-hidden">
+        {/* ── All cards in normal flow ─────────────────────── */}
+        <div className="flex flex-col gap-2 md:gap-2.5">
           {/* Alert Banner */}
           <div
-            className="shrink-0 p-2.5 md:p-3 rounded-lg border border-red-200 bg-red-50/80 transition-all duration-600"
+            className="shrink-0 p-2.5 md:p-3 rounded-lg border border-red-200 bg-red-50/80 transition-all duration-700"
             style={{
-              opacity: alertVisible ? 1 : 0,
+              opacity: alertVisible && !scenarioFaded ? 1 : 0,
               transform: alertVisible ? "translateY(0)" : "translateY(-8px)",
             }}
           >
@@ -172,7 +165,7 @@ export function ContextSummarizer() {
                   key={signal.platform}
                   className="p-2.5 md:p-3 rounded-lg bg-white border border-zinc-200 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-500"
                   style={{
-                    opacity: visible ? 1 : 0,
+                    opacity: visible && !scenarioFaded ? 1 : 0,
                     transform: visible ? "translateY(0)" : "translateY(10px)",
                     borderLeftWidth: 3,
                     borderLeftColor: visible ? signal.color : "transparent",
@@ -211,15 +204,37 @@ export function ContextSummarizer() {
               Correlating 5 signals across platforms...
             </span>
           </div>
+
+          {/* Envision OS Verdict — stays visible */}
+          <div
+            className="shrink-0 p-3 md:p-4 rounded-lg border-2 border-[#007C5A]/25 bg-gradient-to-r from-[#007C5A]/[0.04] to-[#007C5A]/[0.08] transition-all duration-700"
+            style={{
+              opacity: verdictVisible ? 1 : 0,
+              transform: verdictVisible ? "translateY(0)" : "translateY(12px)",
+            }}
+          >
+            <div className="flex items-center gap-2 mb-1.5">
+              <div className="relative flex shrink-0">
+                <span className="w-2 h-2 rounded-full bg-[#007C5A]" />
+                <span className="absolute inset-0 w-2 h-2 rounded-full bg-[#007C5A] animate-ping" />
+              </div>
+              <span className="text-[9px] md:text-[10px] font-mono font-bold text-[#007C5A] uppercase tracking-wider">
+                Envision OS — Verified Intelligence
+              </span>
+            </div>
+            <p className="text-[11px] md:text-xs text-zinc-800 font-medium leading-relaxed">
+              {VERDICT}
+            </p>
+          </div>
         </div>
 
-        {/* ── Approved Checkbox (appears in freed space) ───── */}
+        {/* ── Approved Overlay (over faded signals area) ───── */}
         <div
-          className="flex-1 flex items-center justify-center transition-opacity duration-700"
+          className="absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-700"
           style={{ opacity: approved ? 1 : 0 }}
         >
-          <div className="flex flex-col items-center gap-3">
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 border-[#007C5A] flex items-center justify-center bg-[#007C5A]/5">
+          <div className="flex flex-col items-center gap-3 -mt-16">
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 border-[#007C5A] flex items-center justify-center bg-white/90">
               <svg
                 className="w-8 h-8 md:w-10 md:h-10 text-[#007C5A]"
                 fill="none"
@@ -234,28 +249,6 @@ export function ContextSummarizer() {
               Approved
             </span>
           </div>
-        </div>
-
-        {/* ── Envision OS Verdict (stays visible) ─────────── */}
-        <div
-          className="shrink-0 p-3 md:p-4 rounded-lg border-2 border-[#007C5A]/25 bg-gradient-to-r from-[#007C5A]/[0.04] to-[#007C5A]/[0.08] transition-all duration-700 mt-auto"
-          style={{
-            opacity: verdictVisible ? 1 : 0,
-            transform: verdictVisible ? "translateY(0)" : "translateY(12px)",
-          }}
-        >
-          <div className="flex items-center gap-2 mb-1.5">
-            <div className="relative flex shrink-0">
-              <span className="w-2 h-2 rounded-full bg-[#007C5A]" />
-              <span className="absolute inset-0 w-2 h-2 rounded-full bg-[#007C5A] animate-ping" />
-            </div>
-            <span className="text-[9px] md:text-[10px] font-mono font-bold text-[#007C5A] uppercase tracking-wider">
-              Envision OS — Verified Intelligence
-            </span>
-          </div>
-          <p className="text-[11px] md:text-xs text-zinc-800 font-medium leading-relaxed">
-            {VERDICT}
-          </p>
         </div>
       </div>
     </div>
