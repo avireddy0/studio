@@ -131,11 +131,15 @@ export function ContextSummarizer() {
       </div>
 
       {/* Scenario Flow */}
-      <div className="flex-1 min-h-0 relative overflow-hidden">
-        {/* ── Scenario Content ─────────────────────────────── */}
+      <div className="flex-1 min-h-0 relative overflow-hidden flex flex-col">
+        {/* ── Alert + Signals (fadeable) ──────────────────── */}
         <div
-          className="flex flex-col gap-2 md:gap-2.5 transition-opacity duration-700"
-          style={{ opacity: scenarioFaded ? 0 : 1 }}
+          className="flex flex-col gap-2 md:gap-2.5 transition-all duration-700 relative"
+          style={{
+            opacity: scenarioFaded ? 0 : 1,
+            maxHeight: scenarioFaded ? 0 : "1000px",
+            overflow: "hidden",
+          }}
         >
           {/* Alert Banner */}
           <div
@@ -207,34 +211,12 @@ export function ContextSummarizer() {
               Correlating 5 signals across platforms...
             </span>
           </div>
-
-          {/* Envision OS Verdict */}
-          <div
-            className="shrink-0 p-3 md:p-4 rounded-lg border-2 border-[#007C5A]/25 bg-gradient-to-r from-[#007C5A]/[0.04] to-[#007C5A]/[0.08] transition-all duration-700"
-            style={{
-              opacity: verdictVisible ? 1 : 0,
-              transform: verdictVisible ? "translateY(0)" : "translateY(12px)",
-            }}
-          >
-            <div className="flex items-center gap-2 mb-1.5">
-              <div className="relative flex shrink-0">
-                <span className="w-2 h-2 rounded-full bg-[#007C5A]" />
-                <span className="absolute inset-0 w-2 h-2 rounded-full bg-[#007C5A] animate-ping" />
-              </div>
-              <span className="text-[9px] md:text-[10px] font-mono font-bold text-[#007C5A] uppercase tracking-wider">
-                Envision OS — Verified Intelligence
-              </span>
-            </div>
-            <p className="text-[11px] md:text-xs text-zinc-800 font-medium leading-relaxed">
-              {VERDICT}
-            </p>
-          </div>
         </div>
 
-        {/* ── Approved Overlay ─────────────────────────────── */}
+        {/* ── Approved Checkbox (appears in freed space) ───── */}
         <div
-          className="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-700"
-          style={{ opacity: approved ? 1 : 0, pointerEvents: approved ? "auto" : "none" }}
+          className="flex-1 flex items-center justify-center transition-opacity duration-700"
+          style={{ opacity: approved ? 1 : 0 }}
         >
           <div className="flex flex-col items-center gap-3">
             <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 border-[#007C5A] flex items-center justify-center bg-[#007C5A]/5">
@@ -252,6 +234,28 @@ export function ContextSummarizer() {
               Approved
             </span>
           </div>
+        </div>
+
+        {/* ── Envision OS Verdict (stays visible) ─────────── */}
+        <div
+          className="shrink-0 p-3 md:p-4 rounded-lg border-2 border-[#007C5A]/25 bg-gradient-to-r from-[#007C5A]/[0.04] to-[#007C5A]/[0.08] transition-all duration-700 mt-auto"
+          style={{
+            opacity: verdictVisible ? 1 : 0,
+            transform: verdictVisible ? "translateY(0)" : "translateY(12px)",
+          }}
+        >
+          <div className="flex items-center gap-2 mb-1.5">
+            <div className="relative flex shrink-0">
+              <span className="w-2 h-2 rounded-full bg-[#007C5A]" />
+              <span className="absolute inset-0 w-2 h-2 rounded-full bg-[#007C5A] animate-ping" />
+            </div>
+            <span className="text-[9px] md:text-[10px] font-mono font-bold text-[#007C5A] uppercase tracking-wider">
+              Envision OS — Verified Intelligence
+            </span>
+          </div>
+          <p className="text-[11px] md:text-xs text-zinc-800 font-medium leading-relaxed">
+            {VERDICT}
+          </p>
         </div>
       </div>
     </div>
