@@ -139,20 +139,20 @@
   "hotPaths": [
     {
       "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 68,
-      "lastAccessed": 1772408167731,
+      "accessCount": 76,
+      "lastAccessed": 1772413911480,
       "type": "file"
     },
     {
       "path": "src/components/visualizations/ingestion-funnel.tsx",
-      "accessCount": 19,
-      "lastAccessed": 1772408763333,
+      "accessCount": 48,
+      "lastAccessed": 1772413466138,
       "type": "file"
     },
     {
       "path": "src/app/globals.css",
-      "accessCount": 12,
-      "lastAccessed": 1772408172116,
+      "accessCount": 19,
+      "lastAccessed": 1772413243415,
       "type": "file"
     },
     {
@@ -162,9 +162,21 @@
       "type": "file"
     },
     {
+      "path": "src/components/query/chat-interface.tsx",
+      "accessCount": 6,
+      "lastAccessed": 1772414241112,
+      "type": "file"
+    },
+    {
       "path": "src/components/visualizations/tactical-bim-overlay.tsx",
       "accessCount": 5,
       "lastAccessed": 1772382785322,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/actions.ts",
+      "accessCount": 5,
+      "lastAccessed": 1772414207198,
       "type": "file"
     },
     {
@@ -174,21 +186,27 @@
       "type": "file"
     },
     {
-      "path": "src/lib/actions.ts",
-      "accessCount": 3,
-      "lastAccessed": 1772381077705,
-      "type": "file"
-    },
-    {
       "path": "src/app/(dashboard)/layout.tsx",
       "accessCount": 2,
       "lastAccessed": 1772382465705,
       "type": "file"
     },
     {
-      "path": "src/components/query/chat-interface.tsx",
+      "path": "src/components/query/chat-message.tsx",
       "accessCount": 2,
-      "lastAccessed": 1772382471356,
+      "lastAccessed": 1772413711357,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/table.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1772413931627,
+      "type": "file"
+    },
+    {
+      "path": "src/ai/flows/query-semantic-routing.ts",
+      "accessCount": 2,
+      "lastAccessed": 1772413976721,
       "type": "file"
     },
     {
@@ -222,21 +240,9 @@
       "type": "file"
     },
     {
-      "path": "src/components/query/chat-message.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1772380255509,
-      "type": "file"
-    },
-    {
       "path": "src/lib/placeholder-images.ts",
       "accessCount": 1,
       "lastAccessed": 1772380255850,
-      "type": "file"
-    },
-    {
-      "path": "src/ai/flows/query-semantic-routing.ts",
-      "accessCount": 1,
-      "lastAccessed": 1772380259480,
       "type": "file"
     },
     {
@@ -249,6 +255,12 @@
       "path": "src/hooks/use-mobile.tsx",
       "accessCount": 1,
       "lastAccessed": 1772382466811,
+      "type": "file"
+    },
+    {
+      "path": "src/ai/genkit.ts",
+      "accessCount": 1,
+      "lastAccessed": 1772413976128,
       "type": "file"
     }
   ],

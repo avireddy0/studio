@@ -607,3 +607,432 @@ cat /private/tmp/claude-501/-Users-avireddy-GitHub-studio/tasks/bqf28yeq5.output
 curl -s -w "%{http_code}" http://localhost:9002 -o /dev/null 2>/dev/null
 pkill -f "next dev" 2>/dev/null; rm -rf /Users/avireddy/GitHub/studio/.next && echo "cleaned"
 npm run dev 2>&1
+sleep 8 && curl -s -w "%{http_code}" http://localhost:9002 -o /dev/null && cat /private/tmp/claude-501/-Users-avireddy-GitHub-studio/tasks/b717a3uct.output 2>/dev/null | tail -10
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002/?s=ingestion" && xcrun simctl openurl 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138 "http://localhost:9002/?s=ingestion" && sleep 7 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-iphone-v4.png && xcrun simctl io 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138 screenshot /tmp/ingestion-ipad-v4.png && echo "done"
+npm run build 2>&1 | tail -20
+ls /Users/avireddy/GitHub/studio/src/app/visualizations/ 2>/dev/null || echo "directory missing"
+npm run typecheck 2>&1 | grep -E "ingestion-funnel|error TS" | head -20
+rm -f /tmp/studio-responsive/*.png
+
+IPHONE_PRO="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+
+capture_device() {
+  local udid="$1"
+  local name="$2"
+  
+  for num_section in "01:hero:" "02:ingestion:ingestion" "03:intel:intel" "04:fusion:fusion" "05:tactical-bim:tactical-bim" "06:site-docs:site-docs"; do
+    local num=$(echo "$num_section" | cut -d: -f1)
+    local label=$(echo "$num_section" | cut -d: -f2)
+    local param=$(echo "$num_section" | cut -d: -f3)
+    
+    xcrun simctl terminate "$udid" com.apple.mobilesafari 2>/dev/null || true
+    sleep 1
+    
+    if [ -z "$param" ]; then
+      local page_url="http://localhost:9002"
+    else
+      local page_url="http://localhost:9002/?s=${param}"
+    fi
+    
+    xcrun simctl launch "$udid" com.apple.mobilesafari 2>/dev/null
+    sleep 1
+    xcrun simctl openurl "$udid" "$page_url" 2>/dev/null
+    sleep 5
+    
+    xcrun simctl io "$udid" screenshot "/tmp/studio-responsive/${num}_${label}_${name}.png" 2>/dev/null
+    
+    local http_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9002 2>/dev/null)
+    if [ "$http_code" != "200" ]; then
+      echo "WARNING: Server returned $http_code after ${name}/${label}, waiting..."
+      sleep 3
+    fi
+    echo "  ${num}_${label} done"
+  done
+  echo "Done: $name"
+}
+
+capture_device "$IPHONE_PRO" "iphone16pro"
+ls -lh /tmp/studio-responsive/
+# Restart server
+kill $(lsof -ti:9002) 2>/dev/null || true
+sleep 2
+npm run dev > /dev/null 2>&1 &
+sleep 8
+curl -s -o /dev/null -w "Server: %{http_code}\n" http://localhost:9002
+
+IPHONE_PRO="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+
+# Capture sections 05 and 06
+for num_section in "05:tactical-bim:tactical-bim" "06:site-docs:site-docs"; do
+  num=$(echo "$num_section" | cut -d: -f1)
+  label=$(echo "$num_section" | cut -d: -f2)
+  param=$(echo "$num_section" | cut -d: -f3)
+  
+  xcrun simctl terminate "$IPHONE_PRO" com.apple.mobilesafari 2>/dev/null || true
+  sleep 1
+  xcrun simctl launch "$IPHONE_PRO" com.apple.mobilesafari 2>/dev/null
+  sleep 1
+  xcrun simctl openurl "$IPHONE_PRO" "http://localhost:9002/?s=${param}" 2>/dev/null
+  sleep 6
+  xcrun simctl io "$IPHONE_PRO" screenshot "/tmp/studio-responsive/${num}_${label}_iphone16pro.png" 2>/dev/null
+  echo "  ${num}_${label} done"
+done
+
+echo "iPhone 16 Pro complete"
+ls -lh /tmp/studio-responsive/*iphone16pro*
+# Restart server fresh
+kill $(lsof -ti:9002) 2>/dev/null || true
+sleep 2
+npm run dev > /dev/null 2>&1 &
+sleep 8
+curl -s -o /dev/null -w "Server: %{http_code}\n" http://localhost:9002
+
+IPHONE_E="6D376F1D-2AB6-4314-ABA7-E874D263C943"
+
+# Check device is booted
+xcrun simctl list devices booted 2>/dev/null | grep -c "Booted"
+
+for num_section in "01:hero:" "02:ingestion:ingestion" "03:intel:intel" "04:fusion:fusion" "05:tactical-bim:tactical-bim" "06:site-docs:site-docs"; do
+  num=$(echo "$num_section" | cut -d: -f1)
+  label=$(echo "$num_section" | cut -d: -f2)
+  param=$(echo "$num_section" | cut -d: -f3)
+  
+  xcrun simctl terminate "$IPHONE_E" com.apple.mobilesafari 2>/dev/null || true
+  sleep 1
+  
+  if [ -z "$param" ]; then
+    page_url="http://localhost:9002"
+  else
+    page_url="http://localhost:9002/?s=${param}"
+  fi
+  
+  xcrun simctl launch "$IPHONE_E" com.apple.mobilesafari 2>/dev/null
+  sleep 2
+  xcrun simctl openurl "$IPHONE_E" "$page_url" 2>/dev/null
+  sleep 6
+  xcrun simctl io "$IPHONE_E" screenshot "/tmp/studio-responsive/${num}_${label}_iphone16e.png" 2>/dev/null
+  echo "  ${num}_${label} done ($(ls -lh /tmp/studio-responsive/${num}_${label}_iphone16e.png 2>/dev/null | awk '{print $5}'))"
+done
+
+echo "iPhone 16e complete"
+# Restart server for iPad
+kill $(lsof -ti:9002) 2>/dev/null || true
+sleep 2
+npm run dev > /dev/null 2>&1 &
+sleep 8
+curl -s -o /dev/null -w "Server: %{http_code}\n" http://localhost:9002
+
+IPAD="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138"
+
+for num_section in "01:hero:" "02:ingestion:ingestion" "03:intel:intel" "04:fusion:fusion" "05:tactical-bim:tactical-bim" "06:site-docs:site-docs"; do
+  num=$(echo "$num_section" | cut -d: -f1)
+  label=$(echo "$num_section" | cut -d: -f2)
+  param=$(echo "$num_section" | cut -d: -f3)
+  
+  xcrun simctl terminate "$IPAD" com.apple.mobilesafari 2>/dev/null || true
+  sleep 1
+  
+  if [ -z "$param" ]; then
+    page_url="http://localhost:9002"
+  else
+    page_url="http://localhost:9002/?s=${param}"
+  fi
+  
+  xcrun simctl launch "$IPAD" com.apple.mobilesafari 2>/dev/null
+  sleep 2
+  xcrun simctl openurl "$IPAD" "$page_url" 2>/dev/null
+  sleep 6
+  xcrun simctl io "$IPAD" screenshot "/tmp/studio-responsive/${num}_${label}_ipadair11.png" 2>/dev/null
+  echo "  ${num}_${label} done ($(ls -lh /tmp/studio-responsive/${num}_${label}_ipadair11.png 2>/dev/null | awk '{print $5}'))"
+done
+
+echo "iPad Air complete"
+echo ""
+echo "=== FINAL RESULTS ==="
+ls -lh /tmp/studio-responsive/
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002/?s=ingestion" && xcrun simctl openurl 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138 "http://localhost:9002/?s=ingestion" && sleep 8 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-iphone-v5.png && xcrun simctl io 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138 screenshot /tmp/ingestion-ipad-v5.png && echo "done"
+sleep 4 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002/?s=ingestion" && xcrun simctl openurl 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138 "http://localhost:9002/?s=ingestion" && sleep 8 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-iphone-v6.png && xcrun simctl io 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138 screenshot /tmp/ingestion-ipad-v6.png && echo "done"
+sleep 4 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002/?s=ingestion" && xcrun simctl openurl 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138 "http://localhost:9002/?s=ingestion" && sleep 8 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-iphone-final.png && xcrun simctl io 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138 screenshot /tmp/ingestion-ipad-final.png && echo "done"
+npm run build 2>&1 | grep -E "✓|✗|error|Error|Route" | head -20
+grep -n "HTML\|html\|reference\|engine-box\|flow-item\|ingestion-section\|organized-stream\|data-out-stream\|ingest-engine" /Users/avireddy/.claude/projects/-Users-avireddy-GitHub-studio/86f45919-80c4-44dc-b069-71a075f5fcdb.jsonl 2>/dev/null | tail -40
+grep -n "engine-box\|flow-item\|organized-stream\|ingest-engine-core\|data-out-stream" /Users/avireddy/.claude/projects/-Users-avireddy-GitHub-studio/86f45919-80c4-44dc-b069-71a075f5fcdb.jsonl 2>/dev/null | head -20
+python3 -c "
+import json
+with open('/Users/avireddy/.claude/projects/-Users-avireddy-GitHub-studio/86f45919-80c4-44dc-b069-71a075f5fcdb.jsonl') as f:
+    for i, line in enumerate(f):
+        if 'engine-box' in line or 'flow-item' in line or 'organized-stream' in line:
+            data = json.loads(line)
+            msg = data.get('message', {})
+            content = msg.get('content', '')
+            if isinstance(content, str) and len(content) > 200:
+                print(f'Line {i}: type={data.get(\"type\")}, content_len={len(content)}')
+                # Print first 500 chars
+                print(content[:500])
+                print('---')
+            elif isinstance(content, list):
+                for item in content:
+                    if isinstance(item, dict):
+                        text = item.get('text', item.get('content', ''))
+                        if isinstance(text, str) and ('engine-box' in text or 'flow-item' in text):
+                            print(f'Line {i}: type={data.get(\"type\")}, item_type={item.get(\"type\")}')
+                            print(text[:1000])
+                            print('---')
+" 2>/dev/null | head -100
+python3 -c "
+import json, glob, os
+
+# Find all transcript files
+files = glob.glob('/Users/avireddy/.claude/projects/-Users-avireddy-GitHub-studio/*.jsonl')
+for f in sorted(files):
+    with open(f) as fh:
+        for i, line in enumerate(fh):
+            if 'engine-box' in line and 'flow-item' in line:
+                data = json.loads(line)
+                msg = data.get('message', {})
+                content = msg.get('content', '')
+                if isinstance(content, str) and 'engine-box' in content:
+                    print(f'FILE: {os.path.basename(f)}, Line {i}, type={data.get(\"type\")}')
+                    # Find the HTML block
+                    idx = content.find('engine-box')
+                    start = max(0, idx - 2000)
+                    end = min(len(content), idx + 3000)
+                    print(content[start:end])
+                    print('=== END ===')
+                elif isinstance(content, list):
+                    for item in content:
+                        text = str(item)
+                        if 'engine-box' in text and 'flow-item' in text:
+                            print(f'FILE: {os.path.basename(f)}, Line {i}, type={data.get(\"type\")}')
+                            idx = text.find('engine-box')
+                            start = max(0, idx - 2000)
+                            end = min(len(text), idx + 3000)
+                            print(text[start:end])
+                            print('=== END ===')
+" 2>/dev/null | head -200
+ls -la /Users/avireddy/.claude/projects/-Users-avireddy-GitHub-studio/*.jsonl 2>/dev/null
+python3 -c "
+import json, glob, os
+
+# Look at the replay files which might have the earlier conversation
+files = glob.glob('/Users/avireddy/.claude/projects/-Users-avireddy-GitHub-studio/**/*.jsonl', recursive=True)
+for f in sorted(files):
+    size = os.path.getsize(f)
+    print(f'{os.path.basename(f)}: {size/1024:.1f}KB')
+" 2>/dev/null
+python3 -c "
+import json
+with open('/Users/avireddy/.claude/projects/-Users-avireddy-GitHub-studio/1df789bb-6346-4fcc-befa-ba6977815f77.jsonl') as f:
+    for i, line in enumerate(f):
+        if 'engine-box' in line and 'flow-item' in line and 'organized-stream' in line:
+            data = json.loads(line)
+            msg = data.get('message', {})
+            content = msg.get('content', '')
+            if isinstance(content, str):
+                # Find the HTML portion
+                idx = content.find('<div class')
+                if idx >= 0:
+                    print(f'Line {i}: Found HTML at char {idx}, type={data.get(\"type\")}')
+                    print(content[idx:idx+5000])
+                    print('=== MORE ===')
+            elif isinstance(content, list):
+                for item in content:
+                    if isinstance(item, dict):
+                        text = item.get('text', item.get('content', ''))
+                        if isinstance(text, str) and 'engine-box' in text and 'flow-item' in text:
+                            idx = text.find('<div class')
+                            if idx >= 0:
+                                print(f'Line {i}: Found HTML in list item')
+                                print(text[idx:idx+8000])
+                                print('=== END ===')
+" 2>/dev/null
+python3 -c "
+import json
+with open('/Users/avireddy/.claude/projects/-Users-avireddy-GitHub-studio/1df789bb-6346-4fcc-befa-ba6977815f77.jsonl') as f:
+    for i, line in enumerate(f):
+        if 'engine-box' in line:
+            data = json.loads(line)
+            msg = data.get('message', {})
+            content = msg.get('content', '')
+            if isinstance(content, str):
+                idx = content.find('engine-box')
+                start = max(0, idx - 500)
+                end = min(len(content), idx + 8000)
+                print(f'Line {i}: type={data.get(\"type\")}')
+                print(content[start:end])
+                print('=== BREAK ===')
+                break
+            elif isinstance(content, list):
+                for item in content:
+                    text = str(item)
+                    if 'engine-box' in text:
+                        idx = text.find('engine-box')
+                        start = max(0, idx - 500)
+                        end = min(len(text), idx + 8000)
+                        print(f'Line {i}: type={data.get(\"type\")}, list item')
+                        print(text[start:end])
+                        print('=== BREAK ===')
+                        break
+" 2>/dev/null | head -300
+npm run build 2>&1 | tail -30
+git add src/components/visualizations/ingestion-funnel.tsx src/app/globals.css && git commit -m "$(cat <<'EOF'
+feat: rebuild ingestion funnel with CSS-driven vacuum animation
+
+Replace Canvas-based rendering with lightweight CSS keyframe approach:
+- 24 staggered flow items with cubic-bezier vacuum acceleration
+- Small engine core (40-48px) with subtle glow pulse
+- Clean JSON output stream on right side
+- Negative animation delays pre-populate scene from frame 1
+- Deterministic Y scatter for consistent layout across renders
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)"
+git push origin main 2>&1
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+xcrun simctl boot 1311D811-5479-4E95-B2FD-67CD57CE77F6 2>/dev/null; open -a Simulator; sleep 3 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion"
+xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-s02.png 2>/dev/null && echo "Screenshot saved"
+npm run build 2>&1 | tail -15
+git add src/components/visualizations/ingestion-funnel.tsx src/app/globals.css && git commit -m "$(cat <<'EOF'
+fix: spread flow items vertically and use single data output line
+
+- Cards now positioned at unique top% (12-88%) instead of all at 50%
+- Animation converges cards toward center Y as they fly to parser
+- Replace 3 stacked JSON boxes with single ENVISION_VERIFIED_STREAM line
+- Widen beam connector from core to output
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main 2>&1
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 5 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion" && sleep 3 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-v2.png
+npm run build 2>&1 | tail -5
+git add src/components/visualizations/ingestion-funnel.tsx src/app/globals.css && git commit -m "$(cat <<'EOF'
+fix: use linear timing for visible > funnel shape
+
+- Near-linear cubic-bezier so cards distribute evenly along flight paths
+- Wider vertical spread (8-92%) for dramatic > convergence
+- Less aggressive scale-down (0.12) so cards visible near parser
+- Creates clear > chevron shape at all times
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main 2>&1
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 6 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion" && sleep 3 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-v3.png
+npm run build 2>&1 | tail -5
+git add src/components/visualizations/ingestion-funnel.tsx && git commit -m "$(cat <<'EOF'
+fix: position cards in > funnel shape with amplitude-based Y scatter
+
+Early items (far left) alternate between extreme top/bottom positions.
+Late items (near parser) cluster at center Y. Creates clear > chevron
+shape at all times instead of a diagonal line.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main 2>&1
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 6 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion" && sleep 3 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-v4.png
+npm run build 2>&1 | tail -5 && git add src/components/visualizations/ingestion-funnel.tsx && git commit -m "$(cat <<'EOF'
+fix: simplify to random scatter tornado funnel into parser
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main 2>&1
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 6 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion" && sleep 3 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-v5.png
+npm run build 2>&1 | tail -5 && git add src/components/visualizations/ingestion-funnel.tsx src/app/globals.css && git commit -m "$(cat <<'EOF'
+fix: randomize card arrival order and converge to parser exactly
+
+- Scrambled delay slots so cards arrive in random order, not sequentially
+- Scale to 0 at endpoint so cards disappear INTO the parser
+- Faster 3s cycle for more dynamic feel
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main 2>&1
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 6 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion" && sleep 3 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-v6.png
+npm run build 2>&1 | tail -5 && git add src/components/visualizations/ingestion-funnel.tsx && git commit -m "$(cat <<'EOF'
+feat: larger parser core and 5 output data streams
+
+- Parser enlarged to 56/64px with stronger glow
+- 5 output JSON streams: rfi, budget, schedule, submittals, change orders
+- Each stream shows filename and key metric
+- Staggered pulse animation on output lines
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main 2>&1
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 6 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion" && sleep 3 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-v7.png
+npm run build 2>&1 | tail -5 && git add src/components/visualizations/ingestion-funnel.tsx src/app/globals.css && git commit -m "$(cat <<'EOF'
+feat: animate output data lines flowing rightward from parser
+
+- Data streams now translate rightward across screen (40vw/400px)
+- Staggered 0.8s delays between each stream line
+- Lines emerge from parser position and flow to right edge
+- Linear timing for steady data flow visual
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main 2>&1
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+npm run build 2>&1 | tail -5 && git add src/components/visualizations/ingestion-funnel.tsx && git commit -m "$(cat <<'EOF'
+style: add box borders around output data streams
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main 2>&1
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 6 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion" && sleep 3 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-v8.png
+npm run build 2>&1 | tail -5 && git add src/components/visualizations/ingestion-funnel.tsx && git commit -m "$(cat <<'EOF'
+feat: add Lucide icons for calls, texts, messages, and photos
+
+- CALL cards show phone icon, TEXT/MSG show message bubbles
+- PHOTO shows camera icon
+- Document types (PDF, DOC, XLS, etc.) keep skeleton lines
+- Each icon colored to match its type badge
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main 2>&1
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 6 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion" && sleep 3 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-v9.png
+npm run build 2>&1 | tail -5 && git add src/components/visualizations/ingestion-funnel.tsx && git commit -m "$(cat <<'EOF'
+feat: standalone icons for calls, texts, messages, photos
+
+- CALL/TEXT/MSG/PHOTO render as standalone Lucide icons (no card)
+- Document types (PDF, DOC, XLS, etc.) keep white card design
+- PHOTO uses Image icon for polaroid-style clarity
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main 2>&1
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 6 && xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion" && sleep 3 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-v10.png
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002/#ingestion" && sleep 4 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-v10b.png
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion&t=$(date +%s)" && sleep 5 && xcrun simctl io 1311D811-5479-4E95-B2FD-67CD57CE77F6 screenshot /tmp/ingestion-v10c.png
+npm run build 2>&1 | tail -20
+npm run build 2>&1 | tail -30
+git status
+git diff --stat
+git log --oneline -5
+git add 'src/app/(dashboard)/page.tsx' src/components/query/chat-interface.tsx src/components/ui/table.tsx src/lib/actions.ts
+git commit -m "$(cat <<'EOF'
+feat: enhanced intelligence prompts, zoning overlays, and UI polish
+
+- Replace generic chat prompts with detailed cost/schedule/comms queries
+- Overhaul demo responses with Monte Carlo confidence intervals and
+  predictive follow-ups covering tariffs, weather, supply chain
+- Add Gemini 3.1 Flash Preview integration for custom user prompts
+- Dynamic follow-up suggestion chips that update based on AI response
+- Add zoning/setback/building code restrictions to geospatial intel map
+  with military-style command line text under each parcel
+- Remove Total Projects and Active Sites from Realtime_Telemetry
+- Fix Document_Intel_Vault hover to highlight only the specific row
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)"
+git push

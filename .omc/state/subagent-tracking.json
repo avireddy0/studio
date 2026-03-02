@@ -5,11 +5,22 @@
       "agent_type": "oh-my-claudecode:designer",
       "started_at": "2026-03-01T23:36:03.880Z",
       "parent_mode": "none",
-      "status": "running"
+      "status": "completed",
+      "completed_at": "2026-03-02T00:09:48.334Z",
+      "duration_ms": 2024454
+    },
+    {
+      "agent_id": "afa64d0a3d1d5efa4",
+      "agent_type": "Explore",
+      "started_at": "2026-03-02T01:08:18.891Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-03-02T01:08:20.270Z",
+      "duration_ms": 1379
     }
   ],
-  "total_spawned": 1,
-  "total_completed": 0,
+  "total_spawned": 2,
+  "total_completed": 2,
   "total_failed": 0,
-  "last_updated": "2026-03-01T23:41:06.386Z"
+  "last_updated": "2026-03-02T01:10:40.250Z"
 }
