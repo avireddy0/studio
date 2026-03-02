@@ -65,8 +65,8 @@ export function TacticalBimOverlay() {
       ref={containerRef}
       className="relative w-full h-full overflow-hidden border border-primary/20 bg-[#050508]"
       style={{
-        transform: inView ? 'scale(1)' : 'scale(1.15)',
-        transition: 'transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
+        transform: inView ? 'scale(1)' : 'scale(1.12)',
+        transition: 'transform 2.8s cubic-bezier(0.25, 0.1, 0.25, 1)',
       }}
     >
       {/* 3D Canvas */}
