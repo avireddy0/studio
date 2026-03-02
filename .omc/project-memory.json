@@ -168,15 +168,15 @@
       "type": "file"
     },
     {
-      "path": "src/components/dashboard-header.tsx",
-      "accessCount": 12,
-      "lastAccessed": 1772417135601,
+      "path": "src/components/visualizations/tactical-bim-overlay.tsx",
+      "accessCount": 16,
+      "lastAccessed": 1772423736434,
       "type": "file"
     },
     {
-      "path": "src/components/visualizations/tactical-bim-overlay.tsx",
-      "accessCount": 10,
-      "lastAccessed": 1772423573861,
+      "path": "src/components/dashboard-header.tsx",
+      "accessCount": 12,
+      "lastAccessed": 1772417135601,
       "type": "file"
     },
     {
@@ -189,6 +189,12 @@
       "path": "src/lib/actions.ts",
       "accessCount": 5,
       "lastAccessed": 1772414207198,
+      "type": "file"
+    },
+    {
+      "path": "src/components/visualizations/bim-scene.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1772423969396,
       "type": "file"
     },
     {
@@ -261,12 +267,6 @@
       "path": "src/lib/placeholder-images.ts",
       "accessCount": 1,
       "lastAccessed": 1772380255850,
-      "type": "file"
-    },
-    {
-      "path": "src/components/visualizations/bim-scene.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1772382131474,
       "type": "file"
     },
     {

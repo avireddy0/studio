@@ -317,7 +317,7 @@ export default function BimScene({
 }) {
   return (
     <Canvas
-      camera={{ position: [28, 22, 28], fov: 42, near: 0.1, far: 200 }}
+      camera={{ position: [38, 30, 38], fov: 42, near: 0.1, far: 200 }}
       gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
       shadows
       style={{ width: '100%', height: '100%' }}
@@ -357,7 +357,7 @@ export default function BimScene({
         minDistance={18}
         maxDistance={70}
         maxPolarAngle={Math.PI / 2.15}
-        target={[0, 13, 0]}
+        target={[0, 15, 0]}
       />
     </Canvas>
   );

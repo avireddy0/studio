@@ -64,13 +64,17 @@ export function TacticalBimOverlay() {
     <div
       ref={containerRef}
       className="relative w-full h-full overflow-hidden border border-primary/20 bg-[#050508]"
-      style={{
-        transform: inView ? 'scale(1)' : 'scale(1.12)',
-        transition: 'transform 2.8s cubic-bezier(0.25, 0.1, 0.25, 1)',
-      }}
     >
       {/* 3D Canvas */}
-      <BimScene selectedFloor={selectedLevel} onFloorSelect={setSelectedLevel} />
+      <div
+        className="absolute inset-0"
+        style={{
+          transform: inView ? 'scale(0.85)' : 'scale(1.05)',
+          transition: 'transform 4.5s cubic-bezier(0.25, 0.1, 0.25, 1)',
+        }}
+      >
+        <BimScene selectedFloor={selectedLevel} onFloorSelect={setSelectedLevel} />
+      </div>
 
       {/* HUD Overlay */}
       <div className="absolute inset-0 pointer-events-none z-10">
