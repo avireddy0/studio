@@ -1315,3 +1315,10 @@ EOF
 ls /Users/avireddy/GitHub/studio/src/components/visualizations/
 npm run build 2>&1 | tail -20
 npm run build 2>&1 | tail -5
+npm run build 2>&1 | grep -i "error\|Error\|failed" | head -20
+lsof -ti:9002 2>/dev/null | head -5
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+curl -s http://localhost:9002 2>&1 | head -100
+kill -9 $(lsof -ti:9002) 2>/dev/null; npm run dev 2>&1 &
+sleep 5
+curl -s http://localhost:9002 2>&1 | head -50
