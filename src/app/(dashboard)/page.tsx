@@ -164,12 +164,16 @@ function HeroSequence() {
             ))}
           </p>
           <p className={cn(
-            "transition-opacity duration-700",
+            "transition-opacity duration-700 mb-2",
             secondLineVisible ? "opacity-100" : "opacity-0"
           )}>
             A billion fragments of &ldquo;truth&rdquo;, without the full picture.
-            {untilNowReady && <TypewriterUntilNow />}
           </p>
+          {untilNowReady && (
+            <p className="transition-opacity duration-700">
+              <TypewriterUntilNow />
+            </p>
+          )}
         </div>
       </div>
 
