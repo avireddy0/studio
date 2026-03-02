@@ -27,12 +27,15 @@ export function IngestionFunnel() {
     const items = []
     for (let i = 0; i < ITEM_COUNT; i++) {
       const type = FLOW_TYPES[i % FLOW_TYPES.length]
-      // Spread cards vertically across 8%–92% for wide ">" funnel
-      const topPct = 8 + (i / (ITEM_COUNT - 1)) * 84
-      // How far from center each card starts (converges to 50% Y)
-      const yToCenter = Math.round((50 - topPct) * 2.5)
-      const rotation = Math.round(Math.sin(i * 4.7) * 14)
-      // Negative delay pre-populates the scene
+      const t = i / (ITEM_COUNT - 1)
+      // ">" funnel: early items (left side) at extreme top/bottom,
+      // late items (near parser) converge toward center Y
+      const amplitude = (1 - t) * 42
+      const sign = i % 2 === 0 ? -1 : 1
+      const topPct = 50 + sign * amplitude
+      // Y convergence toward center as card flies to parser
+      const yToCenter = Math.round((50 - topPct) * 3)
+      const rotation = Math.round(Math.sin(i * 4.7) * 12)
       const delay = i * STAGGER - DURATION
       items.push({ ...type, topPct, yToCenter, rotation, delay, id: i })
     }
