@@ -235,30 +235,41 @@ export default function UnifiedPage() {
                             <text x={340} y={139} fill="rgba(0,124,90,0.7)" fontSize="6" fontFamily="monospace" textAnchor="middle">ACTIVE SITE</text>
                             {/* Setback lines — dashed inner boundary */}
                             <rect x={275} y={95} width={130} height={90} fill="none" stroke="rgba(0,124,90,0.25)" strokeWidth="0.5" strokeDasharray="2 2" />
-                            {/* Zoning/code restrictions */}
-                            <text x={283} y={198} fill="rgba(0,124,90,0.8)" fontSize="5.5" fontFamily="monospace">$ zone --parcel 0412-031</text>
-                            <text x={283} y={206} fill="rgba(0,124,90,0.55)" fontSize="5" fontFamily="monospace">ZONE: C2-2D-O | FAR: 6:1 | HT_MAX: 395ft</text>
-                            <text x={283} y={213} fill="rgba(0,124,90,0.55)" fontSize="5" fontFamily="monospace">SETBACK: F=10ft S=6ft R=15ft | LOT_COV: 75%</text>
-                            <text x={283} y={220} fill="rgba(0,124,90,0.45)" fontSize="5" fontFamily="monospace">SEISMIC: D | FIRE: TYPE_IA | OCC: B/R-2</text>
+                            {/* Zoning/code restrictions — PHOENIX_A */}
+                            <rect x={278} y={188} width={175} height={38} fill="rgba(0,0,0,0.75)" stroke="rgba(0,124,90,0.4)" strokeWidth="0.5" />
+                            <line x1={278} y1={188} x2={283} y2={188} stroke="rgba(0,124,90,0.8)" strokeWidth="1.5" />
+                            <text x={283} y={198} fill="rgba(0,124,90,0.95)" fontSize="5.5" fontFamily="monospace">$ zone --parcel 0412-031</text>
+                            <text x={283} y={206} fill="rgba(0,124,90,0.7)" fontSize="5" fontFamily="monospace">ZONE: C2-2D-O | FAR: 6:1 | HT_MAX: 395ft</text>
+                            <text x={283} y={213} fill="rgba(0,124,90,0.7)" fontSize="5" fontFamily="monospace">SETBACK: F=10ft S=6ft R=15ft | LOT_COV: 75%</text>
+                            <text x={283} y={220} fill="rgba(0,124,90,0.55)" fontSize="5" fontFamily="monospace">SEISMIC: D | FIRE: TYPE_IA | OCC: B/R-2</text>
 
                             <rect x={450} y={120} width={80} height={60} fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
                             <text x={490} y={148} fill="rgba(255,255,255,0.35)" fontSize="6" fontFamily="monospace" textAnchor="middle">BLDG_B</text>
-                            <text x={453} y={192} fill="rgba(255,255,255,0.4)" fontSize="5" fontFamily="monospace">$ zone --parcel 0412-032</text>
-                            <text x={453} y={199} fill="rgba(255,255,255,0.28)" fontSize="5" fontFamily="monospace">ZONE: C2-2D-O | FAR: 3:1 | HT_MAX: 75ft</text>
-                            <text x={453} y={206} fill="rgba(255,255,255,0.28)" fontSize="5" fontFamily="monospace">SETBACK: F=5ft S=0ft R=10ft</text>
+                            {/* Zoning/code restrictions — BLDG_B */}
+                            <rect x={448} y={182} width={148} height={30} fill="rgba(0,0,0,0.75)" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
+                            <line x1={448} y1={182} x2={453} y2={182} stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" />
+                            <text x={453} y={192} fill="rgba(255,255,255,0.6)" fontSize="5" fontFamily="monospace">$ zone --parcel 0412-032</text>
+                            <text x={453} y={199} fill="rgba(255,255,255,0.4)" fontSize="5" fontFamily="monospace">ZONE: C2-2D-O | FAR: 3:1 | HT_MAX: 75ft</text>
+                            <text x={453} y={206} fill="rgba(255,255,255,0.4)" fontSize="5" fontFamily="monospace">SETBACK: F=5ft S=0ft R=10ft</text>
 
                             <rect x={180} y={230} width={100} height={70} fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
                             <text x={230} y={260} fill="rgba(255,255,255,0.35)" fontSize="6" fontFamily="monospace" textAnchor="middle">WAREHOUSE</text>
-                            <text x={183} y={312} fill="rgba(255,255,255,0.4)" fontSize="5" fontFamily="monospace">$ zone --parcel 0413-008</text>
-                            <text x={183} y={319} fill="rgba(255,255,255,0.28)" fontSize="5" fontFamily="monospace">ZONE: M2-1 | FAR: 1.5:1 | HT_MAX: 45ft</text>
-                            <text x={183} y={326} fill="rgba(255,255,255,0.28)" fontSize="5" fontFamily="monospace">SETBACK: F=0ft S=0ft R=0ft | IND_USE</text>
+                            {/* Zoning/code restrictions — WAREHOUSE */}
+                            <rect x={178} y={302} width={148} height={30} fill="rgba(0,0,0,0.75)" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
+                            <line x1={178} y1={302} x2={183} y2={302} stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" />
+                            <text x={183} y={312} fill="rgba(255,255,255,0.6)" fontSize="5" fontFamily="monospace">$ zone --parcel 0413-008</text>
+                            <text x={183} y={319} fill="rgba(255,255,255,0.4)" fontSize="5" fontFamily="monospace">ZONE: M2-1 | FAR: 1.5:1 | HT_MAX: 45ft</text>
+                            <text x={183} y={326} fill="rgba(255,255,255,0.4)" fontSize="5" fontFamily="monospace">SETBACK: F=0ft S=0ft R=0ft | IND_USE</text>
 
                             <rect x={500} y={250} width={140} height={90} fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
                             <text x={570} y={288} fill="rgba(255,255,255,0.35)" fontSize="6" fontFamily="monospace" textAnchor="middle">PARKING_STR</text>
-                            <text x={503} y={352} fill="rgba(245,158,11,0.6)" fontSize="5" fontFamily="monospace">$ zone --parcel 0412-045 --flags</text>
-                            <text x={503} y={359} fill="rgba(245,158,11,0.45)" fontSize="5" fontFamily="monospace">ZONE: C2-2D-O | FAR: 6:1 | HT_MAX: 395ft</text>
-                            <text x={503} y={366} fill="rgba(245,158,11,0.45)" fontSize="5" fontFamily="monospace">SETBACK: F=10ft | ⚠ VARIANCE_REQ: SIDE=0ft</text>
-                            <text x={503} y={373} fill="rgba(245,158,11,0.35)" fontSize="5" fontFamily="monospace">CODE_FLAG: PARKING_RATIO_DEFICIT -12%</text>
+                            {/* Zoning/code restrictions — PARKING_STR (flagged) */}
+                            <rect x={498} y={342} width={175} height={38} fill="rgba(0,0,0,0.75)" stroke="rgba(245,158,11,0.35)" strokeWidth="0.5" />
+                            <line x1={498} y1={342} x2={503} y2={342} stroke="rgba(245,158,11,0.8)" strokeWidth="1.5" />
+                            <text x={503} y={352} fill="rgba(245,158,11,0.85)" fontSize="5" fontFamily="monospace">$ zone --parcel 0412-045 --flags</text>
+                            <text x={503} y={359} fill="rgba(245,158,11,0.6)" fontSize="5" fontFamily="monospace">ZONE: C2-2D-O | FAR: 6:1 | HT_MAX: 395ft</text>
+                            <text x={503} y={366} fill="rgba(245,158,11,0.6)" fontSize="5" fontFamily="monospace">SETBACK: F=10ft | ⚠ VARIANCE_REQ: SIDE=0ft</text>
+                            <text x={503} y={373} fill="rgba(245,158,11,0.45)" fontSize="5" fontFamily="monospace">CODE_FLAG: PARKING_RATIO_DEFICIT -12%</text>
 
                             <rect x={120} y={80} width={60} height={50} fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
                             <rect x={600} y={60} width={90} height={55} fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
