@@ -1345,3 +1345,10 @@ npm run dev
 sleep 4 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
 ls src/components/sections/ 2>/dev/null || echo "directory does not exist"
 mkdir -p src/components/sections
+head -n 329 'src/app/(dashboard)/page.tsx' > /tmp/page_rebuild.tsx && echo '            <FeasibilitySection />' >> /tmp/page_rebuild.tsx && tail -n +503 'src/app/(dashboard)/page.tsx' >> /tmp/page_rebuild.tsx && cp /tmp/page_rebuild.tsx 'src/app/(dashboard)/page.tsx'
+npm run build 2>&1 | tail -30
+npm run build 2>&1 | tail -30
+lsof -ti:9002 2>/dev/null | head -1
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1 && npm run dev 2>&1 &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002

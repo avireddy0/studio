@@ -139,8 +139,8 @@
   "hotPaths": [
     {
       "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 152,
-      "lastAccessed": 1772425586251,
+      "accessCount": 157,
+      "lastAccessed": 1772426395264,
       "type": "file"
     },
     {
@@ -180,6 +180,12 @@
       "type": "file"
     },
     {
+      "path": "src/components/sections/feasibility-section.tsx",
+      "accessCount": 13,
+      "lastAccessed": 1772426159990,
+      "type": "file"
+    },
+    {
       "path": "src/components/dashboard-header.tsx",
       "accessCount": 12,
       "lastAccessed": 1772417135601,
@@ -195,12 +201,6 @@
       "path": "src/lib/actions.ts",
       "accessCount": 5,
       "lastAccessed": 1772414207198,
-      "type": "file"
-    },
-    {
-      "path": "src/components/sections/feasibility-section.tsx",
-      "accessCount": 5,
-      "lastAccessed": 1772426059920,
       "type": "file"
     },
     {
