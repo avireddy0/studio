@@ -151,8 +151,8 @@
     },
     {
       "path": "src/components/context/context-summarizer.tsx",
-      "accessCount": 41,
-      "lastAccessed": 1772422905920,
+      "accessCount": 46,
+      "lastAccessed": 1772423170470,
       "type": "file"
     },
     {
@@ -174,16 +174,16 @@
       "type": "file"
     },
     {
+      "path": "src/components/visualizations/tactical-bim-overlay.tsx",
+      "accessCount": 7,
+      "lastAccessed": 1772423207266,
+      "type": "file"
+    },
+    {
       "path": "src",
       "accessCount": 6,
       "lastAccessed": 1772420918438,
       "type": "directory"
-    },
-    {
-      "path": "src/components/visualizations/tactical-bim-overlay.tsx",
-      "accessCount": 5,
-      "lastAccessed": 1772382785322,
-      "type": "file"
     },
     {
       "path": "src/lib/actions.ts",
