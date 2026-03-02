@@ -43,7 +43,7 @@ const SIGNALS = [
 ]
 
 const VERDICT =
-  "Schedule risk contained. Rebar redesign approved and funded (CO-2847, $38.4K). Revised drawings confirmed. Net impact: 5 days, recoverable within current float. Owner briefed and aligned."
+  "Approved — CO-2847 ($38.4K) well within contingency. Early retail tenant lease confirmation offsets carrying cost, accelerating stabilization and refi by 2.5 months. Net schedule impact recoverable. Proceed."
 
 // ─── COMPONENT ──────────────────────────────────────────
 
