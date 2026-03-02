@@ -98,7 +98,7 @@ export function IngestionFunnel() {
         ].map((line, i) => (
           <div
             key={i}
-            className="ingest-data-out font-mono flex items-center gap-1.5 whitespace-nowrap"
+            className="ingest-data-out font-mono flex items-center gap-1.5 whitespace-nowrap border border-primary/20 bg-primary/[0.04] px-2 py-1 rounded-sm"
             style={{ '--out-d': `${line.d}s` } as React.CSSProperties}
           >
             <span className="inline-block w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-primary/50 shrink-0" />
