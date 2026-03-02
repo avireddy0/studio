@@ -1322,3 +1322,26 @@ curl -s http://localhost:9002 2>&1 | head -100
 kill -9 $(lsof -ti:9002) 2>/dev/null; npm run dev 2>&1 &
 sleep 5
 curl -s http://localhost:9002 2>&1 | head -50
+cat package.json | grep -E "three|fiber|drei|postprocessing"
+cat /Users/avireddy/GitHub/studio/node_modules/@react-three/drei/package.json | grep '"version"'
+grep -r "Environment\|ContactShadows\|AccumulativeShadows\|Lightformer\|MeshPhysicalMaterial\|postprocessing" /Users/avireddy/GitHub/studio/src/ 2>/dev/null | head -20
+ls /Users/avireddy/GitHub/studio/node_modules/@react-three/postprocessing 2>/dev/null && echo "EXISTS" || echo "NOT INSTALLED"
+grep -l "Environment\|ContactShadows\|Lightformer\|AccumulativeShadows" /Users/avireddy/GitHub/studio/node_modules/@react-three/drei/dist/*.js 2>/dev/null | head -5; echo "---"; node -e "const drei = require.resolve('@react-three/drei'); console.log('drei found at', drei)" 2>/dev/null
+grep -c "Environment\|ContactShadows\|Lightformer\|AccumulativeShadows\|MeshTransmissionMaterial\|MeshReflectorMaterial" /Users/avireddy/GitHub/studio/node_modules/@react-three/drei/index.cjs.js 2>/dev/null
+grep -oE "(Environment|ContactShadows|Lightformer|AccumulativeShadows|MeshTransmissionMaterial|MeshReflectorMaterial)" /Users/avireddy/GitHub/studio/node_modules/@react-three/drei/index.cjs.js | sort -u
+npm run build 2>&1 | tail -25
+kill -9 $(lsof -ti:9002) 2>/dev/null; npm run dev 2>&1 &
+sleep 4
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+npm run build 2>&1 | tail -25
+npm install @react-three/postprocessing 2>&1 | tail -5
+npm run build 2>&1 | tail -30
+kill -9 $(lsof -ti:9002) 2>/dev/null; npm run dev 2>&1 &
+sleep 5
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+npm run build 2>&1 | tail -30
+lsof -ti:9002 | xargs kill -9 2>/dev/null; echo "killed"
+npm run dev
+sleep 4 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+ls src/components/sections/ 2>/dev/null || echo "directory does not exist"
+mkdir -p src/components/sections

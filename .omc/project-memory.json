@@ -139,8 +139,8 @@
   "hotPaths": [
     {
       "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 147,
-      "lastAccessed": 1772421300747,
+      "accessCount": 152,
+      "lastAccessed": 1772425586251,
       "type": "file"
     },
     {
@@ -153,6 +153,12 @@
       "path": "src/components/context/context-summarizer.tsx",
       "accessCount": 49,
       "lastAccessed": 1772423493582,
+      "type": "file"
+    },
+    {
+      "path": "src/components/visualizations/bim-scene.tsx",
+      "accessCount": 37,
+      "lastAccessed": 1772425079677,
       "type": "file"
     },
     {
@@ -192,9 +198,9 @@
       "type": "file"
     },
     {
-      "path": "src/components/visualizations/bim-scene.tsx",
-      "accessCount": 4,
-      "lastAccessed": 1772423969396,
+      "path": "src/components/sections/feasibility-section.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1772426059920,
       "type": "file"
     },
     {
