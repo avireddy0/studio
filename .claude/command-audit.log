@@ -1211,3 +1211,96 @@ Changed from grid layout to vertical flex column for signal cards.
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 EOF
 )" && git push origin main
+npm run build 2>&1
+git add src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+fix: update Envision OS verdict to highlight contingency and refi acceleration
+
+New verdict emphasizes approval within contingency, retail tenant lease
+offsetting carrying cost, and stabilization/refi ahead by 2.5 months.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main
+npm run build 2>&1 && git add src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+fix: tighten verdict copy — under contingency, concise retail tenant line
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main
+npm run build 2>&1 && git add src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+fix: change schedule impact to negligible in verdict
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main
+npm run build 2>&1 && git add src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+fix: remove "Approved —" prefix from verdict text
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main
+npm run build 2>&1 && git add src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+fix: update verdict ending to recommend owner proceed with standby
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main
+npm run build 2>&1 && git add src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+fix: remove "and refi" from verdict text
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main
+npm run build 2>&1 && git add src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+fix: update verdict to confirmed retail tenant early lease
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main
+npm run build 2>&1 && git add src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+fix: remove carrying cost phrase from verdict
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main
+npm run build 2>&1 && git add src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+fix: extend verdict display time by 4 seconds before loop restart
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main
+npm run build 2>&1 && git add src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+feat: add centered Approved checkpoint after verdict before loop restart
+
+Scenario fades out after verdict hold, then a centered checkmark with
+"Approved" text appears for 4 seconds before the animation restarts.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main
+npm run build 2>&1 && git add src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+fix: keep verdict visible while signals fade, show approved above it
+
+Alert and signal cards fade out and collapse, Envision OS verdict
+stays pinned at bottom, approved checkmark appears in the freed
+space between header and verdict.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main
+npm run build 2>&1 && git add src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+fix: keep verdict inline with signals, fade only alert+signals
+
+Verdict now appears in normal flow after signals. When scenarioFaded
+triggers, alert and signal cards fade to opacity 0 while verdict stays
+visible. Approved checkmark overlays the faded signal area.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main
+npm run build 2>&1 && git add src/components/context/context-summarizer.tsx && git commit -m "$(cat <<'EOF'
+fix: add bottom padding to prevent verdict border clipping
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push origin main
