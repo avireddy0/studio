@@ -2,211 +2,224 @@
 
 import React, { useEffect, useState } from "react"
 
-// ─── LAYOUT CONSTANTS ───────────────────────────────────────
+// ─── SCENARIO DATA ───────────────────────────────────────
 
-const HUB = { x: 500, y: 310 }
-
-const platforms = [
-  { id: "procore", label: "PROCORE", x: 140, y: 115, metric: "2.4K RFIs/mo" },
-  { id: "gmail", label: "GMAIL", x: 840, y: 95, metric: "12K Emails/mo" },
-  { id: "slack", label: "SLACK", x: 880, y: 370, metric: "8.7K Messages" },
-  { id: "sage", label: "SAGE INTACCT", x: 760, y: 545, metric: "$4.2M Tracked" },
-  { id: "zoom", label: "ZOOM", x: 230, y: 540, metric: "340 Hours/mo" },
-  { id: "drive", label: "GOOGLE DRIVE", x: 90, y: 390, metric: "1.2K Documents" },
+const SIGNALS = [
+  {
+    platform: "PROCORE",
+    type: "RFI #847",
+    color: "#F97316",
+    message:
+      "Structural engineer flagged rebar spacing non-compliance in foundation grid C4-C7.",
+  },
+  {
+    platform: "GMAIL",
+    type: "Inbound Email",
+    color: "#EA4335",
+    message:
+      'From: Atlas Concrete — "Revised pour schedule attached per updated specs. Ready to mobilize once approved."',
+  },
+  {
+    platform: "SLACK",
+    type: "#tower-b",
+    color: "#611F69",
+    message:
+      'PM: "Engineering review complete. Revised rebar layout approved. No impact to structural design."',
+  },
+  {
+    platform: "SAGE INTACCT",
+    type: "Change Order",
+    color: "#1B813E",
+    message:
+      "CO-2847 approved: $38,400 for rebar redesign + labor. Within contingency budget.",
+  },
+  {
+    platform: "ZOOM",
+    type: "Meeting Transcript",
+    color: "#2D8CFF",
+    message:
+      "Owner Weekly Sync — Team confirmed 5-day recovery plan to offset foundation delay.",
+  },
+  {
+    platform: "GOOGLE DRIVE",
+    type: "New Document",
+    color: "#0F9D58",
+    message:
+      "Structural drawings Rev C uploaded to Tower B / Foundation. Engineer-approved stamp attached.",
+  },
 ]
 
-const diamonds = [
-  { x: 310, y: 190, s: 8, o: 0.15 },
-  { x: 710, y: 170, s: 6, o: 0.1 },
-  { x: 340, y: 460, s: 7, o: 0.12 },
-  { x: 690, y: 455, s: 5, o: 0.08 },
-  { x: 175, y: 260, s: 5, o: 0.06 },
-  { x: 810, y: 250, s: 6, o: 0.07 },
-  { x: 430, y: 150, s: 4, o: 0.05 },
-  { x: 600, y: 500, s: 5, o: 0.06 },
-]
+const VERDICT =
+  "Schedule risk contained. Rebar redesign approved and funded (CO-2847, $38.4K). Revised drawings confirmed. Net impact: 5 days, recoverable within current float. Owner briefed and aligned."
 
-// 3D disk helpers
-function diskSide(cx: number, cy: number, rx: number, ry: number, h: number) {
-  return `M${cx - rx},${cy} A${rx},${ry},0,0,0,${cx + rx},${cy} L${cx + rx},${cy + h} A${rx},${ry},0,0,1,${cx - rx},${cy + h} Z`
-}
-
-// ─── COMPONENT ──────────────────────────────────────────────
+// ─── COMPONENT ──────────────────────────────────────────
 
 export function ContextSummarizer() {
   const [mounted, setMounted] = useState(false)
-  const [active, setActive] = useState(0)
+  const [cycle, setCycle] = useState(0)
+  const [alertVisible, setAlertVisible] = useState(false)
+  const [visibleSignals, setVisibleSignals] = useState(0)
+  const [processing, setProcessing] = useState(false)
+  const [verdictVisible, setVerdictVisible] = useState(false)
 
-  useEffect(() => { setMounted(true) }, [])
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     if (!mounted) return
-    const t = setInterval(() => setActive(p => (p + 1) % platforms.length), 2500)
-    return () => clearInterval(t)
-  }, [mounted])
+
+    // Reset for new cycle
+    setAlertVisible(false)
+    setVisibleSignals(0)
+    setProcessing(false)
+    setVerdictVisible(false)
+
+    const t: ReturnType<typeof setTimeout>[] = []
+
+    // Phase 1: Alert
+    t.push(setTimeout(() => setAlertVisible(true), 500))
+
+    // Phase 2: Signals appear one by one
+    SIGNALS.forEach((_, i) => {
+      t.push(setTimeout(() => setVisibleSignals(i + 1), 1800 + i * 800))
+    })
+
+    const afterSignals = 1800 + SIGNALS.length * 800
+
+    // Phase 3: Processing indicator
+    t.push(setTimeout(() => setProcessing(true), afterSignals + 500))
+
+    // Phase 4: Verdict replaces processing
+    t.push(
+      setTimeout(() => {
+        setProcessing(false)
+        setVerdictVisible(true)
+      }, afterSignals + 2200)
+    )
+
+    // Loop: restart after reading time
+    t.push(setTimeout(() => setCycle((c) => c + 1), afterSignals + 2200 + 5500))
+
+    return () => t.forEach(clearTimeout)
+  }, [mounted, cycle])
 
   if (!mounted) return null
 
   return (
     <div className="relative w-full h-full flex flex-col">
       {/* Header */}
-      <div className="shrink-0 space-y-3 md:space-y-4 mb-2 md:mb-4">
-        <h2 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter text-white leading-tight">
+      <div className="shrink-0 space-y-2 md:space-y-3 mb-4 md:mb-6">
+        <h2 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter text-zinc-900 leading-tight">
           Context is Everything.
         </h2>
-        <p className="text-white/40 text-sm md:text-base font-medium max-w-2xl leading-relaxed">
-          12+ platforms. One truth. Envision OS fuses every signal into <span className="text-white font-semibold">verified intelligence</span>.
+        <p className="text-zinc-400 text-sm md:text-base font-medium max-w-2xl leading-relaxed">
+          A single delay triggers 6 platforms. Envision OS correlates the noise
+          into{" "}
+          <span className="text-zinc-800 font-semibold">
+            verified intelligence
+          </span>
+          .
         </p>
       </div>
 
-      {/* SVG Network Visualization */}
-      <div className="flex-1 relative min-h-0">
-        <svg viewBox="0 0 1000 620" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
-          <defs>
-            <style>{`
-              @keyframes flow { to { stroke-dashoffset: -30; } }
-              @keyframes flow-fast { to { stroke-dashoffset: -30; } }
-              @keyframes hub-breathe { 0%,100% { opacity: 0.06; } 50% { opacity: 0.14; } }
-              @keyframes dot-pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
-              .conn { stroke-dasharray: 6 14; animation: flow 3s linear infinite; }
-              .conn-active { stroke-dasharray: 8 10; animation: flow-fast 1.2s linear infinite; }
-              .hub-breathe { animation: hub-breathe 4s ease-in-out infinite; }
-              .dot-pulse { animation: dot-pulse 2s ease-in-out infinite; }
-            `}</style>
-            <filter id="glow-sm">
-              <feGaussianBlur stdDeviation="4" result="b" />
-              <feComposite in="SourceGraphic" in2="b" operator="over" />
-            </filter>
-            <filter id="glow-lg">
-              <feGaussianBlur stdDeviation="12" result="b" />
-              <feComposite in="SourceGraphic" in2="b" operator="over" />
-            </filter>
-          </defs>
+      {/* Scenario Flow */}
+      <div className="flex-1 min-h-0 flex flex-col gap-3 overflow-y-auto pr-1">
+        {/* ── Alert Banner ────────────────────────────────── */}
+        <div
+          className="p-3 md:p-4 rounded-xl border border-red-200 bg-red-50/80 transition-all duration-600"
+          style={{
+            opacity: alertVisible ? 1 : 0,
+            transform: alertVisible ? "translateY(0)" : "translateY(-12px)",
+          }}
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <div className="relative flex shrink-0">
+              <span className="w-2 h-2 rounded-full bg-red-500" />
+              <span className="absolute inset-0 w-2 h-2 rounded-full bg-red-500 animate-ping" />
+            </div>
+            <span className="text-[10px] md:text-xs font-mono font-bold text-red-600 uppercase tracking-wider">
+              Schedule Risk Detected
+            </span>
+          </div>
+          <p className="text-xs md:text-sm text-red-800 font-medium">
+            Concrete pour delayed 2 weeks — Tower B Foundation
+          </p>
+        </div>
 
-          {/* ── Hub ambient glow ──────────────────────────── */}
-          <ellipse cx={HUB.x} cy={HUB.y} rx="160" ry="90" fill="#007C5A" className="hub-breathe" />
-
-          {/* ── Connection lines ──────────────────────────── */}
-          {platforms.map((p, i) => {
-            const isActive = active === i
+        {/* ── Platform Signal Cards ───────────────────────── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2.5">
+          {SIGNALS.map((signal, i) => {
+            const visible = i < visibleSignals
             return (
-              <g key={p.id}>
-                <line
-                  x1={p.x} y1={p.y} x2={HUB.x} y2={HUB.y}
-                  stroke={isActive ? "#007C5A" : "rgba(255,255,255,0.03)"}
-                  strokeWidth={isActive ? 1.5 : 0.7}
-                  className={isActive ? "conn-active" : "conn"}
-                />
-                {isActive && (
-                  <circle r="3.5" fill="#007C5A" filter="url(#glow-sm)">
-                    <animateMotion
-                      dur="1.8s"
-                      repeatCount="indefinite"
-                      path={`M${p.x},${p.y} L${HUB.x},${HUB.y}`}
-                    />
-                  </circle>
-                )}
-              </g>
+              <div
+                key={signal.platform}
+                className="p-3 md:p-4 rounded-xl bg-white border border-zinc-200 shadow-[0_1px_4px_rgba(0,0,0,0.05)] transition-all duration-500"
+                style={{
+                  opacity: visible ? 1 : 0,
+                  transform: visible ? "translateY(0)" : "translateY(12px)",
+                  borderLeftWidth: 3,
+                  borderLeftColor: visible ? signal.color : "transparent",
+                }}
+              >
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span
+                    className="text-[9px] md:text-[10px] font-mono font-bold uppercase tracking-wider"
+                    style={{ color: signal.color }}
+                  >
+                    {signal.platform}
+                  </span>
+                  <span className="text-[9px] md:text-[10px] font-mono text-zinc-400">
+                    {signal.type}
+                  </span>
+                </div>
+                <p className="text-[11px] md:text-xs text-zinc-600 leading-relaxed">
+                  {signal.message}
+                </p>
+              </div>
             )
           })}
+        </div>
 
-          {/* ── Central Hub: 3D Stacked Disks ────────────── */}
+        {/* ── Processing Indicator ────────────────────────── */}
+        <div
+          className="flex items-center justify-center gap-2 py-3 transition-all duration-500"
+          style={{
+            opacity: processing ? 1 : 0,
+            height: processing ? "auto" : 0,
+          }}
+        >
+          <div className="flex gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#007C5A] animate-bounce" style={{ animationDelay: "0ms" }} />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#007C5A] animate-bounce" style={{ animationDelay: "150ms" }} />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#007C5A] animate-bounce" style={{ animationDelay: "300ms" }} />
+          </div>
+          <span className="text-[10px] md:text-xs font-mono text-[#007C5A] font-medium tracking-wide">
+            Correlating 6 signals across platforms...
+          </span>
+        </div>
 
-          {/* Bottom disk — RAW SIGNALS (red) */}
-          <path d={diskSide(HUB.x, HUB.y + 20, 112, 30, 18)} fill="rgba(239,68,68,0.2)" />
-          <ellipse cx={HUB.x} cy={HUB.y + 20} rx="112" ry="30"
-            fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.25)" strokeWidth="1" />
-          <text x={HUB.x} y={HUB.y + 25} textAnchor="middle"
-            fill="rgba(239,68,68,0.45)" fontSize="9" fontFamily="ui-monospace, monospace" fontWeight="700" letterSpacing="0.2em">
-            RAW SIGNALS
-          </text>
-
-          {/* Middle disk — CORRELATED (amber) */}
-          <path d={diskSide(HUB.x, HUB.y - 18, 107, 28, 18)} fill="rgba(245,158,11,0.22)" />
-          <ellipse cx={HUB.x} cy={HUB.y - 18} rx="107" ry="28"
-            fill="rgba(245,158,11,0.06)" stroke="rgba(245,158,11,0.3)" strokeWidth="1" />
-          <text x={HUB.x} y={HUB.y - 13} textAnchor="middle"
-            fill="rgba(245,158,11,0.55)" fontSize="9" fontFamily="ui-monospace, monospace" fontWeight="700" letterSpacing="0.2em">
-            CORRELATED
-          </text>
-
-          {/* Top disk — VERIFIED TRUTH (green) */}
-          <path d={diskSide(HUB.x, HUB.y - 56, 102, 26, 18)} fill="rgba(0,124,90,0.3)" />
-          <ellipse cx={HUB.x} cy={HUB.y - 56} rx="102" ry="26"
-            fill="rgba(0,124,90,0.1)" stroke="rgba(0,124,90,0.5)" strokeWidth="1.5" />
-          <text x={HUB.x} y={HUB.y - 51} textAnchor="middle"
-            fill="#007C5A" fontSize="10" fontFamily="ui-monospace, monospace" fontWeight="700" letterSpacing="0.25em">
-            VERIFIED TRUTH
-          </text>
-
-          {/* ── Hub label ────────────────────────────────── */}
-          <text x={HUB.x} y={HUB.y - 100} textAnchor="middle"
-            fill="#007C5A" fontSize="13" fontFamily="ui-monospace, monospace" fontWeight="700" letterSpacing="0.4em">
-            ENVISION OS
-          </text>
-          <circle cx={HUB.x + 62} cy={HUB.y - 104} r="3" fill="#007C5A" className="dot-pulse" />
-
-          {/* ── Platform nodes ───────────────────────────── */}
-          {platforms.map((p, i) => {
-            const isActive = active === i
-            const boxW = Math.max(p.label.length * 8.5 + 28, 90)
-            return (
-              <g key={p.id}>
-                <rect
-                  x={p.x - boxW / 2} y={p.y - 22}
-                  width={boxW} height="44" rx="2"
-                  fill={isActive ? "rgba(0,124,90,0.06)" : "rgba(255,255,255,0.015)"}
-                  stroke={isActive ? "rgba(0,124,90,0.3)" : "rgba(255,255,255,0.05)"}
-                  strokeWidth="1"
-                  style={{ transition: "all 0.5s ease-out" }}
-                />
-                {/* Active indicator bar */}
-                {isActive && (
-                  <rect x={p.x - boxW / 2} y={p.y - 22} width={boxW} height="2" rx="1" fill="#007C5A" opacity="0.6" />
-                )}
-                <text
-                  x={p.x} y={p.y - 3}
-                  textAnchor="middle"
-                  fill={isActive ? "#007C5A" : "rgba(255,255,255,0.2)"}
-                  fontSize="10" fontFamily="ui-monospace, monospace" fontWeight="700" letterSpacing="0.2em"
-                  style={{ transition: "fill 0.5s ease-out" }}
-                >
-                  {p.label}
-                </text>
-                <text
-                  x={p.x} y={p.y + 14}
-                  textAnchor="middle"
-                  fill={isActive ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.08)"}
-                  fontSize="8" fontFamily="ui-monospace, monospace" letterSpacing="0.1em"
-                  style={{ transition: "fill 0.5s ease-out" }}
-                >
-                  {p.metric}
-                </text>
-              </g>
-            )
-          })}
-
-          {/* ── Decorative diamonds ──────────────────────── */}
-          {diamonds.map((d, i) => (
-            <rect
-              key={i}
-              x={d.x - d.s / 2} y={d.y - d.s / 2}
-              width={d.s} height={d.s}
-              fill="#007C5A" opacity={d.o}
-              transform={`rotate(45 ${d.x} ${d.y})`}
-            />
-          ))}
-
-          {/* ── Floating metric badge ────────────────────── */}
-          <g>
-            <rect x="415" y="575" width="170" height="26" rx="2"
-              fill="rgba(0,124,90,0.05)" stroke="rgba(0,124,90,0.18)" strokeWidth="0.5" />
-            <text x="500" y="592" textAnchor="middle"
-              fill="#007C5A" fontSize="9" fontFamily="ui-monospace, monospace" fontWeight="700" letterSpacing="0.2em">
-              847 CORRELATIONS / SEC
-            </text>
-          </g>
-        </svg>
+        {/* ── Envision OS Verdict ─────────────────────────── */}
+        <div
+          className="p-4 md:p-5 rounded-xl border-2 border-[#007C5A]/25 bg-gradient-to-r from-[#007C5A]/[0.04] to-[#007C5A]/[0.08] transition-all duration-700"
+          style={{
+            opacity: verdictVisible ? 1 : 0,
+            transform: verdictVisible ? "translateY(0)" : "translateY(16px)",
+          }}
+        >
+          <div className="flex items-center gap-2 mb-2">
+            <div className="relative flex shrink-0">
+              <span className="w-2 h-2 rounded-full bg-[#007C5A]" />
+              <span className="absolute inset-0 w-2 h-2 rounded-full bg-[#007C5A] animate-ping" />
+            </div>
+            <span className="text-[10px] md:text-xs font-mono font-bold text-[#007C5A] uppercase tracking-wider">
+              Envision OS — Verified Intelligence
+            </span>
+          </div>
+          <p className="text-xs md:text-sm text-zinc-800 font-medium leading-relaxed">
+            {VERDICT}
+          </p>
+        </div>
       </div>
     </div>
   )

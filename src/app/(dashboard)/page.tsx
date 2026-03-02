@@ -272,12 +272,11 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 04: CONTEXT FUSION (OBSIDIAN) */}
-      <section id="fusion" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center justify-center p-4 sm:p-6 md:p-12 shrink-0 overflow-hidden">
-          <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
+      <section id="fusion" className="snap-start relative h-[calc(100vh-64px)] w-full bg-white text-zinc-900 flex flex-col items-center justify-center p-4 sm:p-6 md:p-12 shrink-0 overflow-hidden">
           <div className="relative z-10 w-full max-w-7xl flex flex-col h-full">
               <div className="flex items-center gap-3 mb-3 md:mb-6 shrink-0">
-                  <Zap className="size-4 text-primary" />
-                  <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">04_Context_Fusion_Engine</h2>
+                  <Zap className="size-4 text-[#007C5A]" />
+                  <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-zinc-400">04_Context_Fusion_Engine</h2>
               </div>
               <ContextSummarizer />
           </div>
