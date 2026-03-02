@@ -43,7 +43,7 @@ const SIGNALS = [
 ]
 
 const VERDICT =
-  "CO-2847 ($38.4K) under contingency. Confirmed retail tenant early lease offsets carrying cost, pulling stabilization forward 2.5 months. Schedule impact negligible. Recommend Owner proceed. Standby for confirmation."
+  "CO-2847 ($38.4K) under contingency. Confirmed retail tenant early lease pulls stabilization forward 2.5 months. Schedule impact negligible. Recommend Owner proceed. Standby for confirmation."
 
 // ─── COMPONENT ──────────────────────────────────────────
 
