@@ -43,7 +43,7 @@ const SIGNALS = [
 ]
 
 const VERDICT =
-  "Approved — CO-2847 ($38.4K) under contingency. Retail tenant leasing early offsets carrying cost, pulling stabilization and refi forward 2.5 months. Schedule impact recoverable. Proceed."
+  "Approved — CO-2847 ($38.4K) under contingency. Retail tenant leasing early offsets carrying cost, pulling stabilization and refi forward 2.5 months. Schedule impact negligible. Proceed."
 
 // ─── COMPONENT ──────────────────────────────────────────
 
