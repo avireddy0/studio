@@ -78,48 +78,46 @@
                     linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
 }
 
-/* INGESTION FUNNEL — white cards vacuum from left into center audit core */
-@keyframes tornado-ingest {
+/* INGESTION FLOW — documents vacuumed from left into center engine */
+@keyframes ingest-flow {
   0% {
-    transform: translate(0, 0) scale(1) rotate(0deg);
+    transform: translateX(0) translateY(var(--y)) rotate(var(--r)) scale(1);
     opacity: 0;
   }
-  8% {
+  6% {
     opacity: 1;
   }
-  70% {
-    opacity: 0.9;
+  78% {
+    opacity: 0.85;
   }
   100% {
-    transform: translate(min(40vw, 500px), var(--y-offset)) scale(0.08) rotate(15deg);
+    transform: translateX(min(44vw, 560px)) translateY(0) rotate(0deg) scale(0.08);
     opacity: 0;
   }
 }
-.animate-tornado {
-  animation-name: tornado-ingest;
-  animation-duration: 5s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
+.ingest-flow-item {
+  animation: ingest-flow 3.5s cubic-bezier(0.4, 0.02, 0.95, 0.15) infinite;
+  animation-delay: var(--d);
+  will-change: transform, opacity;
 }
 
-/* VERIFIED OUTPUT STREAM — clean data flowing right */
-@keyframes data-stream-single {
-  0% { transform: translateX(0); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateX(min(50vw, 400px)); opacity: 0; }
+/* ENGINE CORE — subtle glow pulse */
+@keyframes ingest-core-glow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
 }
-.animate-data-stream-single {
-  animation: data-stream-single 5s infinite linear;
+.ingest-core-pulse {
+  animation: ingest-core-glow 3s ease-in-out infinite;
 }
 
-/* FLOATING DOCUMENT CARDS — gentle drift for ingestion section */
-@keyframes float-doc {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+/* OUTPUT STREAM — gentle drift of verified JSON lines */
+@keyframes ingest-data-pulse {
+  0%, 100% { opacity: 0.35; transform: translateX(0); }
+  50% { opacity: 1; transform: translateX(4px); }
 }
-.animate-float-doc {
-  animation: float-doc 4s ease-in-out infinite;
+.ingest-data-out {
+  animation: ingest-data-pulse 3.5s ease-in-out infinite;
+  animation-delay: var(--out-d);
 }
 
 /* STATUS PULSE */
