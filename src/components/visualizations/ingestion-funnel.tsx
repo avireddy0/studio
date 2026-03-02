@@ -87,19 +87,19 @@ export function IngestionFunnel() {
       {/* ── BEAM: connection line from core → output ── */}
       <div className="absolute left-1/2 top-1/2 -translate-y-px z-10 h-px w-[42%] bg-gradient-to-r from-primary/25 via-primary/12 to-transparent" />
 
-      {/* ── OUTPUT: multiple verified data streams ── */}
-      <div className="absolute left-[56%] md:left-[55%] top-1/2 -translate-y-1/2 z-10 flex flex-col gap-1.5 md:gap-2">
+      {/* ── OUTPUT: data streams flowing right from parser ── */}
+      <div className="absolute left-[52%] md:left-[52%] top-1/2 -translate-y-1/2 z-10 flex flex-col gap-1.5 md:gap-2">
         {[
-          { text: 'rfi_verified.json', sub: 'status: VERIFIED' },
-          { text: 'budget_clean.json', sub: 'variance: -3.2%' },
-          { text: 'schedule_parsed.json', sub: 'on_track: TRUE' },
-          { text: 'submittals.json', sub: 'flagged: 0' },
-          { text: 'change_orders.json', sub: 'delta: $0' },
+          { text: 'rfi_verified.json', sub: 'VERIFIED', d: 0 },
+          { text: 'budget_clean.json', sub: '-3.2%', d: 0.8 },
+          { text: 'schedule_parsed.json', sub: 'ON_TRACK', d: 1.6 },
+          { text: 'submittals.json', sub: 'CLEAR', d: 2.4 },
+          { text: 'change_orders.json', sub: '$0 DELTA', d: 3.2 },
         ].map((line, i) => (
           <div
             key={i}
             className="ingest-data-out font-mono flex items-center gap-1.5 whitespace-nowrap"
-            style={{ '--out-d': `${i * 0.6}s` } as React.CSSProperties}
+            style={{ '--out-d': `${line.d}s` } as React.CSSProperties}
           >
             <span className="inline-block w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-primary/50 shrink-0" />
             <span className="text-[7px] md:text-[9px] text-primary/65">{line.text}</span>

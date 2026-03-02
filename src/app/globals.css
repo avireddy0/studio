@@ -114,13 +114,15 @@
   animation: ingest-core-glow 3s ease-in-out infinite;
 }
 
-/* OUTPUT STREAM — gentle drift of verified JSON lines */
-@keyframes ingest-data-pulse {
-  0%, 100% { opacity: 0.35; transform: translateX(0); }
-  50% { opacity: 1; transform: translateX(4px); }
+/* OUTPUT STREAM — data lines flowing right from parser */
+@keyframes ingest-data-flow {
+  0% { transform: translateX(0); opacity: 0; }
+  8% { opacity: 1; }
+  80% { opacity: 0.7; }
+  100% { transform: translateX(min(40vw, 400px)); opacity: 0; }
 }
 .ingest-data-out {
-  animation: ingest-data-pulse 3.5s ease-in-out infinite;
+  animation: ingest-data-flow 4s linear infinite;
   animation-delay: var(--out-d);
 }
 
