@@ -86,7 +86,7 @@ export function ContextSummarizer() {
       }, afterSignals + 2200)
     )
 
-    t.push(setTimeout(() => setCycle((c) => c + 1), afterSignals + 2200 + 5500))
+    t.push(setTimeout(() => setCycle((c) => c + 1), afterSignals + 2200 + 9500))
 
     return () => t.forEach(clearTimeout)
   }, [mounted, cycle])
