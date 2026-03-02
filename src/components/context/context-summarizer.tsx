@@ -133,7 +133,7 @@ export function ContextSummarizer() {
       {/* Scenario Flow */}
       <div className="flex-1 min-h-0 relative overflow-hidden">
         {/* ── All cards in normal flow ─────────────────────── */}
-        <div className="flex flex-col gap-2 md:gap-2.5">
+        <div className="flex flex-col gap-2 md:gap-2.5 pb-1">
           {/* Alert Banner */}
           <div
             className="shrink-0 p-2.5 md:p-3 rounded-lg border border-red-200 bg-red-50/80 transition-all duration-700"
