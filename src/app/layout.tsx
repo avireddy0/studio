@@ -3,11 +3,11 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'ENVISION OS | WEAPONS-GRADE INTEL',
-  description: 'Verified profit protection and institutional-grade transparency for commercial construction.',
+  title: 'Envision OS | Where Development Meets Data',
+  description: 'Emails. Photos. Zooms. Inspections. RFIs. Waivers. A billion fragments of truth, without the full picture. Until now.',
   openGraph: {
-    title: 'ENVISION OS | WEAPONS-GRADE INTEL',
-    description: 'Where Development meets Data. Verified profit protection through continuous multi-platform audit cycles.',
+    title: 'Envision OS | Where Development Meets Data',
+    description: 'Emails. Photos. Zooms. Inspections. RFIs. Waivers. A billion fragments of truth, without the full picture. Until now.',
     type: 'website',
   },
 };
