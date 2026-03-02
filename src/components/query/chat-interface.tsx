@@ -18,10 +18,10 @@ const initialState = {
 };
 
 const INITIAL_PROMPTS = [
-  "Cost variance: steel tariff impact on Phoenix GMP",
-  "60-day schedule risk: RFIs, weather, supply chain",
-  "This week's owner-GC comms: unresolved items",
-  "Scenario: 15% lumber surge → cost & timeline impact",
+  "Cost Variance",
+  "Tariff Impact",
+  "Schedule Risk",
+  "Meeting Minutes",
 ];
 
 function SubmitButton() {

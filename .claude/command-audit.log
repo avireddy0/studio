@@ -1131,3 +1131,11 @@ git diff --stat
 git log --oneline -5
 git diff HEAD --stat -- 'src/app/(dashboard)/page.tsx' src/components/dashboard-header.tsx
 git push origin main
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion&r=$(date +%s)"
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion&r=$(date +%s)"
+kill -9 $(lsof -ti:9002) 2>/dev/null; npm run dev &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion&r=$(date +%s)"
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=ingestion&r=$(date +%s)"
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=intel&r=$(date +%s)"
+xcrun simctl openurl 1311D811-5479-4E95-B2FD-67CD57CE77F6 "http://localhost:9002?s=intel&r=$(date +%s)"

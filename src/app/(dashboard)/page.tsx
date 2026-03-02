@@ -228,9 +228,9 @@ export default function UnifiedPage() {
                       <Database className="size-3 sm:size-4 text-primary" />
                       <h2 className="text-[9px] sm:text-[10px] font-bold tracking-[0.3em] sm:tracking-[0.4em] uppercase text-white/40">02_Data_Ingestion_Pipeline</h2>
                   </div>
-                  <h3 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Chaos to Control.</h3>
+                  <h3 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">From Chaos to Control.</h3>
                   <p className="text-sm sm:text-base md:text-lg text-white/60 max-w-2xl leading-relaxed font-medium">
-                      Slamming fragmented construction signals into a verified institutional stream. Deterministic parsing for weapons-grade project accuracy.
+                      From juggling dozens of consultants or being cc&apos;ed on a thousand emails, Envision OS consumes all the noise and delivers <span className="text-white font-bold">data-driven clarity</span>.
                   </p>
               </div>
 
