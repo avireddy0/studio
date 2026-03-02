@@ -37,19 +37,43 @@ function SubmitButton() {
   );
 }
 
+const INITIAL_MESSAGE: Message = {
+  role: "ai",
+  content: "Envision OS active. Construction Intelligence live. Awaiting instructions."
+};
+
+const STORAGE_KEY = 'envision-chat-history';
+
 export function ChatInterface() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "ai",
-      content: "Envision OS active. Construction Intelligence live. Awaiting instructions."
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [followUpPrompts, setFollowUpPrompts] = useState<string[] | null>(null);
+  const [hydrated, setHydrated] = useState(false);
 
   const [formState, formAction] = useActionState(handleQuery, initialState);
   const formRef = useRef<HTMLFormElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+
+  // Restore messages from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setMessages(parsed);
+        }
+      }
+    } catch { /* ignore corrupt storage */ }
+    setHydrated(true);
+  }, []);
+
+  // Persist messages to localStorage (skip status messages)
+  useEffect(() => {
+    if (!hydrated) return;
+    const toSave = messages.filter(m => m.role !== 'status');
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+  }, [messages, hydrated]);
 
   useEffect(() => {
     if (formState?.data) {
@@ -83,14 +107,19 @@ export function ChatInterface() {
   const handleFormSubmit = async (formData: FormData) => {
     const query = formData.get("query") as string;
     if (query.trim()) {
+      // Attach conversation history for AI context
+      const history = messages
+        .filter(m => m.role !== 'status')
+        .map(m => ({ role: m.role, content: typeof m.content === 'string' ? m.content : JSON.stringify(m.content) }));
+      formData.append("history", JSON.stringify(history));
+
       setMessages((prev) => [...prev, { role: "user", content: query }]);
       setMessages((prev) => [...prev, { role: "status", content: "ORCHESTRATING_INTEL..." }]);
-      
-      // Wrapped in startTransition to resolve React 19 useActionState error
+
       startTransition(() => {
         formAction(formData);
       });
-      
+
       formRef.current?.reset();
     }
   };

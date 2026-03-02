@@ -29,6 +29,13 @@ export async function handleQuery(prevState: any, formData: FormData) {
 
     const query = validatedFields.data.query;
 
+    // Parse conversation history for AI context
+    let history: Array<{ role: string; content: string }> = [];
+    try {
+      const historyRaw = formData.get('history') as string;
+      if (historyRaw) history = JSON.parse(historyRaw);
+    } catch { /* ignore parse errors */ }
+
     // Check for demo pattern match (suggested prompts always get rich responses)
     const demoResult = getDemoResponse(query);
     if (demoResult) {
@@ -39,9 +46,9 @@ export async function handleQuery(prevState: any, formData: FormData) {
       };
     }
 
-    // Custom prompt → try Gemini Flash
+    // Custom prompt → try Gemini Flash with conversation history
     try {
-      const geminiResult = await getGeminiFlashResponse(query);
+      const geminiResult = await getGeminiFlashResponse(query, history);
       return {
         message: 'Query processed.',
         data: geminiResult.content,
@@ -65,8 +72,14 @@ export async function handleQuery(prevState: any, formData: FormData) {
 }
 
 // ─── GEMINI FLASH FOR CUSTOM PROMPTS ────────────────────────
-async function getGeminiFlashResponse(query: string): Promise<{ content: string; followUps: string[] }> {
+async function getGeminiFlashResponse(query: string, history: Array<{ role: string; content: string }> = []): Promise<{ content: string; followUps: string[] }> {
   const { ai } = await import('@/ai/genkit');
+
+  // Build conversation context from history (last 10 exchanges)
+  const recentHistory = history.slice(-20);
+  const conversationContext = recentHistory.length > 1
+    ? `\nCONVERSATION_HISTORY (use this for context on follow-up questions):\n${recentHistory.map(m => `${m.role === 'user' ? 'USER' : 'ENVISION_OS'}: ${m.content}`).join('\n')}\n`
+    : '';
 
   const { text } = await ai.generate({
     model: 'googleai/gemini-3.1-flash-preview',
@@ -74,14 +87,25 @@ async function getGeminiFlashResponse(query: string): Promise<{ content: string;
 
 You are responding to a project owner/developer who uses your platform to get real-time intelligence across their development portfolio.
 
-RESPONSE FORMAT:
+CAPABILITIES — you can answer questions about:
+- Project financials: budgets, cost variance, GMP tracking, change orders, contingency
+- Schedule: critical path, float, delays, weather impact, labor availability
+- Risk: tariffs, material prices, supply chain, regulatory changes
+- Communications: meeting summaries, email threads, RFI status, owner sentiment
+- Market intelligence: commodity prices, interest rates, labor indices, benchmarks
+- Construction methods: materials, techniques, code compliance, sustainability
+- General knowledge: real estate development, entitlements, financing, legal
+- Platform guidance: what Envision OS can do, how features work
+
+RESPONSE RULES:
 1. Start with "INTEL:" followed by a brief title
-2. Include specific numbers, percentages, dollar amounts (realistic for commercial construction)
-3. Include a CONFIDENCE INTERVAL for any prediction (format: "Confidence: XX% ± Y%")
-4. Frame analysis around how external market conditions (tariffs, material prices, labor rates, interest rates) affect THEIR project
-5. Be direct and data-driven — no filler
-6. Format like a classified intelligence briefing with section headers using ALL_CAPS
-7. End with EXACTLY 3 lines starting with ">>>" — these are predictive follow-up questions the owner should ask next. These MUST be about future scenarios involving external market forces (tariffs, commodity prices, labor market shifts, regulatory changes, weather patterns, interest rates).
+2. For data-driven queries: include specific numbers, percentages, dollar amounts (realistic for commercial construction)
+3. For predictions: include a CONFIDENCE INTERVAL (format: "Confidence: XX% ± Y%")
+4. Be direct and data-driven — no filler
+5. Format like a classified intelligence briefing with section headers using ALL_CAPS
+6. For general/conversational queries: still respond in character but be concise and helpful
+7. End with EXACTLY 3 lines starting with ">>>" — these are predictive follow-up questions the owner should ask next
+8. If the user references something from the conversation history, use that context to give a coherent follow-up answer
 
 PROJECT CONTEXT:
 - Project Phoenix: $48.2M mixed-use tower, 24 stories, downtown Los Angeles
@@ -92,7 +116,7 @@ PROJECT CONTEXT:
 - Active trades: structural steel, concrete, MEP, curtain wall, elevator, interior finishes
 - Owner: Pacific Development Group | GC: Turner-Phoenix JV
 - Subcontractors: Martinez Engineering (structural), Dynalectric (electrical), Pan-Pacific Mechanical (HVAC)
-
+${conversationContext}
 User query: ${query}`,
   });
 
@@ -339,21 +363,62 @@ RECOMMENDATION:
 
 // ─── GENERIC FALLBACK ───────────────────────────────────────
 function getGenericResponse(query: string): string {
-  return `INTEL: Query Processed
+  const q = query.toLowerCase();
 
-Analyzing: "${query}"
+  // Contextual fallback based on query topic
+  if (q.includes('hello') || q.includes('hi') || q.includes('hey') || q.includes('help')) {
+    return `INTEL: System Ready
 
-Envision OS has routed your query through the semantic intelligence engine. In production, this connects to:
+ENVISION_OS — Construction Intelligence Platform
 
-• Procore — Project management & field data
-• Sage Intacct — Financial & accounting data
-• BIM 360 — Model coordination & clash detection
-• Email/Slack/Zoom — Communication intelligence
-• Market feeds — Commodity prices, tariff schedules, labor indices
+Active project: Phoenix Tower — $48.2M mixed-use, 24 stories, DTLA
+Status: 74.2% complete | Budget: -1.2% favorable | Schedule: 9 days float
 
-Current demo mode is active. Connect your data sources in Settings to enable live intelligence.
+AVAILABLE_COMMANDS:
+• Cost/budget analysis — "What's our current cost variance?"
+• Schedule risk — "Show me the 60-day critical path risk"
+• Communications — "Summarize this week's owner communications"
+• Scenario modeling — "What if steel tariffs hit 25%?"
+• Market intelligence — Ask about commodity prices, labor rates, interest rates
+• General questions — Construction methods, code compliance, financing
 
-For predictive analysis with confidence intervals, try one of the suggested prompts below.`;
+Ask anything. I'll route it through the intelligence engine.`;
+  }
+
+  if (q.includes('who') || q.includes('what is') || q.includes('explain') || q.includes('how does')) {
+    return `INTEL: Knowledge Query — "${query}"
+
+SYSTEM_NOTE:
+Intelligence engine is processing in offline mode. For real-time answers with live data, the production system connects to 23 data routers across:
+
+• Procore — Project management, RFIs, submittals, daily logs
+• Sage Intacct — GL, AP/AR, job costing, budgets
+• BIM 360 — Model coordination, clash detection
+• Email/Slack/Zoom — Communication intelligence & sentiment
+• Market feeds — ENR indices, commodity futures, FRED rates
+
+PROJECT_SNAPSHOT:
+Phoenix Tower | $48.2M GMP | 74.2% complete | Aug 2026 target
+Current contingency: $1.24M (2.4%) | 14 open RFIs | 4 on critical path
+
+Try a specific question about the project — costs, schedule, risks, or communications.`;
+  }
+
+  return `INTEL: Query Received — "${query}"
+
+PROCESSING_STATUS:
+The intelligence engine is operating in demo mode. Your query has been logged for analysis.
+
+PROJECT_CONTEXT:
+Phoenix Tower | $48.2M mixed-use | 74.2% complete
+GMP: $51.8M | Committed: $41.7M | Expended: $38.1M
+Schedule: 9 days float on critical path | Target: Aug 2026
+
+For the richest responses, try asking about:
+• Financial analysis — costs, tariffs, budget variance, contingency
+• Schedule intelligence — critical path, delays, weather, labor
+• Owner communications — meetings, emails, unresolved items
+• Predictive scenarios — "What if..." market condition changes`;
 }
 
 const pdfExtractionSchema = z.object({
