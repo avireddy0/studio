@@ -1,21 +1,34 @@
 'use client'
 
 import { useMemo } from 'react'
+import {
+  Mail,
+  MessageSquare,
+  FileText,
+  MessageCircle,
+  Phone,
+  FileSpreadsheet,
+  FileSignature,
+  FileCode,
+  Camera,
+  Receipt,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
 // ─── DOCUMENT TYPES ─────────────────────────────────────────
-const FLOW_TYPES = [
-  { label: 'EMAIL', color: '#3B82F6' },
-  { label: 'TEXT',  color: '#8B5CF6' },
-  { label: 'DOC',   color: '#EF4444' },
-  { label: 'MSG',   color: '#F59E0B' },
-  { label: 'CALL',  color: '#10B981' },
-  { label: 'PDF',   color: '#DC2626' },
-  { label: 'XLS',   color: '#16A34A' },
-  { label: 'RFI',   color: '#D97706' },
-  { label: 'BIM',   color: '#7C3AED' },
-  { label: 'PHOTO', color: '#EC4899' },
-  { label: 'INV',   color: '#F97316' },
-] as const
+const FLOW_TYPES: { label: string; color: string; Icon: LucideIcon; style: 'doc' | 'icon' }[] = [
+  { label: 'EMAIL', color: '#3B82F6', Icon: Mail, style: 'doc' },
+  { label: 'TEXT',  color: '#8B5CF6', Icon: MessageSquare, style: 'icon' },
+  { label: 'DOC',   color: '#EF4444', Icon: FileText, style: 'doc' },
+  { label: 'MSG',   color: '#F59E0B', Icon: MessageCircle, style: 'icon' },
+  { label: 'CALL',  color: '#10B981', Icon: Phone, style: 'icon' },
+  { label: 'PDF',   color: '#DC2626', Icon: FileText, style: 'doc' },
+  { label: 'XLS',   color: '#16A34A', Icon: FileSpreadsheet, style: 'doc' },
+  { label: 'RFI',   color: '#D97706', Icon: FileSignature, style: 'doc' },
+  { label: 'BIM',   color: '#7C3AED', Icon: FileCode, style: 'doc' },
+  { label: 'PHOTO', color: '#EC4899', Icon: Camera, style: 'icon' },
+  { label: 'INV',   color: '#F97316', Icon: Receipt, style: 'doc' },
+]
 
 const ITEM_COUNT = 24
 const STAGGER = 0.14
@@ -60,9 +73,15 @@ export function IngestionFunnel() {
           } as React.CSSProperties}
         >
           <div className="w-16 h-11 md:w-[76px] md:h-[52px] bg-white rounded-[3px] shadow-lg shadow-black/30 relative overflow-hidden flex flex-col p-1.5 gap-[3px]">
-            <div className="w-full h-[2px] rounded-full bg-neutral-300/80" />
-            <div className="w-[72%] h-[2px] rounded-full bg-neutral-300/60" />
-            <div className="w-[88%] h-[2px] rounded-full bg-neutral-300/40" />
+            {item.style === 'doc' ? (
+              <>
+                <div className="w-full h-[2px] rounded-full bg-neutral-300/80" />
+                <div className="w-[72%] h-[2px] rounded-full bg-neutral-300/60" />
+                <div className="w-[88%] h-[2px] rounded-full bg-neutral-300/40" />
+              </>
+            ) : (
+              <item.Icon className="w-4 h-4 md:w-5 md:h-5 mx-auto mt-px" style={{ color: item.color }} strokeWidth={2} />
+            )}
             <div
               className="absolute bottom-[3px] right-[3px] px-1 py-[1px] rounded-[2px] text-[5.5px] md:text-[6.5px] font-bold text-white leading-none tracking-wider"
               style={{ backgroundColor: item.color }}
