@@ -135,7 +135,7 @@ export function ContextSummarizer() {
         </div>
 
         {/* ── Platform Signal Cards ───────────────────────── */}
-        <div className="shrink-0 grid grid-cols-2 md:grid-cols-3 gap-2">
+        <div className="shrink-0 flex flex-col gap-1.5">
           {SIGNALS.map((signal, i) => {
             const visible = i < visibleSignals
             return (
