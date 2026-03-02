@@ -10,12 +10,14 @@ import {
   FileSpreadsheet,
   FileSignature,
   FileCode,
-  Camera,
+  Image as ImageIcon,
   Receipt,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
 // ─── DOCUMENT TYPES ─────────────────────────────────────────
+// style: 'doc' = white paper card with skeleton lines
+// style: 'icon' = standalone icon (no card wrapper)
 const FLOW_TYPES: { label: string; color: string; Icon: LucideIcon; style: 'doc' | 'icon' }[] = [
   { label: 'EMAIL', color: '#3B82F6', Icon: Mail, style: 'doc' },
   { label: 'TEXT',  color: '#8B5CF6', Icon: MessageSquare, style: 'icon' },
@@ -26,7 +28,7 @@ const FLOW_TYPES: { label: string; color: string; Icon: LucideIcon; style: 'doc'
   { label: 'XLS',   color: '#16A34A', Icon: FileSpreadsheet, style: 'doc' },
   { label: 'RFI',   color: '#D97706', Icon: FileSignature, style: 'doc' },
   { label: 'BIM',   color: '#7C3AED', Icon: FileCode, style: 'doc' },
-  { label: 'PHOTO', color: '#EC4899', Icon: Camera, style: 'icon' },
+  { label: 'PHOTO', color: '#EC4899', Icon: ImageIcon, style: 'icon' },
   { label: 'INV',   color: '#F97316', Icon: Receipt, style: 'doc' },
 ]
 
@@ -72,23 +74,24 @@ export function IngestionFunnel() {
             top: `${item.topPct}%`,
           } as React.CSSProperties}
         >
-          <div className="w-16 h-11 md:w-[76px] md:h-[52px] bg-white rounded-[3px] shadow-lg shadow-black/30 relative overflow-hidden flex flex-col p-1.5 gap-[3px]">
-            {item.style === 'doc' ? (
-              <>
-                <div className="w-full h-[2px] rounded-full bg-neutral-300/80" />
-                <div className="w-[72%] h-[2px] rounded-full bg-neutral-300/60" />
-                <div className="w-[88%] h-[2px] rounded-full bg-neutral-300/40" />
-              </>
-            ) : (
-              <item.Icon className="w-4 h-4 md:w-5 md:h-5 mx-auto mt-px" style={{ color: item.color }} strokeWidth={2} />
-            )}
-            <div
-              className="absolute bottom-[3px] right-[3px] px-1 py-[1px] rounded-[2px] text-[5.5px] md:text-[6.5px] font-bold text-white leading-none tracking-wider"
-              style={{ backgroundColor: item.color }}
-            >
-              {item.label}
+          {item.style === 'doc' ? (
+            <div className="w-16 h-11 md:w-[76px] md:h-[52px] bg-white rounded-[3px] shadow-lg shadow-black/30 relative overflow-hidden flex flex-col p-1.5 gap-[3px]">
+              <div className="w-full h-[2px] rounded-full bg-neutral-300/80" />
+              <div className="w-[72%] h-[2px] rounded-full bg-neutral-300/60" />
+              <div className="w-[88%] h-[2px] rounded-full bg-neutral-300/40" />
+              <div
+                className="absolute bottom-[3px] right-[3px] px-1 py-[1px] rounded-[2px] text-[5.5px] md:text-[6.5px] font-bold text-white leading-none tracking-wider"
+                style={{ backgroundColor: item.color }}
+              >
+                {item.label}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex flex-col items-center gap-0.5">
+              <item.Icon className="w-7 h-7 md:w-9 md:h-9 drop-shadow-lg" style={{ color: item.color }} strokeWidth={1.8} />
+              <span className="text-[5px] md:text-[6px] font-bold tracking-wider text-white/70">{item.label}</span>
+            </div>
+          )}
         </div>
       ))}
 
