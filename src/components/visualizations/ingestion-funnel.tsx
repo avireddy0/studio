@@ -27,8 +27,8 @@ export function IngestionFunnel() {
     const items = []
     for (let i = 0; i < ITEM_COUNT; i++) {
       const type = FLOW_TYPES[i % FLOW_TYPES.length]
-      // Spread cards vertically across 12%–88% of the container
-      const topPct = 12 + (i / (ITEM_COUNT - 1)) * 76
+      // Spread cards vertically across 8%–92% for wide ">" funnel
+      const topPct = 8 + (i / (ITEM_COUNT - 1)) * 84
       // How far from center each card starts (converges to 50% Y)
       const yToCenter = Math.round((50 - topPct) * 2.5)
       const rotation = Math.round(Math.sin(i * 4.7) * 14)
