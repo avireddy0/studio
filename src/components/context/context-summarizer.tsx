@@ -54,6 +54,8 @@ export function ContextSummarizer() {
   const [visibleSignals, setVisibleSignals] = useState(0)
   const [processing, setProcessing] = useState(false)
   const [verdictVisible, setVerdictVisible] = useState(false)
+  const [approved, setApproved] = useState(false)
+  const [scenarioFaded, setScenarioFaded] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -66,6 +68,8 @@ export function ContextSummarizer() {
     setVisibleSignals(0)
     setProcessing(false)
     setVerdictVisible(false)
+    setApproved(false)
+    setScenarioFaded(false)
 
     const t: ReturnType<typeof setTimeout>[] = []
 
@@ -86,7 +90,23 @@ export function ContextSummarizer() {
       }, afterSignals + 2200)
     )
 
-    t.push(setTimeout(() => setCycle((c) => c + 1), afterSignals + 2200 + 9500))
+    const verdictTime = afterSignals + 2200
+
+    // Fade out scenario, show approved
+    t.push(
+      setTimeout(() => {
+        setScenarioFaded(true)
+      }, verdictTime + 6000)
+    )
+
+    t.push(
+      setTimeout(() => {
+        setApproved(true)
+      }, verdictTime + 6800)
+    )
+
+    // Restart cycle
+    t.push(setTimeout(() => setCycle((c) => c + 1), verdictTime + 6800 + 4000))
 
     return () => t.forEach(clearTimeout)
   }, [mounted, cycle])
@@ -111,98 +131,127 @@ export function ContextSummarizer() {
       </div>
 
       {/* Scenario Flow */}
-      <div className="flex-1 min-h-0 flex flex-col gap-2 md:gap-2.5 overflow-hidden">
-        {/* ── Alert Banner ────────────────────────────────── */}
+      <div className="flex-1 min-h-0 relative overflow-hidden">
+        {/* ── Scenario Content ─────────────────────────────── */}
         <div
-          className="shrink-0 p-2.5 md:p-3 rounded-lg border border-red-200 bg-red-50/80 transition-all duration-600"
-          style={{
-            opacity: alertVisible ? 1 : 0,
-            transform: alertVisible ? "translateY(0)" : "translateY(-8px)",
-          }}
+          className="flex flex-col gap-2 md:gap-2.5 transition-opacity duration-700"
+          style={{ opacity: scenarioFaded ? 0 : 1 }}
         >
-          <div className="flex items-center gap-2 mb-0.5">
-            <div className="relative flex shrink-0">
-              <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-              <span className="absolute inset-0 w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
-            </div>
-            <span className="text-[9px] md:text-[10px] font-mono font-bold text-red-600 uppercase tracking-wider">
-              Schedule Risk Detected
-            </span>
-          </div>
-          <p className="text-[11px] md:text-xs text-red-800 font-medium">
-            Concrete pour delayed 2 weeks — Tower B Foundation
-          </p>
-        </div>
-
-        {/* ── Platform Signal Cards ───────────────────────── */}
-        <div className="shrink-0 flex flex-col gap-1.5">
-          {SIGNALS.map((signal, i) => {
-            const visible = i < visibleSignals
-            return (
-              <div
-                key={signal.platform}
-                className="p-2.5 md:p-3 rounded-lg bg-white border border-zinc-200 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-500"
-                style={{
-                  opacity: visible ? 1 : 0,
-                  transform: visible ? "translateY(0)" : "translateY(10px)",
-                  borderLeftWidth: 3,
-                  borderLeftColor: visible ? signal.color : "transparent",
-                }}
-              >
-                <div className="flex items-center gap-1.5 mb-1">
-                  <span
-                    className="text-[8px] md:text-[9px] font-mono font-bold uppercase tracking-wider"
-                    style={{ color: signal.color }}
-                  >
-                    {signal.platform}
-                  </span>
-                  <span className="text-[8px] md:text-[9px] font-mono text-zinc-400 hidden sm:inline">
-                    {signal.type}
-                  </span>
-                </div>
-                <p className="text-[10px] md:text-[11px] text-zinc-600 leading-snug line-clamp-2">
-                  {signal.message}
-                </p>
+          {/* Alert Banner */}
+          <div
+            className="shrink-0 p-2.5 md:p-3 rounded-lg border border-red-200 bg-red-50/80 transition-all duration-600"
+            style={{
+              opacity: alertVisible ? 1 : 0,
+              transform: alertVisible ? "translateY(0)" : "translateY(-8px)",
+            }}
+          >
+            <div className="flex items-center gap-2 mb-0.5">
+              <div className="relative flex shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                <span className="absolute inset-0 w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
               </div>
-            )
-          })}
-        </div>
-
-        {/* ── Processing Indicator ────────────────────────── */}
-        <div
-          className="shrink-0 flex items-center justify-center gap-2 py-2 transition-all duration-500"
-          style={{ opacity: processing ? 1 : 0 }}
-        >
-          <div className="flex gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#007C5A] animate-bounce" style={{ animationDelay: "0ms" }} />
-            <span className="w-1.5 h-1.5 rounded-full bg-[#007C5A] animate-bounce" style={{ animationDelay: "150ms" }} />
-            <span className="w-1.5 h-1.5 rounded-full bg-[#007C5A] animate-bounce" style={{ animationDelay: "300ms" }} />
-          </div>
-          <span className="text-[9px] md:text-[10px] font-mono text-[#007C5A] font-medium tracking-wide">
-            Correlating 5 signals across platforms...
-          </span>
-        </div>
-
-        {/* ── Envision OS Verdict ─────────────────────────── */}
-        <div
-          className="shrink-0 p-3 md:p-4 rounded-lg border-2 border-[#007C5A]/25 bg-gradient-to-r from-[#007C5A]/[0.04] to-[#007C5A]/[0.08] transition-all duration-700"
-          style={{
-            opacity: verdictVisible ? 1 : 0,
-            transform: verdictVisible ? "translateY(0)" : "translateY(12px)",
-          }}
-        >
-          <div className="flex items-center gap-2 mb-1.5">
-            <div className="relative flex shrink-0">
-              <span className="w-2 h-2 rounded-full bg-[#007C5A]" />
-              <span className="absolute inset-0 w-2 h-2 rounded-full bg-[#007C5A] animate-ping" />
+              <span className="text-[9px] md:text-[10px] font-mono font-bold text-red-600 uppercase tracking-wider">
+                Schedule Risk Detected
+              </span>
             </div>
-            <span className="text-[9px] md:text-[10px] font-mono font-bold text-[#007C5A] uppercase tracking-wider">
-              Envision OS — Verified Intelligence
+            <p className="text-[11px] md:text-xs text-red-800 font-medium">
+              Concrete pour delayed 2 weeks — Tower B Foundation
+            </p>
+          </div>
+
+          {/* Platform Signal Cards */}
+          <div className="shrink-0 flex flex-col gap-1.5">
+            {SIGNALS.map((signal, i) => {
+              const visible = i < visibleSignals
+              return (
+                <div
+                  key={signal.platform}
+                  className="p-2.5 md:p-3 rounded-lg bg-white border border-zinc-200 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-500"
+                  style={{
+                    opacity: visible ? 1 : 0,
+                    transform: visible ? "translateY(0)" : "translateY(10px)",
+                    borderLeftWidth: 3,
+                    borderLeftColor: visible ? signal.color : "transparent",
+                  }}
+                >
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <span
+                      className="text-[8px] md:text-[9px] font-mono font-bold uppercase tracking-wider"
+                      style={{ color: signal.color }}
+                    >
+                      {signal.platform}
+                    </span>
+                    <span className="text-[8px] md:text-[9px] font-mono text-zinc-400 hidden sm:inline">
+                      {signal.type}
+                    </span>
+                  </div>
+                  <p className="text-[10px] md:text-[11px] text-zinc-600 leading-snug line-clamp-2">
+                    {signal.message}
+                  </p>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Processing Indicator */}
+          <div
+            className="shrink-0 flex items-center justify-center gap-2 py-2 transition-all duration-500"
+            style={{ opacity: processing ? 1 : 0 }}
+          >
+            <div className="flex gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#007C5A] animate-bounce" style={{ animationDelay: "0ms" }} />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#007C5A] animate-bounce" style={{ animationDelay: "150ms" }} />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#007C5A] animate-bounce" style={{ animationDelay: "300ms" }} />
+            </div>
+            <span className="text-[9px] md:text-[10px] font-mono text-[#007C5A] font-medium tracking-wide">
+              Correlating 5 signals across platforms...
             </span>
           </div>
-          <p className="text-[11px] md:text-xs text-zinc-800 font-medium leading-relaxed">
-            {VERDICT}
-          </p>
+
+          {/* Envision OS Verdict */}
+          <div
+            className="shrink-0 p-3 md:p-4 rounded-lg border-2 border-[#007C5A]/25 bg-gradient-to-r from-[#007C5A]/[0.04] to-[#007C5A]/[0.08] transition-all duration-700"
+            style={{
+              opacity: verdictVisible ? 1 : 0,
+              transform: verdictVisible ? "translateY(0)" : "translateY(12px)",
+            }}
+          >
+            <div className="flex items-center gap-2 mb-1.5">
+              <div className="relative flex shrink-0">
+                <span className="w-2 h-2 rounded-full bg-[#007C5A]" />
+                <span className="absolute inset-0 w-2 h-2 rounded-full bg-[#007C5A] animate-ping" />
+              </div>
+              <span className="text-[9px] md:text-[10px] font-mono font-bold text-[#007C5A] uppercase tracking-wider">
+                Envision OS — Verified Intelligence
+              </span>
+            </div>
+            <p className="text-[11px] md:text-xs text-zinc-800 font-medium leading-relaxed">
+              {VERDICT}
+            </p>
+          </div>
+        </div>
+
+        {/* ── Approved Overlay ─────────────────────────────── */}
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-700"
+          style={{ opacity: approved ? 1 : 0, pointerEvents: approved ? "auto" : "none" }}
+        >
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 border-[#007C5A] flex items-center justify-center bg-[#007C5A]/5">
+              <svg
+                className="w-8 h-8 md:w-10 md:h-10 text-[#007C5A]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <span className="text-sm md:text-base font-mono font-bold text-[#007C5A] uppercase tracking-[0.3em]">
+              Approved
+            </span>
+          </div>
         </div>
       </div>
     </div>
