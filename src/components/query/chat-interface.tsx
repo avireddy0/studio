@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useActionState, startTransition } from "react";
+import { useState, useRef, useEffect, useActionState, startTransition, useCallback } from "react";
 import { useFormStatus } from "react-dom";
 import { handleQuery } from "@/lib/actions";
 import { Input } from "@/components/ui/input";
@@ -27,8 +27,8 @@ const INITIAL_PROMPTS = [
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <button 
-      type="submit" 
+    <button
+      type="submit"
       disabled={pending}
       className="bg-[#007C5A] text-white hover:bg-[#007C5A]/90 rounded-full h-8 w-8 flex items-center justify-center transition-all shrink-0"
     >
@@ -39,20 +39,23 @@ function SubmitButton() {
 
 const INITIAL_MESSAGE: Message = {
   role: "ai",
-  content: "ENVISION OS online. Phoenix — 74.2% complete. Awaiting tasking."
+  content: "ENVISION OS online. Phoenix \u2014 74.2% complete. Awaiting tasking.",
 };
 
-const STORAGE_KEY = 'envision-chat-history';
+const STORAGE_KEY = "envision-chat-history";
 
 export function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [followUpPrompts, setFollowUpPrompts] = useState<string[] | null>(null);
   const [hydrated, setHydrated] = useState(false);
+  const [streamingIndex, setStreamingIndex] = useState<number | null>(null);
+  const [showFollowUps, setShowFollowUps] = useState(true);
 
   const [formState, formAction] = useActionState(handleQuery, initialState);
   const formRef = useRef<HTMLFormElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const pendingFollowUps = useRef<string[] | null>(null);
 
   // Restore messages from localStorage on mount
   useEffect(() => {
@@ -71,50 +74,77 @@ export function ChatInterface() {
   // Persist messages to localStorage (skip status messages)
   useEffect(() => {
     if (!hydrated) return;
-    const toSave = messages.filter(m => m.role !== 'status');
+    const toSave = messages.filter((m) => m.role !== "status");
     localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
   }, [messages, hydrated]);
 
   useEffect(() => {
     if (formState?.data) {
-      setMessages((prev) => [
-        ...prev.filter(m => m.role !== 'status'),
-        { role: "ai", content: formState.data },
-      ]);
-      if (formState.followUps) {
-        setFollowUpPrompts(formState.followUps);
-      }
+      setMessages((prev) => {
+        const filtered = prev.filter((m) => m.role !== "status");
+        const newIndex = filtered.length;
+        setStreamingIndex(newIndex);
+        setShowFollowUps(false);
+        if (formState.followUps) {
+          pendingFollowUps.current = formState.followUps;
+        }
+        return [...filtered, { role: "ai", content: formState.data }];
+      });
     }
     if (formState?.error) {
-       toast({
+      toast({
         variant: "destructive",
         title: "COMMS FAILURE",
         description: "Routing interrupted. Retry.",
       });
-      setMessages((prev) => prev.filter(m => m.role !== 'status'));
+      setMessages((prev) => prev.filter((m) => m.role !== "status"));
+      setShowFollowUps(true);
     }
   }, [formState, toast]);
 
-  useEffect(() => {
+  const scrollToBottom = useCallback(() => {
     if (scrollAreaRef.current) {
-        const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
-        if (viewport) {
-            viewport.scrollTop = viewport.scrollHeight;
-        }
+      const viewport = scrollAreaRef.current.querySelector(
+        "[data-radix-scroll-area-viewport]"
+      );
+      if (viewport) {
+        viewport.scrollTo({ top: viewport.scrollHeight, behavior: "smooth" });
+      }
     }
-  }, [messages]);
+  }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, scrollToBottom]);
+
+  const handleStreamComplete = useCallback(() => {
+    setStreamingIndex(null);
+    if (pendingFollowUps.current) {
+      setFollowUpPrompts(pendingFollowUps.current);
+      pendingFollowUps.current = null;
+    }
+    setTimeout(() => setShowFollowUps(true), 150);
+  }, []);
 
   const handleFormSubmit = async (formData: FormData) => {
     const query = formData.get("query") as string;
     if (query.trim()) {
-      // Attach conversation history for AI context
+      setStreamingIndex(null); // cancel any in-progress streaming
+
       const history = messages
-        .filter(m => m.role !== 'status')
-        .map(m => ({ role: m.role, content: typeof m.content === 'string' ? m.content : JSON.stringify(m.content) }));
+        .filter((m) => m.role !== "status")
+        .map((m) => ({
+          role: m.role,
+          content:
+            typeof m.content === "string"
+              ? m.content
+              : JSON.stringify(m.content),
+        }));
       formData.append("history", JSON.stringify(history));
 
       setMessages((prev) => [...prev, { role: "user", content: query }]);
       setMessages((prev) => [...prev, { role: "status", content: "ROUTING..." }]);
+      setShowFollowUps(false);
 
       startTransition(() => {
         formAction(formData);
@@ -134,26 +164,39 @@ export function ChatInterface() {
     <div className="flex h-full flex-col relative z-10 bg-white">
       <ScrollArea className="flex-1 px-4 md:px-6 py-4" ref={scrollAreaRef}>
         <div className="max-w-3xl mx-auto w-full space-y-4">
-            {messages.map((msg, index) => <ChatMessage key={index} message={msg} />)}
+          {messages.map((msg, index) => (
+            <ChatMessage
+              key={index}
+              message={msg}
+              isStreaming={index === streamingIndex}
+              onStreamComplete={index === streamingIndex ? handleStreamComplete : undefined}
+              onLineReveal={index === streamingIndex ? scrollToBottom : undefined}
+            />
+          ))}
         </div>
       </ScrollArea>
 
       <div className="p-4 border-t bg-white/95 backdrop-blur-xl border-black/5">
         <div className="max-w-3xl mx-auto flex gap-2 overflow-x-auto pb-4 no-scrollbar">
-            {(followUpPrompts || INITIAL_PROMPTS).map((prompt, i) => (
-                <button
-                    key={`${followUpPrompts ? 'fu' : 'init'}-${i}`}
-                    onClick={() => handleSuggestedClick(prompt)}
-                    className={cn(
-                      "px-3 py-1 text-[9px] font-bold uppercase tracking-widest transition-all whitespace-nowrap rounded-full border",
-                      followUpPrompts
-                        ? "bg-primary/5 border-primary/20 text-primary/80 hover:bg-primary/10"
-                        : "bg-[#F2F2F7] border-black/5 text-black/60 hover:bg-[#E5E5EA]"
-                    )}
-                >
-                    {prompt}
-                </button>
-            ))}
+          {(followUpPrompts || INITIAL_PROMPTS).map((prompt, i) => (
+            <button
+              key={`${followUpPrompts ? "fu" : "init"}-${i}`}
+              onClick={() => handleSuggestedClick(prompt)}
+              disabled={!showFollowUps}
+              style={{ transitionDelay: showFollowUps ? `${i * 80}ms` : "0ms" }}
+              className={cn(
+                "px-3 py-1 text-[9px] font-bold uppercase tracking-widest whitespace-nowrap rounded-full border transition-all duration-300",
+                showFollowUps
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-1 pointer-events-none",
+                followUpPrompts
+                  ? "bg-primary/5 border-primary/20 text-primary/80 hover:bg-primary/10"
+                  : "bg-[#F2F2F7] border-black/5 text-black/60 hover:bg-[#E5E5EA]"
+              )}
+            >
+              {prompt}
+            </button>
+          ))}
         </div>
 
         <form
