@@ -24,3 +24,5 @@
 {"t":0,"agent":"a856f2b","agent_type":"unknown","event":"agent_stop","success":true}
 {"t":0,"agent":"a7ceaef","agent_type":"unknown","event":"agent_stop","success":true}
 {"t":0,"agent":"a7384ec","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"a4dd7af","agent_type":"Explore","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a4dd7af","agent_type":"Explore","event":"agent_stop","success":true,"duration_ms":1521}

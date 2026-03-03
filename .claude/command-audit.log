@@ -1397,3 +1397,35 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 EOF
 )"
 git push
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null || true
+npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002" 2>/dev/null && sleep 12 && xcrun simctl io "$UDID" screenshot /tmp/hero-spacing.png 2>/dev/null
+git add 'src/app/(dashboard)/page.tsx' && git commit -m "$(cat <<'EOF'
+fix: even vertical spacing above "Until now." in hero section
+
+Separates "Until now." into its own paragraph element with matching mb-2 gap
+to create consistent vertical rhythm between all three subtitle lines.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+npm run build 2>&1 | tail -20
+git add src/components/query/chat-interface.tsx src/lib/actions.ts && git commit -m "$(cat <<'EOF'
+feat: add session history, conversation context, and improved fallbacks to chat interface
+
+- localStorage persistence: chat messages survive page reloads
+- Conversation history passed to Gemini via formData for contextual follow-ups
+- Expanded Gemini system prompt handles general questions (methods, financing, code compliance)
+- Contextual generic fallbacks based on query topic instead of generic "connect data sources"
+- History limited to last 20 messages to keep prompt size manageable
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/query" 2>/dev/null && sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/chat-tariffs.png 2>/dev/null
+lsof -ti:9002 | xargs kill -9 2>/dev/null || true
+npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002/query
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/query" 2>/dev/null && sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/chat-query.png 2>/dev/null

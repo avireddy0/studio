@@ -139,8 +139,8 @@
   "hotPaths": [
     {
       "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 157,
-      "lastAccessed": 1772426395264,
+      "accessCount": 159,
+      "lastAccessed": 1772439825212,
       "type": "file"
     },
     {
@@ -175,8 +175,8 @@
     },
     {
       "path": "src/components/query/chat-interface.tsx",
-      "accessCount": 17,
-      "lastAccessed": 1772419806930,
+      "accessCount": 20,
+      "lastAccessed": 1772440053800,
       "type": "file"
     },
     {
@@ -192,16 +192,16 @@
       "type": "file"
     },
     {
+      "path": "src/lib/actions.ts",
+      "accessCount": 9,
+      "lastAccessed": 1772440126068,
+      "type": "file"
+    },
+    {
       "path": "src",
       "accessCount": 6,
       "lastAccessed": 1772420918438,
       "type": "directory"
-    },
-    {
-      "path": "src/lib/actions.ts",
-      "accessCount": 5,
-      "lastAccessed": 1772414207198,
-      "type": "file"
     },
     {
       "path": "src/components/ui/table.tsx",
@@ -229,14 +229,14 @@
     },
     {
       "path": "src/components/query/chat-message.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1772413711357,
+      "accessCount": 3,
+      "lastAccessed": 1772439950476,
       "type": "file"
     },
     {
       "path": "src/ai/flows/query-semantic-routing.ts",
-      "accessCount": 2,
-      "lastAccessed": 1772413976721,
+      "accessCount": 3,
+      "lastAccessed": 1772439951394,
       "type": "file"
     },
     {
@@ -244,6 +244,12 @@
       "accessCount": 2,
       "lastAccessed": 1772419436734,
       "type": "directory"
+    },
+    {
+      "path": "src/ai/genkit.ts",
+      "accessCount": 2,
+      "lastAccessed": 1772439952492,
+      "type": "file"
     },
     {
       "path": "package.json",
@@ -282,16 +288,16 @@
       "type": "file"
     },
     {
-      "path": "src/ai/genkit.ts",
-      "accessCount": 1,
-      "lastAccessed": 1772413976128,
-      "type": "file"
-    },
-    {
       "path": "src/app",
       "accessCount": 1,
       "lastAccessed": 1772418250809,
       "type": "directory"
+    },
+    {
+      "path": "src/app/(dashboard)/query/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1772439950848,
+      "type": "file"
     }
   ],
   "userDirectives": []
