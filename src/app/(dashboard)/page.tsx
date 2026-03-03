@@ -255,7 +255,7 @@ export default function UnifiedPage() {
             </div>
 
             <div className="mb-4 md:mb-8 shrink-0">
-              <h2 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Intelligence Command.</h2>
+              <h2 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Command Central.</h2>
               <p className="text-black/60 max-w-xl text-base sm:text-lg font-medium mt-2 md:mt-4">Welcome to the future of Development.</p>
             </div>
 

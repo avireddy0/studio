@@ -5,7 +5,7 @@ import { DashboardHeader } from "@/components/dashboard-header";
 export default function QueryPage() {
   return (
     <div className="flex h-screen w-full flex-col bg-white">
-      <DashboardHeader title="Intelligence Terminal" />
+      <DashboardHeader title="Command Central" />
       <main className="flex-1 overflow-hidden relative">
         {/* SUBTLE HUD OVERLAY FOR WHITE BACKGROUND */}
         <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03]" style={{ 

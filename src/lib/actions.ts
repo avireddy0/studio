@@ -186,7 +186,7 @@ ACTIONS:
   }
 
   // COMMUNICATIONS / MEETINGS / OWNER
-  if (q.includes('comm') || q.includes('meeting') || q.includes('owner') || q.includes('summarize') || q.includes('email') || q.includes('slack') || q.includes('flag') || q.includes('unresolved') || q.includes('minute')) {
+  if (q.includes('comm') || q.includes('meeting') || q.includes('owner') || q.includes('summarize') || q.includes('email') || q.includes('slack') || q.includes('flag') || q.includes('unresolved') || q.includes('minute') || q.includes('debrief')) {
     return {
       content: `COMMS_DIGEST — Week Feb 24 | Sentiment: ↓4% NEGATIVE
 
