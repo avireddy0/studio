@@ -18,10 +18,10 @@ const initialState = {
 };
 
 const INITIAL_PROMPTS = [
-  "Costs",
-  "Tariffs",
-  "Schedule",
-  "Minutes",
+  "Budget & variance",
+  "Tariff exposure",
+  "Schedule risks",
+  "Comms digest",
 ];
 
 function SubmitButton() {

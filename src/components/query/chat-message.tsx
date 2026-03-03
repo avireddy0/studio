@@ -158,6 +158,7 @@ export function ChatMessage({ message, isStreaming, onStreamComplete, onLineReve
             : "text-[13px] leading-tight font-medium",
           isAi && isDashboard && "font-mono text-[11px]"
         )}
+        style={isDashboard ? undefined : { fontFamily: "'Avenir Next', Avenir, system-ui, -apple-system, sans-serif" }}
       >
         {typeof content === "string" ? (
           isStreaming ? (
