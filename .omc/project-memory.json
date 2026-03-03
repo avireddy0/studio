@@ -138,15 +138,69 @@
   },
   "hotPaths": [
     {
+      "path": "src/components/sections/predict-section.tsx",
+      "accessCount": 44,
+      "lastAccessed": 1772530344834,
+      "type": "file"
+    },
+    {
       "path": "src/components/query/chat-interface.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1772521606062,
+      "accessCount": 12,
+      "lastAccessed": 1772522255341,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(dashboard)/page.tsx",
+      "accessCount": 6,
+      "lastAccessed": 1772527365618,
       "type": "file"
     },
     {
       "path": "src/components/query/chat-message.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1772522088770,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/actions.ts",
+      "accessCount": 3,
+      "lastAccessed": 1772522272093,
+      "type": "file"
+    },
+    {
+      "path": "src/components/sections/feasibility-section.tsx",
       "accessCount": 2,
-      "lastAccessed": 1772515799368,
+      "lastAccessed": 1772523832341,
+      "type": "file"
+    },
+    {
+      "path": "src/components/context/context-summarizer.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1772523866447,
+      "type": "file"
+    },
+    {
+      "path": "src/app/layout.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1772522054475,
+      "type": "file"
+    },
+    {
+      "path": "src",
+      "accessCount": 1,
+      "lastAccessed": 1772522416283,
+      "type": "directory"
+    },
+    {
+      "path": "src/app/(dashboard)/query/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1772522496443,
+      "type": "file"
+    },
+    {
+      "path": ".claude/handoff.md",
+      "accessCount": 1,
+      "lastAccessed": 1772523669666,
       "type": "file"
     }
   ],

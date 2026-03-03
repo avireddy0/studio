@@ -23,6 +23,7 @@ import { ChatInterface } from "@/components/query/chat-interface";
 import { ContextSummarizer } from "@/components/context/context-summarizer";
 import { TacticalBimOverlay } from "@/components/visualizations/tactical-bim-overlay";
 import { FeasibilitySection } from "@/components/sections/feasibility-section";
+import { PredictSection } from "@/components/sections/predict-section";
 import { IngestionFunnel } from "@/components/visualizations/ingestion-funnel";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
@@ -327,7 +328,15 @@ export default function UnifiedPage() {
         </div>
       </section>
 
-      {/* SECTION 06: SITE + DOCUMENTS (OBSIDIAN) */}
+      {/* SECTION 06: PREDICTIVE INTELLIGENCE (WHITE) */}
+      <section id="predict" className="snap-start relative h-[calc(100vh-64px)] w-full bg-white text-black flex flex-col items-center justify-center p-4 sm:p-6 md:p-12 overflow-hidden shrink-0">
+        <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] tactical-grid" />
+        <div className="relative z-10 w-full max-w-7xl h-full flex flex-col gap-4 md:gap-8 overflow-hidden">
+          <PredictSection />
+        </div>
+      </section>
+
+      {/* SECTION 07: SITE + DOCUMENTS (OBSIDIAN) */}
       <section id="site-docs" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center p-4 sm:p-6 md:p-12 shrink-0 overflow-hidden">
         <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
         <div className="relative z-10 w-full max-w-7xl h-full flex flex-col gap-4 md:gap-8 overflow-hidden">

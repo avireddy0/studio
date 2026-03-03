@@ -1483,3 +1483,342 @@ npm run dev
 sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
 curl -s http://localhost:9002/query | head -50
 cat /private/tmp/claude-501/-Users-avireddy-GitHub-studio/tasks/bm4d5555p.output 2>/dev/null | tail -30
+npm run build 2>&1 | tail -20
+git add src/components/query/chat-interface.tsx src/components/query/chat-message.tsx && git commit -m "$(cat <<'EOF'
+fix: resolve React state anti-pattern and limit bold to headers only
+
+- Replace index-based streaming tracking with boolean flag to avoid
+  calling setState inside setState updater (React strict mode error)
+- Bold font (font-semibold) now only on ALL_CAPS section headers
+- AI body text reverted to normal weight, user messages keep font-medium
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)"
+git push
+lsof -ti:9002 | xargs kill -9 2>/dev/null; echo "killed"
+npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+npm run build 2>&1 | tail -20
+git add src/components/query/chat-interface.tsx src/components/query/chat-message.tsx && git commit -m "$(cat <<'EOF'
+feat: Avenir font in chat bubbles, descriptive initial prompts
+
+- Chat bubble text uses Avenir Next/Avenir with system-ui fallback
+  (native on macOS/iOS, graceful degradation elsewhere)
+- Initial prompt buttons now more descriptive: Budget & variance,
+  Tariff exposure, Schedule risks, Comms digest
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+lsof -ti:9002 | xargs kill -9 2>/dev/null; echo "killed"
+npm run dev
+npm run build 2>&1 | tail -10
+npm run build 2>&1 | tail -10
+git add src/components/query/chat-interface.tsx src/lib/actions.ts 'src/app/(dashboard)/page.tsx' 'src/app/(dashboard)/query/page.tsx' && git commit -m "$(cat <<'EOF'
+feat: rename to Command Central, update initial prompts
+
+- "Intelligence Command." → "Command Central." on landing page
+- "Intelligence Terminal" → "Command Central" on query page header
+- Initial prompts: On Budget?, On Schedule?, Quick Debrief, What If?
+- Added "debrief" to comms pattern matcher for Quick Debrief button
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+lsof -ti:9002 | xargs kill -9 2>/dev/null && echo "killed"
+npm run dev
+npm run build 2>&1 | tail -30
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+rm -f /Users/avireddy/GitHub/studio/.omc/state/ecomode-state.json 2>/dev/null; echo "Ecomode cancelled"
+rm -f /Users/avireddy/GitHub/studio/.omc/state/ecomode-state.json /Users/avireddy/GitHub/studio/.omc/state/ecomode*.json 2>/dev/null && ls /Users/avireddy/GitHub/studio/.omc/state/ecomode* 2>&1 || echo "All ecomode state files removed"
+find /Users/avireddy/GitHub/studio/.omc/state/ -name '*ecomode*' -o -name '*eco*' 2>/dev/null; find /Users/avireddy/.claude/ -name '*ecomode*' 2>/dev/null; cat /Users/avireddy/GitHub/studio/.omc/state/subagent-tracking.json 2>/dev/null | head -5
+rm -f /Users/avireddy/GitHub/studio/.omc/state/sessions/86f45919-80c4-44dc-b069-71a075f5fcdb/ecomode-state.json && echo "Session ecomode state removed"
+curl -s "https://www.youtube.com/results?search_query=city+council+meeting+public+hearing+2024" | grep -oP '"videoId":"[^"]+' | head -10 | sed 's/"videoId":"//'
+curl -s "https://www.youtube.com/results?search_query=city+council+meeting+public+hearing+planning+commission" | grep -o '"videoId":"[^"]*"' | head -10 | sed 's/"videoId":"//;s/"//'
+curl -s -o /dev/null -w "%{http_code}" "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=vZbmjBaFfXU&format=json" && echo " - vZbmjBaFfXU"; curl -s -o /dev/null -w "%{http_code}" "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=0Rqq-F9Ng5g&format=json" && echo " - 0Rqq-F9Ng5g"
+curl -s -o /dev/null -w "%{http_code}" "https://media.giphy.com/media/UU1iSAyW9dUqwnvhTO/giphy.gif" && echo " Zuckerberg"; curl -s -o /dev/null -w "%{http_code}" "https://media.giphy.com/media/S9zKhuwwZSBuNzgim0/giphy.gif" && echo " Yovanovitch"; curl -s -o /dev/null -w "%{http_code}" "https://media.giphy.com/media/lTSBSHbsB6FaoNLC61/giphy.gif" && echo " Mueller"; curl -s -o /dev/null -w "%{http_code}" "https://media.giphy.com/media/t4S1cweq5Jfs8Vnu3Z/giphy.gif" && echo " Crawford"
+curl -s "https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=city+council+meeting&limit=10&rating=g" | python3 -c "import sys,json; data=json.load(sys.stdin); [print(g['id'], g['title'], g['images']['original']['url'][:80]) for g in data['data']]" 2>/dev/null || echo "API failed"
+curl -s "https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=town+hall+meeting+podium&limit=10&rating=g" | python3 -c "import sys,json; data=json.load(sys.stdin); [print(g['id'], g['title'], g['images']['original']['url'][:80]) for g in data['data']]" 2>/dev/null || echo "API failed"
+curl -s "https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=planning+commission+hearing&limit=10&rating=g" | python3 -c "import sys,json; data=json.load(sys.stdin); [print(g['id'], g['title'], g['images']['original']['url'][:80]) for g in data['data']]" 2>/dev/null || echo "API failed"
+curl -s "https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=mayor+speaking&limit=10&rating=g" | python3 -c "
+import sys,json
+data=json.load(sys.stdin)
+print(f'Total: {len(data.get(\"data\",[]))} results')
+for g in data.get('data',[]):
+    print(f'{g[\"id\"]} | {g[\"title\"][:50]} | {g[\"images\"][\"original\"][\"url\"][:90]}')
+"
+curl -s "https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=public+hearing+government&limit=10&rating=g" | python3 -c "
+import sys,json
+data=json.load(sys.stdin)
+print(f'Total: {len(data.get(\"data\",[]))} results')
+for g in data.get('data',[]):
+    print(f'{g[\"id\"]} | {g[\"title\"][:50]} | {g[\"images\"][\"original\"][\"url\"][:90]}')
+"
+curl -s "https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=council+member+speaking+podium&limit=10&rating=g" | python3 -c "
+import sys,json
+data=json.load(sys.stdin)
+print(f'Total: {len(data.get(\"data\",[]))} results')
+for g in data.get('data',[]):
+    print(f'{g[\"id\"]} | {g[\"title\"][:50]} | {g[\"images\"][\"original\"][\"url\"][:90]}')
+"
+# Test some known city council meeting video IDs
+for vid in "LJ1mFGGsUAg" "4Z2Z23SAFVA" "7mMXPJQMHis" "QnBqAzJXVGo"; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=$vid&format=json")
+  if [ "$code" = "200" ]; then
+    title=$(curl -s "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=$vid&format=json" | python3 -c "import sys,json; print(json.load(sys.stdin).get('title','?'))" 2>/dev/null)
+    echo "OK $vid — $title"
+  else
+    echo "NO $vid ($code)"
+  fi
+done
+# Search YouTube directly for city council meeting videos and extract video IDs
+curl -s "https://www.youtube.com/results?search_query=city+council+planning+commission+meeting+public+hearing" | grep -oP 'watch\?v=\K[^"&]+' | head -15 | sort -u
+# Search YouTube directly for city council meeting videos and extract video IDs (macOS grep)
+curl -s "https://www.youtube.com/results?search_query=city+council+planning+commission+public+hearing+2024" | grep -oE 'watch\?v=[A-Za-z0-9_-]{11}' | sed 's/watch?v=//' | sort -u | head -15
+# Verify video IDs and get titles - batch check
+for vid in 07fRHaCJflU 0UWXRR3P09s 1N6w33ul-zA 2FH7DCT5D3Y 3oYzqWGx3w4 6e-5qKm3gvU 7f-4qtrZVmc 7viQWZvRjSM 9GPlXlI87pY ACo2A94nLV0; do
+  result=$(curl -s "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=$vid&format=json")
+  code=$?
+  title=$(echo "$result" | python3 -c "import sys,json; print(json.load(sys.stdin).get('title','FAIL'))" 2>/dev/null || echo "FAIL")
+  echo "$vid — $title"
+done
+# Check if oembed is working at all
+curl -s "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=dQw4w9WgXcQ&format=json" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('title','FAIL'))" 2>/dev/null
+# Try fetching actual YouTube page to extract video info
+curl -s "https://www.youtube.com/results?search_query=city+council+planning+commission+public+hearing" -H "User-Agent: Mozilla/5.0" | python3 -c "
+import sys, re, json
+html = sys.stdin.read()
+# Find video renderer data
+matches = re.findall(r'\"videoId\":\"([A-Za-z0-9_-]{11})\".*?\"text\":\"([^\"]{10,80})\"', html[:200000])
+seen = set()
+for vid, title in matches[:20]:
+    if vid not in seen:
+        seen.add(vid)
+        print(f'{vid} | {title}')
+" 2>/dev/null | head -15
+# Try fetching a city government YouTube channel page for real video IDs
+# Beverly Hills city council is known to post meetings
+curl -s "https://www.youtube.com/@CityofBeverlyHills/videos" -H "User-Agent: Mozilla/5.0 (Macintosh)" | grep -oE 'watch\?v=[A-Za-z0-9_-]{11}' | sed 's/watch?v=//' | sort -u | head -10
+# Try Austin TX city council
+curl -s "https://www.youtube.com/@AustinTexasGov/videos" -H "User-Agent: Mozilla/5.0 (Macintosh)" | grep -oE 'watch\?v=[A-Za-z0-9_-]{11}' | sed 's/watch?v=//' | sort -u | head -10
+# Verify Beverly Hills city council video IDs
+for vid in 82JRdQersWc AlUSH5UNI30 BLtKX-0T8ew CKwahZq8iz4 G6fK2pgq8Hw Guv78yDROMQ HJtltgeTp20 JfhK8qlZnKI; do
+  title=$(curl -s "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=$vid&format=json" | python3 -c "import sys,json; print(json.load(sys.stdin).get('title','FAIL'))" 2>/dev/null || echo "FAIL")
+  echo "$vid — $title"
+done
+# Try SF Board of Supervisors - they stream all meetings
+curl -s "https://www.youtube.com/@SFGovTV/videos" -H "User-Agent: Mozilla/5.0 (Macintosh)" | grep -oE 'watch\?v=[A-Za-z0-9_-]{11}' | sed 's/watch?v=//' | sort -u | head -8
+# Try LA City Council - CityClerkConnect 
+curl -s "https://www.youtube.com/@LACityClerk/videos" -H "User-Agent: Mozilla/5.0 (Macintosh)" | grep -oE 'watch\?v=[A-Za-z0-9_-]{11}' | sed 's/watch?v=//' | sort -u | head -8
+# Verify SF Gov TV videos
+for vid in 49CztW4qd9Y B4YUGdQ390Q FThM7WYMHjw IBBlFM5yWUs KYHvlDGKFs8; do
+  title=$(curl -s "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=$vid&format=json" | python3 -c "import sys,json; print(json.load(sys.stdin).get('title','FAIL'))" 2>/dev/null || echo "FAIL")
+  echo "$vid — $title"
+done
+# Verify LA City Clerk videos
+for vid in 1UyZAytjpFI 2KHLeyOiEfQ 4NJmL2cUzbg 5HkhyTY_8P0 6k6NCxuTX6g 9JNfGulbsG8; do
+  title=$(curl -s "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=$vid&format=json" | python3 -c "import sys,json; print(json.load(sys.stdin).get('title','FAIL'))" 2>/dev/null || echo "FAIL")
+  echo "$vid — $title"
+done
+# Get more videos from LA City Clerk - look for recent ones
+curl -s "https://www.youtube.com/@LACityClerk/videos" -H "User-Agent: Mozilla/5.0 (Macintosh)" | grep -oE 'watch\?v=[A-Za-z0-9_-]{11}' | sed 's/watch?v=//' | sort -u | while read vid; do
+  title=$(curl -s "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=$vid&format=json" | python3 -c "import sys,json; print(json.load(sys.stdin).get('title','FAIL'))" 2>/dev/null || echo "FAIL")
+  if echo "$title" | grep -qi "council\|planning\|commission\|hearing\|meeting"; then
+    echo "$vid — $title"
+  fi
+done | head -10
+# Try searching YouTube with broader terms to find recent council meetings
+curl -s "https://www.youtube.com/results?search_query=city+council+meeting+2025+full" -H "User-Agent: Mozilla/5.0 (Macintosh)" | python3 -c "
+import sys, re
+html = sys.stdin.read()
+# Extract video IDs from the page
+ids = list(set(re.findall(r'watch\?v=([A-Za-z0-9_-]{11})', html)))[:12]
+print('\n'.join(ids))
+" 2>/dev/null
+# Verify these - look for actual council meetings
+for vid in G-6XPkf7nuM e1DCXzcvms8 bGRPvhCOl-A OrDB9P_X4A0 0uQS7m-pnzU k9_5bhwSk8M VNcHwxIUW5Y SEi13KhOKXs f7jXPxHPwqg Zyx3X0R0Zrk izI4LhXLlLA JNRpq9jubac; do
+  title=$(curl -s "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=$vid&format=json" | python3 -c "import sys,json; print(json.load(sys.stdin).get('title','FAIL'))" 2>/dev/null || echo "FAIL")
+  echo "$vid — $title"
+done
+npm run build 2>&1 | tail -30
+# Try Tenor API for town hall meeting GIFs
+curl -s "https://tenor.googleapis.com/v2/search?q=town+hall+meeting&key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&limit=10" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+for r in data.get('results', []):
+    title = r.get('content_description', r.get('title', '?'))
+    gif_url = r.get('media_formats', {}).get('gif', {}).get('url', 'NO_GIF')
+    print(f'{r[\"id\"]} | {title[:60]} | {gif_url[:90]}')
+" 2>/dev/null
+# Try scraping Giphy web search directly
+curl -s "https://giphy.com/search/town-hall-meeting" -H "User-Agent: Mozilla/5.0 (Macintosh)" | grep -oE 'media[0-9]*\.giphy\.com/media/[A-Za-z0-9]+/giphy\.gif' | sort -u | head -10
+# Try Tenor for planning commission / zoning meeting
+curl -s "https://tenor.googleapis.com/v2/search?q=planning+commission+zoning&key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&limit=10" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+for r in data.get('results', []):
+    title = r.get('content_description', r.get('title', '?'))
+    gif_url = r.get('media_formats', {}).get('gif', {}).get('url', 'NO_GIF')
+    print(f'{r[\"id\"]} | {title[:60]} | {gif_url[:90]}')
+" 2>/dev/null
+# More specific searches for real government meetings
+curl -s "https://tenor.googleapis.com/v2/search?q=city+council+meeting+podium+speaking&key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&limit=10" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+for r in data.get('results', []):
+    desc = r.get('content_description', '?')
+    gif = r.get('media_formats', {}).get('gif', {}).get('url', 'N/A')
+    print(f'{desc[:70]} | {gif}')
+" 2>/dev/null
+# Search for government hearing / public comment
+curl -s "https://tenor.googleapis.com/v2/search?q=public+comment+hearing+government&key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&limit=10" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+for r in data.get('results', []):
+    desc = r.get('content_description', '?')
+    gif = r.get('media_formats', {}).get('gif', {}).get('url', 'N/A')
+    print(f'{desc[:70]} | {gif}')
+" 2>/dev/null
+# Search for mayor / council member speaking
+curl -s "https://tenor.googleapis.com/v2/search?q=mayor+speaking+podium+council&key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&limit=10" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+for r in data.get('results', []):
+    desc = r.get('content_description', '?')
+    gif = r.get('media_formats', {}).get('gif', {}).get('url', 'N/A')
+    print(f'{desc[:70]} | {gif}')
+" 2>/dev/null
+# Verify the best municipal meeting GIF candidates
+for url in \
+  "https://media.tenor.com/N9CtwQx9O2AAAAAC/portsmouth-virginia.gif" \
+  "https://media.tenor.com/siKXpt-al3EAAAAC/corey-johnson-johnson.gif" \
+  "https://media.tenor.com/0KbTJ6isLUoAAAAC/lubbock-mayor.gif" \
+  "https://media.tenor.com/XHT7nkW7hWEAAAAC/out-dont-care.gif" \
+  "https://media.tenor.com/jzBwq1DWnHAAAAAC/speech.gif" \
+  "https://media.tenor.com/bUckJ2mAVFwAAAAC/speech-politician.gif" \
+  "https://media.tenor.com/Fjoo8AkKR5wAAAAC/wardergate-mayor.gif" \
+  "https://media.tenor.com/72AnMC0dPM4AAAAC/patton-oswalt-court.gif"; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "$url")
+  name=$(echo "$url" | sed 's|.*/||')
+  echo "$code — $name"
+done
+npm run build 2>&1 | tail -20
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+# Take a screenshot of the predict section
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true
+sleep 1
+xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+sleep 5
+xcrun simctl io "$UDID" screenshot /tmp/predict-1.png
+echo "Screenshot 1 taken"
+sleep 4
+xcrun simctl io "$UDID" screenshot /tmp/predict-2.png
+echo "Screenshot 2 taken"
+sleep 4
+xcrun simctl io "$UDID" screenshot /tmp/predict-3.png
+echo "Screenshot 3 taken"
+sleep 4
+xcrun simctl io "$UDID" screenshot /tmp/predict-4.png
+echo "Screenshot 4 taken"
+# Search specifically for close-up face shots at government settings
+for query in "politician+speaking+microphone+close+up" "council+woman+speaking" "government+official+talking+face" "senator+speaking+face"; do
+  echo "=== $query ==="
+  curl -s "https://tenor.googleapis.com/v2/search?q=$query&key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&limit=5&media_filter=gif" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+for r in data.get('results', []):
+    desc = r.get('content_description', '?')
+    gif = r.get('media_formats', {}).get('gif', {}).get('url', 'N/A')
+    print(f'  {desc[:65]} | {gif}')
+" 2>/dev/null
+done
+# Try more specific searches for real hearing footage
+for query in "testimony+hearing+speaking" "congressional+hearing+witness" "zoning+board+meeting" "public+hearing+resident+speaking"; do
+  echo "=== $query ==="
+  curl -s "https://tenor.googleapis.com/v2/search?q=$query&key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&limit=8&media_filter=gif" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+for r in data.get('results', []):
+    desc = r.get('content_description', '?')
+    gif = r.get('media_formats', {}).get('gif', {}).get('url', 'N/A')
+    # Skip if cartoon/animated
+    skip = any(w in desc.lower() for w in ['cartoon', 'anime', 'animated', 'pixel', 'illustration', 'drawing', 'south park', 'parks and'])
+    if not skip:
+        print(f'  {desc[:70]} | {gif}')
+" 2>/dev/null
+done
+# Try to find real face-showing government GIFs with different terms
+for query in "woman+podium+government+speaking" "man+suit+podium+talking" "press+conference+speaking+face" "council+meeting+commissioner+speaking"; do
+  echo "=== $query ==="
+  curl -s "https://tenor.googleapis.com/v2/search?q=$query&key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&limit=8&media_filter=gif" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+for r in data.get('results', []):
+    desc = r.get('content_description', '?')
+    gif = r.get('media_formats', {}).get('gif', {}).get('url', 'N/A')
+    skip = any(w in desc.lower() for w in ['cartoon', 'anime', 'pixel', 'south park', 'parks and', 'toy story', 'skeleton'])
+    if not skip and ('man ' in desc.lower() or 'woman ' in desc.lower() or 'person' in desc.lower() or 'face' in desc.lower() or 'suit' in desc.lower() or 'podium' in desc.lower() or 'speaking' in desc.lower() or 'talking' in desc.lower()):
+        print(f'  {desc[:70]} | {gif}')
+" 2>/dev/null
+done
+# Also try Giphy API with a different key approach - search their website directly
+curl -s "https://giphy.com/search/city-council-hearing-speaking" -H "User-Agent: Mozilla/5.0 (Macintosh)" -H "Accept: text/html" | python3 -c "
+import sys, re
+html = sys.stdin.read()
+# Look for GIF URLs in the page
+urls = re.findall(r'https://media[0-9]*\.giphy\.com/media/[A-Za-z0-9]+/[a-z0-9]+\.gif', html)
+seen = set()
+for u in urls:
+    if u not in seen:
+        seen.add(u)
+        print(u)
+" 2>/dev/null | head -10
+ls -lt ~/Library/Mobile\ Documents/com~apple~CloudDocs/Downloads/*.{mp4,mov,webm,gif} 2>/dev/null | head -5
+# Check different possible iCloud Downloads paths
+ls -lt ~/Downloads/*.{mp4,mov,webm,gif,MP4,MOV} 2>/dev/null | head -5
+echo "---"
+ls -lt ~/Library/Mobile\ Documents/com~apple~CloudDocs/Downloads/ 2>/dev/null | head -10
+echo "---"
+# Also check regular iCloud Drive root
+ls -lt ~/Library/Mobile\ Documents/com~apple~CloudDocs/*.{mp4,mov,webm,gif} 2>/dev/null | head -5
+find /Users/avireddy/GitHub/studio -name "*.mp4" -o -name "*.mov" -o -name "*.webm" 2>/dev/null | head -10
+ls /Users/avireddy/GitHub/studio/public 2>/dev/null || echo "No public dir"
+# Check git status for new files
+git status --short | grep -i "mp4\|mov\|webm\|video\|Generated"
+mkdir -p /Users/avireddy/GitHub/studio/public && mv "/Users/avireddy/GitHub/studio/Generated File March 03, 2026 - 4_09AM.mp4" /Users/avireddy/GitHub/studio/public/feed-clip-1.mp4 && mv "/Users/avireddy/GitHub/studio/Generated File March 03, 2026 - 4_14AM.mp4" /Users/avireddy/GitHub/studio/public/feed-clip-2.mp4 && ls -la /Users/avireddy/GitHub/studio/public/feed-clip-*.mp4
+npm run build 2>&1 | tail -25
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 6 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true
+sleep 1
+xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+sleep 6
+xcrun simctl io "$UDID" screenshot /tmp/predict-v1.png
+echo "Shot 1"
+sleep 5
+xcrun simctl io "$UDID" screenshot /tmp/predict-v2.png
+echo "Shot 2"
+sleep 5
+xcrun simctl io "$UDID" screenshot /tmp/predict-v3.png
+echo "Shot 3"
+npm run build 2>&1 | tail -15
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+npm run build 2>&1 | grep -E "error|Error|✓" | head -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/predict-final-1.png
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && sleep 8 && xcrun simctl io "$UDID" screenshot /tmp/predict-final-2.png
+npm run build 2>&1 | tail -20
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && sleep 12 && xcrun simctl io "$UDID" screenshot /tmp/predict-alert.png && sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/predict-email-compose.png && sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/predict-email-sent.png
