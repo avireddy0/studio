@@ -1429,3 +1429,16 @@ lsof -ti:9002 | xargs kill -9 2>/dev/null || true
 npm run dev
 sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002/query
 UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/query" 2>/dev/null && sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/chat-query.png 2>/dev/null
+npm run build 2>&1 | tail -5
+npm run build 2>&1 | tail -10
+git add src/lib/actions.ts src/components/query/chat-interface.tsx && git commit -m "$(cat <<'EOF'
+refactor: terse military-style chat responses — data-dense, no filler
+
+Rewrites all demo responses, Gemini prompt, and fallbacks to match
+tactical intelligence briefing style. Short sentences, abbreviations,
+numbers over words. Every response ~50-70% shorter while preserving
+all critical data points and actionable intelligence.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push

@@ -175,8 +175,8 @@
     },
     {
       "path": "src/components/query/chat-interface.tsx",
-      "accessCount": 20,
-      "lastAccessed": 1772440053800,
+      "accessCount": 21,
+      "lastAccessed": 1772505493929,
       "type": "file"
     },
     {
@@ -186,15 +186,15 @@
       "type": "file"
     },
     {
-      "path": "src/components/dashboard-header.tsx",
-      "accessCount": 12,
-      "lastAccessed": 1772417135601,
+      "path": "src/lib/actions.ts",
+      "accessCount": 14,
+      "lastAccessed": 1772505474788,
       "type": "file"
     },
     {
-      "path": "src/lib/actions.ts",
-      "accessCount": 9,
-      "lastAccessed": 1772440126068,
+      "path": "src/components/dashboard-header.tsx",
+      "accessCount": 12,
+      "lastAccessed": 1772417135601,
       "type": "file"
     },
     {
