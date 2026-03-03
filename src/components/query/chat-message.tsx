@@ -55,11 +55,11 @@ export function ChatMessage({ message }: { message: Message }) {
                 isDashboard ? "border-white/10" : "border-black/10"
             )}>
                 <Terminal className="size-3 opacity-40" />
-                <span className="text-[8px] font-bold uppercase tracking-widest opacity-40">Intelligence_Payload</span>
+                <span className="text-[8px] font-bold uppercase tracking-widest opacity-40">PAYLOAD</span>
             </div>
             <div className="space-y-4">
                 <div>
-                  <h3 className="text-[7px] font-mono opacity-40 uppercase tracking-widest mb-1">Target_Node</h3>
+                  <h3 className="text-[7px] font-mono opacity-40 uppercase tracking-widest mb-1">TARGET</h3>
                   <p className={cn(
                     "font-mono text-[9px] p-2 border",
                     isDashboard ? "bg-black/40 border-white/5" : "bg-black/5 border-black/5"
@@ -68,7 +68,7 @@ export function ChatMessage({ message }: { message: Message }) {
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-[7px] font-mono opacity-40 uppercase tracking-widest mb-1">Data_Stream</h3>
+                  <h3 className="text-[7px] font-mono opacity-40 uppercase tracking-widest mb-1">DATA</h3>
                   <pre className={cn(
                     "font-mono text-[8px] p-2 border overflow-x-auto",
                     isDashboard ? "bg-black/20 border-white/5" : "bg-white/50 border-black/5"

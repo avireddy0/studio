@@ -88,8 +88,8 @@ export function ChatInterface() {
     if (formState?.error) {
        toast({
         variant: "destructive",
-        title: "System Error",
-        description: "Protocol interruption detected. Re-attempt transmission.",
+        title: "COMMS FAILURE",
+        description: "Routing interrupted. Retry.",
       });
       setMessages((prev) => prev.filter(m => m.role !== 'status'));
     }
@@ -114,7 +114,7 @@ export function ChatInterface() {
       formData.append("history", JSON.stringify(history));
 
       setMessages((prev) => [...prev, { role: "user", content: query }]);
-      setMessages((prev) => [...prev, { role: "status", content: "ORCHESTRATING_INTEL..." }]);
+      setMessages((prev) => [...prev, { role: "status", content: "ROUTING..." }]);
 
       startTransition(() => {
         formAction(formData);
@@ -163,7 +163,7 @@ export function ChatInterface() {
         >
           <Input
             name="query"
-            placeholder="Intelligence Command..."
+            placeholder="Query..."
             className="bg-transparent border-none h-9 focus-visible:ring-0 font-sans text-sm shadow-none rounded-none text-black placeholder:text-black/30"
             autoComplete="off"
           />
