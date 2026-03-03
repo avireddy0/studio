@@ -48,7 +48,7 @@ export function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [followUpPrompts, setFollowUpPrompts] = useState<string[] | null>(null);
   const [hydrated, setHydrated] = useState(false);
-  const [streamingIndex, setStreamingIndex] = useState<number | null>(null);
+  const [isStreamingActive, setIsStreamingActive] = useState(false);
   const [showFollowUps, setShowFollowUps] = useState(true);
 
   const [formState, formAction] = useActionState(handleQuery, initialState);
@@ -80,14 +80,13 @@ export function ChatInterface() {
 
   useEffect(() => {
     if (formState?.data) {
+      if (formState.followUps) {
+        pendingFollowUps.current = formState.followUps;
+      }
+      setShowFollowUps(false);
+      setIsStreamingActive(true);
       setMessages((prev) => {
         const filtered = prev.filter((m) => m.role !== "status");
-        const newIndex = filtered.length;
-        setStreamingIndex(newIndex);
-        setShowFollowUps(false);
-        if (formState.followUps) {
-          pendingFollowUps.current = formState.followUps;
-        }
         return [...filtered, { role: "ai", content: formState.data }];
       });
     }
@@ -118,7 +117,7 @@ export function ChatInterface() {
   }, [messages, scrollToBottom]);
 
   const handleStreamComplete = useCallback(() => {
-    setStreamingIndex(null);
+    setIsStreamingActive(false);
     if (pendingFollowUps.current) {
       setFollowUpPrompts(pendingFollowUps.current);
       pendingFollowUps.current = null;
@@ -129,7 +128,7 @@ export function ChatInterface() {
   const handleFormSubmit = async (formData: FormData) => {
     const query = formData.get("query") as string;
     if (query.trim()) {
-      setStreamingIndex(null); // cancel any in-progress streaming
+      setIsStreamingActive(false); // cancel any in-progress streaming
 
       const history = messages
         .filter((m) => m.role !== "status")
@@ -164,15 +163,18 @@ export function ChatInterface() {
     <div className="flex h-full flex-col relative z-10 bg-white">
       <ScrollArea className="flex-1 px-4 md:px-6 py-4" ref={scrollAreaRef}>
         <div className="max-w-3xl mx-auto w-full space-y-4">
-          {messages.map((msg, index) => (
-            <ChatMessage
-              key={index}
-              message={msg}
-              isStreaming={index === streamingIndex}
-              onStreamComplete={index === streamingIndex ? handleStreamComplete : undefined}
-              onLineReveal={index === streamingIndex ? scrollToBottom : undefined}
-            />
-          ))}
+          {messages.map((msg, index) => {
+            const isLastAi = isStreamingActive && index === messages.length - 1 && msg.role === "ai";
+            return (
+              <ChatMessage
+                key={index}
+                message={msg}
+                isStreaming={isLastAi}
+                onStreamComplete={isLastAi ? handleStreamComplete : undefined}
+                onLineReveal={isLastAi ? scrollToBottom : undefined}
+              />
+            );
+          })}
         </div>
       </ScrollArea>
 

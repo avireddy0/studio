@@ -154,8 +154,8 @@ export function ChatMessage({ message, isStreaming, onStreamComplete, onLineReve
               : "bg-[#E9E9EB] text-black rounded-[20px] rounded-bl-none"
             : "bg-[#007C5A] text-white rounded-[20px] rounded-br-none",
           isAi
-            ? "text-[13px] leading-[1.6] font-semibold"
-            : "text-[13px] leading-tight font-semibold",
+            ? "text-[13px] leading-[1.6]"
+            : "text-[13px] leading-tight font-medium",
           isAi && isDashboard && "font-mono text-[11px]"
         )}
       >
