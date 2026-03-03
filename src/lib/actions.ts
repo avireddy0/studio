@@ -9,9 +9,9 @@ const querySchema = z.object({
 });
 
 const DEFAULT_PREDICTIVE_FOLLOWUPS = [
-  "What if steel tariffs escalate to 25% — cascade impact across all trades?",
-  "Predict concrete cost trajectory through Q3 given current supply constraints",
-  "Model interest rate sensitivity: +50bps impact on development pro forma",
+  "Steel tariffs to 25% — cascade impact?",
+  "Concrete cost trajectory through Q3",
+  "Rate hike +50bps — pro forma impact?",
 ];
 
 export async function handleQuery(prevState: any, formData: FormData) {
@@ -83,41 +83,26 @@ async function getGeminiFlashResponse(query: string, history: Array<{ role: stri
 
   const { text } = await ai.generate({
     model: 'googleai/gemini-3.1-flash-preview',
-    prompt: `You are ENVISION OS, an institutional-grade construction intelligence system used by real estate developers and general contractors managing $50M+ commercial construction projects.
+    prompt: `You are ENVISION OS — a tactical construction intelligence system. Military comms style. Terse. Matter-of-fact. No filler, no pleasantries, no prose paragraphs.
 
-You are responding to a project owner/developer who uses your platform to get real-time intelligence across their development portfolio.
+VOICE: Like a battlefield intelligence officer delivering a sitrep. Short sentences. Abbreviations welcome. Data-dense. Every word earns its place.
 
-CAPABILITIES — you can answer questions about:
-- Project financials: budgets, cost variance, GMP tracking, change orders, contingency
-- Schedule: critical path, float, delays, weather impact, labor availability
-- Risk: tariffs, material prices, supply chain, regulatory changes
-- Communications: meeting summaries, email threads, RFI status, owner sentiment
-- Market intelligence: commodity prices, interest rates, labor indices, benchmarks
-- Construction methods: materials, techniques, code compliance, sustainability
-- General knowledge: real estate development, entitlements, financing, legal
-- Platform guidance: what Envision OS can do, how features work
+FORMAT:
+- Max 8-12 lines total. Shorter is better.
+- ALL_CAPS section headers, one-line data points
+- Numbers > words. "$382K exposure" not "approximately three hundred eighty two thousand dollars"
+- Confidence intervals where relevant: "Conf: 78% ±8%"
+- No bullet point explanations longer than one line
+- End with EXACTLY 3 lines starting with ">>>" — terse follow-up prompts (max 8 words each)
 
-RESPONSE RULES:
-1. Start with "INTEL:" followed by a brief title
-2. For data-driven queries: include specific numbers, percentages, dollar amounts (realistic for commercial construction)
-3. For predictions: include a CONFIDENCE INTERVAL (format: "Confidence: XX% ± Y%")
-4. Be direct and data-driven — no filler
-5. Format like a classified intelligence briefing with section headers using ALL_CAPS
-6. For general/conversational queries: still respond in character but be concise and helpful
-7. End with EXACTLY 3 lines starting with ">>>" — these are predictive follow-up questions the owner should ask next
-8. If the user references something from the conversation history, use that context to give a coherent follow-up answer
-
-PROJECT CONTEXT:
-- Project Phoenix: $48.2M mixed-use tower, 24 stories, downtown Los Angeles
-- 74.2% complete, scheduled completion Aug 2026
-- GMP: $51.8M | Committed: $41.7M | Expended: $38.1M
-- Tracking -1.2% under budget ($578K favorable)
-- Key risks: steel tariffs (Section 232), RFI backlog (14 open), MEP coordination delays
-- Active trades: structural steel, concrete, MEP, curtain wall, elevator, interior finishes
-- Owner: Pacific Development Group | GC: Turner-Phoenix JV
-- Subcontractors: Martinez Engineering (structural), Dynalectric (electrical), Pan-Pacific Mechanical (HVAC)
+PROJECT: Phoenix | $48.2M mixed-use | 24-story | DTLA
+GMP: $51.8M | Committed: $41.7M | Expended: $38.1M | Var: -$578K favorable
+Progress: 74.2% | Float: 9d | Target: Aug 2026
+Risks: Section 232 steel tariffs, 14 open RFIs (4 on CP), MEP coordination
+Trades: steel, concrete, MEP, curtain wall, elevator, finishes
+Owner: Pacific Dev Group | GC: Turner-Phoenix JV
 ${conversationContext}
-User query: ${query}`,
+Query: ${query}`,
   });
 
   const lines = (text || '').split('\n');
@@ -145,42 +130,26 @@ function getDemoResponse(query: string): { content: string; followUps: string[] 
   // COST / BUDGET / TARIFF / GMP
   if (q.includes('cost') || q.includes('budget') || q.includes('variance') || q.includes('tariff') || q.includes('gmp') || q.includes('steel') && q.includes('impact')) {
     return {
-      content: `INTEL: Cost Variance Analysis — Project Phoenix
+      content: `COST_SITREP — Phoenix
 
-CURRENT_FINANCIAL_POSITION:
-Contract Value: $48.2M | GMP: $51.8M | Committed: $41.7M | Expended: $38.1M
-Overall Variance: -$578K (-1.2%) UNDER BUDGET — favorable
+GMP: $51.8M | Committed: $41.7M | Expended: $38.1M
+Variance: -$578K (-1.2%) — FAVORABLE
 
-CRITICAL_COST_ALERT — Steel & Structural:
-Current committed steel cost: $6.84M (13.2% of GMP)
-Q2 2026 Section 232 tariff projection: +8-12% on imported structural steel
-Source: AISC market bulletin 2026-03, Commerce Dept. tariff schedule
+TARIFF_ALERT — Section 232 Steel:
+Committed steel: $6.84M (13.2% of GMP)
+Q2 projection: +8-12% on imported structural
+Total exposure: $316K-$475K | P80: $441K
+Contingency post-tariff: $799K (1.54%) — AMBER
 
-Affected Line Items:
-• W-shapes (W14×132, W24×84): $2.31M committed → $185K-$277K exposure
-• HSS sections (HSS 8×8×½): $891K committed → $71K-$107K exposure
-• Connection hardware & embeds: $342K committed → $27K-$41K exposure
-• Misc. steel (handrails, supports): $418K committed → $33K-$50K exposure
-TOTAL TARIFF EXPOSURE: $316K — $475K
-
-MONTE_CARLO_SIMULATION (10,000 runs):
-P50: $382K | P80: $441K | P95: $512K
-Confidence: 78% probability impact stays within $395K ± $80K
-
-REMAINING_BUDGET_BUFFER:
-Current contingency: $1.24M (2.4% of GMP)
-Post-tariff contingency (P80): $799K (1.54%)
-Risk threshold: AMBER — contingency adequate but compressed
-
-MITIGATION_OPTIONS:
-1. Accelerate remaining steel procurement to lock Q1 pricing → saves ~$180K
-2. Value-engineer HSS connections from welded to bolted → saves ~$45K
-3. Negotiate supplier price-protection clause with Nucor/SDI → potential 60% offset
-4. Substitute domestic W-shapes where spec allows → eliminates tariff on $1.2M of material`,
+ACTIONS:
+1. Lock remaining steel at Q1 pricing → saves $180K
+2. VE: HSS welded→bolted → saves $45K
+3. Nucor/SDI price-protection clause → 60% offset potential
+4. Domestic W-shape substitution → eliminates $1.2M tariff exposure`,
       followUps: [
-        "What if tariffs escalate to 25% — cascade impact across all trades and GMP?",
-        "Predict concrete cost trajectory through Q3 with current LA aggregate shortages",
-        "Compare our $/SF burn rate against CBRE market benchmarks for Type IA high-rise",
+        "Tariffs to 25% — full cascade?",
+        "Concrete cost trajectory Q3",
+        "$/SF burn vs CBRE benchmarks",
       ],
     };
   }
@@ -188,109 +157,57 @@ MITIGATION_OPTIONS:
   // SCHEDULE / RISK / DELAY / RFI / WEATHER / CRITICAL PATH
   if (q.includes('schedule') || q.includes('risk') || q.includes('delay') || q.includes('rfi') || q.includes('weather') || q.includes('critical path') || q.includes('60-day') || q.includes('predict')) {
     return {
-      content: `INTEL: 60-Day Critical Path Risk Assessment — Project Phoenix
+      content: `SCHEDULE_SITREP — Phoenix | 60-Day Window
 
-SCHEDULE_STATUS:
-Overall Progress: 74.2% | Schedule Health: AMBER
-Projected Completion: Aug 14, 2026 (contract: Aug 1, 2026)
-Current Float: 9 calendar days on critical path
-Confidence: 62% probability of on-time completion ± 8 days
+Progress: 74.2% | Float: 9d | Proj completion: Aug 14 (contract: Aug 1)
+On-time conf: 62% ±8d | Risk score: 7.2/10 ELEVATED
 
-RISK_REGISTER — Next 60 Days (Mar 1 – Apr 30, 2026):
+THREATS:
+RFI BACKLOG [CRITICAL] — 14 open, 4 on CP, avg 11d response (tgt: 7)
+  RFI-202: steel connection Grid J-7 — 14d open, blocks erection
+  Impact: 6d CP delay | LD exposure: $204K ($34K/day)
 
-1. RFI BACKLOG [CRITICAL — P85 = 6-day delay]
-   14 open RFIs | 4 on critical path | Avg response: 11 days (target: 7)
-   • RFI-202: Steel connection detail Grid J-7 — 14 days open, blocks erection seq.
-   • RFI-198: Curtain wall anchor spacing Level 18-24 — 9 days open
-   • RFI-211: MEP penetration conflicts at transfer beam — 3 days open
-   Impact if unresolved: 6-day CP delay | Cost exposure: $34K/day LD = $204K
-   Confidence: 85% ± 6% this causes delay if RFI-202 not closed by Mar 7
+ELEVATOR [HIGH] — ThyssenKrupp submittal 12d in queue
+  Approve by Mar 7 → Aug 8 (in float). Mar 21 → Aug 22 (14d over)
 
-2. WEATHER PATTERN [MODERATE — P60 = 3-day delay]
-   NOAA 60-day outlook: Above-average precipitation for LA basin (Mar-Apr)
-   Historical: 4.2 rain days avg in period | 2026 forecast: 6-8 rain days
-   Exposed activities: curtain wall installation (Levels 18-22), roof membrane
-   Impact: 2-4 lost work days on exterior trades
-   Confidence: 60% ± 15% — moderate uncertainty in extended forecast
+WEATHER [MOD] — NOAA: 6-8 rain days vs 4.2 avg. 2-4d lost exterior
+LABOR [LOW] — Ironworker util 94%. Oceanwide competing for same pool
 
-3. SUPPLY CHAIN — ELEVATOR [HIGH — P70 = 12-day delay]
-   ThyssenKrupp submittal pending owner approval: 12 days in queue
-   Lead time after approval: 14 weeks (delivery est: June 20)
-   If approved by Mar 7: completion Aug 8 (within float)
-   If delayed to Mar 21: completion Aug 22 (14-day overage)
-   Confidence: 70% ± 10% delivery meets August close-in date
-
-4. LABOR AVAILABILITY [LOW-MODERATE — P40 = 2-day delay]
-   LA ironworker utilization: 94% (tight market)
-   Dynalectric electrical crew: scheduled ramp from 12→18 workers Apr 1
-   Risk: competing project (Oceanwide Phase 2) pulling same labor pool
-   Confidence: 40% ± 12% this materializes as actual delay
-
-AGGREGATE_RISK_SCORE: 7.2 / 10 — ELEVATED
-Combined P80 delay estimate: 8 days | P95: 14 days
-Liquidated damages exposure (P80): $272K
-
-RECOMMENDED_ACTIONS:
-1. IMMEDIATE: Escalate RFI-202 — direct principal-to-principal call with structural EOR
-2. THIS WEEK: Fast-track elevator submittal to owner's rep for expedited review
-3. ONGOING: Pre-negotiate rain day make-up schedule with curtain wall sub (weekend crews)
-4. MONITOR: Track ironworker availability weekly — trigger backup crew sourcing if utilization hits 97%`,
+ACTIONS:
+1. Escalate RFI-202 — principal-to-principal call NOW
+2. Fast-track elevator submittal this week
+3. Pre-negotiate rain day weekend crews with curtain wall sub`,
       followUps: [
-        "Model impact: what if RFI response times degrade to 15-day avg — schedule cascade?",
-        "Predict how a La Niña weather pattern shift would affect our exterior envelope timeline",
-        "What's our exposure if ThyssenKrupp announces a 4-week lead time extension on cabs?",
+        "RFI response degrades to 15d — cascade?",
+        "ThyssenKrupp +4wk lead time — exposure?",
+        "La Niña shift — envelope timeline impact?",
       ],
     };
   }
 
   // COMMUNICATIONS / MEETINGS / OWNER
-  if (q.includes('comm') || q.includes('meeting') || q.includes('owner') || q.includes('summarize') || q.includes('email') || q.includes('slack') || q.includes('flag') || q.includes('unresolved')) {
+  if (q.includes('comm') || q.includes('meeting') || q.includes('owner') || q.includes('summarize') || q.includes('email') || q.includes('slack') || q.includes('flag') || q.includes('unresolved') || q.includes('minute')) {
     return {
-      content: `INTEL: Owner-GC Communications Digest — Week of Feb 24, 2026
+      content: `COMMS_DIGEST — Week Feb 24 | Sentiment: ↓4% NEGATIVE
 
-COMMUNICATION_VOLUME:
-Total exchanges: 47 | Emails: 28 | Slack: 12 | Meetings: 4 | Calls: 3
-Sentiment trend: NEUTRAL → SLIGHTLY NEGATIVE (↓4% from prior week)
-Confidence: 72% ± 8% sentiment accurately classified
+47 exchanges | 28 email, 12 Slack, 4 meetings, 3 calls
 
-MEETING_SUMMARIES:
+UNRESOLVED — IMMEDIATE:
+⚠ PCO-043 cost breakdown → GC owes owner Mar 1
+⚠ Cost-to-complete forecast → due Mar 10 (lender draw)
+⚠ Field survey for RFI-202 → blocks structural EOR
+⚠ MEP duct routing L12 → Pan-Pacific/Dynalectric impasse
 
-1. OAC Weekly (Feb 25 | 52 min | 9 attendees)
-   Key decisions: Foundation pour → Mar 5 (weather delay), steel delivery confirmed Mar 12
-   UNRESOLVED: Owner requested cost breakdown on PCO-043 finish upgrade ($127K) — GC to provide by Mar 1
-   Tone: Constructive but owner expressed concern about PCO accumulation
+FLAGS:
+Feb 26 — Owner CC'd legal on PCO-043 [ESCALATION]
+Feb 27 — Martinez: "unable to proceed" on RFI-202 [BLOCKER]
+Feb 28 — GC PM OOO Mar 3-7 [COVERAGE GAP]
 
-2. MEP Coordination (Feb 26 | 38 min | 6 attendees)
-   Moved recurring to Tuesdays. BIM clash report: 8 new clashes (4 critical)
-   UNRESOLVED: Pan-Pacific Mechanical pushing back on duct routing at Level 12 transfer — no resolution
-
-3. Structural RFI Review (Feb 27 | 25 min | 4 attendees)
-   RFI-202 discussed — structural EOR needs 48hrs for connection calc review
-   UNRESOLVED: EOR requested field survey data that GC has not yet provided
-
-4. Owner 1:1 (Feb 28 | 18 min | 2 attendees)
-   Pacific Dev Group COO flagged lender reporting deadline Mar 15
-   UNRESOLVED: Owner needs updated cost-to-complete forecast by Mar 10 for lender draw package
-
-UNRESOLVED_ITEMS — CRITICAL:
-⚠ PCO-043 cost breakdown → GC owes owner by Mar 1 (TOMORROW)
-⚠ Cost-to-complete forecast → GC owes owner by Mar 10 (lender deadline)
-⚠ Field survey data for RFI-202 → GC owes structural EOR (blocking RFI closure)
-⚠ MEP duct routing Level 12 → Pan-Pacific and Dynalectric at impasse
-
-EMAIL_THREAD_FLAGS:
-• Feb 26 — Owner CC'd legal counsel on PCO-043 thread (ESCALATION_SIGNAL)
-• Feb 27 — Martinez Engineering replied "unable to proceed" on RFI-202 (BLOCKER)
-• Feb 28 — GC project manager OOO notice Mar 3-7 (COVERAGE_GAP during critical week)
-
-RISK_ASSESSMENT:
-Owner engagement trending toward heightened scrutiny on cost control.
-Legal CC on PCO thread suggests potential dispute posture.
-Confidence: 65% ± 12% that PCO-043 becomes contested if not addressed this week`,
+ASSESSMENT: Legal CC = potential dispute posture. PCO-043 contested if not resolved this week. Conf: 65% ±12%`,
       followUps: [
-        "Predict owner satisfaction trajectory if PCO-043 isn't resolved by lender deadline",
-        "Model communication risk: what if GC PM absence causes RFI-202 to miss Mar 7 deadline?",
-        "Analyze historical pattern — do owners who CC legal typically escalate within 30 days?",
+        "PCO-043 unresolved by lender deadline?",
+        "GC PM absence → RFI-202 cascade?",
+        "Legal CC pattern → escalation timeline?",
       ],
     };
   }
@@ -298,61 +215,29 @@ Confidence: 65% ± 12% that PCO-043 becomes contested if not addressed this week
   // SCENARIO / MODEL / IMPACT / LUMBER / SURGE / WHAT IF
   if (q.includes('scenario') || q.includes('model') || q.includes('lumber') || q.includes('surge') || q.includes('what if') || q.includes('impact') && (q.includes('%') || q.includes('price'))) {
     return {
-      content: `INTEL: Scenario Analysis — 15% Lumber Price Surge Impact
+      content: `SCENARIO — 15% Lumber Surge
 
-SCENARIO_PARAMETERS:
-Trigger: 15% increase in softwood lumber (SPF #2 & Better)
-Baseline: $485/MBF (current) → $558/MBF (scenario)
-Source: Random Lengths composite, CME futures curve
-Probability of scenario: 35% within next 90 days
-Drivers: Canadian tariff uncertainty, BC mill curtailments, housing starts rebound
-Confidence: 35% ± 11% this price level materializes by June 2026
+Trigger: SPF #2 $485→$558/MBF | Prob: 35% ±11% within 90d
+Drivers: Canadian tariffs, BC mill curtailments, housing starts
 
-DIRECT_COST_IMPACT — Project Phoenix:
-Committed lumber/wood framing: $1.82M (3.5% of GMP)
-Uncommitted wood exposure: $340K remaining procurement
+IMPACT:
+Direct: +$51K on $340K uncommitted wood
+Indirect: +$31K-$55K (formwork, partitions, temp construction)
+Aggregate: +$97K expected (0.19% GMP) | P95: $126K
+Timeline: Negligible — lumber not on CP (steel-framed)
 
-Line Item Breakdown:
-• Structural blocking & nailers: $180K remaining → +$27K exposure
-• Interior framing (Levels 8-24): $95K remaining → +$14.3K exposure
-• Formwork lumber (reusable): $48K remaining → +$7.2K exposure
-• Millwork & architectural wood: $17K remaining → +$2.6K exposure
-TOTAL DIRECT EXPOSURE: +$51.1K on uncommitted quantities
+CASCADE RISK if broad commodity inflation:
+Copper +15%: +$67K | Aluminum +15%: +$142K | Diesel +15%: +$23K
+Full cascade: +$232K → contingency drops to $470K (0.91% GMP) ⚠
 
-INDIRECT_COST_IMPACT:
-• Concrete formwork contractors may pass through material escalation: +$18K-$32K
-• Interior partition subcontractor (metal stud + wood hybrid): +$8K-$14K
-• Temporary construction (shoring, barriers): +$5K-$9K
-TOTAL INDIRECT EXPOSURE: +$31K — $55K
-
-AGGREGATE_SCENARIO_IMPACT:
-Best case: +$82K (0.16% of GMP)
-Expected case: +$97K (0.19% of GMP)
-Worst case: +$126K (0.24% of GMP)
-Confidence: 75% ± 9% impact stays below $110K
-
-TIMELINE_IMPACT:
-Negligible — lumber is not on critical path for Phoenix (steel-framed tower)
-However: if lumber surge indicates broader commodity inflation, watch for:
-• Copper (electrical rough-in): currently $4.12/lb, +15% = +$67K exposure
-• Aluminum (curtain wall): currently $2,485/MT, +15% = +$142K exposure
-• Diesel (equipment & hauling): currently $4.89/gal, +15% = +$23K exposure
-CASCADING COMMODITY EXPOSURE: +$232K if all commodities follow lumber
-
-CONTINGENCY_STATUS:
-Current contingency: $1.24M
-After steel tariff (P80): $799K
-After lumber scenario (expected): $702K (1.35% of GMP)
-After full commodity cascade: $470K (0.91% of GMP) — BELOW 1% THRESHOLD ⚠
-
-RECOMMENDATION:
-1. Lock remaining lumber procurement this week — $340K at current pricing saves $51K
-2. Request commodity escalation clause in remaining subcontracts (curtain wall, electrical)
-3. Brief owner on contingency compression — recommend $200K contingency top-up at next draw`,
+ACTIONS:
+1. Lock $340K lumber procurement this week → saves $51K
+2. Escalation clauses in remaining subs
+3. Brief owner on contingency compression — recommend $200K top-up`,
       followUps: [
-        "What if copper hits $5.00/lb — model full MEP cost cascade and timeline impact?",
-        "Predict: how does a Fed rate hike of 50bps affect our development IRR and lender covenants?",
-        "Scenario: LA Building & Safety implements new seismic retrofit requirement mid-project — exposure?",
+        "Copper to $5.00/lb — MEP cascade?",
+        "Fed +50bps — IRR and covenant impact?",
+        "New seismic requirement mid-project?",
       ],
     };
   }
@@ -365,60 +250,25 @@ RECOMMENDATION:
 function getGenericResponse(query: string): string {
   const q = query.toLowerCase();
 
-  // Contextual fallback based on query topic
   if (q.includes('hello') || q.includes('hi') || q.includes('hey') || q.includes('help')) {
-    return `INTEL: System Ready
+    return `SYSTEM ONLINE — Phoenix | 74.2% complete | $578K under budget | 9d float
 
-ENVISION_OS — Construction Intelligence Platform
-
-Active project: Phoenix Tower — $48.2M mixed-use, 24 stories, DTLA
-Status: 74.2% complete | Budget: -1.2% favorable | Schedule: 9 days float
-
-AVAILABLE_COMMANDS:
-• Cost/budget analysis — "What's our current cost variance?"
-• Schedule risk — "Show me the 60-day critical path risk"
-• Communications — "Summarize this week's owner communications"
-• Scenario modeling — "What if steel tariffs hit 25%?"
-• Market intelligence — Ask about commodity prices, labor rates, interest rates
-• General questions — Construction methods, code compliance, financing
-
-Ask anything. I'll route it through the intelligence engine.`;
+Ready for tasking. Query costs, schedule, comms, or run scenarios.`;
   }
 
   if (q.includes('who') || q.includes('what is') || q.includes('explain') || q.includes('how does')) {
-    return `INTEL: Knowledge Query — "${query}"
+    return `Processing in demo mode. 23 data routers available in production: Procore, Sage, BIM 360, Email/Slack/Zoom, market feeds.
 
-SYSTEM_NOTE:
-Intelligence engine is processing in offline mode. For real-time answers with live data, the production system connects to 23 data routers across:
+Phoenix: $48.2M GMP | 74.2% | 14 open RFIs | $1.24M contingency
 
-• Procore — Project management, RFIs, submittals, daily logs
-• Sage Intacct — GL, AP/AR, job costing, budgets
-• BIM 360 — Model coordination, clash detection
-• Email/Slack/Zoom — Communication intelligence & sentiment
-• Market feeds — ENR indices, commodity futures, FRED rates
-
-PROJECT_SNAPSHOT:
-Phoenix Tower | $48.2M GMP | 74.2% complete | Aug 2026 target
-Current contingency: $1.24M (2.4%) | 14 open RFIs | 4 on critical path
-
-Try a specific question about the project — costs, schedule, risks, or communications.`;
+Specify: costs, schedule, risks, or comms.`;
   }
 
-  return `INTEL: Query Received — "${query}"
+  return `Query logged. Demo mode active.
 
-PROCESSING_STATUS:
-The intelligence engine is operating in demo mode. Your query has been logged for analysis.
+Phoenix: $51.8M GMP | $41.7M committed | $38.1M expended | 9d float
 
-PROJECT_CONTEXT:
-Phoenix Tower | $48.2M mixed-use | 74.2% complete
-GMP: $51.8M | Committed: $41.7M | Expended: $38.1M
-Schedule: 9 days float on critical path | Target: Aug 2026
-
-For the richest responses, try asking about:
-• Financial analysis — costs, tariffs, budget variance, contingency
-• Schedule intelligence — critical path, delays, weather, labor
-• Owner communications — meetings, emails, unresolved items
-• Predictive scenarios — "What if..." market condition changes`;
+Specify: costs, tariffs, schedule, comms, or scenarios.`;
 }
 
 const pdfExtractionSchema = z.object({

@@ -39,7 +39,7 @@ function SubmitButton() {
 
 const INITIAL_MESSAGE: Message = {
   role: "ai",
-  content: "Envision OS active. Construction Intelligence live. Awaiting instructions."
+  content: "ENVISION OS online. Phoenix — 74.2% complete. Awaiting tasking."
 };
 
 const STORAGE_KEY = 'envision-chat-history';
