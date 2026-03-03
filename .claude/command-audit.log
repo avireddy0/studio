@@ -1481,3 +1481,5 @@ git push
 lsof -ti:9002 | xargs kill -9 2>/dev/null; echo "killed"
 npm run dev
 sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+curl -s http://localhost:9002/query | head -50
+cat /private/tmp/claude-501/-Users-avireddy-GitHub-studio/tasks/bm4d5555p.output 2>/dev/null | tail -30
