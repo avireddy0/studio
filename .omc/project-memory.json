@@ -136,6 +136,19 @@
       ]
     }
   },
-  "hotPaths": [],
+  "hotPaths": [
+    {
+      "path": "src/components/query/chat-message.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1772515799368,
+      "type": "file"
+    },
+    {
+      "path": "src/components/query/chat-interface.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1772515834166,
+      "type": "file"
+    }
+  ],
   "userDirectives": []
 }

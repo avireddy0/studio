@@ -1459,3 +1459,25 @@ git push
 lsof -ti:9002 | xargs kill -9 2>/dev/null; echo "killed"
 npm run dev
 sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+npm run build 2>&1 | tail -25
+git add src/components/query/chat-message.tsx src/components/query/chat-interface.tsx && git commit -m "$(cat <<'EOF'
+feat: line-by-line streaming, bold fonts, rich formatting for chat UX
+
+- AI responses stream line-by-line with blinking cursor instead of
+  dumping instantly — paces the experience like a terminal feed
+- All text upgraded to font-semibold for bolder readability
+- ALL_CAPS headers parsed and styled distinctly (smaller, tracked)
+- Warning lines (⚠) highlighted in amber, action items indented
+- Empty lines render as visual spacers between sections
+- Follow-up buttons hidden during streaming, stagger-animate in
+  with 80ms incremental delay after stream completes
+- Smooth auto-scroll tracks each new line during streaming
+- New query cancels any in-progress streaming
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)"
+git push
+lsof -ti:9002 | xargs kill -9 2>/dev/null; echo "killed"
+npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
