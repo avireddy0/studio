@@ -1442,3 +1442,20 @@ all critical data points and actionable intelligence.
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 EOF
 )" && git push
+npm run build 2>&1 | tail -5
+npm run build 2>&1 | tail -20
+git status --short
+git log --oneline -5
+git add src/components/query/chat-interface.tsx src/components/query/chat-message.tsx && git commit -m "$(cat <<'EOF'
+refactor: military-terse style across all chat UI text
+
+Shortened structured response labels (PAYLOAD, TARGET, DATA),
+status indicator, toast error, and input placeholder.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git status --short
+git push
+lsof -ti:9002 | xargs kill -9 2>/dev/null; echo "killed"
+npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002

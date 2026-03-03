@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1772379218048,
+  "lastScanned": 1772507414368,
   "projectRoot": "/Users/avireddy/GitHub/studio",
   "techStack": {
     "languages": [
@@ -80,7 +80,7 @@
       "path": "dataconnect",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1772379218019,
+      "lastAccessed": 1772507414335,
       "keyFiles": [
         "dataconnect.yaml",
         "seed_data.gql"
@@ -90,7 +90,7 @@
       "path": "docs",
       "purpose": "Documentation",
       "fileCount": 1,
-      "lastAccessed": 1772379218020,
+      "lastAccessed": 1772507414345,
       "keyFiles": [
         "blueprint.md"
       ]
@@ -99,14 +99,14 @@
       "path": "src",
       "purpose": "Source code",
       "fileCount": 0,
-      "lastAccessed": 1772379218021,
+      "lastAccessed": 1772507414346,
       "keyFiles": []
     },
     "src/app": {
       "path": "src/app",
       "purpose": "Application code",
       "fileCount": 3,
-      "lastAccessed": 1772379218033,
+      "lastAccessed": 1772507414346,
       "keyFiles": [
         "favicon.ico",
         "globals.css",
@@ -117,7 +117,7 @@
       "path": "src/components",
       "purpose": "UI components",
       "fileCount": 3,
-      "lastAccessed": 1772379218033,
+      "lastAccessed": 1772507414346,
       "keyFiles": [
         "dashboard-header.tsx",
         "icons.tsx",
@@ -128,7 +128,7 @@
       "path": "src/lib",
       "purpose": "Library code",
       "fileCount": 5,
-      "lastAccessed": 1772379218034,
+      "lastAccessed": 1772507414346,
       "keyFiles": [
         "actions.ts",
         "firestore.ts",
@@ -136,169 +136,6 @@
       ]
     }
   },
-  "hotPaths": [
-    {
-      "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 159,
-      "lastAccessed": 1772439825212,
-      "type": "file"
-    },
-    {
-      "path": "src/components/visualizations/ingestion-funnel.tsx",
-      "accessCount": 49,
-      "lastAccessed": 1772420255379,
-      "type": "file"
-    },
-    {
-      "path": "src/components/context/context-summarizer.tsx",
-      "accessCount": 49,
-      "lastAccessed": 1772423493582,
-      "type": "file"
-    },
-    {
-      "path": "src/components/visualizations/bim-scene.tsx",
-      "accessCount": 37,
-      "lastAccessed": 1772425079677,
-      "type": "file"
-    },
-    {
-      "path": "src/components/sections/feasibility-section.tsx",
-      "accessCount": 30,
-      "lastAccessed": 1772437434639,
-      "type": "file"
-    },
-    {
-      "path": "src/app/globals.css",
-      "accessCount": 21,
-      "lastAccessed": 1772414947671,
-      "type": "file"
-    },
-    {
-      "path": "src/components/query/chat-interface.tsx",
-      "accessCount": 21,
-      "lastAccessed": 1772505493929,
-      "type": "file"
-    },
-    {
-      "path": "src/components/visualizations/tactical-bim-overlay.tsx",
-      "accessCount": 16,
-      "lastAccessed": 1772423736434,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/actions.ts",
-      "accessCount": 14,
-      "lastAccessed": 1772505474788,
-      "type": "file"
-    },
-    {
-      "path": "src/components/dashboard-header.tsx",
-      "accessCount": 12,
-      "lastAccessed": 1772417135601,
-      "type": "file"
-    },
-    {
-      "path": "src",
-      "accessCount": 6,
-      "lastAccessed": 1772420918438,
-      "type": "directory"
-    },
-    {
-      "path": "src/components/ui/table.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1772414664046,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/card.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1772414693714,
-      "type": "directory"
-    },
-    {
-      "path": "src/app/(dashboard)/layout.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1772414771046,
-      "type": "file"
-    },
-    {
-      "path": "src/app/layout.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1772418260020,
-      "type": "file"
-    },
-    {
-      "path": "src/components/query/chat-message.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1772439950476,
-      "type": "file"
-    },
-    {
-      "path": "src/ai/flows/query-semantic-routing.ts",
-      "accessCount": 3,
-      "lastAccessed": 1772439951394,
-      "type": "file"
-    },
-    {
-      "path": "src/components/query",
-      "accessCount": 2,
-      "lastAccessed": 1772419436734,
-      "type": "directory"
-    },
-    {
-      "path": "src/ai/genkit.ts",
-      "accessCount": 2,
-      "lastAccessed": 1772439952492,
-      "type": "file"
-    },
-    {
-      "path": "package.json",
-      "accessCount": 1,
-      "lastAccessed": 1772380093682,
-      "type": "file"
-    },
-    {
-      "path": "",
-      "accessCount": 1,
-      "lastAccessed": 1772380094043,
-      "type": "directory"
-    },
-    {
-      "path": "src/components/sidebar-nav.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1772380098671,
-      "type": "file"
-    },
-    {
-      "path": "tailwind.config.ts",
-      "accessCount": 1,
-      "lastAccessed": 1772380099268,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/placeholder-images.ts",
-      "accessCount": 1,
-      "lastAccessed": 1772380255850,
-      "type": "file"
-    },
-    {
-      "path": "src/hooks/use-mobile.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1772382466811,
-      "type": "file"
-    },
-    {
-      "path": "src/app",
-      "accessCount": 1,
-      "lastAccessed": 1772418250809,
-      "type": "directory"
-    },
-    {
-      "path": "src/app/(dashboard)/query/page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1772439950848,
-      "type": "file"
-    }
-  ],
+  "hotPaths": [],
   "userDirectives": []
 }
