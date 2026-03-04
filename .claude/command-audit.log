@@ -1834,3 +1834,105 @@ UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" co
 lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev
 xcrun simctl shutdown "4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" 2>/dev/null; sleep 6 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
 UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && sleep 8 && xcrun simctl io "$UDID" screenshot /tmp/predict-mobile-2.png
+npm run build 2>&1 | tail -20
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev
+sleep 6 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/predict-v2-transcript.png && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/predict-v2-warning.png && sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/predict-v2-delivered.png
+npm run build 2>&1 | tail -30
+npm run build 2>&1 | tail -15
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev 2>&1 &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+npm run build 2>&1 | tail -5
+npm run build 2>&1 | tail -5
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &>/dev/null &
+sleep 6 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 2 && npm run dev 2>&1 &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+# Wait for page to load
+sleep 4
+# Take screenshots at rapid intervals to catch HUD phases
+xcrun simctl io "$UDID" screenshot /tmp/predict-hud-01.png 2>/dev/null
+sleep 1
+xcrun simctl io "$UDID" screenshot /tmp/predict-hud-02.png 2>/dev/null
+sleep 1
+xcrun simctl io "$UDID" screenshot /tmp/predict-hud-03.png 2>/dev/null
+sleep 1
+xcrun simctl io "$UDID" screenshot /tmp/predict-hud-04.png 2>/dev/null
+sleep 1
+xcrun simctl io "$UDID" screenshot /tmp/predict-hud-05.png 2>/dev/null
+sleep 1
+xcrun simctl io "$UDID" screenshot /tmp/predict-hud-06.png 2>/dev/null
+echo "Done - 6 screenshots taken"
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1 && npm run dev 2>&1 &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+# Take rapid screenshots to catch both clips and see who's who
+sleep 3
+xcrun simctl io "$UDID" screenshot /tmp/predict-faces-01.png 2>/dev/null
+sleep 1
+xcrun simctl io "$UDID" screenshot /tmp/predict-faces-02.png 2>/dev/null
+sleep 1
+xcrun simctl io "$UDID" screenshot /tmp/predict-faces-03.png 2>/dev/null
+sleep 1
+xcrun simctl io "$UDID" screenshot /tmp/predict-faces-04.png 2>/dev/null
+sleep 1
+xcrun simctl io "$UDID" screenshot /tmp/predict-faces-05.png 2>/dev/null
+sleep 1
+xcrun simctl io "$UDID" screenshot /tmp/predict-faces-06.png 2>/dev/null
+sleep 1
+xcrun simctl io "$UDID" screenshot /tmp/predict-faces-07.png 2>/dev/null
+sleep 1
+xcrun simctl io "$UDID" screenshot /tmp/predict-faces-08.png 2>/dev/null
+echo "Done"
+npm run build 2>&1 | tail -15
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1 && npm run dev 2>&1 &
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+# Take screenshots at 1.5s intervals to catch all phases
+sleep 4
+xcrun simctl io "$UDID" screenshot /tmp/predict-v2-01.png 2>/dev/null
+sleep 2
+xcrun simctl io "$UDID" screenshot /tmp/predict-v2-02.png 2>/dev/null
+sleep 2
+xcrun simctl io "$UDID" screenshot /tmp/predict-v2-03.png 2>/dev/null
+sleep 2
+xcrun simctl io "$UDID" screenshot /tmp/predict-v2-04.png 2>/dev/null
+sleep 2
+xcrun simctl io "$UDID" screenshot /tmp/predict-v2-05.png 2>/dev/null
+sleep 2
+xcrun simctl io "$UDID" screenshot /tmp/predict-v2-06.png 2>/dev/null
+sleep 2
+xcrun simctl io "$UDID" screenshot /tmp/predict-v2-07.png 2>/dev/null
+sleep 2
+xcrun simctl io "$UDID" screenshot /tmp/predict-v2-08.png 2>/dev/null
+echo "Done"
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 2 && npm run dev 2>&1 &
+lsof -ti:9002 2>/dev/null
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002 2>/dev/null || echo "not responding"
+xcrun simctl terminate "1311D811-5479-4E95-B2FD-67CD57CE77F6" com.apple.mobilesafari 2>/dev/null; sleep 1; xcrun simctl openurl "1311D811-5479-4E95-B2FD-67CD57CE77F6" "http://localhost:9002/?s=predict" 2>/dev/null; sleep 6; xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/predict-1.png 2>/dev/null && echo "done"
+for i in 1 2 3 4 5; do sleep 3; xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/predict-cycle-$i.png 2>/dev/null; done && echo "done"
+xcrun simctl terminate "1311D811-5479-4E95-B2FD-67CD57CE77F6" com.apple.mobilesafari 2>/dev/null; sleep 1; xcrun simctl openurl "1311D811-5479-4E95-B2FD-67CD57CE77F6" "http://localhost:9002/?s=predict" 2>/dev/null; sleep 3; for i in $(seq 1 15); do xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/rapid-$i.png 2>/dev/null; sleep 1; done && echo "done"
+npm run build 2>&1 | tail -20
+lsof -ti:9002 | xargs kill -9 2>/dev/null; echo "killed"
+npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+xcrun simctl terminate "1311D811-5479-4E95-B2FD-67CD57CE77F6" com.apple.mobilesafari 2>/dev/null; sleep 1; xcrun simctl openurl "1311D811-5479-4E95-B2FD-67CD57CE77F6" "http://localhost:9002/?s=predict" 2>/dev/null; sleep 3; for i in $(seq 1 15); do xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/fix-$i.png 2>/dev/null; sleep 1; done && echo "done"
+npx tsc --noEmit 2>&1 | tail -5
+xcrun simctl terminate "1311D811-5479-4E95-B2FD-67CD57CE77F6" com.apple.mobilesafari 2>/dev/null; sleep 1; xcrun simctl openurl "1311D811-5479-4E95-B2FD-67CD57CE77F6" "http://localhost:9002/?s=predict" 2>/dev/null; sleep 3; for i in $(seq 1 15); do xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/align-$i.png 2>/dev/null; sleep 1; done && echo "done"
+npx tsc --noEmit 2>&1 | grep predict
+xcrun simctl terminate "1311D811-5479-4E95-B2FD-67CD57CE77F6" com.apple.mobilesafari 2>/dev/null; sleep 1; xcrun simctl openurl "1311D811-5479-4E95-B2FD-67CD57CE77F6" "http://localhost:9002/?s=predict" 2>/dev/null; sleep 3; for i in $(seq 1 15); do xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/v3-$i.png 2>/dev/null; sleep 1; done && echo "done"
+xcrun simctl terminate "1311D811-5479-4E95-B2FD-67CD57CE77F6" com.apple.mobilesafari 2>/dev/null; sleep 1; xcrun simctl openurl "1311D811-5479-4E95-B2FD-67CD57CE77F6" "http://localhost:9002/?s=predict" 2>/dev/null; sleep 4; xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/nohud-1.png 2>/dev/null; sleep 3; xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/nohud-2.png 2>/dev/null; sleep 5; xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/nohud-3.png 2>/dev/null && echo "done"

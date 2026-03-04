@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1772507414368,
+  "lastScanned": 1772598272382,
   "projectRoot": "/Users/avireddy/GitHub/studio",
   "techStack": {
     "languages": [
@@ -67,6 +67,7 @@
     "workspaces": [],
     "mainDirectories": [
       "docs",
+      "public",
       "src"
     ],
     "gitBranches": {
@@ -80,7 +81,7 @@
       "path": "dataconnect",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1772507414335,
+      "lastAccessed": 1772598272265,
       "keyFiles": [
         "dataconnect.yaml",
         "seed_data.gql"
@@ -90,23 +91,33 @@
       "path": "docs",
       "purpose": "Documentation",
       "fileCount": 1,
-      "lastAccessed": 1772507414345,
+      "lastAccessed": 1772598272336,
       "keyFiles": [
         "blueprint.md"
+      ]
+    },
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 2,
+      "lastAccessed": 1772598272344,
+      "keyFiles": [
+        "feed-clip-1.mp4",
+        "feed-clip-2.mp4"
       ]
     },
     "src": {
       "path": "src",
       "purpose": "Source code",
       "fileCount": 0,
-      "lastAccessed": 1772507414346,
+      "lastAccessed": 1772598272346,
       "keyFiles": []
     },
     "src/app": {
       "path": "src/app",
       "purpose": "Application code",
       "fileCount": 3,
-      "lastAccessed": 1772507414346,
+      "lastAccessed": 1772598272347,
       "keyFiles": [
         "favicon.ico",
         "globals.css",
@@ -117,7 +128,7 @@
       "path": "src/components",
       "purpose": "UI components",
       "fileCount": 3,
-      "lastAccessed": 1772507414346,
+      "lastAccessed": 1772598272347,
       "keyFiles": [
         "dashboard-header.tsx",
         "icons.tsx",
@@ -128,7 +139,7 @@
       "path": "src/lib",
       "purpose": "Library code",
       "fileCount": 5,
-      "lastAccessed": 1772507414346,
+      "lastAccessed": 1772598272347,
       "keyFiles": [
         "actions.ts",
         "firestore.ts",
@@ -139,68 +150,8 @@
   "hotPaths": [
     {
       "path": "src/components/sections/predict-section.tsx",
-      "accessCount": 51,
-      "lastAccessed": 1772581322170,
-      "type": "file"
-    },
-    {
-      "path": "src/components/query/chat-interface.tsx",
-      "accessCount": 12,
-      "lastAccessed": 1772522255341,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 6,
-      "lastAccessed": 1772527365618,
-      "type": "file"
-    },
-    {
-      "path": "src/components/query/chat-message.tsx",
-      "accessCount": 4,
-      "lastAccessed": 1772522088770,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/actions.ts",
-      "accessCount": 3,
-      "lastAccessed": 1772522272093,
-      "type": "file"
-    },
-    {
-      "path": "src/components/sections/feasibility-section.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1772523832341,
-      "type": "file"
-    },
-    {
-      "path": "src/components/context/context-summarizer.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1772523866447,
-      "type": "file"
-    },
-    {
-      "path": "src/app/layout.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1772522054475,
-      "type": "file"
-    },
-    {
-      "path": "src",
-      "accessCount": 1,
-      "lastAccessed": 1772522416283,
-      "type": "directory"
-    },
-    {
-      "path": "src/app/(dashboard)/query/page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1772522496443,
-      "type": "file"
-    },
-    {
-      "path": ".claude/handoff.md",
-      "accessCount": 1,
-      "lastAccessed": 1772523669666,
+      "accessCount": 45,
+      "lastAccessed": 1772602027945,
       "type": "file"
     }
   ],

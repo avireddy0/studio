@@ -10,8 +10,8 @@ import { cn } from "@/lib/utils";
 // Two clips playing sequentially, looping
 // ═══════════════════════════════════════════════════════════════
 const FEED_CLIPS = [
-  { src: '/feed-clip-1.mp4', label: 'CH-04 • PORTSMOUTH', coord: '36.8354°N 76.2983°W', org: 'PORTSMOUTH CITY COUNCIL — PUBLIC HEARING', ts: '14:22:07 EST', face: { top: '8%', left: '25%', width: '30%', height: '50%' } },
-  { src: '/feed-clip-2.mp4', label: 'CH-12 • PHOENIX', coord: '33.4484°N 112.0740°W', org: 'PLANNING COMMISSION — DENSITY VARIANCE', ts: '16:11:53 MST', face: { top: '5%', left: '28%', width: '28%', height: '52%' } },
+  { src: '/feed-clip-1.mp4', label: 'CH-04 • PORTSMOUTH', coord: '36.8354°N 76.2983°W', org: 'PORTSMOUTH CITY COUNCIL — PUBLIC HEARING', ts: '14:22:07 EST', face: { top: '8%', left: '30%', width: '25%', height: '44%' } },
+  { src: '/feed-clip-2.mp4', label: 'CH-12 • PHOENIX', coord: '33.4484°N 112.0740°W', org: 'PLANNING COMMISSION — DENSITY VARIANCE', ts: '16:11:53 MST', face: { top: '6%', left: '28%', width: '26%', height: '46%' } },
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -27,30 +27,57 @@ interface Subject {
   confidence: number;
   priorAppearances: number;
   keywords: string[];
+  facePos: { top: string; left: string; width: string; height: string };
 }
 
 const SUBJECTS: Subject[] = [
   {
-    name: 'COUNCILWOMAN 01',
-    title: 'Commissioner — District 4',
+    name: 'COUNCILMAN 01',
+    title: 'Chair — Planning Commission',
     affiliation: 'Planning Commission',
-    stance: 'OPPOSED',
-    stanceColor: 'text-red-400',
-    sentiment: -0.73,
+    stance: 'CAUTIOUS',
+    stanceColor: 'text-amber-400',
+    sentiment: -0.31,
     confidence: 97.2,
     priorAppearances: 14,
-    keywords: ['traffic', 'density', 'shadow impact'],
+    keywords: ['traffic', 'conditions'],
+    facePos: { top: '6%', left: '22%', width: '28%', height: '48%' },
   },
   {
     name: 'CONCERNED CITIZEN 01',
     title: 'Resident — Maple Street HOA',
     affiliation: 'Public Comment',
-    stance: 'HOSTILE',
-    stanceColor: 'text-red-500',
-    sentiment: -0.85,
+    stance: 'INQUIRING',
+    stanceColor: 'text-amber-500',
+    sentiment: -0.22,
     confidence: 88.3,
     priorAppearances: 3,
-    keywords: ['property values', 'traffic congestion'],
+    keywords: ['parking', 'traffic'],
+    facePos: { top: '4%', left: '34%', width: '26%', height: '46%' },
+  },
+  {
+    name: 'DIR. KAPOOR',
+    title: 'Zoning Administrator',
+    affiliation: 'Dept. of Planning',
+    stance: 'NEUTRAL',
+    stanceColor: 'text-white/60',
+    sentiment: -0.08,
+    confidence: 94.5,
+    priorAppearances: 22,
+    keywords: ['setback', 'density'],
+    facePos: { top: '8%', left: '55%', width: '24%', height: '44%' },
+  },
+  {
+    name: 'A. TORRES',
+    title: 'Transportation Planner',
+    affiliation: 'Public Works',
+    stance: 'CAUTIOUS',
+    stanceColor: 'text-amber-400',
+    sentiment: -0.35,
+    confidence: 91.0,
+    priorAppearances: 8,
+    keywords: ['traffic counts', 'school zone'],
+    facePos: { top: '10%', left: '6%', width: '24%', height: '44%' },
   },
 ];
 
@@ -62,64 +89,67 @@ interface CaptionLine {
   text: string;
   sentiment: number;
   speaker: string;
+  subjectIdx: number;
   highlights: Array<{ phrase: string; severity: 'high' | 'medium' }>;
 }
 
 const CAPTIONS: CaptionLine[] = [
   {
     time: '14:22',
-    text: 'The traffic study presented does not adequately address peak hour congestion on Grand Avenue.',
-    sentiment: -0.45,
-    speaker: 'CITIZEN-01',
-    highlights: [{ phrase: 'does not adequately', severity: 'medium' }],
+    text: 'The revised site plan addresses several of our previous concerns. Good progress overall.',
+    sentiment: 0.1,
+    speaker: 'CNCL-01',
+    subjectIdx: 0,
+    highlights: [],
   },
   {
     time: '14:23',
-    text: 'Residents on Maple have voiced serious concerns about shadow impact on the adjacent park.',
-    sentiment: -0.52,
+    text: 'Could the applicant clarify the proposed parking ratio for the residential units?',
+    sentiment: -0.1,
     speaker: 'CITIZEN-01',
-    highlights: [{ phrase: 'serious concerns', severity: 'medium' }],
+    subjectIdx: 1,
+    highlights: [],
   },
   {
     time: '14:24',
-    text: "I'm not convinced the parking ratio meets our municipal code requirements for this density.",
-    sentiment: -0.61,
-    speaker: 'CNCL-01',
-    highlights: [{ phrase: 'not convinced', severity: 'medium' }],
+    text: 'The setback meets the revised zoning overlay. No code issues on my end.',
+    sentiment: 0.05,
+    speaker: 'DIR-KAPOOR',
+    subjectIdx: 2,
+    highlights: [],
   },
   {
     time: '14:25',
-    text: 'This is the third time this project has come before us without proper environmental review.',
-    sentiment: -0.78,
-    speaker: 'CNCL-01',
-    highlights: [
-      { phrase: 'third time', severity: 'high' },
-      { phrase: 'without proper', severity: 'high' },
-    ],
+    text: "I'd like to see additional data on afternoon traffic patterns near the school zone before we proceed.",
+    sentiment: -0.35,
+    speaker: 'A-TORRES',
+    subjectIdx: 3,
+    highlights: [{ phrase: 'additional data', severity: 'medium' }, { phrase: 'before we proceed', severity: 'medium' }],
   },
   {
     time: '14:26',
-    text: 'I move to table this application pending a revised traffic impact analysis.',
-    sentiment: -0.85,
+    text: "I'm inclined to support this with conditions — let's address the outstanding traffic questions first.",
+    sentiment: -0.15,
     speaker: 'CNCL-01',
-    highlights: [{ phrase: 'table this application', severity: 'high' }],
+    subjectIdx: 0,
+    highlights: [{ phrase: 'with conditions', severity: 'medium' }],
   },
 ];
 
 const ALERT_EMAIL = {
-  subject: 'NEGATIVE SENTIMENT ALERT',
+  subject: 'EARLY WARNING',
   project: 'Phoenix — 14th & Grand',
-  body: 'Three commissioners signaled intent to table density variance. Traffic study cited as deficient.',
-  recommendation: 'Meet with Planning Director before next hearing.',
-  risk: 'HIGH (78%)',
+  body: 'Two commissioners requested supplemental traffic data before final vote. Shadow study extension also mentioned.',
+  recommendation: 'Schedule pre-application meeting with Planning Director. Prepare afternoon traffic counts and winter shadow study.',
+  risk: 'MODERATE (52%)',
 };
 
 const OWNER_EMAIL = {
-  to: 'M. Rodriguez, VP Development',
-  email: 'm.rodriguez@meridian.dev',
-  subject: '14th & Grand — Planning Commission Opposition',
-  body: 'Three of five commissioners indicated they will vote to table your density variance application. Primary objection: traffic study does not address peak-hour congestion on Grand Ave. Secondary: shadow impact on adjacent park.',
-  action: 'Request meeting with Planning Director Kim before April 12 hearing. Submit revised traffic study with peak-hour analysis.',
+  to: 'OWNER, VP DEVELOPMENT',
+  email: 'owner@meridian.dev',
+  subject: '14th & Grand — Outstanding Conditions',
+  body: 'Commissioners want supplemental afternoon traffic data and an extended winter shadow study before voting on density variance. Tone was constructive — willingness to approve with conditions.',
+  action: 'Meet with Planning Director Kim this week. Submit afternoon traffic counts and winter shadow study before April 12 hearing.',
 };
 
 const CYCLE_DURATION = 20000;
@@ -239,7 +269,7 @@ type FacePhase = 'scanning' | 'locking' | 'matched' | 'idle';
 function FaceRecognitionHUD({ subject, phase, facePosition }: { subject: Subject; phase: FacePhase; facePosition: { top: string; left: string; width: string; height: string } }) {
   return (
     <>
-      {/* Face detection reticle — position tracks face in each clip */}
+      {/* Face detection reticle */}
       <div
         className={cn(
           "absolute transition-all ease-out",
@@ -251,99 +281,40 @@ function FaceRecognitionHUD({ subject, phase, facePosition }: { subject: Subject
         style={{ top: facePosition.top, left: facePosition.left, width: facePosition.width, height: facePosition.height }}
       >
         {/* Reticle corners */}
-        <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-cyan-400/70" />
-        <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-cyan-400/70" />
-        <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-cyan-400/70" />
-        <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-cyan-400/70" />
-
-        {/* Crosshair lines */}
-        <div className="absolute top-1/2 left-0 w-2 h-px bg-cyan-400/30" />
-        <div className="absolute top-1/2 right-0 w-2 h-px bg-cyan-400/30" />
-        <div className="absolute top-0 left-1/2 w-px h-2 bg-cyan-400/30" />
-        <div className="absolute bottom-0 left-1/2 w-px h-2 bg-cyan-400/30" />
+        <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-cyan-400/60" />
+        <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-cyan-400/60" />
+        <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-cyan-400/60" />
+        <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-cyan-400/60" />
 
         {/* Scan sweep */}
         {phase === 'scanning' && (
-          <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"
+          <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent"
             style={{ animation: 'scanSweep 2s ease-in-out infinite' }} />
         )}
 
         {/* Lock pulse */}
         {phase === 'locking' && (
-          <div className="absolute inset-0 border border-cyan-400/20 animate-ping" style={{ animationDuration: '1.2s' }} />
-        )}
-
-        {/* Status label */}
-        <div className="absolute -top-5 left-0 right-0 text-center">
-          <span className={cn(
-            "text-[8px] font-mono tracking-[0.25em] uppercase font-bold transition-all duration-500",
-            phase === 'scanning' ? 'text-cyan-400/60' :
-            phase === 'locking' ? 'text-amber-400/80' :
-            phase === 'matched' ? 'text-green-400/80' : 'text-transparent'
-          )}>
-            {phase === 'scanning' ? 'SCANNING...' :
-             phase === 'locking' ? 'ANALYZING...' :
-             phase === 'matched' ? `MATCH: ${subject.confidence}%` : ''}
-          </span>
-        </div>
-
-        {/* Face outline dots (biometric points) — only when locking/matched */}
-        {(phase === 'locking' || phase === 'matched') && (
-          <>
-            <div className="absolute top-[18%] left-[30%] w-1 h-1 rounded-full bg-cyan-400/60" />
-            <div className="absolute top-[18%] right-[30%] w-1 h-1 rounded-full bg-cyan-400/60" />
-            <div className="absolute top-[40%] left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-cyan-400/40" />
-            <div className="absolute top-[55%] left-1/2 -translate-x-1/2 w-1.5 h-px bg-cyan-400/40" />
-            <div className="absolute top-[25%] left-[25%] right-[25%] h-px bg-cyan-400/10" />
-            <div className="absolute top-[45%] left-[28%] right-[28%] h-px bg-cyan-400/10" />
-          </>
+          <div className="absolute inset-0 border border-cyan-400/15 animate-ping" style={{ animationDuration: '1.2s' }} />
         )}
       </div>
 
-      {/* Bio panel */}
-      <div className={cn(
-        "absolute right-2 top-[8%] w-[44%] max-w-[210px] transition-all duration-700 ease-out",
-        phase === 'matched' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6'
-      )}>
-        <div className="bg-black/85 backdrop-blur-sm border border-cyan-400/25 p-2.5">
-          <div className="flex items-center gap-1.5 mb-2 pb-1.5 border-b border-cyan-400/15">
-            <ScanFace className="size-3 text-cyan-400/70" />
-            <span className="text-[7px] font-mono text-cyan-400/70 tracking-[0.2em] font-bold">ID CONFIRMED</span>
-            <div className="ml-auto size-1.5 rounded-full bg-green-400/70 animate-pulse" />
+      {/* Minimal bio badge — fixed position, slides in from right */}
+      <div
+        className={cn(
+          "absolute z-20 right-3 transition-all duration-400 ease-out",
+          phase === 'matched'
+            ? 'opacity-100 translate-x-0'
+            : 'opacity-0 translate-x-6'
+        )}
+        style={{ top: `${parseFloat(facePosition.top) + parseFloat(facePosition.height) + 3}%` }}
+      >
+        <div className="bg-black/75 backdrop-blur-sm border border-cyan-400/20 px-2.5 py-1.5 flex items-center gap-2">
+          <ScanFace className="size-3 text-cyan-400/60 shrink-0" />
+          <div>
+            <div className="text-[9px] font-mono text-white/90 font-bold tracking-wide">{subject.name}</div>
+            <div className="text-[7px] font-mono text-white/40 tracking-wider">{subject.title}</div>
           </div>
-
-          <div className="mb-2">
-            <div className="text-[10px] font-mono text-white/95 font-bold tracking-wide">{subject.name}</div>
-            <div className="text-[7px] font-mono text-white/45 tracking-wider mt-0.5">{subject.title}</div>
-            <div className="text-[7px] font-mono text-white/30 tracking-wider">{subject.affiliation}</div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 mb-2">
-            <div>
-              <div className="text-[6px] font-mono text-white/20 tracking-widest uppercase">Stance</div>
-              <div className={cn("text-[9px] font-mono font-bold", subject.stanceColor)}>{subject.stance}</div>
-            </div>
-            <div>
-              <div className="text-[6px] font-mono text-white/20 tracking-widest uppercase">Sentiment</div>
-              <div className={cn("text-[9px] font-mono font-bold",
-                subject.sentiment < -0.5 ? "text-red-400" : subject.sentiment < -0.2 ? "text-amber-400" : "text-green-400"
-              )}>{subject.sentiment.toFixed(2)}</div>
-            </div>
-            <div>
-              <div className="text-[6px] font-mono text-white/20 tracking-widest uppercase">Appearances</div>
-              <div className="text-[9px] font-mono text-white/65">{subject.priorAppearances}</div>
-            </div>
-            <div>
-              <div className="text-[6px] font-mono text-white/20 tracking-widest uppercase">Confidence</div>
-              <div className="text-[9px] font-mono text-green-400">{subject.confidence}%</div>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-1 pt-1.5 border-t border-white/8">
-            {subject.keywords.map((kw) => (
-              <span key={kw} className="text-[6px] font-mono bg-white/8 text-white/45 px-1 py-0.5 tracking-wider uppercase">{kw}</span>
-            ))}
-          </div>
+          <span className={cn("text-[8px] font-mono font-bold ml-1 shrink-0", subject.stanceColor)}>{subject.stance}</span>
         </div>
       </div>
     </>
@@ -364,7 +335,7 @@ export function PredictSection() {
 
   const [currentFeed, setCurrentFeed] = useState(0);
   const [facePhase, setFacePhase] = useState<FacePhase>('idle');
-  const [currentSubject, setCurrentSubject] = useState(0);
+  const [currentSubject, setCurrentSubject] = useState(-1);
   const [feedSwitching, setFeedSwitching] = useState(false);
   const [emailPhase, setEmailPhase] = useState<'hidden' | 'composing' | 'sending' | 'sent'>('hidden');
 
@@ -379,30 +350,35 @@ export function PredictSection() {
     return () => observer.disconnect();
   }, []);
 
-  // Face recognition sequence — triggered when feed changes
+  // Face recognition sequence — triggered when subject changes (speaker switches)
   const faceTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => {
-    if (!inView) return;
+    if (!inView || currentSubject < 0) return;
     // Clear previous face timers
     faceTimers.current.forEach(clearTimeout);
     faceTimers.current = [];
 
+    // Fast scan → lock → match for every speaker switch
     setFacePhase('idle');
-    setFeedSwitching(true);
-
-    faceTimers.current.push(setTimeout(() => setFeedSwitching(false), 400));
-    faceTimers.current.push(setTimeout(() => setFacePhase('scanning'), 1200));
-    faceTimers.current.push(setTimeout(() => setFacePhase('locking'), 3000));
-    faceTimers.current.push(setTimeout(() => setFacePhase('matched'), 4200));
+    faceTimers.current.push(setTimeout(() => setFacePhase('scanning'), 80));
+    faceTimers.current.push(setTimeout(() => setFacePhase('locking'), 300));
+    faceTimers.current.push(setTimeout(() => setFacePhase('matched'), 550));
 
     return () => faceTimers.current.forEach(clearTimeout);
+  }, [inView, currentSubject]);
+
+  // Feed switch glitch — triggered when video clip changes
+  useEffect(() => {
+    if (!inView) return;
+    setFeedSwitching(true);
+    const t = setTimeout(() => setFeedSwitching(false), 400);
+    return () => clearTimeout(t);
   }, [inView, currentFeed]);
 
   // Handle video clip ending — advance to next clip
   const handleClipEnd = () => {
     setCurrentFeed(prev => (prev + 1) % FEED_CLIPS.length);
-    setCurrentSubject(prev => (prev + 1) % SUBJECTS.length);
   };
 
   // Caption + alert sequence
@@ -414,6 +390,8 @@ export function PredictSection() {
     setProcessing(false);
     setAlertVisible(false);
     setEmailPhase('hidden');
+    setCurrentSubject(-1);
+    setFacePhase('idle');
 
     const t: ReturnType<typeof setTimeout>[] = [];
 
@@ -421,6 +399,7 @@ export function PredictSection() {
       t.push(setTimeout(() => {
         setVisibleCaptions(i + 1);
         setSentimentScore(caption.sentiment);
+        setCurrentSubject(caption.subjectIdx);
       }, 1000 + i * 1400));
     });
 
@@ -437,12 +416,13 @@ export function PredictSection() {
   }, [inView, cycle]);
 
   const feed = FEED_CLIPS[currentFeed];
-  const subject = SUBJECTS[currentSubject];
+  const subject = currentSubject >= 0 ? SUBJECTS[currentSubject] : null;
 
   return (
     <div ref={containerRef} className="flex flex-col h-full">
       <style>{`
         @keyframes scanSweep { 0%, 100% { top: 0%; } 50% { top: 100%; } }
+        @keyframes captionSlideIn { from { opacity: 0; transform: translateY(16px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
       `}</style>
 
       {/* Header */}
@@ -468,10 +448,7 @@ export function PredictSection() {
                 <div className="size-1.5 rounded-full bg-red-500 animate-pulse" />
                 <CardTitle className="text-[10px] tracking-[0.3em] text-black/60">Municipal_Meeting_Feed</CardTitle>
               </div>
-              <div className="flex items-center gap-3 text-[8px] font-mono">
-                <span className="text-red-500/70 uppercase tracking-wider font-bold">LIVE</span>
-                <span className="text-black/25 transition-all duration-500">{feed.label}</span>
-              </div>
+              <span className="text-[8px] font-mono text-black/25 transition-all duration-500">{feed.ts}</span>
             </div>
           </CardHeader>
           <CardContent className="p-0 flex-1 flex flex-col min-h-0">
@@ -511,13 +488,10 @@ export function PredictSection() {
 
                 {/* Channel info */}
                 <div className="absolute top-2.5 right-3 text-right">
-                  <div className="text-[7px] font-mono text-cyan-400/40 tracking-wider transition-all duration-500">{feed.label}</div>
                   <div className="text-[7px] font-mono text-white/20 tracking-wider">ENC: AES-256</div>
                   <div className="text-[7px] font-mono text-white/15 tracking-wider mt-0.5">{feed.ts}</div>
                 </div>
 
-                {/* Face recognition */}
-                <FaceRecognitionHUD subject={subject} phase={facePhase} facePosition={feed.face} />
 
                 {/* Corner brackets */}
                 <div className="absolute top-1 left-1 w-4 h-4 border-t border-l border-white/10" />
@@ -540,180 +514,211 @@ export function PredictSection() {
           </CardContent>
         </Card>
 
-        {/* RIGHT — Intelligence Feed */}
-        <div className="flex flex-col gap-3 md:gap-3 flex-1 min-h-0 overflow-auto no-scrollbar">
-          {/* Caption Transcript */}
-          <Card className="bg-white border-black/5 shadow-2xl overflow-hidden flex-1 flex flex-col rounded-none">
-            <CardHeader className="border-b border-black/5 bg-gray-50/50 py-2.5 shrink-0">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Eye className="size-3 text-primary/50" />
-                  <CardTitle className="text-[10px] tracking-[0.3em] text-black/60">Realtime_Transcript_Analysis</CardTitle>
-                </div>
-                <div className="flex items-center gap-2 text-[8px] font-mono">
-                  <div className="size-1.5 rounded-full bg-primary animate-status" />
-                  <span className="text-primary/60 uppercase tracking-wider">Analyzing</span>
-                </div>
+        {/* RIGHT — Unified Intelligence Panel (morphs between phases) */}
+        <Card className={cn(
+          "flex-1 flex flex-col rounded-none overflow-hidden transition-all duration-700",
+          alertVisible && emailPhase !== 'sent'
+            ? "border-amber-400/40 shadow-[0_0_60px_-12px_rgba(245,158,11,0.2)]"
+            : emailPhase === 'sent'
+            ? "border-primary/25 shadow-[0_0_60px_-12px_rgba(0,124,90,0.2)]"
+            : "border-black/5 shadow-2xl"
+        )}>
+          {/* Dynamic header — morphs with phase */}
+          <CardHeader className={cn(
+            "py-2.5 shrink-0 transition-all duration-500",
+            alertVisible && emailPhase !== 'sent'
+              ? "bg-amber-500/[0.06] border-b border-amber-300/40"
+              : emailPhase === 'sent'
+              ? "bg-primary/5 border-b border-primary/10"
+              : "bg-gray-50/50 border-b border-black/5"
+          )}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {alertVisible && emailPhase !== 'sent' ? (
+                  <>
+                    <div className="relative flex shrink-0">
+                      <span className="w-2 h-2 rounded-full bg-amber-500" />
+                      <span className="absolute inset-0 w-2 h-2 rounded-full bg-amber-500 animate-ping" />
+                    </div>
+                    <CardTitle className="text-[10px] tracking-[0.3em] text-amber-600 font-bold">EARLY_WARNING</CardTitle>
+                  </>
+                ) : emailPhase === 'sent' ? (
+                  <>
+                    <CheckCircle2 className="size-3.5 text-primary" />
+                    <CardTitle className="text-[10px] tracking-[0.3em] text-primary font-bold">OWNER_NOTIFIED</CardTitle>
+                  </>
+                ) : (
+                  <>
+                    <Eye className="size-3 text-primary/50" />
+                    <CardTitle className="text-[10px] tracking-[0.3em] text-black/60">Transcript_Analysis</CardTitle>
+                  </>
+                )}
               </div>
-            </CardHeader>
-            <CardContent className="p-3 flex-1 overflow-auto no-scrollbar">
-              <div className="space-y-2.5">
-                {CAPTIONS.map((caption, i) => {
-                  const visible = i < visibleCaptions;
+              <div className="flex items-center gap-2 text-[8px] font-mono">
+                {alertVisible && emailPhase !== 'sent' ? (
+                  <span className="text-amber-500/70 uppercase tracking-wider font-bold animate-pulse">CAUTION</span>
+                ) : emailPhase === 'sent' ? (
+                  <span className="text-primary font-bold tracking-wider">DELIVERED</span>
+                ) : (
+                  <>
+                    <div className="size-1.5 rounded-full bg-primary animate-status" />
+                    <span className="text-primary/60 uppercase tracking-wider">Analyzing</span>
+                  </>
+                )}
+              </div>
+            </div>
+          </CardHeader>
+
+          <CardContent className="flex-1 p-0 relative overflow-hidden">
+            {/* Scan line when alert is active */}
+            {alertVisible && emailPhase !== 'sent' && (
+              <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden">
+                <div className="absolute left-0 right-0 h-px bg-amber-500/15" style={{ animation: 'scanSweep 4s ease-in-out infinite' }} />
+              </div>
+            )}
+
+            {/* ═══ LAYER 1: TRANSCRIPT CAROUSEL (anchored bottom, scrolls up) ═══ */}
+            <div className={cn(
+              "absolute inset-0 overflow-hidden transition-all duration-600 ease-out z-10",
+              alertVisible ? "opacity-0 scale-[0.97] blur-sm pointer-events-none" : "opacity-100 scale-100 blur-0"
+            )}>
+              {/* Top gradient mask — fades old captions out */}
+              <div className="absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-white via-white/80 to-transparent z-10 pointer-events-none" />
+
+              {/* Captions anchored to bottom, push upward — only render visible ones */}
+              <div className="absolute inset-0 flex flex-col justify-end px-3 pb-3 gap-2">
+                {CAPTIONS.slice(0, visibleCaptions).map((caption, i) => {
+                  const age = Math.max(0, visibleCaptions - 1 - i);
+                  const isNewest = i === visibleCaptions - 1;
                   return (
-                    <div key={i} className="transition-all duration-500" style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(8px)' }}>
-                      <div className="flex items-start gap-2">
-                        <span className="text-[9px] font-mono text-black/25 mt-0.5 shrink-0">[{caption.time}]</span>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-1.5 mb-0.5">
-                            <span className="text-[8px] font-mono text-black/40 font-bold tracking-wider">{caption.speaker}</span>
-                          </div>
-                          <p className="text-[11px] text-black/70 leading-relaxed">
-                            {visible ? <HighlightedCaption text={caption.text} highlights={caption.highlights} /> : caption.text}
-                          </p>
-                          {visible && (
-                            <div className="flex items-center gap-2 mt-1">
-                              <div className={cn("h-0.5 rounded-full transition-all duration-700",
-                                caption.sentiment < -0.6 ? "bg-red-500/40 w-16" : caption.sentiment < -0.3 ? "bg-amber-500/40 w-12" : "bg-primary/40 w-8"
-                              )} />
-                              <span className={cn("text-[8px] font-mono font-bold uppercase tracking-wider",
-                                caption.sentiment < -0.6 ? "text-red-500/50" : caption.sentiment < -0.3 ? "text-amber-500/50" : "text-primary/50"
-                              )}>
-                                {caption.sentiment < -0.6 ? 'HIGH_NEG' : caption.sentiment < -0.3 ? 'MOD_NEG' : 'LOW_NEG'}
-                              </span>
-                            </div>
-                          )}
-                        </div>
+                    <div
+                      key={i}
+                      className={cn(
+                        "shrink-0 transition-all duration-700 ease-out",
+                        "border-l-2 pl-3 pr-2 py-2 bg-black/[0.02]",
+                        caption.sentiment < -0.6 ? "border-l-red-500" : caption.sentiment < -0.3 ? "border-l-amber-500" : "border-l-primary/40"
+                      )}
+                      style={{
+                        opacity: Math.max(0.15, 1 - age * 0.2),
+                        transform: isNewest ? 'translateY(0) scale(1)' : `translateY(0) scale(${1 - age * 0.008})`,
+                        animation: isNewest ? 'captionSlideIn 500ms ease-out' : undefined,
+                      }}
+                    >
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[10px] font-mono text-black/30">[{caption.time}]</span>
+                        <span className="text-[10px] font-mono text-black/50 font-bold tracking-wider">{caption.speaker}</span>
+                        <span className={cn(
+                          "text-[8px] font-mono font-bold uppercase tracking-wider ml-auto px-1.5 py-0.5",
+                          caption.sentiment < -0.6 ? "text-red-500 bg-red-500/[0.06]" : caption.sentiment < -0.3 ? "text-amber-500 bg-amber-500/[0.06]" : "text-primary/50 bg-primary/[0.04]"
+                        )}>
+                          {caption.sentiment < -0.6 ? 'HIGH' : caption.sentiment < -0.3 ? 'MOD' : 'LOW'}
+                        </span>
                       </div>
+                      <p className="text-xs text-black/75 leading-relaxed">
+                        <HighlightedCaption text={caption.text} highlights={caption.highlights} />
+                      </p>
                     </div>
                   );
                 })}
-                <div className="flex items-center gap-2 py-1.5 transition-all duration-500" style={{ opacity: processing ? 1 : 0 }}>
+                {/* Processing indicator */}
+                <div className={cn(
+                  "shrink-0 flex items-center gap-2 py-2 pl-3 transition-all duration-500",
+                  processing ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}>
                   <div className="flex gap-0.5">
-                    <span className="w-1 h-1 rounded-full bg-primary animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-1 h-1 rounded-full bg-primary animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-1 h-1 rounded-full bg-primary animate-bounce" style={{ animationDelay: '300ms' }} />
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
-                  <span className="text-[9px] font-mono text-primary/60 tracking-wide">Analyzing sentiment patterns...</span>
+                  <span className="text-[10px] font-mono text-amber-500/70 tracking-wide font-bold">Analyzing sentiment patterns...</span>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
 
-          {/* Alert Email */}
-          <Card className={cn(
-            "bg-white border-red-200 shadow-2xl overflow-hidden shrink-0 rounded-none transition-all duration-700",
-            alertVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
-          )}>
-            <CardHeader className="border-b border-red-100 bg-red-50/50 py-2 shrink-0">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="relative flex shrink-0">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                    <span className="absolute inset-0 w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
-                  </div>
-                  <CardTitle className="text-[9px] tracking-[0.2em] text-red-600 font-bold uppercase">{ALERT_EMAIL.subject}</CardTitle>
-                </div>
-                <Mail className="size-3 text-red-400/50" />
-              </div>
-            </CardHeader>
-            <CardContent className="p-2.5 space-y-1.5">
-              <div className="flex items-center justify-between">
-                <span className="text-[8px] font-mono text-black/30 uppercase tracking-wider">{ALERT_EMAIL.project}</span>
-                <span className="text-[8px] font-mono text-red-500 font-bold">RISK: {ALERT_EMAIL.risk}</span>
-              </div>
-              <p className="text-[10px] text-black/70 leading-relaxed">{ALERT_EMAIL.body}</p>
-              <div className="flex items-center gap-1 pt-1 border-t border-red-100">
-                <ChevronRight className="size-2.5 text-primary" />
-                <span className="text-[9px] font-mono text-primary/70">{ALERT_EMAIL.recommendation}</span>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Owner Email Notification — slides in after alert */}
-          <Card className={cn(
-            "shrink-0 rounded-none overflow-hidden transition-all duration-700 ease-out",
-            emailPhase !== 'hidden'
-              ? "opacity-100 translate-y-0 border-primary/20 shadow-2xl"
-              : "opacity-0 translate-y-4 border-transparent shadow-none",
-            emailPhase === 'sent' && "border-primary/30"
-          )}>
-            <CardHeader className={cn(
-              "py-2 shrink-0 transition-colors duration-500",
-              emailPhase === 'sent' ? "bg-primary/5 border-b border-primary/10" : "bg-gray-50/50 border-b border-black/5"
+            {/* ═══ LAYER 2: WARNING + EMAIL (fades in when alert triggers) ═══ */}
+            <div className={cn(
+              "absolute inset-0 flex flex-col transition-all duration-700 ease-out z-10",
+              alertVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"
             )}>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  {emailPhase === 'sent' ? (
-                    <CheckCircle2 className="size-3 text-primary" />
-                  ) : emailPhase === 'sending' ? (
-                    <Send className="size-3 text-primary animate-pulse" />
-                  ) : (
-                    <Mail className="size-3 text-black/40" />
-                  )}
-                  <CardTitle className="text-[9px] tracking-[0.2em] text-black/60 font-bold uppercase">
-                    {emailPhase === 'sent' ? 'Notification Delivered' : emailPhase === 'sending' ? 'Sending Notification...' : 'Composing Notification'}
-                  </CardTitle>
+              <div className="flex-1 flex flex-col p-4 md:p-5">
+                {/* Warning banner — fades when counter recommendation appears */}
+                <div className={cn(
+                  "text-center mb-3 md:mb-4 transition-all duration-500",
+                  emailPhase === 'sent' ? "opacity-0 scale-95 h-0 mb-0 overflow-hidden" : "opacity-100 scale-100"
+                )}>
+                  <div className="text-xl md:text-3xl font-bold text-amber-600 tracking-tight leading-tight">
+                    Caution Flagged
+                  </div>
+                  <div className="text-[10px] font-mono text-black/35 tracking-[0.2em] uppercase mt-2">{ALERT_EMAIL.project}</div>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  {emailPhase === 'sending' && (
-                    <div className="flex gap-0.5">
-                      <span className="w-1 h-1 rounded-full bg-primary animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <span className="w-1 h-1 rounded-full bg-primary animate-bounce" style={{ animationDelay: '100ms' }} />
-                      <span className="w-1 h-1 rounded-full bg-primary animate-bounce" style={{ animationDelay: '200ms' }} />
+
+                {/* Risk bar — fades when counter recommendation appears */}
+                <div className={cn("mb-3 md:mb-4 transition-all duration-500", emailPhase === 'sent' ? "opacity-0 h-0 mb-0 overflow-hidden" : "opacity-100")}>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-black/40 uppercase">Risk_Level</span>
+                    <span className="text-sm font-mono font-bold text-amber-500 tracking-wider">MODERATE — 52%</span>
+                  </div>
+                  <div className="relative h-3 bg-black/[0.04] overflow-hidden">
+                    <div className={cn(
+                      "h-full bg-gradient-to-r from-amber-600 via-amber-500 to-amber-400 transition-all duration-[1500ms] ease-out",
+                      alertVisible ? "w-[52%]" : "w-0"
+                    )}>
+                      <div className="absolute inset-0 opacity-25" style={{
+                        backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 6px, rgba(255,255,255,0.4) 6px, rgba(255,255,255,0.4) 12px)',
+                      }} />
                     </div>
-                  )}
-                  {emailPhase === 'sent' && (
-                    <span className="text-[8px] font-mono text-primary font-bold tracking-wider">DELIVERED</span>
-                  )}
+                  </div>
+                </div>
+
+                {/* Alert body — fades when counter recommendation appears */}
+                <div className={cn("space-y-3 transition-all duration-500", emailPhase === 'sent' ? "opacity-0 h-0 overflow-hidden" : "opacity-100")}>
+                  <p className="text-xs md:text-sm text-black/70 leading-relaxed">{ALERT_EMAIL.body}</p>
+                  <div className="flex items-center gap-2">
+                    <Mail className="size-3.5 text-black/30 animate-pulse" />
+                    <span className="text-[10px] font-mono text-black/40 tracking-wider">
+                      {emailPhase === 'composing' ? 'Composing owner notification...' :
+                       emailPhase === 'sending' ? `Sending to ${OWNER_EMAIL.to}...` : ''}
+                    </span>
+                  </div>
+                </div>
+
+                {/* COUNTER RECOMMENDATION — appears when OWNER_NOTIFIED */}
+                <div className={cn(
+                  "flex-1 flex flex-col transition-all duration-700 ease-out",
+                  emailPhase === 'sent' ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6 pointer-events-none absolute"
+                )}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <CheckCircle2 className="size-4 text-primary shrink-0" />
+                    <span className="text-[10px] font-mono text-primary font-bold tracking-wider">SENT TO {OWNER_EMAIL.to.toUpperCase()}</span>
+                  </div>
+
+                  <div className="text-lg md:text-2xl font-bold text-black/85 tracking-tight leading-tight mb-3">
+                    Counter Recommendation
+                  </div>
+
+                  <div className="bg-primary/[0.05] border-l-[3px] border-primary py-3 px-4 mb-3">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <ChevronRight className="size-3 text-primary" />
+                      <span className="text-[9px] font-mono font-bold text-primary uppercase tracking-wider">Recommended Action</span>
+                    </div>
+                    <p className="text-xs md:text-sm text-black/70 leading-relaxed">{OWNER_EMAIL.action}</p>
+                  </div>
+
+                  <p className="text-[11px] md:text-xs text-black/50 leading-relaxed">{OWNER_EMAIL.body}</p>
+
+                  <div className="mt-auto pt-3 border-t border-primary/10">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[8px] font-mono text-black/25 tracking-[0.2em] uppercase">Envision OS — Predictive Intelligence</span>
+                      <div className="h-1 w-16 bg-primary/10 overflow-hidden">
+                        <div className="h-full w-full bg-primary/40 rounded-full" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </CardHeader>
-            <CardContent className="p-3 space-y-2">
-              {/* To / Subject */}
-              <div className="space-y-1.5">
-                <div className="flex items-center gap-2">
-                  <span className="text-[8px] font-mono text-black/30 uppercase tracking-wider w-7 shrink-0">To:</span>
-                  <span className="text-[10px] font-mono text-black/70 font-medium">{OWNER_EMAIL.to}</span>
-                  <span className="text-[8px] font-mono text-black/25">&lt;{OWNER_EMAIL.email}&gt;</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-[8px] font-mono text-black/30 uppercase tracking-wider w-7 shrink-0 mt-0.5">Subj:</span>
-                  <span className="text-[10px] font-mono text-black/70 font-medium">{OWNER_EMAIL.subject}</span>
-                </div>
-              </div>
-              <div className="border-t border-black/5 pt-2">
-                <p className="text-[10px] text-black/60 leading-relaxed">{OWNER_EMAIL.body}</p>
-              </div>
-              <div className="bg-primary/[0.03] border border-primary/10 p-2">
-                <div className="flex items-center gap-1 mb-1">
-                  <ChevronRight className="size-2.5 text-primary" />
-                  <span className="text-[8px] font-mono font-bold text-primary uppercase tracking-wider">Recommended Action</span>
-                </div>
-                <p className="text-[10px] text-black/55 leading-relaxed">{OWNER_EMAIL.action}</p>
-              </div>
-              {/* Send progress bar */}
-              <div className="pt-1">
-                <div className="h-0.5 w-full bg-black/[0.03] rounded-full overflow-hidden">
-                  <div className={cn(
-                    "h-full rounded-full transition-all ease-out",
-                    emailPhase === 'composing' ? "w-[30%] bg-black/10 duration-1000" :
-                    emailPhase === 'sending' ? "w-[85%] bg-primary/40 duration-1200" :
-                    emailPhase === 'sent' ? "w-full bg-primary duration-500" : "w-0 duration-0"
-                  )} />
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[7px] font-mono text-black/20 tracking-[0.3em] uppercase">Envision OS — Predictive Intelligence</span>
-                {emailPhase === 'sent' && (
-                  <span className="text-[7px] font-mono text-primary/50 tracking-wider">
-                    {new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} EST
-                  </span>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
