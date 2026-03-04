@@ -31,7 +31,7 @@ interface Subject {
 
 const SUBJECTS: Subject[] = [
   {
-    name: 'COUNCILMAN 01',
+    name: 'COUNCILWOMAN 01',
     title: 'Commissioner — District 4',
     affiliation: 'Planning Commission',
     stance: 'OPPOSED',
@@ -446,19 +446,19 @@ export function PredictSection() {
       `}</style>
 
       {/* Header */}
-      <div className="shrink-0 mb-3 md:mb-6">
-        <div className="flex items-center gap-3 mb-2 md:mb-4">
+      <div className="shrink-0 mb-2 md:mb-4">
+        <div className="flex items-center gap-3 mb-1.5 md:mb-2">
           <Radio className="size-4 text-primary" />
           <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/40">06_Predictive_Intelligence</h2>
         </div>
-        <h3 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Predictive Intelligence.</h3>
-        <p className="text-black/60 max-w-xl text-sm sm:text-base font-medium mt-2 md:mt-3">
+        <h3 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter leading-tight">Predictive Intelligence.</h3>
+        <p className="text-black/60 max-w-xl text-sm sm:text-base font-medium mt-1.5 md:mt-2">
           Monitor municipal proceedings and media signals. Detect sentiment shifts before they become project risks.
         </p>
       </div>
 
       {/* Two-column layout */}
-      <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-3 md:gap-4 overflow-hidden">
+      <div className="flex-1 min-h-0 flex flex-col md:flex-row gap-3 md:gap-4 overflow-hidden">
 
         {/* LEFT — Surveillance Feed + Sentiment Gauge */}
         <Card className="bg-white border-black/5 shadow-2xl overflow-hidden flex-[1.2] flex flex-col rounded-none">
@@ -541,7 +541,7 @@ export function PredictSection() {
         </Card>
 
         {/* RIGHT — Intelligence Feed */}
-        <div className="flex flex-col gap-3 md:gap-4 flex-1 min-h-0 overflow-hidden">
+        <div className="flex flex-col gap-3 md:gap-3 flex-1 min-h-0 overflow-auto no-scrollbar">
           {/* Caption Transcript */}
           <Card className="bg-white border-black/5 shadow-2xl overflow-hidden flex-1 flex flex-col rounded-none">
             <CardHeader className="border-b border-black/5 bg-gray-50/50 py-2.5 shrink-0">

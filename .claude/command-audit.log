@@ -1822,3 +1822,15 @@ npm run build 2>&1 | tail -20
 lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev
 sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
 UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && sleep 12 && xcrun simctl io "$UDID" screenshot /tmp/predict-alert.png && sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/predict-email-compose.png && sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/predict-email-sent.png
+xcrun simctl boot "4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" 2>/dev/null; open -a Simulator; sleep 3 && UDID="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && sleep 12 && xcrun simctl io "$UDID" screenshot /tmp/predict-ipad-1.png
+UDID="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 2 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && sleep 10 && xcrun simctl io "$UDID" screenshot /tmp/predict-ipad-2.png
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+xcrun simctl list devices | grep -i "booted"
+xcrun simctl shutdown "6D376F1D-2AB6-4314-ABA7-E874D263C943" 2>/dev/null && xcrun simctl boot "4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" && sleep 4 && UDID="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && sleep 12 && xcrun simctl io "$UDID" screenshot /tmp/predict-ipad-3.png
+UDID="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" && sleep 8 && xcrun simctl io "$UDID" screenshot /tmp/predict-ipad-4.png
+npm run build 2>&1 | tail -5
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && sleep 10 && xcrun simctl io "$UDID" screenshot /tmp/predict-mobile-check.png
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev
+xcrun simctl shutdown "4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" 2>/dev/null; sleep 6 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && sleep 8 && xcrun simctl io "$UDID" screenshot /tmp/predict-mobile-2.png
