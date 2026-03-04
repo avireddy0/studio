@@ -42,7 +42,10 @@
       "Bash(xcrun simctl boot \"$UDID\")",
       "Bash(xcrun simctl io \"$UDID\" screenshot \"/tmp/predict-hud-frames/ipad-01.png\")",
       "Bash(xcrun simctl io \"$UDID\" screenshot \"/tmp/predict-hud-frames/ipad-02.png\")",
-      "Bash(xcrun simctl shutdown 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138)"
+      "Bash(xcrun simctl shutdown 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138)",
+      "Bash(ffprobe -v quiet -print_format json -show_format -show_streams /Users/avireddy/GitHub/studio/public/feed-clip-1.mp4)",
+      "Bash(ffprobe -v quiet -print_format json -show_format -show_streams /Users/avireddy/GitHub/studio/public/feed-clip-2.mp4)",
+      "Bash(xcrun simctl io \"1311D811-5479-4E95-B2FD-67CD57CE77F6\" screenshot /tmp/predict-t6.png)"
     ],
     "deny": [],
     "additionalDirectories": [

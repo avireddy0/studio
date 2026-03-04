@@ -2140,3 +2140,103 @@ fix: make face boxes more transparent, wider, and shorter
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 EOF
 )" && git push
+git log --oneline -5
+git status --short
+ls public/feed-clip-*.mp4 2>/dev/null; echo "---"; ls src/components/sections/predict-section.tsx 2>/dev/null
+ffprobe -v quiet -print_format json -show_format -show_streams /Users/avireddy/GitHub/studio/public/feed-clip-1.mp4 2>/dev/null | python3 -c "import sys,json; d=json.load(sys.stdin); print('Clip 1 duration:', d['format']['duration'], 'seconds')"
+ffprobe -v quiet -print_format json -show_format -show_streams /Users/avireddy/GitHub/studio/public/feed-clip-2.mp4 2>/dev/null | python3 -c "import sys,json; d=json.load(sys.stdin); print('Clip 2 duration:', d['format']['duration'], 'seconds')"
+for t in 0 1 2 3 4 5 6 7; do ffmpeg -ss $t -i /Users/avireddy/GitHub/studio/public/feed-clip-1.mp4 -frames:v 1 -q:v 2 /tmp/clip1-t${t}.png -y 2>/dev/null; done && echo "Clip 1 frames extracted"
+for t in 0 1 2 3 4 5 6 7; do ffmpeg -ss $t -i /Users/avireddy/GitHub/studio/public/feed-clip-2.mp4 -frames:v 1 -q:v 2 /tmp/clip2-t${t}.png -y 2>/dev/null; done && echo "Clip 2 frames extracted"
+for t in 3.0 3.5 4.0; do ffmpeg -ss $t -i /Users/avireddy/GitHub/studio/public/feed-clip-1.mp4 -frames:v 1 -q:v 2 /tmp/clip1-t${t//./_}.png -y 2>/dev/null; done && echo "done"
+for t in 3.0 3.5 4.0; do ffmpeg -ss $t -i /Users/avireddy/GitHub/studio/public/feed-clip-2.mp4 -frames:v 1 -q:v 2 /tmp/clip2-t${t//./_}.png -y 2>/dev/null; done && echo "done"
+npm run build 2>&1 | tail -20
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; echo "Port 9002 cleared"
+npm run dev &>/dev/null &
+sleep 5
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+xcrun simctl boot "$UDID" 2>/dev/null || true
+open -a Simulator
+sleep 2
+xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true
+sleep 1
+xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+echo "Navigated to predict section"
+sleep 6 && xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/predict-t6.png && echo "Screenshot taken"
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true
+sleep 1
+xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+echo "Reloaded"
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+# t=3s: Should show first caption (HARGROVE speaks at t=1.2s in clip 0)
+sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/predict-seq-t3.png
+# t=6s: Should show second caption (WILLIAMS speaks at t=4.2s in clip 0)
+sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/predict-seq-t6.png
+# t=11s: Clip 1 playing, should show third caption (KAPOOR at t=1.2s into clip 1)
+sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/predict-seq-t11.png
+# t=15s: Should show fourth caption (TORRES at t=4.2s into clip 1)
+sleep 4 && xcrun simctl io "$UDID" screenshot /tmp/predict-seq-t15.png
+echo "All sequence screenshots taken"
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null || true
+npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true
+sleep 1
+xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+# t≈2s: Clip 0 playing, caption 0 should show (atVideoTime=1.2)
+sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/sync-t2.png
+echo "t2 done"
+# t≈5s: Clip 0, caption 1 should show (atVideoTime=4.2)
+sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/sync-t5.png
+echo "t5 done"
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+# t≈10s: Should be ~2s into Clip 1 (Phoenix) → caption 2 (KAPOOR) should show
+sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/sync-t10.png
+echo "t10 done"
+# t≈14s: Should be ~6s into Clip 1 → caption 3 (TORRES) should show
+sleep 4 && xcrun simctl io "$UDID" screenshot /tmp/sync-t14.png
+echo "t14 done"
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true
+sleep 1
+xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+# Clip 0 timeline (0-8s)
+sleep 2 && xcrun simctl io "$UDID" screenshot /tmp/full-t02.png  # HARGROVE speaking, caption 0
+sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/full-t05.png  # WILLIAMS speaking, caption 1
+sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/full-t10.png  # ~2s into Clip 1, caption 2 (KAPOOR)
+sleep 4 && xcrun simctl io "$UDID" screenshot /tmp/full-t14.png  # ~6s into Clip 1, caption 3 (TORRES)
+sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/full-t19.png  # ~3s into Clip 0 again, caption 4 + alert
+sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/full-t24.png  # Alert sequence / Counter Recommendation
+echo "Full sequence captured"
+git diff --stat
+git log --oneline -3
+git add src/components/sections/predict-section.tsx
+git commit -m "$(cat <<'EOF'
+feat: sync transcript captions to video playback timing
+
+Replace fixed-timer caption system with video-time-driven reveals.
+Captions now appear when matching speakers are visible on screen,
+synced via clipPlayCount + videoTime instead of arbitrary intervals.
+
+- Add afterClips/atVideoTime to CaptionLine for video-sync triggers
+- Track clip transitions with clipPlayCount state + refs
+- Fix race condition: reset videoTime before incrementing clipPlayCount
+- Add waitingForClipRef to prevent premature reveals after sequence reset
+- Update C. WILLIAMS title to "Concerned Resident"
+- Shift WILLIAMS face detection box down+right per calibration
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)"
+git push
