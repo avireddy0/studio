@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Radio, Mail, Eye, ChevronRight, ScanFace, Send, CheckCircle2 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Radio, Mail, Eye, ChevronRight, ScanFace, CheckCircle2, Shield, Crosshair } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 // ═══════════════════════════════════════════════════════════════
@@ -10,74 +9,95 @@ import { cn } from "@/lib/utils";
 // Two clips playing sequentially, looping
 // ═══════════════════════════════════════════════════════════════
 const FEED_CLIPS = [
-  { src: '/feed-clip-1.mp4', label: 'CH-04 • PORTSMOUTH', coord: '36.8354°N 76.2983°W', org: 'PORTSMOUTH CITY COUNCIL — PUBLIC HEARING', ts: '14:22:07 EST', face: { top: '8%', left: '30%', width: '25%', height: '44%' } },
-  { src: '/feed-clip-2.mp4', label: 'CH-12 • PHOENIX', coord: '33.4484°N 112.0740°W', org: 'PLANNING COMMISSION — DENSITY VARIANCE', ts: '16:11:53 MST', face: { top: '6%', left: '28%', width: '26%', height: '46%' } },
+  {
+    src: '/feed-clip-1.mp4',
+    label: 'CH-04 • PORTSMOUTH',
+    coord: '36.8354°N 76.2983°W',
+    org: 'PORTSMOUTH CITY COUNCIL — PUBLIC HEARING',
+    ts: '14:22:07 EST',
+    freq: '2.4GHz ENC',
+  },
+  {
+    src: '/feed-clip-2.mp4',
+    label: 'CH-12 • PHOENIX',
+    coord: '33.4484°N 112.0740°W',
+    org: 'PLANNING COMMISSION — DENSITY VARIANCE',
+    ts: '16:11:53 MST',
+    freq: '5.8GHz ENC',
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════
 // FACIAL RECOGNITION SUBJECTS — HUD bio overlays
+// Face positions calibrated from Veo 3 frame analysis
+// (% of video container, accounting for object-cover crop)
 // ═══════════════════════════════════════════════════════════════
 interface Subject {
+  id: string;
   name: string;
   title: string;
   affiliation: string;
-  stance: string;
-  stanceColor: string;
+  stance: 'OPPOSED' | 'CAUTIOUS' | 'NEUTRAL' | 'INQUIRING' | 'SUPPORTIVE';
   sentiment: number;
   confidence: number;
   priorAppearances: number;
   keywords: string[];
+  threatLevel: 'LOW' | 'MODERATE' | 'HIGH';
   facePos: { top: string; left: string; width: string; height: string };
 }
 
 const SUBJECTS: Subject[] = [
   {
-    name: 'COUNCILMAN 01',
+    id: 'SUBJ-4721',
+    name: 'CNCL. HARGROVE',
     title: 'Chair — Planning Commission',
-    affiliation: 'Planning Commission',
+    affiliation: 'PORTSMOUTH PLANNING COMM.',
     stance: 'CAUTIOUS',
-    stanceColor: 'text-amber-400',
     sentiment: -0.31,
     confidence: 97.2,
     priorAppearances: 14,
-    keywords: ['traffic', 'conditions'],
-    facePos: { top: '6%', left: '22%', width: '28%', height: '48%' },
+    keywords: ['traffic', 'conditions', 'supplemental'],
+    threatLevel: 'MODERATE',
+    facePos: { top: '2%', left: '25%', width: '22%', height: '40%' },
   },
   {
-    name: 'CONCERNED CITIZEN 01',
+    id: 'SUBJ-8134',
+    name: 'C. WILLIAMS',
     title: 'Resident — Maple Street HOA',
-    affiliation: 'Public Comment',
+    affiliation: 'PUBLIC COMMENT',
     stance: 'INQUIRING',
-    stanceColor: 'text-amber-500',
     sentiment: -0.22,
     confidence: 88.3,
     priorAppearances: 3,
-    keywords: ['parking', 'traffic'],
-    facePos: { top: '4%', left: '34%', width: '26%', height: '46%' },
+    keywords: ['parking', 'traffic', 'density'],
+    threatLevel: 'LOW',
+    facePos: { top: '2%', left: '26%', width: '22%', height: '42%' },
   },
   {
+    id: 'SUBJ-2956',
     name: 'DIR. KAPOOR',
     title: 'Zoning Administrator',
-    affiliation: 'Dept. of Planning',
+    affiliation: 'DEPT. OF PLANNING',
     stance: 'NEUTRAL',
-    stanceColor: 'text-white/60',
     sentiment: -0.08,
     confidence: 94.5,
     priorAppearances: 22,
-    keywords: ['setback', 'density'],
-    facePos: { top: '8%', left: '55%', width: '24%', height: '44%' },
+    keywords: ['setback', 'density', 'overlay'],
+    threatLevel: 'LOW',
+    facePos: { top: '2%', left: '22%', width: '22%', height: '40%' },
   },
   {
+    id: 'SUBJ-6103',
     name: 'A. TORRES',
     title: 'Transportation Planner',
-    affiliation: 'Public Works',
+    affiliation: 'PUBLIC WORKS',
     stance: 'CAUTIOUS',
-    stanceColor: 'text-amber-400',
     sentiment: -0.35,
     confidence: 91.0,
     priorAppearances: 8,
-    keywords: ['traffic counts', 'school zone'],
-    facePos: { top: '10%', left: '6%', width: '24%', height: '44%' },
+    keywords: ['traffic counts', 'school zone', 'afternoon'],
+    threatLevel: 'MODERATE',
+    facePos: { top: '10%', left: '22%', width: '20%', height: '36%' },
   },
 ];
 
@@ -137,25 +157,21 @@ const CAPTIONS: CaptionLine[] = [
 ];
 
 const ALERT_EMAIL = {
-  subject: 'EARLY WARNING',
   project: 'Phoenix — 14th & Grand',
   body: 'Two commissioners requested supplemental traffic data before final vote. Shadow study extension also mentioned.',
-  recommendation: 'Schedule pre-application meeting with Planning Director. Prepare afternoon traffic counts and winter shadow study.',
-  risk: 'MODERATE (52%)',
+  risk: '52%',
 };
 
 const OWNER_EMAIL = {
   to: 'OWNER, VP DEVELOPMENT',
-  email: 'owner@meridian.dev',
-  subject: '14th & Grand — Outstanding Conditions',
   body: 'Commissioners want supplemental afternoon traffic data and an extended winter shadow study before voting on density variance. Tone was constructive — willingness to approve with conditions.',
   action: 'Meet with Planning Director Kim this week. Submit afternoon traffic counts and winter shadow study before April 12 hearing.',
 };
 
-const CYCLE_DURATION = 20000;
+const CYCLE_DURATION = 22000;
 
 // ═══════════════════════════════════════════════════════════════
-// HIGHLIGHTED CAPTION
+// HIGHLIGHTED CAPTION — inline keyword markup
 // ═══════════════════════════════════════════════════════════════
 function HighlightedCaption({ text, highlights }: {
   text: string;
@@ -174,7 +190,7 @@ function HighlightedCaption({ text, highlights }: {
     if (idx === -1) continue;
     if (idx > 0) result.push(<span key={key++}>{remaining.slice(0, idx)}</span>);
     result.push(
-      <span key={key++} className={cn("font-semibold", h.severity === 'high' ? 'text-red-500' : 'text-amber-500')}>
+      <span key={key++} className={cn("font-semibold", h.severity === 'high' ? 'text-red-400' : 'text-amber-400')}>
         {remaining.slice(idx, idx + h.phrase.length)}
       </span>
     );
@@ -185,45 +201,12 @@ function HighlightedCaption({ text, highlights }: {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// SENTIMENT GAUGE
-// ═══════════════════════════════════════════════════════════════
-function SentimentGauge({ score }: { score: number }) {
-  const pct = ((score + 1) / 2) * 100;
-  return (
-    <div className="space-y-1.5">
-      <div className="flex items-center justify-between">
-        <span className="text-[9px] font-mono font-bold tracking-[0.2em] text-black/40 uppercase">Sentiment_Score</span>
-        <span className={cn(
-          "text-[11px] font-mono font-bold tabular-nums",
-          score < -0.5 ? "text-red-500" : score < -0.2 ? "text-amber-500" : "text-primary"
-        )}>{score.toFixed(2)}</span>
-      </div>
-      <div className="relative h-1.5 rounded-full overflow-hidden">
-        <div className="absolute inset-0 rounded-full" style={{ background: 'linear-gradient(to right, #ef4444 0%, #f59e0b 40%, #007C5A 100%)', opacity: 0.2 }} />
-        <div className="absolute inset-0 rounded-full" style={{ background: 'linear-gradient(to right, #ef4444 0%, #f59e0b 40%, #007C5A 100%)' }} />
-      </div>
-      <div className="relative h-0 -mt-[9px]">
-        <div className="absolute -translate-y-1/2 transition-all duration-1000 ease-out" style={{ left: `${pct}%` }}>
-          <div className={cn("w-3 h-3 rounded-full border-2 border-white shadow-md -ml-1.5", score < -0.5 ? "bg-red-500" : score < -0.2 ? "bg-amber-500" : "bg-primary")}>
-            <div className={cn("absolute inset-0 rounded-full animate-ping", score < -0.5 ? "bg-red-500/30" : score < -0.2 ? "bg-amber-500/30" : "bg-primary/30")} />
-          </div>
-        </div>
-      </div>
-      <div className="flex justify-between text-[7px] font-mono text-black/20 pt-1.5">
-        <span>NEGATIVE</span><span>NEUTRAL</span><span>POSITIVE</span>
-      </div>
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════
 // VIDEO FEED — Plays two Veo 3 clips sequentially, loops
 // ═══════════════════════════════════════════════════════════════
 function VideoFeed({ currentIndex, onClipEnd }: { currentIndex: number; onClipEnd: () => void }) {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   useEffect(() => {
-    // Play the current clip, pause others
     videoRefs.current.forEach((v, i) => {
       if (!v) return;
       if (i === currentIndex) {
@@ -236,7 +219,7 @@ function VideoFeed({ currentIndex, onClipEnd }: { currentIndex: number; onClipEn
   }, [currentIndex]);
 
   return (
-    <div className="absolute inset-0 bg-[#0a0a12] overflow-hidden">
+    <>
       {FEED_CLIPS.map((clip, i) => (
         <video
           key={clip.src}
@@ -246,78 +229,216 @@ function VideoFeed({ currentIndex, onClipEnd }: { currentIndex: number; onClipEn
           playsInline
           onEnded={onClipEnd}
           className={cn(
-            "absolute inset-0 w-full h-full object-cover transition-opacity duration-500",
+            "absolute inset-0 w-full h-full object-cover transition-opacity duration-700",
             i === currentIndex ? "opacity-100" : "opacity-0"
           )}
         />
       ))}
-      {/* Darken slightly for HUD readability */}
-      <div className="absolute inset-0 bg-black/20" />
-      {/* Vignette */}
-      <div className="absolute inset-0" style={{
-        background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%)',
-      }} />
+    </>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FACE DETECTION RETICLE — Animated scan → lock → match
+// ═══════════════════════════════════════════════════════════════
+type FacePhase = 'idle' | 'scanning' | 'locking' | 'matched';
+
+function FaceReticle({ phase, facePos }: { phase: FacePhase; facePos: Subject['facePos'] }) {
+  const isActive = phase !== 'idle';
+  const isMatched = phase === 'matched';
+  const isScanning = phase === 'scanning';
+  const isLocking = phase === 'locking';
+
+  return (
+    <div
+      className={cn(
+        "absolute transition-all ease-out pointer-events-none",
+        !isActive ? 'opacity-0 scale-[1.15] duration-300' :
+        isScanning ? 'opacity-60 scale-[1.06] duration-700' :
+        isLocking ? 'opacity-85 scale-[1.02] duration-500' :
+        'opacity-100 scale-100 duration-400'
+      )}
+      style={{ top: facePos.top, left: facePos.left, width: facePos.width, height: facePos.height }}
+    >
+      {/* Corner brackets — thick L-shaped */}
+      <div className="absolute top-0 left-0 w-5 h-5">
+        <div className={cn("absolute top-0 left-0 w-full h-[2px] transition-colors duration-300", isMatched ? "bg-cyan-400" : "bg-cyan-400/50")} />
+        <div className={cn("absolute top-0 left-0 h-full w-[2px] transition-colors duration-300", isMatched ? "bg-cyan-400" : "bg-cyan-400/50")} />
+      </div>
+      <div className="absolute top-0 right-0 w-5 h-5">
+        <div className={cn("absolute top-0 right-0 w-full h-[2px] transition-colors duration-300", isMatched ? "bg-cyan-400" : "bg-cyan-400/50")} />
+        <div className={cn("absolute top-0 right-0 h-full w-[2px] transition-colors duration-300", isMatched ? "bg-cyan-400" : "bg-cyan-400/50")} />
+      </div>
+      <div className="absolute bottom-0 left-0 w-5 h-5">
+        <div className={cn("absolute bottom-0 left-0 w-full h-[2px] transition-colors duration-300", isMatched ? "bg-cyan-400" : "bg-cyan-400/50")} />
+        <div className={cn("absolute bottom-0 left-0 h-full w-[2px] transition-colors duration-300", isMatched ? "bg-cyan-400" : "bg-cyan-400/50")} />
+      </div>
+      <div className="absolute bottom-0 right-0 w-5 h-5">
+        <div className={cn("absolute bottom-0 right-0 w-full h-[2px] transition-colors duration-300", isMatched ? "bg-cyan-400" : "bg-cyan-400/50")} />
+        <div className={cn("absolute bottom-0 right-0 h-full w-[2px] transition-colors duration-300", isMatched ? "bg-cyan-400" : "bg-cyan-400/50")} />
+      </div>
+
+      {/* Crosshair center */}
+      {isActive && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className={cn("w-4 h-[1px] transition-colors duration-300", isMatched ? "bg-cyan-400/40" : "bg-cyan-400/15")} />
+          <div className={cn("h-4 w-[1px] absolute transition-colors duration-300", isMatched ? "bg-cyan-400/40" : "bg-cyan-400/15")} />
+        </div>
+      )}
+
+      {/* Scan sweep line */}
+      {isScanning && (
+        <div className="absolute left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent"
+          style={{ animation: 'faceScanSweep 1.5s ease-in-out infinite' }} />
+      )}
+
+      {/* Lock pulse ring */}
+      {isLocking && (
+        <div className="absolute inset-[-3px] border border-cyan-400/20 animate-ping" style={{ animationDuration: '0.8s' }} />
+      )}
+
+      {/* Match border */}
+      {isMatched && (
+        <div className="absolute inset-0 border border-cyan-400/25" />
+      )}
+
+      {/* MATCH label */}
+      {isMatched && (
+        <div className="absolute -top-4 left-0 flex items-center gap-1">
+          <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+          <span className="text-[7px] font-mono text-cyan-400 tracking-[0.3em] font-bold">MATCH</span>
+        </div>
+      )}
     </div>
   );
 }
 
 // ═══════════════════════════════════════════════════════════════
-// FACE RECOGNITION HUD — Scanning reticle + bio panel
+// BIO PANEL — Rich subject data overlay, appears on face match
 // ═══════════════════════════════════════════════════════════════
-type FacePhase = 'scanning' | 'locking' | 'matched' | 'idle';
+function BioPanel({ subject, visible }: { subject: Subject | null; visible: boolean }) {
+  if (!subject) return null;
 
-function FaceRecognitionHUD({ subject, phase, facePosition }: { subject: Subject; phase: FacePhase; facePosition: { top: string; left: string; width: string; height: string } }) {
+  const sentimentPct = ((subject.sentiment + 1) / 2) * 100;
+  const stanceColor =
+    subject.stance === 'OPPOSED' ? 'text-red-400 bg-red-400/10' :
+    subject.stance === 'CAUTIOUS' ? 'text-amber-400 bg-amber-400/10' :
+    subject.stance === 'NEUTRAL' ? 'text-white/50 bg-white/5' :
+    subject.stance === 'INQUIRING' ? 'text-amber-300 bg-amber-300/10' :
+    'text-emerald-400 bg-emerald-400/10';
+
+  const threatColor =
+    subject.threatLevel === 'HIGH' ? 'text-red-400' :
+    subject.threatLevel === 'MODERATE' ? 'text-amber-400' : 'text-emerald-400';
+
   return (
-    <>
-      {/* Face detection reticle */}
-      <div
-        className={cn(
-          "absolute transition-all ease-out",
-          phase === 'idle' ? 'opacity-0 scale-110 duration-300' :
-          phase === 'scanning' ? 'opacity-60 scale-[1.08] duration-1000' :
-          phase === 'locking' ? 'opacity-80 scale-[1.02] duration-700' :
-          'opacity-100 scale-100 duration-500'
-        )}
-        style={{ top: facePosition.top, left: facePosition.left, width: facePosition.width, height: facePosition.height }}
-      >
-        {/* Reticle corners */}
-        <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-cyan-400/60" />
-        <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-cyan-400/60" />
-        <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-cyan-400/60" />
-        <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-cyan-400/60" />
-
-        {/* Scan sweep */}
-        {phase === 'scanning' && (
-          <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent"
-            style={{ animation: 'scanSweep 2s ease-in-out infinite' }} />
-        )}
-
-        {/* Lock pulse */}
-        {phase === 'locking' && (
-          <div className="absolute inset-0 border border-cyan-400/15 animate-ping" style={{ animationDuration: '1.2s' }} />
-        )}
-      </div>
-
-      {/* Minimal bio badge — fixed position, slides in from right */}
-      <div
-        className={cn(
-          "absolute z-20 right-3 transition-all duration-400 ease-out",
-          phase === 'matched'
-            ? 'opacity-100 translate-x-0'
-            : 'opacity-0 translate-x-6'
-        )}
-        style={{ top: `${parseFloat(facePosition.top) + parseFloat(facePosition.height) + 3}%` }}
-      >
-        <div className="bg-black/75 backdrop-blur-sm border border-cyan-400/20 px-2.5 py-1.5 flex items-center gap-2">
-          <ScanFace className="size-3 text-cyan-400/60 shrink-0" />
-          <div>
-            <div className="text-[9px] font-mono text-white/90 font-bold tracking-wide">{subject.name}</div>
-            <div className="text-[7px] font-mono text-white/40 tracking-wider">{subject.title}</div>
+    <div className={cn(
+      "absolute bottom-16 right-3 z-30 transition-all duration-500 ease-out max-w-[55%] md:max-w-[240px]",
+      visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8 pointer-events-none"
+    )}>
+      <div className="bg-black/85 backdrop-blur-md border border-cyan-400/20 shadow-[0_0_30px_-8px_rgba(34,211,238,0.15)]">
+        {/* Header */}
+        <div className="flex items-center gap-2 px-3 py-2 border-b border-cyan-400/10 bg-cyan-950/30">
+          <ScanFace className="size-3.5 text-cyan-400 shrink-0" />
+          <div className="flex-1 min-w-0">
+            <div className="text-[10px] font-mono text-cyan-400 font-bold tracking-wider truncate">{subject.name}</div>
+            <div className="text-[7px] font-mono text-white/30 tracking-wider truncate">{subject.title}</div>
           </div>
-          <span className={cn("text-[8px] font-mono font-bold ml-1 shrink-0", subject.stanceColor)}>{subject.stance}</span>
+          <div className="text-[6px] font-mono text-white/15 shrink-0">{subject.id}</div>
+        </div>
+
+        {/* Data grid */}
+        <div className="px-3 py-2 space-y-1.5">
+          {/* Confidence */}
+          <div className="flex items-center justify-between">
+            <span className="text-[7px] font-mono text-white/25 tracking-wider">CONFIDENCE</span>
+            <div className="flex items-center gap-1.5">
+              <div className="flex gap-px">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className={cn("w-1 h-2.5", i < Math.round(subject.confidence / 20) ? "bg-cyan-400/60" : "bg-white/5")} />
+                ))}
+              </div>
+              <span className="text-[9px] font-mono text-cyan-400 font-bold tabular-nums">{subject.confidence.toFixed(1)}%</span>
+            </div>
+          </div>
+
+          {/* Stance */}
+          <div className="flex items-center justify-between">
+            <span className="text-[7px] font-mono text-white/25 tracking-wider">STANCE</span>
+            <span className={cn("text-[8px] font-mono font-bold px-1.5 py-0.5 tracking-wider", stanceColor)}>{subject.stance}</span>
+          </div>
+
+          {/* Sentiment bar */}
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[7px] font-mono text-white/25 tracking-wider">SENTIMENT</span>
+              <span className={cn(
+                "text-[9px] font-mono font-bold tabular-nums",
+                subject.sentiment < -0.3 ? "text-amber-400" : subject.sentiment < 0 ? "text-white/40" : "text-emerald-400"
+              )}>{subject.sentiment > 0 ? '+' : ''}{subject.sentiment.toFixed(2)}</span>
+            </div>
+            <div className="h-[3px] bg-white/5 overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-red-500/50 via-amber-500/50 to-emerald-500/50" />
+              <div
+                className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-2 h-2 rounded-full border border-white/60 transition-all duration-700 ease-out"
+                style={{
+                  left: `${sentimentPct}%`,
+                  backgroundColor: subject.sentiment < -0.3 ? '#f59e0b' : subject.sentiment < 0 ? '#64748b' : '#10b981',
+                  boxShadow: `0 0 6px ${subject.sentiment < -0.3 ? '#f59e0b' : '#64748b'}50`,
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Appearances + Risk */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[7px] font-mono text-white/25 tracking-wider">PRIOR</span>
+              <span className="text-[9px] font-mono text-white/50 tabular-nums font-bold">{subject.priorAppearances}</span>
+            </div>
+            <div className="w-px h-3 bg-white/10" />
+            <div className="flex items-center gap-1.5">
+              <span className="text-[7px] font-mono text-white/25 tracking-wider">RISK</span>
+              <span className={cn("text-[8px] font-mono font-bold tracking-wider", threatColor)}>{subject.threatLevel}</span>
+            </div>
+          </div>
+
+          {/* Keywords */}
+          <div className="flex flex-wrap gap-1 pt-1 border-t border-white/5">
+            {subject.keywords.map(kw => (
+              <span key={kw} className="text-[7px] font-mono text-cyan-400/40 bg-cyan-400/[0.06] px-1.5 py-0.5 tracking-wider">{kw}</span>
+            ))}
+          </div>
         </div>
       </div>
-    </>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SENTIMENT BAR — Compact horizontal gauge below video
+// ═══════════════════════════════════════════════════════════════
+function SentimentBar({ score }: { score: number }) {
+  const pct = ((score + 1) / 2) * 100;
+  return (
+    <div className="flex items-center gap-3 px-3 py-2.5 bg-black/40 border-t border-white/[0.04]">
+      <span className="text-[8px] font-mono text-white/20 tracking-[0.2em] uppercase shrink-0">SENTIMENT</span>
+      <div className="flex-1 relative h-1.5 bg-white/5 overflow-hidden rounded-full">
+        <div className="absolute inset-0 bg-gradient-to-r from-red-500/30 via-amber-500/30 to-emerald-500/30 rounded-full" />
+        <div
+          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full border-2 border-white/70 transition-all duration-1000 ease-out"
+          style={{
+            left: `${pct}%`,
+            backgroundColor: score < -0.3 ? '#f59e0b' : score < 0 ? '#64748b' : '#10b981',
+            boxShadow: `0 0 10px ${score < -0.3 ? '#f59e0b' : score < 0 ? '#94a3b8' : '#10b981'}50`,
+          }}
+        />
+      </div>
+      <span className={cn(
+        "text-[10px] font-mono font-bold tabular-nums shrink-0 min-w-[36px] text-right",
+        score < -0.3 ? "text-amber-400" : score < 0 ? "text-white/40" : "text-emerald-400"
+      )}>{score > 0 ? '+' : ''}{score.toFixed(2)}</span>
+    </div>
   );
 }
 
@@ -332,13 +453,15 @@ export function PredictSection() {
   const [sentimentScore, setSentimentScore] = useState(-0.12);
   const [processing, setProcessing] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
-
   const [currentFeed, setCurrentFeed] = useState(0);
   const [facePhase, setFacePhase] = useState<FacePhase>('idle');
   const [currentSubject, setCurrentSubject] = useState(-1);
   const [feedSwitching, setFeedSwitching] = useState(false);
   const [emailPhase, setEmailPhase] = useState<'hidden' | 'composing' | 'sending' | 'sent'>('hidden');
+  const [hudTime, setHudTime] = useState('14:22:07');
+  const [facesDetected, setFacesDetected] = useState(0);
 
+  // Intersection observer
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -350,41 +473,47 @@ export function PredictSection() {
     return () => observer.disconnect();
   }, []);
 
-  // Face recognition sequence — triggered when subject changes (speaker switches)
+  // Face recognition sequence — scan → lock → match
   const faceTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
-
   useEffect(() => {
     if (!inView || currentSubject < 0) return;
-    // Clear previous face timers
     faceTimers.current.forEach(clearTimeout);
     faceTimers.current = [];
-
-    // Fast scan → lock → match for every speaker switch
     setFacePhase('idle');
-    faceTimers.current.push(setTimeout(() => setFacePhase('scanning'), 80));
-    faceTimers.current.push(setTimeout(() => setFacePhase('locking'), 300));
-    faceTimers.current.push(setTimeout(() => setFacePhase('matched'), 550));
-
+    setFacesDetected(0);
+    faceTimers.current.push(setTimeout(() => setFacePhase('scanning'), 100));
+    faceTimers.current.push(setTimeout(() => setFacePhase('locking'), 500));
+    faceTimers.current.push(setTimeout(() => { setFacePhase('matched'); setFacesDetected(1); }, 900));
     return () => faceTimers.current.forEach(clearTimeout);
   }, [inView, currentSubject]);
 
-  // Feed switch glitch — triggered when video clip changes
+  // Feed switch glitch
   useEffect(() => {
     if (!inView) return;
     setFeedSwitching(true);
-    const t = setTimeout(() => setFeedSwitching(false), 400);
+    const t = setTimeout(() => setFeedSwitching(false), 500);
     return () => clearTimeout(t);
   }, [inView, currentFeed]);
 
-  // Handle video clip ending — advance to next clip
   const handleClipEnd = () => {
     setCurrentFeed(prev => (prev + 1) % FEED_CLIPS.length);
   };
 
-  // Caption + alert sequence
+  // HUD clock tick
   useEffect(() => {
     if (!inView) return;
+    const base = [14, 22, 7];
+    const interval = setInterval(() => {
+      base[2]++;
+      if (base[2] >= 60) { base[2] = 0; base[1]++; }
+      setHudTime(`${String(base[0]).padStart(2, '0')}:${String(base[1]).padStart(2, '0')}:${String(base[2]).padStart(2, '0')}`);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [inView]);
 
+  // Main caption + alert sequence
+  useEffect(() => {
+    if (!inView) return;
     setVisibleCaptions(0);
     setSentimentScore(-0.12);
     setProcessing(false);
@@ -392,6 +521,7 @@ export function PredictSection() {
     setEmailPhase('hidden');
     setCurrentSubject(-1);
     setFacePhase('idle');
+    setFacesDetected(0);
 
     const t: ReturnType<typeof setTimeout>[] = [];
 
@@ -400,16 +530,15 @@ export function PredictSection() {
         setVisibleCaptions(i + 1);
         setSentimentScore(caption.sentiment);
         setCurrentSubject(caption.subjectIdx);
-      }, 1000 + i * 1400));
+      }, 1200 + i * 1600));
     });
 
-    const afterCaptions = 1000 + CAPTIONS.length * 1400;
-    t.push(setTimeout(() => setProcessing(true), afterCaptions + 200));
-    t.push(setTimeout(() => { setProcessing(false); setAlertVisible(true); }, afterCaptions + 1800));
-    // Email sequence — composing → sending → sent
-    t.push(setTimeout(() => setEmailPhase('composing'), afterCaptions + 3200));
-    t.push(setTimeout(() => setEmailPhase('sending'), afterCaptions + 4800));
-    t.push(setTimeout(() => setEmailPhase('sent'), afterCaptions + 6000));
+    const afterCaptions = 1200 + CAPTIONS.length * 1600;
+    t.push(setTimeout(() => setProcessing(true), afterCaptions + 300));
+    t.push(setTimeout(() => { setProcessing(false); setAlertVisible(true); }, afterCaptions + 2200));
+    t.push(setTimeout(() => setEmailPhase('composing'), afterCaptions + 3800));
+    t.push(setTimeout(() => setEmailPhase('sending'), afterCaptions + 5400));
+    t.push(setTimeout(() => setEmailPhase('sent'), afterCaptions + 6600));
     t.push(setTimeout(() => setCycle(c => c + 1), CYCLE_DURATION));
 
     return () => t.forEach(clearTimeout);
@@ -421,18 +550,20 @@ export function PredictSection() {
   return (
     <div ref={containerRef} className="flex flex-col h-full">
       <style>{`
-        @keyframes scanSweep { 0%, 100% { top: 0%; } 50% { top: 100%; } }
-        @keyframes captionSlideIn { from { opacity: 0; transform: translateY(16px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes faceScanSweep { 0%, 100% { top: 0%; } 50% { top: 100%; } }
+        @keyframes hudScanLine { 0% { top: -2px; } 100% { top: 100%; } }
+        @keyframes captionSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes glitchFlicker { 0%, 94%, 100% { opacity: 1; } 95% { opacity: 0.2; } 96% { opacity: 0.9; } 97% { opacity: 0.3; } 98% { opacity: 0.7; } }
       `}</style>
 
-      {/* Header */}
-      <div className="shrink-0 mb-2 md:mb-4">
-        <div className="flex items-center gap-3 mb-1.5 md:mb-2">
+      {/* Section Header */}
+      <div className="shrink-0 mb-3 md:mb-5">
+        <div className="flex items-center gap-3 mb-1.5">
           <Radio className="size-4 text-primary" />
-          <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/40">06_Predictive_Intelligence</h2>
+          <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/30">06_Predictive_Intelligence</h2>
         </div>
-        <h3 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter leading-tight">Predictive Intelligence.</h3>
-        <p className="text-black/60 max-w-xl text-sm sm:text-base font-medium mt-1.5 md:mt-2">
+        <h3 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter leading-tight text-white">Predictive Intelligence.</h3>
+        <p className="text-white/40 max-w-xl text-sm sm:text-base font-medium mt-1.5">
           Monitor municipal proceedings and media signals. Detect sentiment shifts before they become project risks.
         </p>
       </div>
@@ -440,153 +571,199 @@ export function PredictSection() {
       {/* Two-column layout */}
       <div className="flex-1 min-h-0 flex flex-col md:flex-row gap-3 md:gap-4 overflow-hidden">
 
-        {/* LEFT — Surveillance Feed + Sentiment Gauge */}
-        <Card className="bg-white border-black/5 shadow-2xl overflow-hidden flex-[1.2] flex flex-col rounded-none">
-          <CardHeader className="border-b border-black/5 bg-gray-50/50 py-2.5 shrink-0">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="size-1.5 rounded-full bg-red-500 animate-pulse" />
-                <CardTitle className="text-[10px] tracking-[0.3em] text-black/60">Municipal_Meeting_Feed</CardTitle>
+        {/* ═══════════════════════════════════════════════════════
+            LEFT — Surveillance Feed with Full Military HUD
+            ═══════════════════════════════════════════════════════ */}
+        <div className="flex-[1.3] flex flex-col border border-white/[0.06] overflow-hidden bg-[#08080D]">
+          {/* Feed header bar */}
+          <div className="flex items-center justify-between px-3 py-2 border-b border-white/[0.06] bg-white/[0.02] shrink-0">
+            <div className="flex items-center gap-2">
+              <div className="relative flex shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                <span className="absolute inset-0 w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
               </div>
-              <span className="text-[8px] font-mono text-black/25 transition-all duration-500">{feed.ts}</span>
+              <span className="text-[9px] font-mono text-white/50 tracking-[0.2em] font-bold">LIVE FEED</span>
+              <span className="text-[8px] font-mono text-white/15 hidden sm:inline">•</span>
+              <span className="text-[8px] font-mono text-white/15 tracking-wider hidden sm:inline">{feed.label}</span>
             </div>
-          </CardHeader>
-          <CardContent className="p-0 flex-1 flex flex-col min-h-0">
-            <div className="relative flex-1 min-h-[180px] overflow-hidden">
-              {/* Video feed — Veo 3 municipal meeting clips */}
-              <VideoFeed currentIndex={currentFeed} onClipEnd={handleClipEnd} />
+            <div className="flex items-center gap-3">
+              <Shield className="size-2.5 text-emerald-400/40 hidden sm:block" />
+              <span className="text-[7px] font-mono text-white/10 tracking-wider hidden md:inline">{feed.freq}</span>
+              <span className="text-[8px] font-mono text-emerald-400/50 tabular-nums font-bold">{hudTime}</span>
+            </div>
+          </div>
 
-              {/* Feed switch glitch */}
-              {feedSwitching && (
-                <div className="absolute inset-0 z-30 bg-black/90 flex items-center justify-center">
-                  <div className="flex flex-col items-center gap-1.5">
+          {/* Video container with HUD */}
+          <div className="relative flex-1 min-h-[200px] overflow-hidden bg-[#0a0a12]">
+            {/* Video feed */}
+            <VideoFeed currentIndex={currentFeed} onClipEnd={handleClipEnd} />
+
+            {/* Dark overlay for HUD readability */}
+            <div className="absolute inset-0 bg-black/15 pointer-events-none" />
+
+            {/* Feed switch glitch */}
+            {feedSwitching && (
+              <div className="absolute inset-0 z-40 pointer-events-none" style={{ animation: 'glitchFlicker 0.5s ease-out' }}>
+                <div className="absolute inset-0 bg-black/85 flex items-center justify-center">
+                  <div className="flex flex-col items-center gap-2">
                     <div className="flex gap-1">
-                      {[0, 1, 2].map(i => (
-                        <div key={i} className="w-0.5 h-4 bg-cyan-400/50 animate-pulse" style={{ animationDelay: `${i * 120}ms` }} />
+                      {[0, 1, 2, 3].map(i => (
+                        <div key={i} className="w-0.5 h-5 bg-cyan-400/40 animate-pulse" style={{ animationDelay: `${i * 80}ms` }} />
                       ))}
                     </div>
-                    <span className="text-[7px] font-mono text-cyan-400/40 tracking-[0.3em]">ACQUIRING FEED</span>
+                    <span className="text-[8px] font-mono text-cyan-400/50 tracking-[0.4em]">ACQUIRING SIGNAL</span>
                   </div>
                 </div>
-              )}
-
-              {/* HUD overlay */}
-              <div className="absolute inset-0 pointer-events-none z-10">
-                {/* Scan lines */}
-                <div className="absolute inset-0 opacity-[0.04]" style={{
-                  backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.08) 2px, rgba(255,255,255,0.08) 4px)',
-                }} />
-
-                {/* REC */}
-                <div className="absolute top-2.5 left-3 flex items-center gap-1.5">
-                  <div className="relative flex shrink-0">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                    <span className="absolute inset-0 w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
-                  </div>
-                  <span className="text-[8px] font-mono text-white/60 uppercase tracking-[0.2em] font-bold">REC</span>
-                </div>
-
-                {/* Channel info */}
-                <div className="absolute top-2.5 right-3 text-right">
-                  <div className="text-[7px] font-mono text-white/20 tracking-wider">ENC: AES-256</div>
-                  <div className="text-[7px] font-mono text-white/15 tracking-wider mt-0.5">{feed.ts}</div>
-                </div>
-
-
-                {/* Corner brackets */}
-                <div className="absolute top-1 left-1 w-4 h-4 border-t border-l border-white/10" />
-                <div className="absolute top-1 right-1 w-4 h-4 border-t border-r border-white/10" />
-                <div className="absolute bottom-1 left-1 w-4 h-4 border-b border-l border-white/10" />
-                <div className="absolute bottom-1 right-1 w-4 h-4 border-b border-r border-white/10" />
-
-                {/* Bottom bar */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent h-16" />
-                <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between">
-                  <span className="text-[8px] font-mono text-white/50 tracking-wider transition-all duration-500">{feed.org}</span>
-                  <span className="text-[7px] font-mono text-white/25 transition-all duration-500">{feed.coord}</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-3 md:p-4 border-t border-black/5 shrink-0">
-              <SentimentGauge score={sentimentScore} />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* RIGHT — Unified Intelligence Panel (morphs between phases) */}
-        <Card className={cn(
-          "flex-1 flex flex-col rounded-none overflow-hidden transition-all duration-700",
-          alertVisible && emailPhase !== 'sent'
-            ? "border-amber-400/40 shadow-[0_0_60px_-12px_rgba(245,158,11,0.2)]"
-            : emailPhase === 'sent'
-            ? "border-primary/25 shadow-[0_0_60px_-12px_rgba(0,124,90,0.2)]"
-            : "border-black/5 shadow-2xl"
-        )}>
-          {/* Dynamic header — morphs with phase */}
-          <CardHeader className={cn(
-            "py-2.5 shrink-0 transition-all duration-500",
-            alertVisible && emailPhase !== 'sent'
-              ? "bg-amber-500/[0.06] border-b border-amber-300/40"
-              : emailPhase === 'sent'
-              ? "bg-primary/5 border-b border-primary/10"
-              : "bg-gray-50/50 border-b border-black/5"
-          )}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                {alertVisible && emailPhase !== 'sent' ? (
-                  <>
-                    <div className="relative flex shrink-0">
-                      <span className="w-2 h-2 rounded-full bg-amber-500" />
-                      <span className="absolute inset-0 w-2 h-2 rounded-full bg-amber-500 animate-ping" />
-                    </div>
-                    <CardTitle className="text-[10px] tracking-[0.3em] text-amber-600 font-bold">EARLY_WARNING</CardTitle>
-                  </>
-                ) : emailPhase === 'sent' ? (
-                  <>
-                    <CheckCircle2 className="size-3.5 text-primary" />
-                    <CardTitle className="text-[10px] tracking-[0.3em] text-primary font-bold">OWNER_NOTIFIED</CardTitle>
-                  </>
-                ) : (
-                  <>
-                    <Eye className="size-3 text-primary/50" />
-                    <CardTitle className="text-[10px] tracking-[0.3em] text-black/60">Transcript_Analysis</CardTitle>
-                  </>
-                )}
-              </div>
-              <div className="flex items-center gap-2 text-[8px] font-mono">
-                {alertVisible && emailPhase !== 'sent' ? (
-                  <span className="text-amber-500/70 uppercase tracking-wider font-bold animate-pulse">CAUTION</span>
-                ) : emailPhase === 'sent' ? (
-                  <span className="text-primary font-bold tracking-wider">DELIVERED</span>
-                ) : (
-                  <>
-                    <div className="size-1.5 rounded-full bg-primary animate-status" />
-                    <span className="text-primary/60 uppercase tracking-wider">Analyzing</span>
-                  </>
-                )}
-              </div>
-            </div>
-          </CardHeader>
-
-          <CardContent className="flex-1 p-0 relative overflow-hidden">
-            {/* Scan line when alert is active */}
-            {alertVisible && emailPhase !== 'sent' && (
-              <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden">
-                <div className="absolute left-0 right-0 h-px bg-amber-500/15" style={{ animation: 'scanSweep 4s ease-in-out infinite' }} />
               </div>
             )}
 
-            {/* ═══ LAYER 1: TRANSCRIPT CAROUSEL (anchored bottom, scrolls up) ═══ */}
+            {/* ═══ HUD OVERLAY ═══ */}
+            <div className="absolute inset-0 pointer-events-none z-10">
+              {/* Scan lines — subtle horizontal stripes */}
+              <div className="absolute inset-0 opacity-[0.03]" style={{
+                backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,255,0.06) 2px, rgba(0,255,255,0.06) 4px)',
+              }} />
+
+              {/* Grid overlay — very faint */}
+              <div className="absolute inset-0 opacity-[0.015]" style={{
+                backgroundImage: `
+                  linear-gradient(rgba(0,255,255,0.3) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(0,255,255,0.3) 1px, transparent 1px)
+                `,
+                backgroundSize: '60px 60px',
+              }} />
+
+              {/* Slow scan line moving down */}
+              <div className="absolute left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/10 to-transparent z-20"
+                style={{ animation: 'hudScanLine 8s linear infinite' }} />
+
+              {/* Vignette — darkens edges */}
+              <div className="absolute inset-0" style={{
+                background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.5) 100%)',
+              }} />
+
+              {/* Outer corner brackets */}
+              <div className="absolute top-2 left-2 w-6 h-6 border-t border-l border-white/8" />
+              <div className="absolute top-2 right-2 w-6 h-6 border-t border-r border-white/8" />
+              <div className="absolute bottom-2 left-2 w-6 h-6 border-b border-l border-white/8" />
+              <div className="absolute bottom-2 right-2 w-6 h-6 border-b border-r border-white/8" />
+
+              {/* Top-left: Channel info */}
+              <div className="absolute top-4 left-5">
+                <div className="text-[8px] font-mono text-white/35 tracking-[0.2em] font-bold">{feed.label}</div>
+                <div className="text-[7px] font-mono text-white/12 tracking-wider mt-0.5">{feed.coord}</div>
+              </div>
+
+              {/* Top-right: Encryption + face counter */}
+              <div className="absolute top-4 right-5 text-right">
+                <div className="text-[7px] font-mono text-emerald-400/25 tracking-wider">AES-256 • ENCRYPTED</div>
+                <div className="flex items-center justify-end gap-1.5 mt-1">
+                  <Crosshair className="size-2.5 text-cyan-400/35" />
+                  <span className={cn(
+                    "text-[8px] font-mono tracking-wider font-bold transition-all duration-300",
+                    facesDetected > 0 ? "text-cyan-400/50" : "text-white/15"
+                  )}>
+                    FACES: {facesDetected} DETECTED
+                  </span>
+                </div>
+              </div>
+
+              {/* ═══ FACE DETECTION RETICLE ═══ */}
+              {subject && (
+                <FaceReticle phase={facePhase} facePos={subject.facePos} />
+              )}
+
+              {/* ═══ BIO PANEL ═══ */}
+              <BioPanel subject={subject} visible={facePhase === 'matched'} />
+
+              {/* Bottom gradient */}
+              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/70 to-transparent" />
+
+              {/* Bottom bar */}
+              <div className="absolute bottom-3 left-5 right-5 flex items-center justify-between">
+                <span className="text-[8px] font-mono text-white/35 tracking-wider transition-all duration-500 truncate mr-4">{feed.org}</span>
+                <span className="text-[7px] font-mono text-white/15 tabular-nums shrink-0">{hudTime} EST</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Sentiment bar below video */}
+          <SentimentBar score={sentimentScore} />
+        </div>
+
+        {/* ═══════════════════════════════════════════════════════
+            RIGHT — Intelligence Panel (morphs between phases)
+            ═══════════════════════════════════════════════════════ */}
+        <div className={cn(
+          "flex-1 flex flex-col overflow-hidden transition-all duration-700 border",
+          alertVisible && emailPhase !== 'sent'
+            ? "border-amber-400/30 bg-amber-500/[0.02]"
+            : emailPhase === 'sent'
+            ? "border-primary/20 bg-primary/[0.02]"
+            : "border-white/[0.06] bg-[#08080D]"
+        )}>
+          {/* Dynamic header — morphs with phase */}
+          <div className={cn(
+            "flex items-center justify-between px-3 py-2.5 shrink-0 border-b transition-all duration-500",
+            alertVisible && emailPhase !== 'sent'
+              ? "border-amber-400/20 bg-amber-500/[0.04]"
+              : emailPhase === 'sent'
+              ? "border-primary/10 bg-primary/[0.03]"
+              : "border-white/[0.06] bg-white/[0.02]"
+          )}>
+            <div className="flex items-center gap-2">
+              {alertVisible && emailPhase !== 'sent' ? (
+                <>
+                  <div className="relative flex shrink-0">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span className="absolute inset-0 w-2 h-2 rounded-full bg-amber-500 animate-ping" />
+                  </div>
+                  <span className="text-[10px] font-mono tracking-[0.3em] text-amber-400 font-bold">EARLY_WARNING</span>
+                </>
+              ) : emailPhase === 'sent' ? (
+                <>
+                  <CheckCircle2 className="size-3.5 text-primary" />
+                  <span className="text-[10px] font-mono tracking-[0.3em] text-primary font-bold">OWNER_NOTIFIED</span>
+                </>
+              ) : (
+                <>
+                  <Eye className="size-3 text-cyan-400/50" />
+                  <span className="text-[10px] font-mono tracking-[0.3em] text-white/40">Transcript_Analysis</span>
+                </>
+              )}
+            </div>
+            <div className="flex items-center gap-2 text-[8px] font-mono">
+              {alertVisible && emailPhase !== 'sent' ? (
+                <span className="text-amber-400/70 tracking-wider font-bold animate-pulse">CAUTION</span>
+              ) : emailPhase === 'sent' ? (
+                <span className="text-primary font-bold tracking-wider">DELIVERED</span>
+              ) : (
+                <>
+                  <div className="size-1.5 rounded-full bg-cyan-400/60 animate-pulse" />
+                  <span className="text-cyan-400/40 tracking-wider">MONITORING</span>
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className="flex-1 relative overflow-hidden">
+            {/* Amber scan line during alert */}
+            {alertVisible && emailPhase !== 'sent' && (
+              <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden">
+                <div className="absolute left-0 right-0 h-px bg-amber-500/15" style={{ animation: 'hudScanLine 4s ease-in-out infinite' }} />
+              </div>
+            )}
+
+            {/* ═══ LAYER 1: TRANSCRIPT CAROUSEL ═══ */}
             <div className={cn(
               "absolute inset-0 overflow-hidden transition-all duration-600 ease-out z-10",
-              alertVisible ? "opacity-0 scale-[0.97] blur-sm pointer-events-none" : "opacity-100 scale-100 blur-0"
+              alertVisible ? "opacity-0 scale-[0.97] blur-sm pointer-events-none" : "opacity-100"
             )}>
-              {/* Top gradient mask — fades old captions out */}
-              <div className="absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-white via-white/80 to-transparent z-10 pointer-events-none" />
+              {/* Top fade mask */}
+              <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-[#08080D] via-[#08080D]/80 to-transparent z-10 pointer-events-none" />
 
-              {/* Captions anchored to bottom, push upward — only render visible ones */}
-              <div className="absolute inset-0 flex flex-col justify-end px-3 pb-3 gap-2">
+              {/* Captions anchored to bottom, push upward */}
+              <div className="absolute inset-0 flex flex-col justify-end px-3 pb-3 gap-1.5">
                 {CAPTIONS.slice(0, visibleCaptions).map((caption, i) => {
                   const age = Math.max(0, visibleCaptions - 1 - i);
                   const isNewest = i === visibleCaptions - 1;
@@ -595,31 +772,31 @@ export function PredictSection() {
                       key={i}
                       className={cn(
                         "shrink-0 transition-all duration-700 ease-out",
-                        "border-l-2 pl-3 pr-2 py-2 bg-black/[0.02]",
-                        caption.sentiment < -0.6 ? "border-l-red-500" : caption.sentiment < -0.3 ? "border-l-amber-500" : "border-l-primary/40"
+                        "border-l-2 pl-3 pr-2 py-2",
+                        caption.sentiment < -0.3 ? "border-l-amber-500 bg-amber-500/[0.04]" : "border-l-white/[0.06] bg-white/[0.02]"
                       )}
                       style={{
                         opacity: Math.max(0.15, 1 - age * 0.2),
-                        transform: isNewest ? 'translateY(0) scale(1)' : `translateY(0) scale(${1 - age * 0.008})`,
-                        animation: isNewest ? 'captionSlideIn 500ms ease-out' : undefined,
+                        animation: isNewest ? 'captionSlideIn 400ms ease-out' : undefined,
                       }}
                     >
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] font-mono text-black/30">[{caption.time}]</span>
-                        <span className="text-[10px] font-mono text-black/50 font-bold tracking-wider">{caption.speaker}</span>
+                        <span className="text-[9px] font-mono text-white/20 tabular-nums">[{caption.time}]</span>
+                        <span className="text-[9px] font-mono text-white/40 font-bold tracking-wider">{caption.speaker}</span>
                         <span className={cn(
-                          "text-[8px] font-mono font-bold uppercase tracking-wider ml-auto px-1.5 py-0.5",
-                          caption.sentiment < -0.6 ? "text-red-500 bg-red-500/[0.06]" : caption.sentiment < -0.3 ? "text-amber-500 bg-amber-500/[0.06]" : "text-primary/50 bg-primary/[0.04]"
+                          "text-[7px] font-mono font-bold uppercase tracking-wider ml-auto px-1.5 py-0.5",
+                          caption.sentiment < -0.3 ? "text-amber-400 bg-amber-400/[0.08]" : "text-white/20 bg-white/[0.03]"
                         )}>
-                          {caption.sentiment < -0.6 ? 'HIGH' : caption.sentiment < -0.3 ? 'MOD' : 'LOW'}
+                          {caption.sentiment < -0.3 ? 'FLAG' : 'OK'}
                         </span>
                       </div>
-                      <p className="text-xs text-black/75 leading-relaxed">
+                      <p className="text-[11px] text-white/50 leading-relaxed">
                         <HighlightedCaption text={caption.text} highlights={caption.highlights} />
                       </p>
                     </div>
                   );
                 })}
+
                 {/* Processing indicator */}
                 <div className={cn(
                   "shrink-0 flex items-center gap-2 py-2 pl-3 transition-all duration-500",
@@ -630,95 +807,95 @@ export function PredictSection() {
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-bounce" style={{ animationDelay: '150ms' }} />
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
-                  <span className="text-[10px] font-mono text-amber-500/70 tracking-wide font-bold">Analyzing sentiment patterns...</span>
+                  <span className="text-[9px] font-mono text-amber-400/60 tracking-wide font-bold">Analyzing patterns...</span>
                 </div>
               </div>
             </div>
 
-            {/* ═══ LAYER 2: WARNING + EMAIL (fades in when alert triggers) ═══ */}
+            {/* ═══ LAYER 2: WARNING + EMAIL ═══ */}
             <div className={cn(
               "absolute inset-0 flex flex-col transition-all duration-700 ease-out z-10",
               alertVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"
             )}>
               <div className="flex-1 flex flex-col p-4 md:p-5">
-                {/* Warning banner — fades when counter recommendation appears */}
+                {/* Warning banner — fades when recommendation appears */}
                 <div className={cn(
-                  "text-center mb-3 md:mb-4 transition-all duration-500",
-                  emailPhase === 'sent' ? "opacity-0 scale-95 h-0 mb-0 overflow-hidden" : "opacity-100 scale-100"
+                  "text-center mb-3 transition-all duration-500",
+                  emailPhase === 'sent' ? "opacity-0 scale-95 h-0 mb-0 overflow-hidden" : "opacity-100"
                 )}>
-                  <div className="text-xl md:text-3xl font-bold text-amber-600 tracking-tight leading-tight">
+                  <div className="text-xl md:text-2xl font-bold text-amber-400 tracking-tight">
                     Caution Flagged
                   </div>
-                  <div className="text-[10px] font-mono text-black/35 tracking-[0.2em] uppercase mt-2">{ALERT_EMAIL.project}</div>
+                  <div className="text-[9px] font-mono text-white/20 tracking-[0.2em] uppercase mt-1.5">{ALERT_EMAIL.project}</div>
                 </div>
 
-                {/* Risk bar — fades when counter recommendation appears */}
-                <div className={cn("mb-3 md:mb-4 transition-all duration-500", emailPhase === 'sent' ? "opacity-0 h-0 mb-0 overflow-hidden" : "opacity-100")}>
+                {/* Risk bar */}
+                <div className={cn("mb-3 transition-all duration-500", emailPhase === 'sent' ? "opacity-0 h-0 mb-0 overflow-hidden" : "opacity-100")}>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-black/40 uppercase">Risk_Level</span>
-                    <span className="text-sm font-mono font-bold text-amber-500 tracking-wider">MODERATE — 52%</span>
+                    <span className="text-[9px] font-mono text-white/25 tracking-[0.2em] uppercase">Risk_Level</span>
+                    <span className="text-sm font-mono font-bold text-amber-400 tracking-wider">{ALERT_EMAIL.risk}</span>
                   </div>
-                  <div className="relative h-3 bg-black/[0.04] overflow-hidden">
+                  <div className="relative h-2 bg-white/5 overflow-hidden">
                     <div className={cn(
-                      "h-full bg-gradient-to-r from-amber-600 via-amber-500 to-amber-400 transition-all duration-[1500ms] ease-out",
+                      "h-full bg-gradient-to-r from-amber-600 to-amber-400 transition-all duration-[1500ms] ease-out",
                       alertVisible ? "w-[52%]" : "w-0"
                     )}>
-                      <div className="absolute inset-0 opacity-25" style={{
-                        backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 6px, rgba(255,255,255,0.4) 6px, rgba(255,255,255,0.4) 12px)',
+                      <div className="absolute inset-0 opacity-30" style={{
+                        backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(0,0,0,0.3) 4px, rgba(0,0,0,0.3) 8px)',
                       }} />
                     </div>
                   </div>
                 </div>
 
-                {/* Alert body — fades when counter recommendation appears */}
+                {/* Alert body */}
                 <div className={cn("space-y-3 transition-all duration-500", emailPhase === 'sent' ? "opacity-0 h-0 overflow-hidden" : "opacity-100")}>
-                  <p className="text-xs md:text-sm text-black/70 leading-relaxed">{ALERT_EMAIL.body}</p>
+                  <p className="text-[11px] md:text-xs text-white/45 leading-relaxed">{ALERT_EMAIL.body}</p>
                   <div className="flex items-center gap-2">
-                    <Mail className="size-3.5 text-black/30 animate-pulse" />
-                    <span className="text-[10px] font-mono text-black/40 tracking-wider">
-                      {emailPhase === 'composing' ? 'Composing owner notification...' :
+                    <Mail className="size-3 text-white/15 animate-pulse" />
+                    <span className="text-[9px] font-mono text-white/25 tracking-wider">
+                      {emailPhase === 'composing' ? 'Composing notification...' :
                        emailPhase === 'sending' ? `Sending to ${OWNER_EMAIL.to}...` : ''}
                     </span>
                   </div>
                 </div>
 
-                {/* COUNTER RECOMMENDATION — appears when OWNER_NOTIFIED */}
+                {/* ═══ COUNTER RECOMMENDATION ═══ */}
                 <div className={cn(
                   "flex-1 flex flex-col transition-all duration-700 ease-out",
                   emailPhase === 'sent' ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6 pointer-events-none absolute"
                 )}>
                   <div className="flex items-center gap-2 mb-3">
-                    <CheckCircle2 className="size-4 text-primary shrink-0" />
-                    <span className="text-[10px] font-mono text-primary font-bold tracking-wider">SENT TO {OWNER_EMAIL.to.toUpperCase()}</span>
+                    <CheckCircle2 className="size-3.5 text-primary shrink-0" />
+                    <span className="text-[9px] font-mono text-primary font-bold tracking-wider">SENT TO {OWNER_EMAIL.to.toUpperCase()}</span>
                   </div>
 
-                  <div className="text-lg md:text-2xl font-bold text-black/85 tracking-tight leading-tight mb-3">
+                  <div className="text-lg md:text-xl font-bold text-white/85 tracking-tight mb-3">
                     Counter Recommendation
                   </div>
 
-                  <div className="bg-primary/[0.05] border-l-[3px] border-primary py-3 px-4 mb-3">
+                  <div className="bg-primary/[0.06] border-l-[3px] border-primary py-3 px-4 mb-3">
                     <div className="flex items-center gap-1.5 mb-2">
                       <ChevronRight className="size-3 text-primary" />
-                      <span className="text-[9px] font-mono font-bold text-primary uppercase tracking-wider">Recommended Action</span>
+                      <span className="text-[8px] font-mono font-bold text-primary uppercase tracking-wider">Recommended Action</span>
                     </div>
-                    <p className="text-xs md:text-sm text-black/70 leading-relaxed">{OWNER_EMAIL.action}</p>
+                    <p className="text-[11px] md:text-xs text-white/50 leading-relaxed">{OWNER_EMAIL.action}</p>
                   </div>
 
-                  <p className="text-[11px] md:text-xs text-black/50 leading-relaxed">{OWNER_EMAIL.body}</p>
+                  <p className="text-[10px] text-white/30 leading-relaxed">{OWNER_EMAIL.body}</p>
 
-                  <div className="mt-auto pt-3 border-t border-primary/10">
+                  <div className="mt-auto pt-3 border-t border-white/5">
                     <div className="flex items-center justify-between">
-                      <span className="text-[8px] font-mono text-black/25 tracking-[0.2em] uppercase">Envision OS — Predictive Intelligence</span>
-                      <div className="h-1 w-16 bg-primary/10 overflow-hidden">
-                        <div className="h-full w-full bg-primary/40 rounded-full" />
+                      <span className="text-[7px] font-mono text-white/12 tracking-[0.2em] uppercase">Envision OS — Predictive Intelligence</span>
+                      <div className="h-1 w-12 bg-white/5 overflow-hidden">
+                        <div className="h-full w-full bg-primary/40" />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
