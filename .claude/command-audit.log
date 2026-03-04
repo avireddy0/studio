@@ -1936,3 +1936,207 @@ xcrun simctl terminate "1311D811-5479-4E95-B2FD-67CD57CE77F6" com.apple.mobilesa
 npx tsc --noEmit 2>&1 | grep predict
 xcrun simctl terminate "1311D811-5479-4E95-B2FD-67CD57CE77F6" com.apple.mobilesafari 2>/dev/null; sleep 1; xcrun simctl openurl "1311D811-5479-4E95-B2FD-67CD57CE77F6" "http://localhost:9002/?s=predict" 2>/dev/null; sleep 3; for i in $(seq 1 15); do xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/v3-$i.png 2>/dev/null; sleep 1; done && echo "done"
 xcrun simctl terminate "1311D811-5479-4E95-B2FD-67CD57CE77F6" com.apple.mobilesafari 2>/dev/null; sleep 1; xcrun simctl openurl "1311D811-5479-4E95-B2FD-67CD57CE77F6" "http://localhost:9002/?s=predict" 2>/dev/null; sleep 4; xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/nohud-1.png 2>/dev/null; sleep 3; xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/nohud-2.png 2>/dev/null; sleep 5; xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/nohud-3.png 2>/dev/null && echo "done"
+git log --oneline -30
+git diff HEAD~5..HEAD --stat
+git diff HEAD~5..HEAD -- src/components/sections/predict-section.tsx
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+which ffmpeg && echo "ffmpeg available" || echo "ffmpeg not available"
+mkdir -p /tmp/predict-frames && ffmpeg -i /Users/avireddy/GitHub/studio/public/feed-clip-1.mp4 -vf "fps=2" -q:v 2 /tmp/predict-frames/clip1-frame%03d.jpg 2>&1 | tail -5
+ffmpeg -i /Users/avireddy/GitHub/studio/public/feed-clip-2.mp4 -vf "fps=2" -q:v 2 /tmp/predict-frames/clip2-frame%03d.jpg 2>&1 | tail -5
+xcrun simctl boot 1311D811-5479-4E95-B2FD-67CD57CE77F6 2>/dev/null; open -a Simulator; echo "Simulator booting"
+ffprobe -v quiet -print_format json -show_streams /Users/avireddy/GitHub/studio/public/feed-clip-1.mp4 2>/dev/null | python3 -c "import sys,json; s=json.load(sys.stdin)['streams'][0]; print(f'Clip1: {s[\"width\"]}x{s[\"height\"]}, duration={s.get(\"duration\",\"?\")}')" && ffprobe -v quiet -print_format json -show_streams /Users/avireddy/GitHub/studio/public/feed-clip-2.mp4 2>/dev/null | python3 -c "import sys,json; s=json.load(sys.stdin)['streams'][0]; print(f'Clip2: {s[\"width\"]}x{s[\"height\"]}, duration={s.get(\"duration\",\"?\")}')"
+npm run build 2>&1 | tail -20
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && echo "Navigated to predict section"
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && mkdir -p /tmp/predict-hud-frames && sleep 4 && for i in $(seq -w 01 24); do xcrun simctl io "$UDID" screenshot "/tmp/predict-hud-frames/frame-${i}.png" 2>/dev/null && sleep 0.5; done && echo "Captured 24 frames"
+UDID="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" && xcrun simctl boot "$UDID" 2>/dev/null; sleep 2 && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot "/tmp/predict-hud-frames/ipad-01.png" 2>/dev/null && sleep 3 && xcrun simctl io "$UDID" screenshot "/tmp/predict-hud-frames/ipad-02.png" 2>/dev/null && echo "iPad screenshots captured"
+xcrun simctl shutdown 4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138 2>/dev/null; echo "iPad shut down"
+git status
+git diff --stat
+git log --oneline -3
+git add 'src/components/sections/predict-section.tsx' 'src/app/(dashboard)/page.tsx' && git commit -m "$(cat <<'EOF'
+feat: redesign predict section with cinematic military HUD overlay
+
+- Full obsidian dark theme replacing white card layout
+- Face detection reticle with scan → lock → match animation (cyan)
+- Rich bio panels showing confidence bars, stance, sentiment, risk, keywords
+- HUD overlay: scan lines, grid pattern, corner brackets, vignette
+- Video feed glitch effect on channel switching
+- Compact sentiment gauge with animated indicator
+- Running HUD clock, encryption badges, face counter
+- Transcript/warning/recommendation panel with dark theme
+- Frame-by-frame verified on iPhone 16 Pro + iPad Air simulators
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)"
+git push origin main
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && sleep 5 && mkdir -p /tmp/predict-v2 && for i in $(seq -w 01 20); do xcrun simctl io "$UDID" screenshot "/tmp/predict-v2/frame-${i}.png" 2>/dev/null && sleep 0.5; done && echo "Done: 20 frames captured"
+git status
+git diff --stat
+git log --oneline -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1
+npm run dev --prefix /Users/avireddy/GitHub/studio
+rm -f /tmp/predict-frame-*.png /tmp/clip*-frame-*.png
+ffmpeg -i /Users/avireddy/GitHub/studio/public/feed-clip-1.mp4 -vf "fps=2" -q:v 2 /tmp/clip1-frame-%02d.png 2>/dev/null
+ffmpeg -i /Users/avireddy/GitHub/studio/public/feed-clip-2.mp4 -vf "fps=2" -q:v 2 /tmp/clip2-frame-%02d.png 2>/dev/null
+echo "Clip 1:" && ls /tmp/clip1-frame-*.png
+echo "Clip 2:" && ls /tmp/clip2-frame-*.png
+npm run build 2>&1
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1
+npm run dev
+sleep 6 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+xcrun simctl boot "$UDID" 2>/dev/null || true
+open -a Simulator
+sleep 2
+xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true
+sleep 1
+xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+echo "Launched predict section, waiting for page load..."
+sleep 4
+
+rm -f /tmp/predict-v3-*.png
+for i in $(seq -w 1 24); do
+  xcrun simctl io "$UDID" screenshot "/tmp/predict-v3-${i}.png" 2>/dev/null
+  sleep 0.5
+done
+echo "Captured 24 frames"
+ls /tmp/predict-v3-*.png | head -5
+git diff --stat
+git add src/components/sections/predict-section.tsx && git commit -m "$(cat <<'EOF'
+fix: align face detection boxes with actual video content
+
+- Add useVideoFaceMapping hook to compute object-cover transform,
+  converting video-native face positions to container CSS positions
+  regardless of screen size
+- Sync face tracking to video time (timeupdate events) instead of
+  caption timing, ensuring boxes match the visible clip content
+- Add clipIndex/showFrom/showUntil per subject so faces only appear
+  when their clip is playing
+- Recalibrate face positions from frame-by-frame video analysis:
+  boxes now 10-12% width (was 22%) for realistic sizing
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)"
+# Draw face boxes on native video frames to visualize alignment
+# Hargrove: left=27%, top=7%, w=12%, h=22% of 1280x720 → x=346, y=50, w=154, h=158
+ffmpeg -i /tmp/clip1-frame-01.png -vf "drawbox=x=346:y=50:w=154:h=158:color=cyan@0.8:t=3" /tmp/ann-hargrove.png 2>/dev/null
+
+# Williams: left=26%, top=10%, w=12%, h=22% → x=333, y=72, w=154, h=158
+ffmpeg -i /tmp/clip1-frame-08.png -vf "drawbox=x=333:y=72:w=154:h=158:color=cyan@0.8:t=3" /tmp/ann-williams.png 2>/dev/null
+
+# Kapoor: left=27%, top=4%, w=11%, h=22% → x=346, y=29, w=141, h=158
+ffmpeg -i /tmp/clip2-frame-01.png -vf "drawbox=x=346:y=29:w=141:h=158:color=cyan@0.8:t=3" /tmp/ann-kapoor.png 2>/dev/null
+
+# Torres: left=32%, top=9%, w=10%, h=18% → x=410, y=65, w=128, h=130
+ffmpeg -i /tmp/clip2-frame-08.png -vf "drawbox=x=410:y=65:w=128:h=130:color=cyan@0.8:t=3" /tmp/ann-torres.png 2>/dev/null
+
+echo "Done annotating"
+# Draw 10% grid lines on each key frame for precise face measurement
+for f in clip1-frame-01 clip1-frame-08 clip2-frame-01 clip2-frame-08; do
+  ffmpeg -i "/tmp/${f}.png" -vf "
+    drawgrid=width=128:height=72:thickness=1:color=yellow@0.4,
+    drawtext=text='10':x=128:y=2:fontsize=18:fontcolor=yellow@0.7,
+    drawtext=text='20':x=256:y=2:fontsize=18:fontcolor=yellow@0.7,
+    drawtext=text='30':x=384:y=2:fontsize=18:fontcolor=yellow@0.7,
+    drawtext=text='40':x=512:y=2:fontsize=18:fontcolor=yellow@0.7,
+    drawtext=text='50':x=640:y=2:fontsize=18:fontcolor=yellow@0.7,
+    drawtext=text='60':x=768:y=2:fontsize=18:fontcolor=yellow@0.7,
+    drawtext=text='70':x=896:y=2:fontsize=18:fontcolor=yellow@0.7,
+    drawtext=text='10':x=2:y=72:fontsize=18:fontcolor=yellow@0.7,
+    drawtext=text='20':x=2:y=144:fontsize=18:fontcolor=yellow@0.7,
+    drawtext=text='30':x=2:y=216:fontsize=18:fontcolor=yellow@0.7,
+    drawtext=text='40':x=2:y=288:fontsize=18:fontcolor=yellow@0.7,
+    drawtext=text='50':x=2:y=360:fontsize=18:fontcolor=yellow@0.7
+  " "/tmp/grid-${f}.png" 2>/dev/null
+done
+echo "Done"
+ls /tmp/grid-*.png 2>/dev/null || echo "No grid files found"
+# Simple grid with just lines (no text) - each cell = 10% of 1280x720
+for f in clip1-frame-01 clip1-frame-08 clip2-frame-01 clip2-frame-08; do
+  ffmpeg -i "/tmp/${f}.png" -vf "drawgrid=width=128:height=72:thickness=2:color=lime@0.5" "/tmp/grid-${f}.png" 2>&1 | tail -1
+done
+ls /tmp/grid-*.png
+# Verify corrected positions by drawing boxes on frames
+# Hargrove: left=33%, top=8%, w=11%, h=24% → x=422, y=58, w=141, h=173
+ffmpeg -i /tmp/clip1-frame-01.png -vf "drawbox=x=422:y=58:w=141:h=173:color=cyan@0.8:t=3" /tmp/fix-hargrove.png 2>/dev/null
+
+# Williams: left=28%, top=13%, w=11%, h=22% → x=358, y=94, w=141, h=158
+ffmpeg -i /tmp/clip1-frame-08.png -vf "drawbox=x=358:y=94:w=141:h=158:color=cyan@0.8:t=3" /tmp/fix-williams.png 2>/dev/null
+
+# Kapoor: left=31%, top=6%, w=11%, h=23% → x=397, y=43, w=141, h=166
+ffmpeg -i /tmp/clip2-frame-01.png -vf "drawbox=x=397:y=43:w=141:h=166:color=cyan@0.8:t=3" /tmp/fix-kapoor.png 2>/dev/null
+
+# Torres: left=33%, top=13%, w=9%, h=21% → x=422, y=94, w=115, h=151
+ffmpeg -i /tmp/clip2-frame-08.png -vf "drawbox=x=422:y=94:w=115:h=151:color=cyan@0.8:t=3" /tmp/fix-torres.png 2>/dev/null
+
+echo "Done"
+# Final round of corrections - shift right and down slightly
+# Hargrove: left=35%, top=10%, w=11%, h=22% → x=448, y=72, w=141, h=158
+ffmpeg -i /tmp/clip1-frame-01.png -vf "drawbox=x=448:y=72:w=141:h=158:color=cyan@0.8:t=2" /tmp/final-hargrove.png 2>/dev/null
+
+# Williams: left=30%, top=15%, w=11%, h=20% → x=384, y=108, w=141, h=144
+ffmpeg -i /tmp/clip1-frame-08.png -vf "drawbox=x=384:y=108:w=141:h=144:color=cyan@0.8:t=2" /tmp/final-williams.png 2>/dev/null
+
+# Kapoor: left=33%, top=10%, w=11%, h=22% → x=422, y=72, w=141, h=158
+ffmpeg -i /tmp/clip2-frame-01.png -vf "drawbox=x=422:y=72:w=141:h=158:color=cyan@0.8:t=2" /tmp/final-kapoor.png 2>/dev/null
+
+# Torres: left=34%, top=15%, w=8%, h=18% → x=435, y=108, w=102, h=130
+ffmpeg -i /tmp/clip2-frame-08.png -vf "drawbox=x=435:y=108:w=102:h=130:color=cyan@0.8:t=2" /tmp/final-torres.png 2>/dev/null
+echo "Done"
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1
+npm run dev
+npm run build 2>&1 | tail -3
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1
+npm run dev
+sleep 6 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true
+sleep 1
+xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+sleep 4
+
+rm -f /tmp/predict-v4-*.png
+for i in $(seq -w 1 20); do
+  xcrun simctl io "$UDID" screenshot "/tmp/predict-v4-${i}.png" 2>/dev/null
+  sleep 0.5
+done
+echo "Captured 20 frames"
+git add src/components/sections/predict-section.tsx && git commit -m "$(cat <<'EOF'
+fix: correct face positions, thin border, side-sliding HUD panel
+
+- Recalibrate face positions using 10% grid overlay analysis
+  (shifted right ~8% and down ~4% to match actual faces)
+- Thin border from border-2 to border for subtler detection box
+- Replace below-face bio tag with Palantir-style side HUD panel:
+  slides in from right with connecting line, shows title + sentiment
+- Panel avoids covering faces by positioning to the side
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+npm run build 2>&1 | tail -3
+git add src/components/sections/predict-section.tsx && git commit -m "$(cat <<'EOF'
+fix: make face boxes more transparent, wider, and shorter
+
+- Reduce border opacity (40% matched, 20% locking, 10% scanning)
+- Widen boxes to 14% (was 11%) for broader face coverage
+- Reduce height to 12-16% (was 18-22%) for thinner profile
+- Subtler corner accents at 60% opacity
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push

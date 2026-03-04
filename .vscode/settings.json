@@ -1,5 +1,9 @@
 {
     "IDX.agenticWorkspace": true,
     "IDX.aI.showChatInEditorTab": true,
-    "editor.fontFamily": "Helvetica Now Display, Helvetica Now Text, Helvetica Neue, Helvetica, Arial, sans-serif"
+    "editor.fontFamily": "Helvetica Now Display, Helvetica Now Text, Helvetica Neue, Helvetica, Arial, sans-serif",
+    "workbench.editor.autoLockGroups": {
+        "vscode.videoPreview": true,
+        "imagePreview.previewEditor": true
+    }
 }
