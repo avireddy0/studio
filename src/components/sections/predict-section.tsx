@@ -64,7 +64,7 @@ const SUBJECTS: Subject[] = [
     clipIndex: 0,
     showFrom: 0,
     showUntil: 3.5,
-    facePos: { top: '7%', left: '27%', width: '12%', height: '22%' },
+    facePos: { top: '10%', left: '35%', width: '11%', height: '22%' },
   },
   {
     id: 'SUBJ-8134',
@@ -80,7 +80,7 @@ const SUBJECTS: Subject[] = [
     clipIndex: 0,
     showFrom: 3.5,
     showUntil: 8,
-    facePos: { top: '10%', left: '26%', width: '12%', height: '22%' },
+    facePos: { top: '15%', left: '30%', width: '11%', height: '20%' },
   },
   {
     id: 'SUBJ-2956',
@@ -96,7 +96,7 @@ const SUBJECTS: Subject[] = [
     clipIndex: 1,
     showFrom: 0,
     showUntil: 3.5,
-    facePos: { top: '4%', left: '27%', width: '11%', height: '22%' },
+    facePos: { top: '10%', left: '33%', width: '11%', height: '22%' },
   },
   {
     id: 'SUBJ-6103',
@@ -112,7 +112,7 @@ const SUBJECTS: Subject[] = [
     clipIndex: 1,
     showFrom: 3.5,
     showUntil: 8,
-    facePos: { top: '9%', left: '32%', width: '10%', height: '18%' },
+    facePos: { top: '15%', left: '34%', width: '8%', height: '18%' },
   },
 ];
 
@@ -336,41 +336,51 @@ function FaceBox({ subject, phase, facePos }: { subject: Subject; phase: FacePha
       )}
       style={{ top: facePos.top, left: facePos.left, width: facePos.width, height: facePos.height }}
     >
-      {/* ═══ FULL VISIBLE BORDER — the actual face recognition box ═══ */}
+      {/* ═══ THIN BORDER — face recognition box ═══ */}
       <div className={cn(
-        "absolute inset-0 border-2 transition-all duration-300",
-        isMatched ? "border-cyan-400/80" : isLocking ? "border-cyan-400/40" : "border-cyan-400/25"
+        "absolute inset-0 border transition-all duration-300",
+        isMatched ? "border-cyan-400/70" : isLocking ? "border-cyan-400/35" : "border-cyan-400/20"
       )} />
 
-      {/* Corner accents — thicker, brighter overlays on corners */}
-      <div className="absolute -top-px -left-px w-3 h-3 border-t-2 border-l-2 border-cyan-400" />
-      <div className="absolute -top-px -right-px w-3 h-3 border-t-2 border-r-2 border-cyan-400" />
-      <div className="absolute -bottom-px -left-px w-3 h-3 border-b-2 border-l-2 border-cyan-400" />
-      <div className="absolute -bottom-px -right-px w-3 h-3 border-b-2 border-r-2 border-cyan-400" />
+      {/* Corner accents — slightly thicker at corners only */}
+      <div className="absolute -top-px -left-px w-2.5 h-2.5 border-t border-l border-cyan-400" />
+      <div className="absolute -top-px -right-px w-2.5 h-2.5 border-t border-r border-cyan-400" />
+      <div className="absolute -bottom-px -left-px w-2.5 h-2.5 border-b border-l border-cyan-400" />
+      <div className="absolute -bottom-px -right-px w-2.5 h-2.5 border-b border-r border-cyan-400" />
 
       {/* Scan sweep line */}
       {isScanning && (
-        <div className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/70 to-transparent"
+        <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent"
           style={{ animation: 'faceScanSweep 1.2s ease-in-out infinite' }} />
       )}
 
       {/* Lock pulse */}
       {isLocking && (
-        <div className="absolute inset-[-4px] border-2 border-cyan-400/25 animate-ping" style={{ animationDuration: '0.7s' }} />
+        <div className="absolute inset-[-3px] border border-cyan-400/20 animate-ping" style={{ animationDuration: '0.7s' }} />
       )}
 
-      {/* ═══ COMPACT BIO TAG — appears below the face box on match ═══ */}
+      {/* ═══ SIDE HUD PANEL — slides in from right, Palantir style ═══ */}
       <div className={cn(
-        "absolute left-0 right-0 transition-all duration-400 ease-out",
-        isMatched ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"
-      )} style={{ top: '100%', marginTop: '4px' }}>
-        <div className="bg-black/80 backdrop-blur-sm border border-cyan-400/30 px-2 py-1.5 flex items-center gap-2">
-          <ScanFace className="size-3 text-cyan-400 shrink-0" />
-          <div className="flex-1 min-w-0">
-            <div className="text-[9px] font-mono text-cyan-400 font-bold tracking-wider truncate">{subject.name}</div>
-            <div className="text-[7px] font-mono text-white/30 tracking-wider truncate">{subject.title} • {subject.confidence.toFixed(0)}%</div>
+        "absolute transition-all duration-500 ease-out flex items-center gap-0",
+        isMatched ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
+      )} style={{ top: '15%', left: '100%', height: '70%' }}>
+        {/* Connecting line from face box to panel */}
+        <div className={cn(
+          "w-6 h-px shrink-0 transition-all duration-300",
+          isMatched ? "bg-cyan-400/40" : "bg-transparent"
+        )} />
+        {/* Data readout panel */}
+        <div className="bg-black/85 backdrop-blur-sm border-l-2 border-cyan-400/40 pl-2 pr-3 py-1.5 min-w-[120px] max-w-[180px]">
+          <div className="text-[8px] font-mono text-cyan-400/80 tracking-wider leading-tight truncate">{subject.title}</div>
+          <div className="flex items-center gap-2 mt-1">
+            <div className={cn(
+              "text-[10px] font-mono font-bold tabular-nums tracking-wide",
+              subject.sentiment < -0.3 ? "text-amber-400" : subject.sentiment < 0 ? "text-white/50" : "text-emerald-400"
+            )}>
+              {subject.sentiment > 0 ? '+' : ''}{subject.sentiment.toFixed(2)}
+            </div>
+            <span className={cn("text-[7px] font-mono font-bold tracking-wider uppercase", stanceColor)}>{subject.stance}</span>
           </div>
-          <span className={cn("text-[7px] font-mono font-bold tracking-wider shrink-0", stanceColor)}>{subject.stance}</span>
         </div>
       </div>
     </div>
