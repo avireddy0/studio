@@ -64,7 +64,7 @@ const SUBJECTS: Subject[] = [
     clipIndex: 0,
     showFrom: 0,
     showUntil: 3.5,
-    facePos: { top: '10%', left: '35%', width: '11%', height: '22%' },
+    facePos: { top: '12%', left: '33%', width: '14%', height: '16%' },
   },
   {
     id: 'SUBJ-8134',
@@ -80,7 +80,7 @@ const SUBJECTS: Subject[] = [
     clipIndex: 0,
     showFrom: 3.5,
     showUntil: 8,
-    facePos: { top: '15%', left: '30%', width: '11%', height: '20%' },
+    facePos: { top: '17%', left: '28%', width: '14%', height: '14%' },
   },
   {
     id: 'SUBJ-2956',
@@ -96,7 +96,7 @@ const SUBJECTS: Subject[] = [
     clipIndex: 1,
     showFrom: 0,
     showUntil: 3.5,
-    facePos: { top: '10%', left: '33%', width: '11%', height: '22%' },
+    facePos: { top: '12%', left: '31%', width: '14%', height: '16%' },
   },
   {
     id: 'SUBJ-6103',
@@ -112,7 +112,7 @@ const SUBJECTS: Subject[] = [
     clipIndex: 1,
     showFrom: 3.5,
     showUntil: 8,
-    facePos: { top: '15%', left: '34%', width: '8%', height: '18%' },
+    facePos: { top: '17%', left: '32%', width: '11%', height: '12%' },
   },
 ];
 
@@ -336,17 +336,17 @@ function FaceBox({ subject, phase, facePos }: { subject: Subject; phase: FacePha
       )}
       style={{ top: facePos.top, left: facePos.left, width: facePos.width, height: facePos.height }}
     >
-      {/* ═══ THIN BORDER — face recognition box ═══ */}
+      {/* ═══ SUBTLE BORDER — face recognition box ═══ */}
       <div className={cn(
         "absolute inset-0 border transition-all duration-300",
-        isMatched ? "border-cyan-400/70" : isLocking ? "border-cyan-400/35" : "border-cyan-400/20"
+        isMatched ? "border-cyan-400/40" : isLocking ? "border-cyan-400/20" : "border-cyan-400/10"
       )} />
 
-      {/* Corner accents — slightly thicker at corners only */}
-      <div className="absolute -top-px -left-px w-2.5 h-2.5 border-t border-l border-cyan-400" />
-      <div className="absolute -top-px -right-px w-2.5 h-2.5 border-t border-r border-cyan-400" />
-      <div className="absolute -bottom-px -left-px w-2.5 h-2.5 border-b border-l border-cyan-400" />
-      <div className="absolute -bottom-px -right-px w-2.5 h-2.5 border-b border-r border-cyan-400" />
+      {/* Corner accents — subtle ticks at corners */}
+      <div className="absolute -top-px -left-px w-2 h-2 border-t border-l border-cyan-400/60" />
+      <div className="absolute -top-px -right-px w-2 h-2 border-t border-r border-cyan-400/60" />
+      <div className="absolute -bottom-px -left-px w-2 h-2 border-b border-l border-cyan-400/60" />
+      <div className="absolute -bottom-px -right-px w-2 h-2 border-b border-r border-cyan-400/60" />
 
       {/* Scan sweep line */}
       {isScanning && (
