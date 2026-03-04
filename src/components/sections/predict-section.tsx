@@ -63,13 +63,13 @@ const SUBJECTS: Subject[] = [
     threatLevel: 'MODERATE',
     clipIndex: 0,
     showFrom: 0,
-    showUntil: 3.5,
+    showUntil: 3.0,
     facePos: { top: '12%', left: '33%', width: '14%', height: '16%' },
   },
   {
     id: 'SUBJ-8134',
     name: 'C. WILLIAMS',
-    title: 'Resident — Maple Street HOA',
+    title: 'Concerned Resident — Maple Street HOA',
     affiliation: 'PUBLIC COMMENT',
     stance: 'INQUIRING',
     sentiment: -0.22,
@@ -78,9 +78,9 @@ const SUBJECTS: Subject[] = [
     keywords: ['parking', 'traffic', 'density'],
     threatLevel: 'LOW',
     clipIndex: 0,
-    showFrom: 3.5,
+    showFrom: 3.0,
     showUntil: 8,
-    facePos: { top: '17%', left: '28%', width: '14%', height: '14%' },
+    facePos: { top: '20%', left: '31%', width: '14%', height: '14%' },
   },
   {
     id: 'SUBJ-2956',
@@ -120,53 +120,59 @@ const SUBJECTS: Subject[] = [
 // CAPTION DATA — Simulated municipal meeting transcript
 // ═══════════════════════════════════════════════════════════════
 interface CaptionLine {
+  afterClips: number;      // how many clips must finish before this caption is eligible
+  atVideoTime: number;     // video time (seconds) within the clip to trigger reveal
   time: string;
   text: string;
   sentiment: number;
   speaker: string;
-  subjectIdx: number;
   highlights: Array<{ phrase: string; severity: 'high' | 'medium' }>;
 }
 
 const CAPTIONS: CaptionLine[] = [
   {
+    afterClips: 0,          // Clip 0 (Portsmouth) — HARGROVE at podium
+    atVideoTime: 1.2,
     time: '14:22',
     text: 'The revised site plan addresses several of our previous concerns. Good progress overall.',
     sentiment: 0.1,
     speaker: 'CNCL-01',
-    subjectIdx: 0,
     highlights: [],
   },
   {
+    afterClips: 0,          // Clip 0 — WILLIAMS at desk
+    atVideoTime: 4.2,
     time: '14:23',
     text: 'Could the applicant clarify the proposed parking ratio for the residential units?',
     sentiment: -0.1,
     speaker: 'CITIZEN-01',
-    subjectIdx: 1,
     highlights: [],
   },
   {
+    afterClips: 1,          // Clip 1 (Phoenix) — KAPOOR at podium
+    atVideoTime: 1.2,
     time: '14:24',
     text: 'The setback meets the revised zoning overlay. No code issues on my end.',
     sentiment: 0.05,
     speaker: 'DIR-KAPOOR',
-    subjectIdx: 2,
     highlights: [],
   },
   {
+    afterClips: 1,          // Clip 1 — TORRES at desk
+    atVideoTime: 4.2,
     time: '14:25',
     text: "I'd like to see additional data on afternoon traffic patterns near the school zone before we proceed.",
     sentiment: -0.35,
     speaker: 'A-TORRES',
-    subjectIdx: 3,
     highlights: [{ phrase: 'additional data', severity: 'medium' }, { phrase: 'before we proceed', severity: 'medium' }],
   },
   {
+    afterClips: 2,          // Clip 0 again — HARGROVE responds
+    atVideoTime: 1.5,
     time: '14:26',
     text: "I'm inclined to support this with conditions — let's address the outstanding traffic questions first.",
     sentiment: -0.15,
     speaker: 'CNCL-01',
-    subjectIdx: 0,
     highlights: [{ phrase: 'with conditions', severity: 'medium' }],
   },
 ];
@@ -183,7 +189,6 @@ const OWNER_EMAIL = {
   action: 'Meet with Planning Director Kim this week. Submit afternoon traffic counts and winter shadow study before April 12 hearing.',
 };
 
-const CYCLE_DURATION = 22000;
 
 // ═══════════════════════════════════════════════════════════════
 // HIGHLIGHTED CAPTION — inline keyword markup
@@ -421,7 +426,6 @@ export function PredictSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
-  const [cycle, setCycle] = useState(0);
   const [visibleCaptions, setVisibleCaptions] = useState(0);
   const [sentimentScore, setSentimentScore] = useState(-0.12);
   const [processing, setProcessing] = useState(false);
@@ -433,6 +437,12 @@ export function PredictSection() {
   const [hudTime, setHudTime] = useState('14:22:07');
   const [facesDetected, setFacesDetected] = useState(0);
   const [videoTime, setVideoTime] = useState(0);
+  const [clipPlayCount, setClipPlayCount] = useState(0);
+
+  // Refs for video-synced caption sequencing
+  const clipPlayCountRef = useRef(0);
+  const sequenceBaseRef = useRef(0);
+  const waitingForClipRef = useRef(false);
 
   // Map video-native face positions to container positions (accounts for object-cover)
   const mapFacePos = useVideoFaceMapping(videoContainerRef);
@@ -492,7 +502,15 @@ export function PredictSection() {
   }, [inView, currentFeed]);
 
   const handleClipEnd = () => {
+    // Reset videoTime FIRST to prevent race condition where stale time
+    // from the old clip triggers captions meant for the new clip
+    setVideoTime(0);
     setCurrentFeed(prev => (prev + 1) % FEED_CLIPS.length);
+    clipPlayCountRef.current += 1;
+    setClipPlayCount(prev => prev + 1);
+    if (waitingForClipRef.current) {
+      waitingForClipRef.current = false;
+    }
   };
 
   // HUD clock tick
@@ -507,34 +525,49 @@ export function PredictSection() {
     return () => clearInterval(interval);
   }, [inView]);
 
-  // Main caption + alert sequence
+  // ═══ VIDEO-SYNCED CAPTION REVEAL ═══
+  // Captions appear based on clip play count + video time, not fixed timers
   useEffect(() => {
-    if (!inView) return;
-    setVisibleCaptions(0);
-    setSentimentScore(-0.12);
-    setProcessing(false);
-    setAlertVisible(false);
-    setEmailPhase('hidden');
+    if (!inView || waitingForClipRef.current) return;
+    const relativeClips = clipPlayCount - sequenceBaseRef.current;
+    const nextIdx = visibleCaptions;
+    if (nextIdx >= CAPTIONS.length) return;
+
+    const cap = CAPTIONS[nextIdx];
+    const shouldShow =
+      relativeClips > cap.afterClips ||
+      (relativeClips === cap.afterClips && videoTime >= cap.atVideoTime);
+
+    if (shouldShow) {
+      setVisibleCaptions(nextIdx + 1);
+      setSentimentScore(cap.sentiment);
+    }
+  }, [inView, videoTime, clipPlayCount, visibleCaptions]);
+
+  // ═══ ALERT/EMAIL SEQUENCE — triggers when all captions shown ═══
+  useEffect(() => {
+    if (visibleCaptions < CAPTIONS.length) return;
 
     const t: ReturnType<typeof setTimeout>[] = [];
+    t.push(setTimeout(() => setProcessing(true), 300));
+    t.push(setTimeout(() => { setProcessing(false); setAlertVisible(true); }, 2200));
+    t.push(setTimeout(() => setEmailPhase('composing'), 3800));
+    t.push(setTimeout(() => setEmailPhase('sending'), 5400));
+    t.push(setTimeout(() => setEmailPhase('sent'), 6600));
 
-    CAPTIONS.forEach((caption, i) => {
-      t.push(setTimeout(() => {
-        setVisibleCaptions(i + 1);
-        setSentimentScore(caption.sentiment);
-      }, 1200 + i * 1600));
-    });
-
-    const afterCaptions = 1200 + CAPTIONS.length * 1600;
-    t.push(setTimeout(() => setProcessing(true), afterCaptions + 300));
-    t.push(setTimeout(() => { setProcessing(false); setAlertVisible(true); }, afterCaptions + 2200));
-    t.push(setTimeout(() => setEmailPhase('composing'), afterCaptions + 3800));
-    t.push(setTimeout(() => setEmailPhase('sending'), afterCaptions + 5400));
-    t.push(setTimeout(() => setEmailPhase('sent'), afterCaptions + 6600));
-    t.push(setTimeout(() => setCycle(c => c + 1), CYCLE_DURATION));
+    // Reset sequence after holding "sent" state for viewing
+    t.push(setTimeout(() => {
+      setVisibleCaptions(0);
+      setSentimentScore(-0.12);
+      setProcessing(false);
+      setAlertVisible(false);
+      setEmailPhase('hidden');
+      sequenceBaseRef.current = clipPlayCountRef.current;
+      waitingForClipRef.current = true;
+    }, 14000));
 
     return () => t.forEach(clearTimeout);
-  }, [inView, cycle]);
+  }, [visibleCaptions]);
 
   const feed = FEED_CLIPS[currentFeed];
 
