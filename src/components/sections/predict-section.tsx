@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Radio, Mail, Eye, ChevronRight, ScanFace, CheckCircle2, Shield, Crosshair } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
@@ -43,6 +43,9 @@ interface Subject {
   priorAppearances: number;
   keywords: string[];
   threatLevel: 'LOW' | 'MODERATE' | 'HIGH';
+  clipIndex: number;
+  showFrom: number;
+  showUntil: number;
   facePos: { top: string; left: string; width: string; height: string };
 }
 
@@ -58,7 +61,10 @@ const SUBJECTS: Subject[] = [
     priorAppearances: 14,
     keywords: ['traffic', 'conditions', 'supplemental'],
     threatLevel: 'MODERATE',
-    facePos: { top: '2%', left: '25%', width: '22%', height: '40%' },
+    clipIndex: 0,
+    showFrom: 0,
+    showUntil: 3.5,
+    facePos: { top: '7%', left: '27%', width: '12%', height: '22%' },
   },
   {
     id: 'SUBJ-8134',
@@ -71,7 +77,10 @@ const SUBJECTS: Subject[] = [
     priorAppearances: 3,
     keywords: ['parking', 'traffic', 'density'],
     threatLevel: 'LOW',
-    facePos: { top: '2%', left: '26%', width: '22%', height: '42%' },
+    clipIndex: 0,
+    showFrom: 3.5,
+    showUntil: 8,
+    facePos: { top: '10%', left: '26%', width: '12%', height: '22%' },
   },
   {
     id: 'SUBJ-2956',
@@ -84,7 +93,10 @@ const SUBJECTS: Subject[] = [
     priorAppearances: 22,
     keywords: ['setback', 'density', 'overlay'],
     threatLevel: 'LOW',
-    facePos: { top: '2%', left: '22%', width: '22%', height: '40%' },
+    clipIndex: 1,
+    showFrom: 0,
+    showUntil: 3.5,
+    facePos: { top: '4%', left: '27%', width: '11%', height: '22%' },
   },
   {
     id: 'SUBJ-6103',
@@ -97,7 +109,10 @@ const SUBJECTS: Subject[] = [
     priorAppearances: 8,
     keywords: ['traffic counts', 'school zone', 'afternoon'],
     threatLevel: 'MODERATE',
-    facePos: { top: '10%', left: '22%', width: '20%', height: '36%' },
+    clipIndex: 1,
+    showFrom: 3.5,
+    showUntil: 8,
+    facePos: { top: '9%', left: '32%', width: '10%', height: '18%' },
   },
 ];
 
@@ -203,7 +218,11 @@ function HighlightedCaption({ text, highlights }: {
 // ═══════════════════════════════════════════════════════════════
 // VIDEO FEED — Plays two Veo 3 clips sequentially, loops
 // ═══════════════════════════════════════════════════════════════
-function VideoFeed({ currentIndex, onClipEnd }: { currentIndex: number; onClipEnd: () => void }) {
+function VideoFeed({ currentIndex, onClipEnd, onTimeUpdate }: {
+  currentIndex: number;
+  onClipEnd: () => void;
+  onTimeUpdate: (time: number) => void;
+}) {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   useEffect(() => {
@@ -228,6 +247,7 @@ function VideoFeed({ currentIndex, onClipEnd }: { currentIndex: number; onClipEn
           muted
           playsInline
           onEnded={onClipEnd}
+          onTimeUpdate={i === currentIndex ? (e) => onTimeUpdate((e.target as HTMLVideoElement).currentTime) : undefined}
           className={cn(
             "absolute inset-0 w-full h-full object-cover transition-opacity duration-700",
             i === currentIndex ? "opacity-100" : "opacity-0"
@@ -239,176 +259,118 @@ function VideoFeed({ currentIndex, onClipEnd }: { currentIndex: number; onClipEn
 }
 
 // ═══════════════════════════════════════════════════════════════
-// FACE DETECTION RETICLE — Animated scan → lock → match
+// VIDEO FACE MAPPING — converts video-native % to container %
+// accounting for object-cover scaling and cropping
+// ═══════════════════════════════════════════════════════════════
+function useVideoFaceMapping(containerRef: React.RefObject<HTMLDivElement | null>) {
+  const [mapping, setMapping] = useState<{
+    ox: number; oy: number; dw: number; dh: number; cw: number; ch: number;
+  } | null>(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const compute = () => {
+      const cw = el.clientWidth;
+      const ch = el.clientHeight;
+      if (cw === 0 || ch === 0) return;
+      const vr = 16 / 9;
+      const cr = cw / ch;
+      let dw: number, dh: number, ox: number, oy: number;
+      if (cr > vr) {
+        dw = cw; dh = cw / vr; ox = 0; oy = (ch - dh) / 2;
+      } else {
+        dh = ch; dw = ch * vr; ox = (cw - dw) / 2; oy = 0;
+      }
+      setMapping({ ox, oy, dw, dh, cw, ch });
+    };
+    compute();
+    const ro = new ResizeObserver(compute);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [containerRef]);
+
+  return useCallback((videoPos: { top: string; left: string; width: string; height: string }) => {
+    if (!mapping) return videoPos;
+    const { ox, oy, dw, dh, cw, ch } = mapping;
+    const vt = parseFloat(videoPos.top) / 100;
+    const vl = parseFloat(videoPos.left) / 100;
+    const vw = parseFloat(videoPos.width) / 100;
+    const vh = parseFloat(videoPos.height) / 100;
+    return {
+      top: `${((oy + vt * dh) / ch) * 100}%`,
+      left: `${((ox + vl * dw) / cw) * 100}%`,
+      width: `${((vw * dw) / cw) * 100}%`,
+      height: `${((vh * dh) / ch) * 100}%`,
+    };
+  }, [mapping]);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FACE DETECTION BOX — Prominent rectangle around detected face
+// with compact bio tag below
 // ═══════════════════════════════════════════════════════════════
 type FacePhase = 'idle' | 'scanning' | 'locking' | 'matched';
 
-function FaceReticle({ phase, facePos }: { phase: FacePhase; facePos: Subject['facePos'] }) {
+function FaceBox({ subject, phase, facePos }: { subject: Subject; phase: FacePhase; facePos: Subject['facePos'] }) {
   const isActive = phase !== 'idle';
   const isMatched = phase === 'matched';
   const isScanning = phase === 'scanning';
   const isLocking = phase === 'locking';
 
+  const stanceColor =
+    subject.stance === 'OPPOSED' ? 'text-red-400' :
+    subject.stance === 'CAUTIOUS' ? 'text-amber-400' :
+    subject.stance === 'NEUTRAL' ? 'text-white/50' :
+    subject.stance === 'INQUIRING' ? 'text-amber-300' :
+    'text-emerald-400';
+
   return (
     <div
       className={cn(
         "absolute transition-all ease-out pointer-events-none",
-        !isActive ? 'opacity-0 scale-[1.15] duration-300' :
-        isScanning ? 'opacity-60 scale-[1.06] duration-700' :
-        isLocking ? 'opacity-85 scale-[1.02] duration-500' :
-        'opacity-100 scale-100 duration-400'
+        !isActive ? 'opacity-0 scale-[1.12] duration-300' :
+        isScanning ? 'opacity-70 scale-[1.04] duration-600' :
+        isLocking ? 'opacity-90 scale-[1.01] duration-400' :
+        'opacity-100 scale-100 duration-300'
       )}
       style={{ top: facePos.top, left: facePos.left, width: facePos.width, height: facePos.height }}
     >
-      {/* Corner brackets — thick L-shaped */}
-      <div className="absolute top-0 left-0 w-5 h-5">
-        <div className={cn("absolute top-0 left-0 w-full h-[2px] transition-colors duration-300", isMatched ? "bg-cyan-400" : "bg-cyan-400/50")} />
-        <div className={cn("absolute top-0 left-0 h-full w-[2px] transition-colors duration-300", isMatched ? "bg-cyan-400" : "bg-cyan-400/50")} />
-      </div>
-      <div className="absolute top-0 right-0 w-5 h-5">
-        <div className={cn("absolute top-0 right-0 w-full h-[2px] transition-colors duration-300", isMatched ? "bg-cyan-400" : "bg-cyan-400/50")} />
-        <div className={cn("absolute top-0 right-0 h-full w-[2px] transition-colors duration-300", isMatched ? "bg-cyan-400" : "bg-cyan-400/50")} />
-      </div>
-      <div className="absolute bottom-0 left-0 w-5 h-5">
-        <div className={cn("absolute bottom-0 left-0 w-full h-[2px] transition-colors duration-300", isMatched ? "bg-cyan-400" : "bg-cyan-400/50")} />
-        <div className={cn("absolute bottom-0 left-0 h-full w-[2px] transition-colors duration-300", isMatched ? "bg-cyan-400" : "bg-cyan-400/50")} />
-      </div>
-      <div className="absolute bottom-0 right-0 w-5 h-5">
-        <div className={cn("absolute bottom-0 right-0 w-full h-[2px] transition-colors duration-300", isMatched ? "bg-cyan-400" : "bg-cyan-400/50")} />
-        <div className={cn("absolute bottom-0 right-0 h-full w-[2px] transition-colors duration-300", isMatched ? "bg-cyan-400" : "bg-cyan-400/50")} />
-      </div>
+      {/* ═══ FULL VISIBLE BORDER — the actual face recognition box ═══ */}
+      <div className={cn(
+        "absolute inset-0 border-2 transition-all duration-300",
+        isMatched ? "border-cyan-400/80" : isLocking ? "border-cyan-400/40" : "border-cyan-400/25"
+      )} />
 
-      {/* Crosshair center */}
-      {isActive && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className={cn("w-4 h-[1px] transition-colors duration-300", isMatched ? "bg-cyan-400/40" : "bg-cyan-400/15")} />
-          <div className={cn("h-4 w-[1px] absolute transition-colors duration-300", isMatched ? "bg-cyan-400/40" : "bg-cyan-400/15")} />
-        </div>
-      )}
+      {/* Corner accents — thicker, brighter overlays on corners */}
+      <div className="absolute -top-px -left-px w-3 h-3 border-t-2 border-l-2 border-cyan-400" />
+      <div className="absolute -top-px -right-px w-3 h-3 border-t-2 border-r-2 border-cyan-400" />
+      <div className="absolute -bottom-px -left-px w-3 h-3 border-b-2 border-l-2 border-cyan-400" />
+      <div className="absolute -bottom-px -right-px w-3 h-3 border-b-2 border-r-2 border-cyan-400" />
 
       {/* Scan sweep line */}
       {isScanning && (
-        <div className="absolute left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent"
-          style={{ animation: 'faceScanSweep 1.5s ease-in-out infinite' }} />
+        <div className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/70 to-transparent"
+          style={{ animation: 'faceScanSweep 1.2s ease-in-out infinite' }} />
       )}
 
-      {/* Lock pulse ring */}
+      {/* Lock pulse */}
       {isLocking && (
-        <div className="absolute inset-[-3px] border border-cyan-400/20 animate-ping" style={{ animationDuration: '0.8s' }} />
+        <div className="absolute inset-[-4px] border-2 border-cyan-400/25 animate-ping" style={{ animationDuration: '0.7s' }} />
       )}
 
-      {/* Match border */}
-      {isMatched && (
-        <div className="absolute inset-0 border border-cyan-400/25" />
-      )}
-
-      {/* MATCH label */}
-      {isMatched && (
-        <div className="absolute -top-4 left-0 flex items-center gap-1">
-          <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-          <span className="text-[7px] font-mono text-cyan-400 tracking-[0.3em] font-bold">MATCH</span>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════
-// BIO PANEL — Rich subject data overlay, appears on face match
-// ═══════════════════════════════════════════════════════════════
-function BioPanel({ subject, visible }: { subject: Subject | null; visible: boolean }) {
-  if (!subject) return null;
-
-  const sentimentPct = ((subject.sentiment + 1) / 2) * 100;
-  const stanceColor =
-    subject.stance === 'OPPOSED' ? 'text-red-400 bg-red-400/10' :
-    subject.stance === 'CAUTIOUS' ? 'text-amber-400 bg-amber-400/10' :
-    subject.stance === 'NEUTRAL' ? 'text-white/50 bg-white/5' :
-    subject.stance === 'INQUIRING' ? 'text-amber-300 bg-amber-300/10' :
-    'text-emerald-400 bg-emerald-400/10';
-
-  const threatColor =
-    subject.threatLevel === 'HIGH' ? 'text-red-400' :
-    subject.threatLevel === 'MODERATE' ? 'text-amber-400' : 'text-emerald-400';
-
-  return (
-    <div className={cn(
-      "absolute bottom-16 right-3 z-30 transition-all duration-500 ease-out max-w-[55%] md:max-w-[240px]",
-      visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8 pointer-events-none"
-    )}>
-      <div className="bg-black/85 backdrop-blur-md border border-cyan-400/20 shadow-[0_0_30px_-8px_rgba(34,211,238,0.15)]">
-        {/* Header */}
-        <div className="flex items-center gap-2 px-3 py-2 border-b border-cyan-400/10 bg-cyan-950/30">
-          <ScanFace className="size-3.5 text-cyan-400 shrink-0" />
+      {/* ═══ COMPACT BIO TAG — appears below the face box on match ═══ */}
+      <div className={cn(
+        "absolute left-0 right-0 transition-all duration-400 ease-out",
+        isMatched ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"
+      )} style={{ top: '100%', marginTop: '4px' }}>
+        <div className="bg-black/80 backdrop-blur-sm border border-cyan-400/30 px-2 py-1.5 flex items-center gap-2">
+          <ScanFace className="size-3 text-cyan-400 shrink-0" />
           <div className="flex-1 min-w-0">
-            <div className="text-[10px] font-mono text-cyan-400 font-bold tracking-wider truncate">{subject.name}</div>
-            <div className="text-[7px] font-mono text-white/30 tracking-wider truncate">{subject.title}</div>
+            <div className="text-[9px] font-mono text-cyan-400 font-bold tracking-wider truncate">{subject.name}</div>
+            <div className="text-[7px] font-mono text-white/30 tracking-wider truncate">{subject.title} • {subject.confidence.toFixed(0)}%</div>
           </div>
-          <div className="text-[6px] font-mono text-white/15 shrink-0">{subject.id}</div>
-        </div>
-
-        {/* Data grid */}
-        <div className="px-3 py-2 space-y-1.5">
-          {/* Confidence */}
-          <div className="flex items-center justify-between">
-            <span className="text-[7px] font-mono text-white/25 tracking-wider">CONFIDENCE</span>
-            <div className="flex items-center gap-1.5">
-              <div className="flex gap-px">
-                {[...Array(5)].map((_, i) => (
-                  <div key={i} className={cn("w-1 h-2.5", i < Math.round(subject.confidence / 20) ? "bg-cyan-400/60" : "bg-white/5")} />
-                ))}
-              </div>
-              <span className="text-[9px] font-mono text-cyan-400 font-bold tabular-nums">{subject.confidence.toFixed(1)}%</span>
-            </div>
-          </div>
-
-          {/* Stance */}
-          <div className="flex items-center justify-between">
-            <span className="text-[7px] font-mono text-white/25 tracking-wider">STANCE</span>
-            <span className={cn("text-[8px] font-mono font-bold px-1.5 py-0.5 tracking-wider", stanceColor)}>{subject.stance}</span>
-          </div>
-
-          {/* Sentiment bar */}
-          <div>
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-[7px] font-mono text-white/25 tracking-wider">SENTIMENT</span>
-              <span className={cn(
-                "text-[9px] font-mono font-bold tabular-nums",
-                subject.sentiment < -0.3 ? "text-amber-400" : subject.sentiment < 0 ? "text-white/40" : "text-emerald-400"
-              )}>{subject.sentiment > 0 ? '+' : ''}{subject.sentiment.toFixed(2)}</span>
-            </div>
-            <div className="h-[3px] bg-white/5 overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-red-500/50 via-amber-500/50 to-emerald-500/50" />
-              <div
-                className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-2 h-2 rounded-full border border-white/60 transition-all duration-700 ease-out"
-                style={{
-                  left: `${sentimentPct}%`,
-                  backgroundColor: subject.sentiment < -0.3 ? '#f59e0b' : subject.sentiment < 0 ? '#64748b' : '#10b981',
-                  boxShadow: `0 0 6px ${subject.sentiment < -0.3 ? '#f59e0b' : '#64748b'}50`,
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Appearances + Risk */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5">
-              <span className="text-[7px] font-mono text-white/25 tracking-wider">PRIOR</span>
-              <span className="text-[9px] font-mono text-white/50 tabular-nums font-bold">{subject.priorAppearances}</span>
-            </div>
-            <div className="w-px h-3 bg-white/10" />
-            <div className="flex items-center gap-1.5">
-              <span className="text-[7px] font-mono text-white/25 tracking-wider">RISK</span>
-              <span className={cn("text-[8px] font-mono font-bold tracking-wider", threatColor)}>{subject.threatLevel}</span>
-            </div>
-          </div>
-
-          {/* Keywords */}
-          <div className="flex flex-wrap gap-1 pt-1 border-t border-white/5">
-            {subject.keywords.map(kw => (
-              <span key={kw} className="text-[7px] font-mono text-cyan-400/40 bg-cyan-400/[0.06] px-1.5 py-0.5 tracking-wider">{kw}</span>
-            ))}
-          </div>
+          <span className={cn("text-[7px] font-mono font-bold tracking-wider shrink-0", stanceColor)}>{subject.stance}</span>
         </div>
       </div>
     </div>
@@ -447,6 +409,7 @@ function SentimentBar({ score }: { score: number }) {
 // ═══════════════════════════════════════════════════════════════
 export function PredictSection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const [cycle, setCycle] = useState(0);
   const [visibleCaptions, setVisibleCaptions] = useState(0);
@@ -455,11 +418,27 @@ export function PredictSection() {
   const [alertVisible, setAlertVisible] = useState(false);
   const [currentFeed, setCurrentFeed] = useState(0);
   const [facePhase, setFacePhase] = useState<FacePhase>('idle');
-  const [currentSubject, setCurrentSubject] = useState(-1);
   const [feedSwitching, setFeedSwitching] = useState(false);
   const [emailPhase, setEmailPhase] = useState<'hidden' | 'composing' | 'sending' | 'sent'>('hidden');
   const [hudTime, setHudTime] = useState('14:22:07');
   const [facesDetected, setFacesDetected] = useState(0);
+  const [videoTime, setVideoTime] = useState(0);
+
+  // Map video-native face positions to container positions (accounts for object-cover)
+  const mapFacePos = useVideoFaceMapping(videoContainerRef);
+
+  // Determine active face subject from video time + current clip
+  const activeSubject = useMemo(() => {
+    if (!inView) return null;
+    return SUBJECTS.find(s =>
+      s.clipIndex === currentFeed &&
+      videoTime >= s.showFrom &&
+      videoTime < s.showUntil
+    ) ?? null;
+  }, [currentFeed, videoTime, inView]);
+
+  // Track subject changes to trigger face recognition animation
+  const prevSubjectId = useRef<string | null>(null);
 
   // Intersection observer
   useEffect(() => {
@@ -473,10 +452,17 @@ export function PredictSection() {
     return () => observer.disconnect();
   }, []);
 
-  // Face recognition sequence — scan → lock → match
+  // Face recognition sequence — scan → lock → match (triggered by subject change)
   const faceTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
   useEffect(() => {
-    if (!inView || currentSubject < 0) return;
+    if (!inView || !activeSubject) {
+      setFacePhase('idle');
+      setFacesDetected(0);
+      prevSubjectId.current = null;
+      return;
+    }
+    if (activeSubject.id === prevSubjectId.current) return;
+    prevSubjectId.current = activeSubject.id;
     faceTimers.current.forEach(clearTimeout);
     faceTimers.current = [];
     setFacePhase('idle');
@@ -485,7 +471,7 @@ export function PredictSection() {
     faceTimers.current.push(setTimeout(() => setFacePhase('locking'), 500));
     faceTimers.current.push(setTimeout(() => { setFacePhase('matched'); setFacesDetected(1); }, 900));
     return () => faceTimers.current.forEach(clearTimeout);
-  }, [inView, currentSubject]);
+  }, [inView, activeSubject]);
 
   // Feed switch glitch
   useEffect(() => {
@@ -519,9 +505,6 @@ export function PredictSection() {
     setProcessing(false);
     setAlertVisible(false);
     setEmailPhase('hidden');
-    setCurrentSubject(-1);
-    setFacePhase('idle');
-    setFacesDetected(0);
 
     const t: ReturnType<typeof setTimeout>[] = [];
 
@@ -529,7 +512,6 @@ export function PredictSection() {
       t.push(setTimeout(() => {
         setVisibleCaptions(i + 1);
         setSentimentScore(caption.sentiment);
-        setCurrentSubject(caption.subjectIdx);
       }, 1200 + i * 1600));
     });
 
@@ -545,7 +527,6 @@ export function PredictSection() {
   }, [inView, cycle]);
 
   const feed = FEED_CLIPS[currentFeed];
-  const subject = currentSubject >= 0 ? SUBJECTS[currentSubject] : null;
 
   return (
     <div ref={containerRef} className="flex flex-col h-full">
@@ -594,9 +575,9 @@ export function PredictSection() {
           </div>
 
           {/* Video container with HUD */}
-          <div className="relative flex-1 min-h-[200px] overflow-hidden bg-[#0a0a12]">
+          <div ref={videoContainerRef} className="relative flex-1 min-h-[200px] overflow-hidden bg-[#0a0a12]">
             {/* Video feed */}
-            <VideoFeed currentIndex={currentFeed} onClipEnd={handleClipEnd} />
+            <VideoFeed currentIndex={currentFeed} onClipEnd={handleClipEnd} onTimeUpdate={setVideoTime} />
 
             {/* Dark overlay for HUD readability */}
             <div className="absolute inset-0 bg-black/15 pointer-events-none" />
@@ -668,13 +649,10 @@ export function PredictSection() {
                 </div>
               </div>
 
-              {/* ═══ FACE DETECTION RETICLE ═══ */}
-              {subject && (
-                <FaceReticle phase={facePhase} facePos={subject.facePos} />
+              {/* ═══ FACE DETECTION BOX + BIO TAG ═══ */}
+              {activeSubject && (
+                <FaceBox subject={activeSubject} phase={facePhase} facePos={mapFacePos(activeSubject.facePos)} />
               )}
-
-              {/* ═══ BIO PANEL ═══ */}
-              <BioPanel subject={subject} visible={facePhase === 'matched'} />
 
               {/* Bottom gradient */}
               <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/70 to-transparent" />
