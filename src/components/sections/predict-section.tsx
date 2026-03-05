@@ -64,7 +64,7 @@ const SUBJECTS: Subject[] = [
     clipIndex: 0,
     showFrom: 0,
     showUntil: 3.0,
-    facePos: { top: '12%', left: '33%', width: '14%', height: '16%' },
+    facePos: { top: '7%', left: '35%', width: '10%', height: '18%' },
   },
   {
     id: 'SUBJ-8134',
@@ -80,7 +80,7 @@ const SUBJECTS: Subject[] = [
     clipIndex: 0,
     showFrom: 3.0,
     showUntil: 8,
-    facePos: { top: '20%', left: '31%', width: '14%', height: '14%' },
+    facePos: { top: '16%', left: '24%', width: '10%', height: '17%' },
   },
   {
     id: 'SUBJ-2956',
@@ -96,7 +96,7 @@ const SUBJECTS: Subject[] = [
     clipIndex: 1,
     showFrom: 0,
     showUntil: 3.5,
-    facePos: { top: '12%', left: '31%', width: '14%', height: '16%' },
+    facePos: { top: '5%', left: '27%', width: '11%', height: '19%' },
   },
   {
     id: 'SUBJ-6103',
@@ -112,7 +112,7 @@ const SUBJECTS: Subject[] = [
     clipIndex: 1,
     showFrom: 3.5,
     showUntil: 8,
-    facePos: { top: '17%', left: '32%', width: '11%', height: '12%' },
+    facePos: { top: '13%', left: '29%', width: '9%', height: '17%' },
   },
 ];
 
@@ -590,10 +590,10 @@ export function PredictSection() {
       <div className="shrink-0 mb-3 md:mb-5">
         <div className="flex items-center gap-3 mb-1.5">
           <Radio className="size-4 text-primary" />
-          <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/30">06_Predictive_Intelligence</h2>
+          <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/30">06_Predictive_Intelligence</h2>
         </div>
-        <h3 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter leading-tight text-white">Predictive Intelligence.</h3>
-        <p className="text-white/40 max-w-xl text-sm sm:text-base font-medium mt-1.5">
+        <h3 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter leading-tight text-black">Predictive Intelligence.</h3>
+        <p className="text-black/50 max-w-xl text-sm sm:text-base font-medium mt-1.5">
           Monitor municipal proceedings and media signals. Detect sentiment shifts before they become project risks.
         </p>
       </div>

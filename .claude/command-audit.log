@@ -2362,3 +2362,17 @@ EOF
 )"
 git push
 npm run dev
+lsof -ti:9002 | xargs kill -9 2>/dev/null || true
+npx next dev --port 9002
+sleep 6 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && sleep 4 && xcrun simctl io "$UDID" screenshot /tmp/predict-t1.png 2>/dev/null
+sleep 8 && xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/predict-t2.png 2>/dev/null
+sleep 15 && xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/predict-t3.png 2>/dev/null
+ffmpeg -i /Users/avireddy/GitHub/studio/public/feed-clip-1.mp4 -ss 1.5 -frames:v 1 /tmp/clip1-frame.png -y 2>/dev/null && ffmpeg -i /Users/avireddy/GitHub/studio/public/feed-clip-1.mp4 -ss 5.0 -frames:v 1 /tmp/clip1-frame-b.png -y 2>/dev/null
+ffmpeg -i /Users/avireddy/GitHub/studio/public/feed-clip-2.mp4 -ss 1.5 -frames:v 1 /tmp/clip2-frame.png -y 2>/dev/null && ffmpeg -i /Users/avireddy/GitHub/studio/public/feed-clip-2.mp4 -ss 5.0 -frames:v 1 /tmp/clip2-frame-b.png -y 2>/dev/null
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+sleep 5 && xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/predict-faces-v1.png 2>/dev/null
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 2 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+sleep 5 && xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/predict-white-v1.png 2>/dev/null
+npm run build --prefix /Users/avireddy/GitHub/studio 2>&1 | tail -5

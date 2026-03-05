@@ -150,8 +150,8 @@
   "hotPaths": [
     {
       "path": "src/components/sections/predict-section.tsx",
-      "accessCount": 5,
-      "lastAccessed": 1772686166857,
+      "accessCount": 7,
+      "lastAccessed": 1772686732814,
       "type": "file"
     },
     {
@@ -159,6 +159,12 @@
       "accessCount": 3,
       "lastAccessed": 1772685693577,
       "type": "directory"
+    },
+    {
+      "path": "src/app/(dashboard)/page.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1772686721012,
+      "type": "file"
     },
     {
       "path": "",
@@ -170,12 +176,6 @@
       "path": "next.config.ts",
       "accessCount": 1,
       "lastAccessed": 1772685464736,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1772685703565,
       "type": "file"
     }
   ],
