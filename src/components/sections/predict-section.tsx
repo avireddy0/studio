@@ -228,50 +228,44 @@ function VideoFeed({ currentIndex, onClipEnd, onTimeUpdate }: {
   onClipEnd: () => void;
   onTimeUpdate: (time: number) => void;
 }) {
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const prevIndex = useRef(currentIndex);
 
   useEffect(() => {
-    videoRefs.current.forEach((v, i) => {
-      if (!v) return;
-      if (i === currentIndex) {
-        v.currentTime = 0;
-        const tryPlay = () => {
-          v.play().catch(() => {
-            // Retry once after a short delay (handles race with video loading)
-            setTimeout(() => v.play().catch(() => {}), 200);
-          });
-        };
-        if (v.readyState >= 2) {
-          tryPlay();
-        } else {
-          v.addEventListener('canplay', tryPlay, { once: true });
-        }
-      } else {
-        v.pause();
-      }
-    });
+    const v = videoRef.current;
+    if (!v) return;
+    const src = FEED_CLIPS[currentIndex].src;
+    // Only reload if clip actually changed
+    if (v.src !== window.location.origin + src && v.getAttribute('src') !== src) {
+      v.src = src;
+      v.load();
+    }
+    v.currentTime = 0;
+    const tryPlay = () => {
+      v.play().catch(() => {
+        setTimeout(() => v.play().catch(() => {}), 300);
+      });
+    };
+    if (v.readyState >= 2) {
+      tryPlay();
+    } else {
+      v.addEventListener('canplay', tryPlay, { once: true });
+    }
+    prevIndex.current = currentIndex;
   }, [currentIndex]);
 
   return (
-    <>
-      {FEED_CLIPS.map((clip, i) => (
-        <video
-          key={clip.src}
-          ref={el => { videoRefs.current[i] = el; }}
-          src={clip.src}
-          muted
-          playsInline
-          preload="auto"
-          autoPlay={i === 0}
-          onEnded={onClipEnd}
-          onTimeUpdate={i === currentIndex ? (e) => onTimeUpdate((e.target as HTMLVideoElement).currentTime) : undefined}
-          className={cn(
-            "absolute inset-0 w-full h-full object-cover transition-opacity duration-700",
-            i === currentIndex ? "opacity-100" : "opacity-0"
-          )}
-        />
-      ))}
-    </>
+    <video
+      ref={videoRef}
+      src={FEED_CLIPS[currentIndex].src}
+      muted
+      autoPlay
+      playsInline
+      preload="auto"
+      onEnded={onClipEnd}
+      onTimeUpdate={(e) => onTimeUpdate((e.target as HTMLVideoElement).currentTime)}
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+    />
   );
 }
 
