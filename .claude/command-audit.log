@@ -2312,3 +2312,5 @@ feat: add Firebase Performance Monitoring
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 EOF
 )"
+git push origin main 2>&1
+lsof -ti:9002 2>/dev/null | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
