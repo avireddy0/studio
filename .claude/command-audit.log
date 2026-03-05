@@ -2296,3 +2296,19 @@ git log --oneline -5
 git show --stat 269d4f5
 git diff --name-only --diff-filter=U 2>&1
 git status --short 2>&1
+git add -A && GIT_EDITOR=true git rebase --continue 2>&1
+git push origin main 2>&1
+grep -r "firebase" /Users/avireddy/GitHub/studio/package.json | head -10
+curl -s -H "Authorization: Bearer $(gcloud auth application-default print-access-token 2>/dev/null)" "https://firebase.googleapis.com/v1beta1/projects/studio-7741937329-54916/webApps" 2>&1 | head -30
+curl -s -H "Authorization: Bearer $(gcloud auth application-default print-access-token 2>/dev/null)" "https://firebase.googleapis.com/v1beta1/projects/studio-7741937329-54916/webApps/1:662762029619:web:198552864cd97bd3acd946/config" 2>&1
+npm run build 2>&1 | tail -25
+git add src/lib/firebase.ts src/components/firebase-perf.tsx src/app/layout.tsx && git commit -m "$(cat <<'EOF'
+feat: add Firebase Performance Monitoring
+
+- Create Firebase client SDK initialization (src/lib/firebase.ts)
+- Add FirebasePerf client component with dynamic import
+- Wire into root layout for automatic page load metrics
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)"
