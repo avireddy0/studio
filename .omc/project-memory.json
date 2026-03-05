@@ -147,6 +147,37 @@
       ]
     }
   },
-  "hotPaths": [],
+  "hotPaths": [
+    {
+      "path": "src/components/sections/predict-section.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1772685507020,
+      "type": "file"
+    },
+    {
+      "path": "src",
+      "accessCount": 3,
+      "lastAccessed": 1772685693577,
+      "type": "directory"
+    },
+    {
+      "path": "",
+      "accessCount": 1,
+      "lastAccessed": 1772685410123,
+      "type": "directory"
+    },
+    {
+      "path": "next.config.ts",
+      "accessCount": 1,
+      "lastAccessed": 1772685464736,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(dashboard)/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1772685703565,
+      "type": "file"
+    }
+  ],
   "userDirectives": []
 }

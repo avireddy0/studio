@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"gcloud firebase apps list --project=studio-7741937329-54916 2>&1\",\"description\":\"List Firebase apps to get the web app ID\"}",
-  "error": "Exit code 2\nERROR: (gcloud.firebase) Invalid choice: 'apps'.\nMaybe you meant:\n  gcloud config list\n  gcloud app domain-mappings list\n  gcloud app firewall-rules list\n  gcloud app instances list\n  gcloud app operations list\n  gcloud app regions list\n  gcloud app runtimes list\n  gcloud app services list\n  gcloud app ssl-certificates list\n  gcloud app versions list\n\nTo search the help text of gcloud commands, run:\n  gcloud help -- SEARCH_TERMS\n\nERROR: (gcloud.firebase) Invalid choice: 'apps'.\nMaybe...",
-  "timestamp": "2026-03-05T04:27:39.919Z",
+  "tool_input_preview": "{\"command\":\"lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1 && npm run dev &>/dev/null &\",\"description\":\"Kill and restart dev server on port 9002\"}",
+  "error": "Exit code 1\n(eval):1: parse error near `&'\n\n(eval):1: parse error near `&'",
+  "timestamp": "2026-03-05T04:41:51.388Z",
   "retry_count": 1
 }

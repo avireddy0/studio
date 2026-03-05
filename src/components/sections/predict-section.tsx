@@ -235,7 +235,17 @@ function VideoFeed({ currentIndex, onClipEnd, onTimeUpdate }: {
       if (!v) return;
       if (i === currentIndex) {
         v.currentTime = 0;
-        v.play().catch(() => {});
+        const tryPlay = () => {
+          v.play().catch(() => {
+            // Retry once after a short delay (handles race with video loading)
+            setTimeout(() => v.play().catch(() => {}), 200);
+          });
+        };
+        if (v.readyState >= 2) {
+          tryPlay();
+        } else {
+          v.addEventListener('canplay', tryPlay, { once: true });
+        }
       } else {
         v.pause();
       }
@@ -251,6 +261,8 @@ function VideoFeed({ currentIndex, onClipEnd, onTimeUpdate }: {
           src={clip.src}
           muted
           playsInline
+          preload="auto"
+          autoPlay={i === 0}
           onEnded={onClipEnd}
           onTimeUpdate={i === currentIndex ? (e) => onTimeUpdate((e.target as HTMLVideoElement).currentTime) : undefined}
           className={cn(
