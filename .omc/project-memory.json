@@ -174,8 +174,8 @@
     },
     {
       "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1772604539163,
+      "accessCount": 3,
+      "lastAccessed": 1772683589742,
       "type": "file"
     },
     {
@@ -201,6 +201,12 @@
       "accessCount": 2,
       "lastAccessed": 1772682883796,
       "type": "directory"
+    },
+    {
+      "path": "src/lib/firestore.ts",
+      "accessCount": 1,
+      "lastAccessed": 1772683589115,
+      "type": "file"
     }
   ],
   "userDirectives": []

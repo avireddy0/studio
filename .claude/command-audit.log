@@ -2263,3 +2263,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 EOF
 )"
 git push
+cat src/lib/firebase.ts 2>/dev/null || cat src/lib/firebase/config.ts 2>/dev/null || echo "not found"
+grep -r "firebase" package.json | head -5 && node -e "console.log(require('./node_modules/firebase/package.json').version)" 2>/dev/null
+grep -r "firebase\|getApp\|initializeApp\|firebaseConfig" src/ --include="*.ts" --include="*.tsx" -l 2>/dev/null
+ls *.yaml *.json 2>/dev/null | head -20 && cat apphosting.yaml 2>/dev/null || echo "no apphosting.yaml"
