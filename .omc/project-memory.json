@@ -156,8 +156,8 @@
     },
     {
       "path": "src/components/query/chat-interface.tsx",
-      "accessCount": 13,
-      "lastAccessed": 1772684443947,
+      "accessCount": 14,
+      "lastAccessed": 1772684635138,
       "type": "file"
     },
     {
@@ -203,6 +203,12 @@
       "type": "file"
     },
     {
+      "path": "apphosting.yaml",
+      "accessCount": 2,
+      "lastAccessed": 1772684547613,
+      "type": "file"
+    },
+    {
       "path": "src/lib/firestore.ts",
       "accessCount": 1,
       "lastAccessed": 1772683589115,
@@ -236,12 +242,6 @@
       "path": "src/ai/genkit.ts",
       "accessCount": 1,
       "lastAccessed": 1772684257063,
-      "type": "file"
-    },
-    {
-      "path": "apphosting.yaml",
-      "accessCount": 1,
-      "lastAccessed": 1772684384042,
       "type": "file"
     }
   ],

@@ -2282,3 +2282,17 @@ curl -s -o /dev/null -w "%{http_code}" "https://studio--studio-7741937329-54916.
 npm run build 2>&1 | tail -25
 lsof -ti:9002 2>/dev/null | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
 sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002/
+gcloud secrets list --project=studio-7741937329-54916 2>&1 | head -20
+gcloud config get-value project 2>&1
+echo -n "$GOOGLE_API_KEY" | gcloud secrets create google-api-key --data-file=- --project=studio-7741937329-54916 --replication-policy=automatic 2>&1
+gcloud projects describe studio-7741937329-54916 --format='value(projectNumber)' 2>&1
+gcloud secrets add-iam-policy-binding google-api-key --project=studio-7741937329-54916 --member="serviceAccount:firebase-app-hosting-compute@studio-7741937329-54916.iam.gserviceaccount.com" --role="roles/secretmanager.secretAccessor" 2>&1
+npm run build 2>&1 | tail -15
+git status --short && echo "---" && git diff --stat
+git diff --cached --stat
+git diff -- src/components/query/chat-interface.tsx
+git status -- src/components/query/chat-interface.tsx
+git log --oneline -5
+git show --stat 269d4f5
+git diff --name-only --diff-filter=U 2>&1
+git status --short 2>&1
