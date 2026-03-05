@@ -2377,3 +2377,37 @@ UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" co
 sleep 5 && xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/predict-white-v1.png 2>/dev/null
 npm run build --prefix /Users/avireddy/GitHub/studio 2>&1 | tail -5
 UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+sleep 5 && xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/predict-white-v2.png 2>/dev/null
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+curl -s http://localhost:9002/?s=predict 2>&1 | head -50
+curl -s 'http://localhost:9002/?s=predict' 2>&1 | head -50
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 2 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && sleep 8 && xcrun simctl io "$UDID" screenshot /tmp/predict-white-v3.png 2>/dev/null
+lsof -ti:9002 2>/dev/null
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/predict-homepage.png 2>/dev/null
+lsof -ti:9002 | xargs kill -9 2>/dev/null || true && sleep 1 && npx next dev --port 9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && xcrun simctl privacy "$UDID" reset all com.apple.mobilesafari 2>/dev/null || true
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 3 && xcrun simctl openurl "$UDID" "http://localhost:9002" 2>/dev/null && sleep 8 && xcrun simctl io "$UDID" screenshot /tmp/predict-fresh.png 2>/dev/null
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && sleep 8 && xcrun simctl io "$UDID" screenshot /tmp/predict-white-final.png 2>/dev/null
+npm run build --prefix /Users/avireddy/GitHub/studio 2>&1 | tail -10
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && sleep 7 && xcrun simctl io "$UDID" screenshot /tmp/predict-polished.png 2>/dev/null
+lsof -ti:9002 | xargs kill -9 2>/dev/null || true && rm -rf /Users/avireddy/GitHub/studio/.next
+npx next dev --port 9002
+sleep 10 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && sleep 8 && xcrun simctl io "$UDID" screenshot /tmp/predict-final.png 2>/dev/null
+git add src/components/sections/predict-section.tsx 'src/app/(dashboard)/page.tsx' && git commit -m "$(cat <<'EOF'
+fix: recalibrate face detection and convert Predict section to white theme
+
+- Recalibrate face detection positions from video frame analysis
+- Convert section background from obsidian to white
+- Convert Transcript Analysis panel to light mode (white bg, dark text)
+- Update all text colors, borders, and backgrounds for white theme
+- Add shadow and rounded corners to video/transcript panels
+- Update highlight colors for light mode readability
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)"
+git status && git diff
+git log --oneline -5 && echo "---" && git diff HEAD~2..HEAD --stat
+git push
