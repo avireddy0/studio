@@ -229,3 +229,28 @@ I0304 23:07:07.695097   67865 load.go:109] Finished reloading
  {"metadata":{"emulator":{"name":"dataconnect"},"message":"I0304 23:07:08.586114   67865 engine.go:208] [/emulator/studio e075] ExecuteGraphqlRead IntrospectionQuery: succeeded. \n"}}
 [debug] [2026-03-05T04:07:14.153Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
 [debug] [2026-03-05T04:07:14.153Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[debug] [2026-03-05T04:11:12.336Z] [Firebase Plugin] Value of process.env.MONOSPACE_ENV: undefined
+[debug] [2026-03-05T04:11:12.336Z] [Firebase Plugin] requireAuthWrapper
+[debug] [2026-03-05T04:11:12.337Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-03-05T04:11:12.337Z] > authorizing via signed-in user (avi@envsn.com)
+[debug] [2026-03-05T04:11:12.338Z] Checked if tokens are valid: true, expires at: 1772687227486
+[debug] [2026-03-05T04:11:12.338Z] [Firebase Plugin] User found:  avi@envsn.com
+[info] [Firebase Plugin] (Core:Project) New user detected, fetching projects
+[debug] [2026-03-05T04:11:12.338Z] Checked if tokens are valid: true, expires at: 1772687227486
+[debug] [2026-03-05T04:11:12.339Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=1000
+[debug] [2026-03-05T04:11:12.344Z] [Firebase Plugin] Value of process.env.MONOSPACE_ENV: undefined
+[debug] [2026-03-05T04:11:12.344Z] [Firebase Plugin] requireAuthWrapper
+[debug] [2026-03-05T04:11:12.345Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-03-05T04:11:12.345Z] > authorizing via signed-in user (avi@envsn.com)
+[debug] [2026-03-05T04:11:12.345Z] Checked if tokens are valid: true, expires at: 1772687227486
+[debug] [2026-03-05T04:11:12.345Z] [Firebase Plugin] User found:  avi@envsn.com
+[info] [Firebase Plugin] (Core:Project) New user detected, fetching projects
+[debug] [2026-03-05T04:11:12.345Z] Checked if tokens are valid: true, expires at: 1772687227486
+[debug] [2026-03-05T04:11:12.345Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=1000
+[debug] [2026-03-05T04:11:13.044Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2026-03-05T04:11:13.045Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[debug] [2026-03-05T04:11:13.077Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2026-03-05T04:11:13.077Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[debug] [2026-03-05T04:11:43.132Z] [Firebase Plugin] Received emulators shutdown notification.
+[debug] [2026-03-05T04:11:45.130Z] [Firebase Plugin] Received CLI notification.
+[debug] [2026-03-05T04:11:45.131Z] [Firebase Plugin] Received emulators shutdown notification.
