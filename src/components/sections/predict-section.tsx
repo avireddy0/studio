@@ -604,7 +604,7 @@ export function PredictSection() {
         {/* ═══════════════════════════════════════════════════════
             LEFT — Surveillance Feed with Full Military HUD
             ═══════════════════════════════════════════════════════ */}
-        <div className="flex-[1.3] flex flex-col border border-white/[0.06] overflow-hidden bg-[#08080D]">
+        <div className="flex-[1.3] flex flex-col border border-black/10 rounded-lg overflow-hidden bg-[#08080D] shadow-lg">
           {/* Feed header bar */}
           <div className="flex items-center justify-between px-3 py-2 border-b border-white/[0.06] bg-white/[0.02] shrink-0">
             <div className="flex items-center gap-2">
