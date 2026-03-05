@@ -2240,3 +2240,26 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 EOF
 )"
 git push
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002 2>&1
+npm run build 2>&1
+cat -n /Users/avireddy/GitHub/studio/next.config.ts | head -40
+git show --stat HEAD && echo "---" && git show HEAD --name-only | head -20
+curl -s -o /dev/null -w "%{http_code}" https://studio--studio-7741937329-54916.us-central1.hosted.app 2>&1
+node -e "console.log(require('./node_modules/react-day-picker/package.json').version)"
+npm run typecheck 2>&1
+npm run build 2>&1 | tail -20
+git add src/app/\(dashboard\)/settings/page.tsx src/components/ui/calendar.tsx src/components/query/chat-interface.tsx src/components/visualizations/bim-scene.tsx src/ai/flows/query-semantic-routing.ts next.config.ts
+git commit -m "$(cat <<'EOF'
+fix: resolve all TypeScript errors causing runtime crashes
+
+- settings/page.tsx: add missing cn import (ReferenceError at runtime)
+- calendar.tsx: update react-day-picker v9 API (IconLeft/IconRight → Chevron)
+- next.config.ts: move allowedDevOrigins out of experimental (top-level option)
+- query-semantic-routing.ts: fix Genkit API (call prompt directly, use toolRequest.name/input)
+- chat-interface.tsx: fix useActionState with explicit QueryState type + proper initialState
+- bim-scene.tsx: replace JSX.Element[] with React.ReactElement[]
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)"
+git push

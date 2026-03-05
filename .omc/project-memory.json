@@ -155,10 +155,52 @@
       "type": "file"
     },
     {
+      "path": "src/components/query/chat-interface.tsx",
+      "accessCount": 7,
+      "lastAccessed": 1772682970692,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(dashboard)/settings/page.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1772682817457,
+      "type": "file"
+    },
+    {
+      "path": "src/ai/flows/query-semantic-routing.ts",
+      "accessCount": 3,
+      "lastAccessed": 1772682846613,
+      "type": "file"
+    },
+    {
       "path": "src/app/(dashboard)/page.tsx",
       "accessCount": 2,
       "lastAccessed": 1772604539163,
       "type": "file"
+    },
+    {
+      "path": "src/components/visualizations/bim-scene.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1772682803519,
+      "type": "file"
+    },
+    {
+      "path": "next.config.ts",
+      "accessCount": 2,
+      "lastAccessed": 1772682831141,
+      "type": "file"
+    },
+    {
+      "path": "src/components/ui/calendar.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1772682833612,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/actions.ts",
+      "accessCount": 2,
+      "lastAccessed": 1772682883796,
+      "type": "directory"
     }
   ],
   "userDirectives": []
