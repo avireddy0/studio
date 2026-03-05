@@ -1,6 +1,7 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
+import { FirebasePerf } from "@/components/firebase-perf"
 
 export const metadata: Metadata = {
   title: 'Envision OS | Where Development Meets Data',
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         {children}
         <Toaster />
+        <FirebasePerf />
       </body>
     </html>
   );
