@@ -2411,3 +2411,35 @@ EOF
 git status && git diff
 git log --oneline -5 && echo "---" && git diff HEAD~2..HEAD --stat
 git push
+ffmpeg -ss 1.5 -i /Users/avireddy/GitHub/studio/public/feed-clip-1.mp4 -frames:v 1 -q:v 2 /tmp/clip1-hargrove.jpg 2>/dev/null && echo "done"
+ffmpeg -ss 5.0 -i /Users/avireddy/GitHub/studio/public/feed-clip-1.mp4 -frames:v 1 -q:v 2 /tmp/clip1-williams.jpg 2>/dev/null && echo "done"
+ffmpeg -ss 1.5 -i /Users/avireddy/GitHub/studio/public/feed-clip-2.mp4 -frames:v 1 -q:v 2 /tmp/clip2-kapoor.jpg 2>/dev/null && echo "done"
+ffmpeg -ss 5.0 -i /Users/avireddy/GitHub/studio/public/feed-clip-2.mp4 -frames:v 1 -q:v 2 /tmp/clip2-torres.jpg 2>/dev/null && echo "done"
+lsof -ti:9002 2>/dev/null || echo "not running"
+xcrun simctl list devices booted 2>/dev/null | head -5
+identify /tmp/clip1-hargrove.jpg 2>/dev/null | head -1
+ffmpeg -i /tmp/clip1-hargrove.jpg -vf "drawbox=x=iw*51/100:y=ih*10/100:w=iw*10/100:h=ih*20/100:color=cyan@0.8:t=3" -y /tmp/hargrove-overlay.jpg 2>/dev/null && echo "done"
+ffmpeg -i /tmp/clip1-williams.jpg -vf "drawbox=x=iw*42/100:y=ih*13/100:w=iw*10/100:h=ih*20/100:color=cyan@0.8:t=3" -y /tmp/williams-overlay.jpg 2>/dev/null && echo "done"
+ffmpeg -i /tmp/clip2-kapoor.jpg -vf "drawbox=x=iw*46/100:y=ih*6/100:w=iw*10/100:h=ih*22/100:color=cyan@0.8:t=3" -y /tmp/kapoor-overlay.jpg 2>/dev/null && echo "done"
+ffmpeg -i /tmp/clip2-torres.jpg -vf "drawbox=x=iw*40/100:y=ih*10/100:w=iw*10/100:h=ih*20/100:color=cyan@0.8:t=3" -y /tmp/torres-overlay.jpg 2>/dev/null && echo "done"
+ffmpeg -i /tmp/clip1-hargrove.jpg -vf "drawbox=x=iw*33/100:y=ih*14/100:w=iw*10/100:h=ih*25/100:color=cyan@0.8:t=3" -y /tmp/hargrove-v2.jpg 2>/dev/null && echo "done"
+ffmpeg -i /tmp/clip1-williams.jpg -vf "drawbox=x=iw*30/100:y=ih*18/100:w=iw*9/100:h=ih*24/100:color=cyan@0.8:t=3" -y /tmp/williams-v2.jpg 2>/dev/null && echo "done"
+ffmpeg -i /tmp/clip2-kapoor.jpg -vf "drawbox=x=iw*32/100:y=ih*8/100:w=iw*10/100:h=ih*28/100:color=cyan@0.8:t=3" -y /tmp/kapoor-v2.jpg 2>/dev/null && echo "done"
+ffmpeg -i /tmp/clip2-torres.jpg -vf "drawbox=x=iw*28/100:y=ih*8/100:w=iw*9/100:h=ih*22/100:color=cyan@0.8:t=3" -y /tmp/torres-v2.jpg 2>/dev/null && echo "done"
+ffmpeg -i /tmp/clip1-hargrove.jpg -vf "drawbox=x=iw*32/100:y=ih*14/100:w=iw*13/100:h=ih*27/100:color=cyan@0.8:t=3" -y /tmp/hargrove-v3.jpg 2>/dev/null && echo "done"
+ffmpeg -i /tmp/clip1-williams.jpg -vf "drawbox=x=iw*33/100:y=ih*18/100:w=iw*10/100:h=ih*26/100:color=cyan@0.8:t=3" -y /tmp/williams-v3.jpg 2>/dev/null && echo "done"
+ffmpeg -i /tmp/clip2-kapoor.jpg -vf "drawbox=x=iw*33/100:y=ih*8/100:w=iw*11/100:h=ih*28/100:color=cyan@0.8:t=3" -y /tmp/kapoor-v3.jpg 2>/dev/null && echo "done"
+ffmpeg -i /tmp/clip2-torres.jpg -vf "drawbox=x=iw*32/100:y=ih*8/100:w=iw*9/100:h=ih*24/100:color=cyan@0.8:t=3" -y /tmp/torres-v3.jpg 2>/dev/null && echo "done"
+ffmpeg -i /tmp/clip1-hargrove.jpg -vf "drawbox=x=iw*33/100:y=ih*16/100:w=iw*13/100:h=ih*27/100:color=cyan@0.8:t=3" -y /tmp/hargrove-v4.jpg 2>/dev/null && echo "done"
+ffmpeg -i /tmp/clip1-williams.jpg -vf "drawbox=x=iw*35/100:y=ih*20/100:w=iw*10/100:h=ih*26/100:color=cyan@0.8:t=3" -y /tmp/williams-v4.jpg 2>/dev/null && echo "done"
+ffmpeg -i /tmp/clip2-kapoor.jpg -vf "drawbox=x=iw*34/100:y=ih*8/100:w=iw*11/100:h=ih*28/100:color=cyan@0.8:t=3" -y /tmp/kapoor-v4.jpg 2>/dev/null && echo "done"
+ffmpeg -i /tmp/clip2-torres.jpg -vf "drawbox=x=iw*33/100:y=ih*10/100:w=iw*9/100:h=ih*24/100:color=cyan@0.8:t=3" -y /tmp/torres-v4.jpg 2>/dev/null && echo "done"
+ffmpeg -i /tmp/clip1-hargrove.jpg -vf "drawbox=x=iw*34/100:y=ih*17/100:w=iw*12/100:h=ih*28/100:color=cyan@0.8:t=3" -y /tmp/hargrove-v5.jpg 2>/dev/null && ffmpeg -i /tmp/clip1-williams.jpg -vf "drawbox=x=iw*37/100:y=ih*20/100:w=iw*9/100:h=ih*26/100:color=cyan@0.8:t=3" -y /tmp/williams-v5.jpg 2>/dev/null && ffmpeg -i /tmp/clip2-kapoor.jpg -vf "drawbox=x=iw*34/100:y=ih*8/100:w=iw*11/100:h=ih*30/100:color=cyan@0.8:t=3" -y /tmp/kapoor-v5.jpg 2>/dev/null && ffmpeg -i /tmp/clip2-torres.jpg -vf "drawbox=x=iw*35/100:y=ih*12/100:w=iw*8/100:h=ih*22/100:color=cyan@0.8:t=3" -y /tmp/torres-v5.jpg 2>/dev/null && echo "all done"
+ffmpeg -i /tmp/clip1-hargrove.jpg -vf "drawbox=x=iw*36/100:y=ih*19/100:w=iw*12/100:h=ih*30/100:color=cyan@0.8:t=3" -y /tmp/hargrove-v6.jpg 2>/dev/null && ffmpeg -i /tmp/clip1-williams.jpg -vf "drawbox=x=iw*40/100:y=ih*22/100:w=iw*9/100:h=ih*26/100:color=cyan@0.8:t=3" -y /tmp/williams-v6.jpg 2>/dev/null && ffmpeg -i /tmp/clip2-kapoor.jpg -vf "drawbox=x=iw*34/100:y=ih*8/100:w=iw*11/100:h=ih*30/100:color=cyan@0.8:t=3" -y /tmp/kapoor-v6.jpg 2>/dev/null && ffmpeg -i /tmp/clip2-torres.jpg -vf "drawbox=x=iw*37/100:y=ih*16/100:w=iw*8/100:h=ih*22/100:color=cyan@0.8:t=3" -y /tmp/torres-v6.jpg 2>/dev/null && echo "all done"
+npm run build --prefix /Users/avireddy/GitHub/studio 2>&1 | tail -5
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null && echo "navigated"
+sleep 6 && UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl io "$UDID" screenshot /tmp/predict-live.png 2>/dev/null && echo "screenshot taken"
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1 && rm -rf /Users/avireddy/GitHub/studio/.next
+npm run dev
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002 && echo ""

@@ -64,7 +64,7 @@ const SUBJECTS: Subject[] = [
     clipIndex: 0,
     showFrom: 0,
     showUntil: 3.0,
-    facePos: { top: '7%', left: '35%', width: '10%', height: '18%' },
+    facePos: { top: '19%', left: '36%', width: '12%', height: '30%' },
   },
   {
     id: 'SUBJ-8134',
@@ -80,7 +80,7 @@ const SUBJECTS: Subject[] = [
     clipIndex: 0,
     showFrom: 3.0,
     showUntil: 8,
-    facePos: { top: '16%', left: '24%', width: '10%', height: '17%' },
+    facePos: { top: '22%', left: '40%', width: '9%', height: '26%' },
   },
   {
     id: 'SUBJ-2956',
@@ -96,7 +96,7 @@ const SUBJECTS: Subject[] = [
     clipIndex: 1,
     showFrom: 0,
     showUntil: 3.5,
-    facePos: { top: '5%', left: '27%', width: '11%', height: '19%' },
+    facePos: { top: '8%', left: '34%', width: '11%', height: '30%' },
   },
   {
     id: 'SUBJ-6103',
@@ -112,7 +112,7 @@ const SUBJECTS: Subject[] = [
     clipIndex: 1,
     showFrom: 3.5,
     showUntil: 8,
-    facePos: { top: '13%', left: '29%', width: '9%', height: '17%' },
+    facePos: { top: '16%', left: '37%', width: '8%', height: '22%' },
   },
 ];
 
