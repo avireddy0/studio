@@ -2314,3 +2314,4 @@ EOF
 )"
 git push origin main 2>&1
 lsof -ti:9002 2>/dev/null | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+rm -rf /Users/avireddy/GitHub/studio/.omc/sessions/*.json

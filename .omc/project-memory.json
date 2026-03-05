@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1772598272382,
+  "lastScanned": 1772685038179,
   "projectRoot": "/Users/avireddy/GitHub/studio",
   "techStack": {
     "languages": [
@@ -81,7 +81,7 @@
       "path": "dataconnect",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1772598272265,
+      "lastAccessed": 1772685038144,
       "keyFiles": [
         "dataconnect.yaml",
         "seed_data.gql"
@@ -91,7 +91,7 @@
       "path": "docs",
       "purpose": "Documentation",
       "fileCount": 1,
-      "lastAccessed": 1772598272336,
+      "lastAccessed": 1772685038156,
       "keyFiles": [
         "blueprint.md"
       ]
@@ -100,7 +100,7 @@
       "path": "public",
       "purpose": "Public files",
       "fileCount": 2,
-      "lastAccessed": 1772598272344,
+      "lastAccessed": 1772685038156,
       "keyFiles": [
         "feed-clip-1.mp4",
         "feed-clip-2.mp4"
@@ -110,14 +110,14 @@
       "path": "src",
       "purpose": "Source code",
       "fileCount": 0,
-      "lastAccessed": 1772598272346,
+      "lastAccessed": 1772685038157,
       "keyFiles": []
     },
     "src/app": {
       "path": "src/app",
       "purpose": "Application code",
       "fileCount": 3,
-      "lastAccessed": 1772598272347,
+      "lastAccessed": 1772685038158,
       "keyFiles": [
         "favicon.ico",
         "globals.css",
@@ -127,147 +127,26 @@
     "src/components": {
       "path": "src/components",
       "purpose": "UI components",
-      "fileCount": 3,
-      "lastAccessed": 1772598272347,
+      "fileCount": 4,
+      "lastAccessed": 1772685038159,
       "keyFiles": [
         "dashboard-header.tsx",
-        "icons.tsx",
-        "sidebar-nav.tsx"
+        "firebase-perf.tsx",
+        "icons.tsx"
       ]
     },
     "src/lib": {
       "path": "src/lib",
       "purpose": "Library code",
-      "fileCount": 5,
-      "lastAccessed": 1772598272347,
+      "fileCount": 6,
+      "lastAccessed": 1772685038159,
       "keyFiles": [
         "actions.ts",
-        "firestore.ts",
-        "placeholder-images.json"
+        "firebase.ts",
+        "firestore.ts"
       ]
     }
   },
-  "hotPaths": [
-    {
-      "path": "src/components/sections/predict-section.tsx",
-      "accessCount": 61,
-      "lastAccessed": 1772606244798,
-      "type": "file"
-    },
-    {
-      "path": "src/components/query/chat-interface.tsx",
-      "accessCount": 14,
-      "lastAccessed": 1772684635138,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(dashboard)/settings/page.tsx",
-      "accessCount": 4,
-      "lastAccessed": 1772682817457,
-      "type": "file"
-    },
-    {
-      "path": "src/app/layout.tsx",
-      "accessCount": 4,
-      "lastAccessed": 1772684923513,
-      "type": "file"
-    },
-    {
-      "path": "src/ai/flows/query-semantic-routing.ts",
-      "accessCount": 3,
-      "lastAccessed": 1772682846613,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1772683589742,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/actions.ts",
-      "accessCount": 3,
-      "lastAccessed": 1772684247047,
-      "type": "directory"
-    },
-    {
-      "path": "next.config.ts",
-      "accessCount": 3,
-      "lastAccessed": 1772684840230,
-      "type": "file"
-    },
-    {
-      "path": "src/components/visualizations/bim-scene.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1772682803519,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/calendar.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1772682833612,
-      "type": "file"
-    },
-    {
-      "path": "apphosting.yaml",
-      "accessCount": 2,
-      "lastAccessed": 1772684547613,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/firestore.ts",
-      "accessCount": 1,
-      "lastAccessed": 1772683589115,
-      "type": "file"
-    },
-    {
-      "path": ".claude/settings.json",
-      "accessCount": 1,
-      "lastAccessed": 1772684089849,
-      "type": "file"
-    },
-    {
-      "path": ".claude/command-audit.log",
-      "accessCount": 1,
-      "lastAccessed": 1772684099064,
-      "type": "file"
-    },
-    {
-      "path": ".claude/settings.local.json",
-      "accessCount": 1,
-      "lastAccessed": 1772684099409,
-      "type": "file"
-    },
-    {
-      "path": "src/components/query",
-      "accessCount": 1,
-      "lastAccessed": 1772684239236,
-      "type": "directory"
-    },
-    {
-      "path": "src/ai/genkit.ts",
-      "accessCount": 1,
-      "lastAccessed": 1772684257063,
-      "type": "file"
-    },
-    {
-      "path": "firebase.json",
-      "accessCount": 1,
-      "lastAccessed": 1772684839900,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/firebase.ts",
-      "accessCount": 1,
-      "lastAccessed": 1772684903866,
-      "type": "file"
-    },
-    {
-      "path": "src/components/firebase-perf.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1772684905019,
-      "type": "file"
-    }
-  ],
+  "hotPaths": [],
   "userDirectives": []
 }
