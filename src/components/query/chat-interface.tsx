@@ -10,12 +10,11 @@ import { ChatMessage, type Message } from "@/components/query/chat-message";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
-const initialState = {
-  message: "",
-  data: null,
-  error: null,
-  followUps: null,
-};
+type QueryState =
+  | { message: string; error: { query?: string[] }; data?: undefined; followUps?: undefined }
+  | { message: string; data: string; followUps: string[]; error?: undefined };
+
+const initialState: QueryState = { message: "", error: {} };
 
 const INITIAL_PROMPTS = [
   "On Budget?",
@@ -51,7 +50,7 @@ export function ChatInterface() {
   const [isStreamingActive, setIsStreamingActive] = useState(false);
   const [showFollowUps, setShowFollowUps] = useState(true);
 
-  const [formState, formAction] = useActionState(handleQuery, initialState);
+  const [formState, formAction] = useActionState<QueryState, FormData>(handleQuery as (state: QueryState, payload: FormData) => Promise<QueryState>, initialState);
   const formRef = useRef<HTMLFormElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();

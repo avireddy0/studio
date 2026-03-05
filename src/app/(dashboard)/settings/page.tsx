@@ -5,6 +5,7 @@ import React from 'react';
 import { DashboardHeader } from "@/components/dashboard-header";
 import { Settings, Shield, Cpu, Database, Wifi, Bell, User, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 

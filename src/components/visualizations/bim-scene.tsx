@@ -243,7 +243,7 @@ function Walls({ level, status }: { level: number; status: Status }) {
 // ─── Exposed Rebar on Active Floor ───────────────────
 function Rebar({ level }: { level: number }) {
   const y = level * FH + ST / 2 + 0.5;
-  const bars: JSX.Element[] = [];
+  const bars: React.ReactElement[] = [];
 
   for (let i = 0; i < 6; i++) {
     const x = -W / 2 + 2 + i * (W - 4) / 5;
