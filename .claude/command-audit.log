@@ -2329,3 +2329,36 @@ npm run build --prefix /Users/avireddy/GitHub/studio 2>&1 | tail -20
 xcrun simctl list devices booted 2>/dev/null
 lsof -ti:9002 | xargs kill -9 2>/dev/null || true
 npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+sleep 5 && xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/predict-section.png 2>/dev/null
+lsof -ti:9002 | xargs kill -9 2>/dev/null || true
+npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+sleep 6 && xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/predict-section-v2.png 2>/dev/null
+ffprobe -v error -select_streams v:0 -show_entries stream=codec_name,width,height,pix_fmt -of default=noprint_wrappers=1 /Users/avireddy/GitHub/studio/public/feed-clip-1.mp4 2>&1
+lsof -ti:9002 | xargs kill -9 2>/dev/null || true
+npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
+sleep 7 && xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/predict-section-v3.png 2>/dev/null
+npm run build --prefix /Users/avireddy/GitHub/studio 2>&1 | tail -5
+sleep 3 && xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/predict-section-v3b.png 2>/dev/null
+git status
+git diff
+git log --oneline -5
+git add src/components/sections/predict-section.tsx && git commit -m "$(cat <<'EOF'
+fix: resolve black screen video on iOS Safari in Prediction Intelligence
+
+iOS Safari's compositor fails to render video frames when CSS
+transition-opacity is applied directly to <video> elements. Replaced
+two overlapping video elements with opacity toggling with a single
+<video> element that swaps src on clip change, using inline styles.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)"
+git push
+npm run dev
