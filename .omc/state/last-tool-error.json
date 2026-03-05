@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cat .env.local 2>/dev/null || cat .env 2>/dev/null || echo \\\"no env file\\\"; ls -la .env* 2>/dev/null\",\"description\":\"Check env files for Firebase config\"}",
-  "error": "Exit code 1\nno env file\n(eval):1: no matches found: .env*\n\nno env file\n(eval):1: no matches found: .env*",
-  "timestamp": "2026-03-05T04:06:42.312Z",
+  "tool_input_preview": "{\"command\":\"grep -r \\\"GOOGLE_API_KEY\\\\|GOOGLE_GENAI_API_KEY\\\" /Users/avireddy/GitHub/studio/.env* 2>/dev/null | head -5; ls /Users/avireddy/GitHub/studio/.env* 2>/dev/null\",\"description\":\"Check for Ge...",
+  "error": "Exit code 1\n(eval):1: no matches found: /Users/avireddy/GitHub/studio/.env*\n(eval):1: no matches found: /Users/avireddy/GitHub/studio/.env*\n\n(eval):1: no matches found: /Users/avireddy/GitHub/studio/.env*\n(eval):1: no matches found: /Users/avireddy/GitHub/studio/.env*",
+  "timestamp": "2026-03-05T04:17:42.712Z",
   "retry_count": 1
 }

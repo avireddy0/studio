@@ -2267,3 +2267,18 @@ cat src/lib/firebase.ts 2>/dev/null || cat src/lib/firebase/config.ts 2>/dev/nul
 grep -r "firebase" package.json | head -5 && node -e "console.log(require('./node_modules/firebase/package.json').version)" 2>/dev/null
 grep -r "firebase\|getApp\|initializeApp\|firebaseConfig" src/ --include="*.ts" --include="*.tsx" -l 2>/dev/null
 ls *.yaml *.json 2>/dev/null | head -20 && cat apphosting.yaml 2>/dev/null || echo "no apphosting.yaml"
+ls -lt /Users/avireddy/.claude/debug/ | head -10
+grep -l '\[ERROR\]\|\[WARN\]' /Users/avireddy/.claude/debug/*.txt 2>/dev/null | head -5
+grep '\[ERROR\]\|\[WARN\]' /Users/avireddy/.claude/debug/e23f81de-5394-4f6a-aae4-db0236174a77.txt | tail -20
+grep '\[ERROR\]\|\[WARN\]' /Users/avireddy/.claude/debug/d124f8c8-4974-4758-a9d1-c16bc339daa7.txt | tail -30
+du -sh /Users/avireddy/.claude/debug/ && ls /Users/avireddy/.claude/debug/*.txt | wc -l
+ls /Users/avireddy/GitHub/studio/.env 2>/dev/null; ls /Users/avireddy/GitHub/studio/.env.local 2>/dev/null; echo "---"; env | grep -i "GOOGLE_API_KEY\|GOOGLE_GENAI" 2>/dev/null || echo "No GOOGLE API key in env"
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002/ 2>&1
+curl -s http://localhost:9002/ 2>&1 | head -50
+npm run build 2>&1 | tail -40
+lsof -ti:9002 2>/dev/null | xargs kill -9 2>/dev/null; sleep 1; npm run dev 2>&1 | head -20
+curl -s -o /dev/null -w "%{http_code}" "https://studio--studio-7741937329-54916.us-central1.hosted.app/" 2>&1
+curl -s -o /dev/null -w "%{http_code}" "https://studio--studio-7741937329-54916.us-central1.hosted.app/query" 2>&1
+npm run build 2>&1 | tail -25
+lsof -ti:9002 2>/dev/null | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002/

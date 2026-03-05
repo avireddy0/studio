@@ -156,8 +156,8 @@
     },
     {
       "path": "src/components/query/chat-interface.tsx",
-      "accessCount": 7,
-      "lastAccessed": 1772682970692,
+      "accessCount": 13,
+      "lastAccessed": 1772684443947,
       "type": "file"
     },
     {
@@ -179,6 +179,12 @@
       "type": "file"
     },
     {
+      "path": "src/lib/actions.ts",
+      "accessCount": 3,
+      "lastAccessed": 1772684247047,
+      "type": "directory"
+    },
+    {
       "path": "src/components/visualizations/bim-scene.tsx",
       "accessCount": 2,
       "lastAccessed": 1772682803519,
@@ -197,15 +203,45 @@
       "type": "file"
     },
     {
-      "path": "src/lib/actions.ts",
-      "accessCount": 2,
-      "lastAccessed": 1772682883796,
-      "type": "directory"
-    },
-    {
       "path": "src/lib/firestore.ts",
       "accessCount": 1,
       "lastAccessed": 1772683589115,
+      "type": "file"
+    },
+    {
+      "path": ".claude/settings.json",
+      "accessCount": 1,
+      "lastAccessed": 1772684089849,
+      "type": "file"
+    },
+    {
+      "path": ".claude/command-audit.log",
+      "accessCount": 1,
+      "lastAccessed": 1772684099064,
+      "type": "file"
+    },
+    {
+      "path": ".claude/settings.local.json",
+      "accessCount": 1,
+      "lastAccessed": 1772684099409,
+      "type": "file"
+    },
+    {
+      "path": "src/components/query",
+      "accessCount": 1,
+      "lastAccessed": 1772684239236,
+      "type": "directory"
+    },
+    {
+      "path": "src/ai/genkit.ts",
+      "accessCount": 1,
+      "lastAccessed": 1772684257063,
+      "type": "file"
+    },
+    {
+      "path": "apphosting.yaml",
+      "accessCount": 1,
+      "lastAccessed": 1772684384042,
       "type": "file"
     }
   ],

@@ -11,10 +11,11 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
 type QueryState =
+  | { message: string; error?: undefined; data?: undefined; followUps?: undefined }
   | { message: string; error: { query?: string[] }; data?: undefined; followUps?: undefined }
   | { message: string; data: string; followUps: string[]; error?: undefined };
 
-const initialState: QueryState = { message: "", error: {} };
+const initialState: QueryState = { message: "", error: undefined };
 
 const INITIAL_PROMPTS = [
   "On Budget?",
