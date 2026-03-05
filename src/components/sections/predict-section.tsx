@@ -210,7 +210,7 @@ function HighlightedCaption({ text, highlights }: {
     if (idx === -1) continue;
     if (idx > 0) result.push(<span key={key++}>{remaining.slice(0, idx)}</span>);
     result.push(
-      <span key={key++} className={cn("font-semibold", h.severity === 'high' ? 'text-red-400' : 'text-amber-400')}>
+      <span key={key++} className={cn("font-semibold", h.severity === 'high' ? 'text-red-600' : 'text-amber-600')}>
         {remaining.slice(idx, idx + h.phrase.length)}
       </span>
     );
@@ -722,21 +722,21 @@ export function PredictSection() {
             RIGHT — Intelligence Panel (morphs between phases)
             ═══════════════════════════════════════════════════════ */}
         <div className={cn(
-          "flex-1 flex flex-col overflow-hidden transition-all duration-700 border",
+          "flex-1 flex flex-col overflow-hidden transition-all duration-700 border rounded-lg",
           alertVisible && emailPhase !== 'sent'
-            ? "border-amber-400/30 bg-amber-500/[0.02]"
+            ? "border-amber-400/30 bg-amber-50"
             : emailPhase === 'sent'
-            ? "border-primary/20 bg-primary/[0.02]"
-            : "border-white/[0.06] bg-[#08080D]"
+            ? "border-primary/20 bg-primary/[0.03]"
+            : "border-black/[0.08] bg-white"
         )}>
           {/* Dynamic header — morphs with phase */}
           <div className={cn(
             "flex items-center justify-between px-3 py-2.5 shrink-0 border-b transition-all duration-500",
             alertVisible && emailPhase !== 'sent'
-              ? "border-amber-400/20 bg-amber-500/[0.04]"
+              ? "border-amber-400/20 bg-amber-50"
               : emailPhase === 'sent'
-              ? "border-primary/10 bg-primary/[0.03]"
-              : "border-white/[0.06] bg-white/[0.02]"
+              ? "border-primary/10 bg-primary/[0.04]"
+              : "border-black/[0.06] bg-black/[0.02]"
           )}>
             <div className="flex items-center gap-2">
               {alertVisible && emailPhase !== 'sent' ? (
@@ -745,7 +745,7 @@ export function PredictSection() {
                     <span className="w-2 h-2 rounded-full bg-amber-500" />
                     <span className="absolute inset-0 w-2 h-2 rounded-full bg-amber-500 animate-ping" />
                   </div>
-                  <span className="text-[10px] font-mono tracking-[0.3em] text-amber-400 font-bold">EARLY_WARNING</span>
+                  <span className="text-[10px] font-mono tracking-[0.3em] text-amber-600 font-bold">EARLY_WARNING</span>
                 </>
               ) : emailPhase === 'sent' ? (
                 <>
@@ -754,20 +754,20 @@ export function PredictSection() {
                 </>
               ) : (
                 <>
-                  <Eye className="size-3 text-cyan-400/50" />
-                  <span className="text-[10px] font-mono tracking-[0.3em] text-white/40">Transcript_Analysis</span>
+                  <Eye className="size-3 text-black/30" />
+                  <span className="text-[10px] font-mono tracking-[0.3em] text-black/50">Transcript_Analysis</span>
                 </>
               )}
             </div>
             <div className="flex items-center gap-2 text-[8px] font-mono">
               {alertVisible && emailPhase !== 'sent' ? (
-                <span className="text-amber-400/70 tracking-wider font-bold animate-pulse">CAUTION</span>
+                <span className="text-amber-600 tracking-wider font-bold animate-pulse">CAUTION</span>
               ) : emailPhase === 'sent' ? (
                 <span className="text-primary font-bold tracking-wider">DELIVERED</span>
               ) : (
                 <>
-                  <div className="size-1.5 rounded-full bg-cyan-400/60 animate-pulse" />
-                  <span className="text-cyan-400/40 tracking-wider">MONITORING</span>
+                  <div className="size-1.5 rounded-full bg-primary/60 animate-pulse" />
+                  <span className="text-primary/50 tracking-wider">MONITORING</span>
                 </>
               )}
             </div>
@@ -787,7 +787,7 @@ export function PredictSection() {
               alertVisible ? "opacity-0 scale-[0.97] blur-sm pointer-events-none" : "opacity-100"
             )}>
               {/* Top fade mask */}
-              <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-[#08080D] via-[#08080D]/80 to-transparent z-10 pointer-events-none" />
+              <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-white via-white/80 to-transparent z-10 pointer-events-none" />
 
               {/* Captions anchored to bottom, push upward */}
               <div className="absolute inset-0 flex flex-col justify-end px-3 pb-3 gap-1.5">
@@ -800,7 +800,7 @@ export function PredictSection() {
                       className={cn(
                         "shrink-0 transition-all duration-700 ease-out",
                         "border-l-2 pl-3 pr-2 py-2",
-                        caption.sentiment < -0.3 ? "border-l-amber-500 bg-amber-500/[0.04]" : "border-l-white/[0.06] bg-white/[0.02]"
+                        caption.sentiment < -0.3 ? "border-l-amber-500 bg-amber-50" : "border-l-black/[0.08] bg-black/[0.02]"
                       )}
                       style={{
                         opacity: Math.max(0.15, 1 - age * 0.2),
@@ -808,16 +808,16 @@ export function PredictSection() {
                       }}
                     >
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[9px] font-mono text-white/20 tabular-nums">[{caption.time}]</span>
-                        <span className="text-[9px] font-mono text-white/40 font-bold tracking-wider">{caption.speaker}</span>
+                        <span className="text-[9px] font-mono text-black/30 tabular-nums">[{caption.time}]</span>
+                        <span className="text-[9px] font-mono text-black/50 font-bold tracking-wider">{caption.speaker}</span>
                         <span className={cn(
-                          "text-[7px] font-mono font-bold uppercase tracking-wider ml-auto px-1.5 py-0.5",
-                          caption.sentiment < -0.3 ? "text-amber-400 bg-amber-400/[0.08]" : "text-white/20 bg-white/[0.03]"
+                          "text-[7px] font-mono font-bold uppercase tracking-wider ml-auto px-1.5 py-0.5 rounded",
+                          caption.sentiment < -0.3 ? "text-amber-600 bg-amber-100" : "text-black/25 bg-black/[0.04]"
                         )}>
                           {caption.sentiment < -0.3 ? 'FLAG' : 'OK'}
                         </span>
                       </div>
-                      <p className="text-[11px] text-white/50 leading-relaxed">
+                      <p className="text-[11px] text-black/60 leading-relaxed">
                         <HighlightedCaption text={caption.text} highlights={caption.highlights} />
                       </p>
                     </div>
@@ -834,7 +834,7 @@ export function PredictSection() {
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-bounce" style={{ animationDelay: '150ms' }} />
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
-                  <span className="text-[9px] font-mono text-amber-400/60 tracking-wide font-bold">Analyzing patterns...</span>
+                  <span className="text-[9px] font-mono text-amber-600/70 tracking-wide font-bold">Analyzing patterns...</span>
                 </div>
               </div>
             </div>
@@ -850,25 +850,25 @@ export function PredictSection() {
                   "text-center mb-3 transition-all duration-500",
                   emailPhase === 'sent' ? "opacity-0 scale-95 h-0 mb-0 overflow-hidden" : "opacity-100"
                 )}>
-                  <div className="text-xl md:text-2xl font-bold text-amber-400 tracking-tight">
+                  <div className="text-xl md:text-2xl font-bold text-amber-600 tracking-tight">
                     Caution Flagged
                   </div>
-                  <div className="text-[9px] font-mono text-white/20 tracking-[0.2em] uppercase mt-1.5">{ALERT_EMAIL.project}</div>
+                  <div className="text-[9px] font-mono text-black/30 tracking-[0.2em] uppercase mt-1.5">{ALERT_EMAIL.project}</div>
                 </div>
 
                 {/* Risk bar */}
                 <div className={cn("mb-3 transition-all duration-500", emailPhase === 'sent' ? "opacity-0 h-0 mb-0 overflow-hidden" : "opacity-100")}>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[9px] font-mono text-white/25 tracking-[0.2em] uppercase">Risk_Level</span>
-                    <span className="text-sm font-mono font-bold text-amber-400 tracking-wider">{ALERT_EMAIL.risk}</span>
+                    <span className="text-[9px] font-mono text-black/35 tracking-[0.2em] uppercase">Risk_Level</span>
+                    <span className="text-sm font-mono font-bold text-amber-600 tracking-wider">{ALERT_EMAIL.risk}</span>
                   </div>
-                  <div className="relative h-2 bg-white/5 overflow-hidden">
+                  <div className="relative h-2 bg-black/[0.06] overflow-hidden rounded-full">
                     <div className={cn(
-                      "h-full bg-gradient-to-r from-amber-600 to-amber-400 transition-all duration-[1500ms] ease-out",
+                      "h-full bg-gradient-to-r from-amber-600 to-amber-400 transition-all duration-[1500ms] ease-out rounded-full",
                       alertVisible ? "w-[52%]" : "w-0"
                     )}>
                       <div className="absolute inset-0 opacity-30" style={{
-                        backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(0,0,0,0.3) 4px, rgba(0,0,0,0.3) 8px)',
+                        backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(0,0,0,0.15) 4px, rgba(0,0,0,0.15) 8px)',
                       }} />
                     </div>
                   </div>
@@ -876,10 +876,10 @@ export function PredictSection() {
 
                 {/* Alert body */}
                 <div className={cn("space-y-3 transition-all duration-500", emailPhase === 'sent' ? "opacity-0 h-0 overflow-hidden" : "opacity-100")}>
-                  <p className="text-[11px] md:text-xs text-white/45 leading-relaxed">{ALERT_EMAIL.body}</p>
+                  <p className="text-[11px] md:text-xs text-black/55 leading-relaxed">{ALERT_EMAIL.body}</p>
                   <div className="flex items-center gap-2">
-                    <Mail className="size-3 text-white/15 animate-pulse" />
-                    <span className="text-[9px] font-mono text-white/25 tracking-wider">
+                    <Mail className="size-3 text-black/25 animate-pulse" />
+                    <span className="text-[9px] font-mono text-black/35 tracking-wider">
                       {emailPhase === 'composing' ? 'Composing notification...' :
                        emailPhase === 'sending' ? `Sending to ${OWNER_EMAIL.to}...` : ''}
                     </span>
@@ -896,7 +896,7 @@ export function PredictSection() {
                     <span className="text-[9px] font-mono text-primary font-bold tracking-wider">SENT TO {OWNER_EMAIL.to.toUpperCase()}</span>
                   </div>
 
-                  <div className="text-lg md:text-xl font-bold text-white/85 tracking-tight mb-3">
+                  <div className="text-lg md:text-xl font-bold text-black/85 tracking-tight mb-3">
                     Counter Recommendation
                   </div>
 
@@ -905,15 +905,15 @@ export function PredictSection() {
                       <ChevronRight className="size-3 text-primary" />
                       <span className="text-[8px] font-mono font-bold text-primary uppercase tracking-wider">Recommended Action</span>
                     </div>
-                    <p className="text-[11px] md:text-xs text-white/50 leading-relaxed">{OWNER_EMAIL.action}</p>
+                    <p className="text-[11px] md:text-xs text-black/55 leading-relaxed">{OWNER_EMAIL.action}</p>
                   </div>
 
-                  <p className="text-[10px] text-white/30 leading-relaxed">{OWNER_EMAIL.body}</p>
+                  <p className="text-[10px] text-black/40 leading-relaxed">{OWNER_EMAIL.body}</p>
 
-                  <div className="mt-auto pt-3 border-t border-white/5">
+                  <div className="mt-auto pt-3 border-t border-black/[0.06]">
                     <div className="flex items-center justify-between">
-                      <span className="text-[7px] font-mono text-white/12 tracking-[0.2em] uppercase">Envision OS — Predictive Intelligence</span>
-                      <div className="h-1 w-12 bg-white/5 overflow-hidden">
+                      <span className="text-[7px] font-mono text-black/20 tracking-[0.2em] uppercase">Envision OS — Predictive Intelligence</span>
+                      <div className="h-1 w-12 bg-black/[0.06] overflow-hidden rounded-full">
                         <div className="h-full w-full bg-primary/40" />
                       </div>
                     </div>

@@ -2376,3 +2376,4 @@ sleep 5 && xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tm
 UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 2 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
 sleep 5 && xcrun simctl io "1311D811-5479-4E95-B2FD-67CD57CE77F6" screenshot /tmp/predict-white-v1.png 2>/dev/null
 npm run build --prefix /Users/avireddy/GitHub/studio 2>&1 | tail -5
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=predict" 2>/dev/null
