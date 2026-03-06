@@ -43,6 +43,7 @@ const INITIAL_MESSAGE: Message = {
 };
 
 const STORAGE_KEY = "envision-chat-history";
+const INACTIVITY_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
 
 export function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
@@ -56,6 +57,31 @@ export function ChatInterface() {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const pendingFollowUps = useRef<string[] | null>(null);
+  const inactivityTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Reset chat to initial state
+  const resetChat = useCallback(() => {
+    localStorage.removeItem(STORAGE_KEY);
+    setMessages([INITIAL_MESSAGE]);
+    setFollowUpPrompts(null);
+    setIsStreamingActive(false);
+    setShowFollowUps(true);
+  }, []);
+
+  // Inactivity timer — resets chat storage after 5 min of no user interaction
+  useEffect(() => {
+    const resetTimer = () => {
+      if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
+      inactivityTimer.current = setTimeout(resetChat, INACTIVITY_TIMEOUT_MS);
+    };
+    const events = ["pointerdown", "keydown", "scroll", "touchstart"] as const;
+    events.forEach((e) => window.addEventListener(e, resetTimer, { passive: true }));
+    resetTimer();
+    return () => {
+      if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
+      events.forEach((e) => window.removeEventListener(e, resetTimer));
+    };
+  }, [resetChat]);
 
   // Restore messages from localStorage on mount
   useEffect(() => {

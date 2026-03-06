@@ -2443,3 +2443,4 @@ lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1 && rm -rf /Users/avireddy/Git
 npm run dev
 sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
 sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002 && echo ""
+npm run build 2>&1 | tail -20

@@ -156,14 +156,20 @@
     },
     {
       "path": "src",
-      "accessCount": 3,
-      "lastAccessed": 1772685693577,
+      "accessCount": 4,
+      "lastAccessed": 1772767206721,
       "type": "directory"
     },
     {
       "path": "src/app/(dashboard)/page.tsx",
       "accessCount": 3,
       "lastAccessed": 1772686721012,
+      "type": "file"
+    },
+    {
+      "path": "src/components/query/chat-interface.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1772767241422,
       "type": "file"
     },
     {
