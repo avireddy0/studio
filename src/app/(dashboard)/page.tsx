@@ -213,7 +213,7 @@ export default function UnifiedPage() {
   return (
     <div
         id="main-scroll-container"
-        className="flex flex-col w-full selection:bg-primary/20 font-sans snap-y snap-mandatory overflow-y-auto h-[calc(100vh-64px)] no-scrollbar scroll-smooth"
+        className="flex flex-col w-full selection:bg-primary/20 font-sans snap-y snap-proximity overflow-y-auto h-[calc(100vh-64px)] no-scrollbar scroll-smooth"
     >
 
       {/* SECTION 01: INSTITUTIONAL HERO (WHITE) */}
@@ -336,10 +336,20 @@ export default function UnifiedPage() {
         </div>
       </section>
 
-      {/* SECTION 07: SITE + DOCUMENTS (OBSIDIAN) */}
-      <section id="site-docs" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center p-4 sm:p-6 md:p-12 shrink-0 overflow-hidden">
+      {/* SECTION 07: SKY SCRAPE — SITE + DOCUMENTS (OBSIDIAN) */}
+      <section id="site-docs" className="snap-start relative min-h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center p-4 sm:p-6 md:p-12 shrink-0">
         <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
-        <div className="relative z-10 w-full max-w-7xl h-full flex flex-col gap-4 md:gap-8 overflow-hidden">
+        <div className="relative z-10 w-full max-w-7xl flex flex-col gap-4 md:gap-8">
+            <div className="shrink-0">
+              <div className="flex items-center gap-3 mb-1.5">
+                <MapIcon className="size-4 text-primary" />
+                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/30">07_Site_Intelligence</h2>
+              </div>
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter leading-tight">Sky Scrape.</h3>
+              <p className="text-white/50 max-w-xl text-sm sm:text-base font-medium mt-1.5">
+                Where air rights meet drone flights. Every parcel, every permit, every risk, mapped and verified in real time.
+              </p>
+            </div>
             <FeasibilitySection />
         </div>
       </section>

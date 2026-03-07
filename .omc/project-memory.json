@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1772685038179,
+  "lastScanned": 1772834239127,
   "projectRoot": "/Users/avireddy/GitHub/studio",
   "techStack": {
     "languages": [
@@ -81,7 +81,7 @@
       "path": "dataconnect",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1772685038144,
+      "lastAccessed": 1772834239039,
       "keyFiles": [
         "dataconnect.yaml",
         "seed_data.gql"
@@ -91,7 +91,7 @@
       "path": "docs",
       "purpose": "Documentation",
       "fileCount": 1,
-      "lastAccessed": 1772685038156,
+      "lastAccessed": 1772834239040,
       "keyFiles": [
         "blueprint.md"
       ]
@@ -100,7 +100,7 @@
       "path": "public",
       "purpose": "Public files",
       "fileCount": 2,
-      "lastAccessed": 1772685038156,
+      "lastAccessed": 1772834239065,
       "keyFiles": [
         "feed-clip-1.mp4",
         "feed-clip-2.mp4"
@@ -110,14 +110,14 @@
       "path": "src",
       "purpose": "Source code",
       "fileCount": 0,
-      "lastAccessed": 1772685038157,
+      "lastAccessed": 1772834239066,
       "keyFiles": []
     },
     "src/app": {
       "path": "src/app",
       "purpose": "Application code",
       "fileCount": 3,
-      "lastAccessed": 1772685038158,
+      "lastAccessed": 1772834239071,
       "keyFiles": [
         "favicon.ico",
         "globals.css",
@@ -128,7 +128,7 @@
       "path": "src/components",
       "purpose": "UI components",
       "fileCount": 4,
-      "lastAccessed": 1772685038159,
+      "lastAccessed": 1772834239072,
       "keyFiles": [
         "dashboard-header.tsx",
         "firebase-perf.tsx",
@@ -139,7 +139,7 @@
       "path": "src/lib",
       "purpose": "Library code",
       "fileCount": 6,
-      "lastAccessed": 1772685038159,
+      "lastAccessed": 1772834239075,
       "keyFiles": [
         "actions.ts",
         "firebase.ts",
@@ -149,39 +149,27 @@
   },
   "hotPaths": [
     {
-      "path": "src/components/sections/predict-section.tsx",
-      "accessCount": 23,
-      "lastAccessed": 1772690171045,
+      "path": "src/components/sections/feasibility-section.tsx",
+      "accessCount": 10,
+      "lastAccessed": 1772903428958,
       "type": "file"
-    },
-    {
-      "path": "src",
-      "accessCount": 4,
-      "lastAccessed": 1772767206721,
-      "type": "directory"
     },
     {
       "path": "src/app/(dashboard)/page.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1772686721012,
+      "accessCount": 8,
+      "lastAccessed": 1772837067674,
       "type": "file"
     },
     {
-      "path": "src/components/query/chat-interface.tsx",
+      "path": "src/app/layout.tsx",
       "accessCount": 2,
-      "lastAccessed": 1772767241422,
+      "lastAccessed": 1772837085694,
       "type": "file"
     },
     {
-      "path": "",
+      "path": "src/app/(dashboard)/layout.tsx",
       "accessCount": 1,
-      "lastAccessed": 1772685410123,
-      "type": "directory"
-    },
-    {
-      "path": "next.config.ts",
-      "accessCount": 1,
-      "lastAccessed": 1772685464736,
+      "lastAccessed": 1772837073455,
       "type": "file"
     }
   ],

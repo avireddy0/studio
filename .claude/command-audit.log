@@ -2444,3 +2444,33 @@ npm run dev
 sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
 sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002 && echo ""
 npm run build 2>&1 | tail -20
+npm run build 2>&1 | tail -5
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002 2>/dev/null
+npm run build 2>&1 | grep -i "error\|failed\|warning" | head -20
+curl -s http://localhost:9002 2>/dev/null | head -50
+lsof -ti:9002 | xargs kill -9 2>/dev/null; rm -rf /Users/avireddy/GitHub/studio/.next
+npm run dev
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+npm run build 2>&1 | tail -20
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/scroll-fix.png
+UDID="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" && xcrun simctl boot "$UDID" 2>/dev/null; open -a Simulator && sleep 2 && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/ipad-site-docs.png
+UDID="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" && xcrun simctl boot "$UDID" 2>/dev/null; sleep 2 && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/ipad-site-docs.png
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID_IPAD="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" && xcrun simctl terminate "$UDID_IPAD" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID_IPAD" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID_IPAD" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID_IPAD" screenshot /tmp/ipad-v2.png
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/iphone-v2.png
+npm run build 2>&1 | tail -5
+UDID="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/ipad-layout-check.png
+lsof -ti:9002 | xargs kill -9 2>/dev/null; rm -rf /Users/avireddy/GitHub/studio/.next && sleep 1 && npm run dev &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 7 && xcrun simctl io "$UDID" screenshot /tmp/ipad-v3.png
+UDID="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/ipad-v4.png
+npm run build 2>&1 | tail -5
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; rm -rf /Users/avireddy/GitHub/studio/.next && sleep 1 && npm run dev &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 7 && xcrun simctl io "$UDID" screenshot /tmp/ipad-v5.png
+git status
