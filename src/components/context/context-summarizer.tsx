@@ -81,40 +81,40 @@ export function ContextSummarizer() {
 
     const t: ReturnType<typeof setTimeout>[] = []
 
-    t.push(setTimeout(() => setAlertVisible(true), 500))
+    t.push(setTimeout(() => setAlertVisible(true), 1000))
 
     SIGNALS.forEach((_, i) => {
-      t.push(setTimeout(() => setVisibleSignals(i + 1), 1800 + i * 800))
+      t.push(setTimeout(() => setVisibleSignals(i + 1), 3000 + i * 1400))
     })
 
-    const afterSignals = 1800 + SIGNALS.length * 800
+    const afterSignals = 3000 + SIGNALS.length * 1400
 
-    t.push(setTimeout(() => setProcessing(true), afterSignals + 500))
+    t.push(setTimeout(() => setProcessing(true), afterSignals + 1000))
 
     t.push(
       setTimeout(() => {
         setProcessing(false)
         setVerdictVisible(true)
-      }, afterSignals + 2200)
+      }, afterSignals + 3500)
     )
 
-    const verdictTime = afterSignals + 2200
+    const verdictTime = afterSignals + 3500
 
     // Fade out scenario, show approved
     t.push(
       setTimeout(() => {
         setScenarioFaded(true)
-      }, verdictTime + 6000)
+      }, verdictTime + 8000)
     )
 
     t.push(
       setTimeout(() => {
         setApproved(true)
-      }, verdictTime + 6800)
+      }, verdictTime + 9000)
     )
 
     // Restart cycle
-    t.push(setTimeout(() => setCycle((c) => c + 1), verdictTime + 6800 + 4000))
+    t.push(setTimeout(() => setCycle((c) => c + 1), verdictTime + 9000 + 5000))
 
     return () => t.forEach(clearTimeout)
   }, [inView, cycle])

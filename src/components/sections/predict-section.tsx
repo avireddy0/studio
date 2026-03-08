@@ -223,43 +223,56 @@ function HighlightedCaption({ text, highlights }: {
 // ═══════════════════════════════════════════════════════════════
 // VIDEO FEED — Plays two Veo 3 clips sequentially, loops
 // ═══════════════════════════════════════════════════════════════
-function VideoFeed({ currentIndex, onClipEnd, onTimeUpdate }: {
+function VideoFeed({ currentIndex, onClipEnd, onTimeUpdate, playing }: {
   currentIndex: number;
   onClipEnd: () => void;
   onTimeUpdate: (time: number) => void;
+  playing: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const prevIndex = useRef(currentIndex);
 
+  // Load and play clip when index changes
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
     const src = FEED_CLIPS[currentIndex].src;
-    // Only reload if clip actually changed
-    if (v.src !== window.location.origin + src && v.getAttribute('src') !== src) {
+    if (prevIndex.current !== currentIndex) {
       v.src = src;
       v.load();
+      v.currentTime = 0;
+      prevIndex.current = currentIndex;
     }
-    v.currentTime = 0;
-    const tryPlay = () => {
-      v.play().catch(() => {
-        setTimeout(() => v.play().catch(() => {}), 300);
-      });
-    };
-    if (v.readyState >= 2) {
-      tryPlay();
+    if (playing) {
+      const tryPlay = () => {
+        v.play().catch(() => {
+          setTimeout(() => v.play().catch(() => {}), 300);
+        });
+      };
+      if (v.readyState >= 2) {
+        tryPlay();
+      } else {
+        v.addEventListener('canplay', tryPlay, { once: true });
+      }
+    }
+  }, [currentIndex, playing]);
+
+  // Handle play/pause when `playing` changes independently
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (playing) {
+      v.play().catch(() => {});
     } else {
-      v.addEventListener('canplay', tryPlay, { once: true });
+      v.pause();
     }
-    prevIndex.current = currentIndex;
-  }, [currentIndex]);
+  }, [playing]);
 
   return (
     <video
       ref={videoRef}
       src={FEED_CLIPS[currentIndex].src}
       muted
-      autoPlay
       playsInline
       preload="auto"
       onEnded={onClipEnd}
@@ -350,24 +363,24 @@ function FaceBox({ subject, phase, facePos }: { subject: Subject; phase: FacePha
       {/* ═══ SUBTLE BORDER — face recognition box ═══ */}
       <div className={cn(
         "absolute inset-0 border transition-all duration-300",
-        isMatched ? "border-cyan-400/40" : isLocking ? "border-cyan-400/20" : "border-cyan-400/10"
+        isMatched ? "border-cyan-400/20" : isLocking ? "border-cyan-400/10" : "border-cyan-400/5"
       )} />
 
       {/* Corner accents — subtle ticks at corners */}
-      <div className="absolute -top-px -left-px w-2 h-2 border-t border-l border-cyan-400/60" />
-      <div className="absolute -top-px -right-px w-2 h-2 border-t border-r border-cyan-400/60" />
-      <div className="absolute -bottom-px -left-px w-2 h-2 border-b border-l border-cyan-400/60" />
-      <div className="absolute -bottom-px -right-px w-2 h-2 border-b border-r border-cyan-400/60" />
+      <div className="absolute -top-px -left-px w-2 h-2 border-t border-l border-cyan-400/30" />
+      <div className="absolute -top-px -right-px w-2 h-2 border-t border-r border-cyan-400/30" />
+      <div className="absolute -bottom-px -left-px w-2 h-2 border-b border-l border-cyan-400/30" />
+      <div className="absolute -bottom-px -right-px w-2 h-2 border-b border-r border-cyan-400/30" />
 
       {/* Scan sweep line */}
       {isScanning && (
-        <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent"
+        <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent"
           style={{ animation: 'faceScanSweep 1.2s ease-in-out infinite' }} />
       )}
 
       {/* Lock pulse */}
       {isLocking && (
-        <div className="absolute inset-[-3px] border border-cyan-400/20 animate-ping" style={{ animationDuration: '0.7s' }} />
+        <div className="absolute inset-[-3px] border border-cyan-400/10 animate-ping" style={{ animationDuration: '0.7s' }} />
       )}
 
       {/* ═══ SIDE HUD PANEL — slides in from right, Palantir style ═══ */}
@@ -378,10 +391,10 @@ function FaceBox({ subject, phase, facePos }: { subject: Subject; phase: FacePha
         {/* Connecting line from face box to panel */}
         <div className={cn(
           "w-6 h-px shrink-0 transition-all duration-300",
-          isMatched ? "bg-cyan-400/40" : "bg-transparent"
+          isMatched ? "bg-cyan-400/20" : "bg-transparent"
         )} />
         {/* Data readout panel */}
-        <div className="bg-black/85 backdrop-blur-sm border-l-2 border-cyan-400/40 pl-2 pr-3 py-1.5 min-w-[120px] max-w-[180px]">
+        <div className="bg-black/50 backdrop-blur-sm border-l-2 border-cyan-400/20 pl-2 pr-3 py-1.5 min-w-[120px] max-w-[180px]">
           <div className="text-[8px] font-mono text-cyan-400/80 tracking-wider leading-tight truncate">{subject.title}</div>
           <div className="flex items-center gap-2 mt-1">
             <div className={cn(
@@ -432,6 +445,7 @@ export function PredictSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
+  const [hudVisible, setHudVisible] = useState(false);
   const [visibleCaptions, setVisibleCaptions] = useState(0);
   const [sentimentScore, setSentimentScore] = useState(-0.12);
   const [processing, setProcessing] = useState(false);
@@ -477,6 +491,13 @@ export function PredictSection() {
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
+
+  // Fade in HUD shortly after video starts
+  useEffect(() => {
+    if (!inView) return;
+    const t = setTimeout(() => setHudVisible(true), 800);
+    return () => clearTimeout(t);
+  }, [inView]);
 
   // Face recognition sequence — scan → lock → match (triggered by subject change)
   const faceTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -626,7 +647,7 @@ export function PredictSection() {
           {/* Video container with HUD */}
           <div ref={videoContainerRef} className="relative flex-1 min-h-[200px] overflow-hidden bg-[#0a0a12]">
             {/* Video feed */}
-            <VideoFeed currentIndex={currentFeed} onClipEnd={handleClipEnd} onTimeUpdate={setVideoTime} />
+            <VideoFeed currentIndex={currentFeed} onClipEnd={handleClipEnd} onTimeUpdate={setVideoTime} playing={inView} />
 
             {/* Dark overlay for HUD readability */}
             <div className="absolute inset-0 bg-black/15 pointer-events-none" />
@@ -648,7 +669,7 @@ export function PredictSection() {
             )}
 
             {/* ═══ HUD OVERLAY ═══ */}
-            <div className="absolute inset-0 pointer-events-none z-10">
+            <div className={cn("absolute inset-0 pointer-events-none z-10 transition-opacity duration-1000", hudVisible ? "opacity-100" : "opacity-0")}>
               {/* Scan lines — subtle horizontal stripes */}
               <div className="absolute inset-0 opacity-[0.03]" style={{
                 backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,255,0.06) 2px, rgba(0,255,255,0.06) 4px)',
@@ -693,7 +714,7 @@ export function PredictSection() {
                     "text-[8px] font-mono tracking-wider font-bold transition-all duration-300",
                     facesDetected > 0 ? "text-cyan-400/50" : "text-white/15"
                   )}>
-                    FACES: {facesDetected} DETECTED
+                    {facesDetected > 0 ? "SPEAKER IDENTIFIED" : "SCANNING"}
                   </span>
                 </div>
               </div>
