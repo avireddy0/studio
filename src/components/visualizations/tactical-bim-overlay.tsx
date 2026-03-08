@@ -69,7 +69,7 @@ export function TacticalBimOverlay() {
       <div
         className="absolute inset-0"
         style={{
-          transform: inView ? 'scale(0.85)' : 'scale(1.05)',
+          transform: inView ? 'scale(0.95)' : 'scale(1.05)',
           transition: 'transform 4.5s cubic-bezier(0.25, 0.1, 0.25, 1)',
         }}
       >
@@ -108,61 +108,57 @@ export function TacticalBimOverlay() {
           </div>
         </div>
 
-        {/* Bottom: Floor legend + metrics */}
-        <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 flex gap-2 pointer-events-auto">
-          {/* Floor legend (hidden on small screens) */}
-          <div className="hidden md:flex flex-col gap-0.5 bg-black/80 border border-white/10 p-2 backdrop-blur-sm shrink-0">
-            {FLOOR_INFO.map((f) => (
-              <button
-                key={f.level}
-                onClick={() => setSelectedLevel(f.level)}
-                className={cn(
-                  'flex items-center gap-2 px-2 py-0.5 text-left transition-all',
-                  selectedLevel === f.level ? 'bg-white/10' : 'hover:bg-white/5'
-                )}
-              >
-                <div className={cn('size-1.5 rounded-full', STATUS_DOT[f.status])} />
-                <span className="text-[8px] font-mono text-white/70 font-bold w-5">
-                  F{f.level}
-                </span>
-                <span
-                  className={cn(
-                    'text-[7px] font-mono uppercase tracking-wider',
-                    STATUS_TEXT[f.status]
-                  )}
-                >
-                  {f.status}
-                </span>
-                <span className="text-[7px] font-mono text-white/30 ml-auto pl-2">
-                  {f.progress}%
-                </span>
-              </button>
-            ))}
-          </div>
+        {/* Left: Stats drawers — fan out sequentially */}
+        <div className="absolute left-0 bottom-16 sm:bottom-20 flex flex-col gap-0 pointer-events-auto">
+          {[
+            { label: 'OVERALL', value: '74.2%', sub: '+1.2%', color: 'border-primary', subColor: 'text-primary', indent: 'pl-3' },
+            { label: 'ACTIVE', value: 'F5 45%', sub: '', color: 'border-amber-500', subColor: 'text-amber-500', indent: 'pl-5' },
+            { label: 'CLASHES', value: '0', sub: 'Clear', color: 'border-cyan-400', subColor: 'text-primary', indent: 'pl-7' },
+          ].map((m, i) => (
+            <div
+              key={i}
+              className={cn("bg-black/85 backdrop-blur-md border-l-2 pr-3 py-1.5 mb-px", m.color, m.indent)}
+              style={{ animationDelay: `${i * 0.15}s` }}
+            >
+              <p className="text-[8px] text-white/35 uppercase tracking-widest leading-none font-bold">{m.label}</p>
+              <div className="flex items-baseline gap-1 mt-0.5">
+                <span className="text-base font-mono font-bold text-white leading-none">{m.value}</span>
+                {m.sub && <span className={cn("text-[8px] font-bold leading-none", m.subColor)}>{m.sub}</span>}
+              </div>
+            </div>
+          ))}
+        </div>
 
-          {/* Metrics */}
-          <div className="flex-1 grid grid-cols-3 gap-2">
-            <div className="bg-black/80 border-l-2 border-primary p-2 sm:p-3">
-              <p className="text-[8px] text-white/30 uppercase tracking-widest">Overall</p>
-              <div className="flex items-baseline gap-1">
-                <span className="text-lg sm:text-xl font-mono font-bold text-white">74.2%</span>
-                <span className="text-[8px] text-primary font-bold">+1.2%</span>
+        {/* Bottom: 4D Timeline */}
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-6 pb-3 px-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-white/60">4D_Timeline</span>
+            <div className="flex-1 h-px bg-white/[0.1]" />
+            <span className="text-[9px] font-mono text-white/50 font-bold">Q1 2024 — Q4 2026</span>
+          </div>
+          <div className="relative h-1.5 bg-white/[0.06] overflow-visible">
+            <div className="absolute inset-y-0 left-0 bg-primary/50" style={{ width: '38%' }} />
+            {[
+              { pos: '0%' }, { pos: '15%' }, { pos: '32%' },
+              { pos: '55%' }, { pos: '72%' }, { pos: '88%' },
+            ].map((m, i) => (
+              <div key={i} className="absolute top-0 bottom-0" style={{ left: m.pos }}>
+                <div className={cn("w-px h-full", parseFloat(m.pos) <= 38 ? "bg-primary/70" : "bg-white/15")} />
               </div>
+            ))}
+            <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2" style={{ left: '38%' }}>
+              <div className="size-3 bg-primary rounded-full shadow-[0_0_10px_rgba(0,124,90,1)]" />
             </div>
-            <div className="bg-black/80 border-l-2 border-amber-500 p-2 sm:p-3">
-              <p className="text-[8px] text-white/30 uppercase tracking-widest">Active</p>
-              <div className="flex items-baseline gap-1">
-                <span className="text-lg sm:text-xl font-mono font-bold text-white">F5</span>
-                <span className="text-[8px] text-amber-500 font-bold">45%</span>
-              </div>
-            </div>
-            <div className="bg-black/80 border-l-2 border-cyan-400 p-2 sm:p-3">
-              <p className="text-[8px] text-white/30 uppercase tracking-widest">Clashes</p>
-              <div className="flex items-baseline gap-1">
-                <span className="text-lg sm:text-xl font-mono font-bold text-white">0</span>
-                <span className="text-[8px] text-primary font-bold">Clear</span>
-              </div>
-            </div>
+          </div>
+          <div className="flex justify-between mt-1.5">
+            {[
+              { label: 'SITE', done: true }, { label: 'FNDN', done: true }, { label: 'STRUCT', done: true },
+              { label: 'ENVEL', done: false }, { label: 'MEP', done: false }, { label: 'FINISH', done: false },
+            ].map((m, i) => (
+              <span key={i} className={cn("text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider", m.done ? "text-white/80" : "text-white/30")}>
+                {m.label}
+              </span>
+            ))}
           </div>
         </div>
       </div>

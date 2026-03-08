@@ -7,7 +7,6 @@ import {
   Zap,
   Target,
   Terminal,
-  Activity,
   Map as MapIcon,
   Layers,
   FileText,
@@ -291,39 +290,19 @@ export default function UnifiedPage() {
       {/* SECTION 05: BIM + TELEMETRY (OBSIDIAN) */}
       <section id="tactical-bim" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center p-4 sm:p-6 md:p-12 shrink-0 overflow-hidden">
         <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
-        <div className="relative z-10 w-full max-w-7xl h-full flex flex-col lg:grid lg:grid-cols-3 gap-3 lg:gap-6 overflow-hidden">
-            <div className="lg:col-span-2 flex flex-col flex-1 lg:h-full min-h-0">
-                <div className="flex items-center gap-3 mb-2 lg:mb-4 shrink-0">
-                    <Layers className="size-4 text-primary" />
-                    <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">05_Tactical_Lidar_Bim</h2>
-                </div>
-                <div className="flex-1 overflow-hidden min-h-[200px] sm:min-h-[250px]">
-                    <TacticalBimOverlay />
-                </div>
+        <div className="relative z-10 w-full max-w-7xl h-full flex flex-col gap-4 md:gap-6 overflow-hidden">
+            <div className="shrink-0 space-y-2">
+              <div className="flex items-center gap-3 mb-2">
+                <Layers className="size-4 text-primary" />
+                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">05_Tactical_Lidar_Bim</h2>
+              </div>
+              <h3 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Expectations Meet Reality.</h3>
+              <p className="text-white/50 max-w-xl text-sm sm:text-base font-medium mt-2">
+                Real-time LiDAR scans overlay Site progress that turns your project into a living model that fits in your pocket.
+              </p>
             </div>
-            <div className="flex flex-col gap-2 lg:gap-6 lg:h-full min-h-0">
-                <div className="flex items-center gap-3 shrink-0">
-                    <Activity className="size-4 text-primary" />
-                    <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">Realtime_Telemetry</h2>
-                </div>
-                <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 lg:gap-4 flex-1 overflow-auto no-scrollbar">
-                    {[
-                    { label: 'BUDGET_TRACKED', value: '$2.3B', icon: Activity },
-                    { label: 'VARIANCE_DELTA', value: '-1.2%', icon: Zap, color: 'text-primary' },
-                    ].map((metric, i) => (
-                    <Card key={i} className="bg-[#12121A] border-[#1E1E2E] hover:border-primary/40 transition-colors">
-                        <CardContent className="p-3 sm:p-4 lg:p-6 flex flex-col gap-1 lg:gap-2">
-                        <div className="flex items-center justify-between">
-                            <span className="text-[9px] lg:text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase">{metric.label}</span>
-                            <metric.icon className="size-3 text-primary/40" />
-                        </div>
-                        <div className="text-xl sm:text-2xl lg:text-3xl font-mono font-bold tracking-tighter mt-1 lg:mt-2 text-white">
-                            {metric.value}
-                        </div>
-                        </CardContent>
-                    </Card>
-                    ))}
-                </div>
+            <div className="flex-1 relative overflow-hidden min-h-0">
+                <TacticalBimOverlay />
             </div>
         </div>
       </section>
@@ -339,14 +318,14 @@ export default function UnifiedPage() {
       {/* SECTION 07: SKY SCRAPE — SITE + DOCUMENTS (OBSIDIAN) */}
       <section id="site-docs" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center p-4 sm:p-6 md:p-12 shrink-0 overflow-hidden">
         <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
-        <div className="relative z-10 w-full max-w-7xl flex flex-col gap-4 md:gap-8">
-            <div className="shrink-0">
-              <div className="flex items-center gap-3 mb-1.5">
+        <div className="relative z-10 w-full max-w-7xl flex flex-col gap-4 md:gap-6 h-full">
+            <div className="shrink-0 space-y-2">
+              <div className="flex items-center gap-3 mb-2">
                 <MapIcon className="size-4 text-primary" />
-                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/30">07_Site_Intelligence</h2>
+                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">07_Instant_Feasibility</h2>
               </div>
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter leading-tight">Sky Scrape.</h3>
-              <p className="text-white/50 max-w-xl text-sm sm:text-base font-medium mt-1.5">
+              <h3 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Sky Scrape.</h3>
+              <p className="text-white/50 max-w-xl text-sm sm:text-base font-medium mt-2">
                 Where air rights meet drone flights. Every parcel, every permit, every risk, mapped and verified in real time.
               </p>
             </div>

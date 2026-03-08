@@ -184,12 +184,12 @@
   transform: translateZ(-100px);
 }
 
-/* VAULT GLOW — pulsing glow on Feasibility Vault button */
-@keyframes vault-glow {
+/* VAULT GLOW — pulsing glow on Feasibility Vault button (teal) */
+@keyframes vault-glow-teal {
   0%, 100% {
-    box-shadow: 0 0 20px -2px rgba(0,124,90,0.25), 0 0 40px -4px rgba(0,124,90,0.15);
+    box-shadow: 0 0 20px -2px rgba(34,211,238,0.2), 0 0 40px -4px rgba(34,211,238,0.1);
   }
   50% {
-    box-shadow: 0 0 30px -2px rgba(0,124,90,0.45), 0 0 60px -4px rgba(0,124,90,0.25);
+    box-shadow: 0 0 30px -2px rgba(34,211,238,0.35), 0 0 60px -4px rgba(34,211,238,0.2);
   }
 }

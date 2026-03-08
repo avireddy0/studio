@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Map as MapIcon, FileText, Target, Shield, AlertTriangle, X, ChevronUp } from 'lucide-react';
+import { FileText, Target, X, ChevronUp } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+
 import { cn } from "@/lib/utils";
 
 // ═══════════════════════════════════════════════════════════════
@@ -182,84 +182,17 @@ const STATUS_MSGS: Record<string, string> = {
   'COMPLETE':  'FEASIBILITY ASSESSMENT READY \u2014 6/8 VERIFIED',
 };
 
-// Which doc indices are "active" during each phase
-const PHASE_ACTIVE_DOCS: Record<string, number[]> = {
-  'TGT_ALPHA': [0, 1, 2],
-  'TGT_BRAVO': [3, 4, 5],
-  'SWEEP':     [6],
-  'COMPLETE':  [],
-};
-
-// ═══════════════════════════════════════════════════════════════
-// STATUS BADGE — rich interactive badge
-// ═══════════════════════════════════════════════════════════════
-
-function StatusBadge({ status }: { status: string }) {
-  const config = {
-    VERIFIED: { bg: 'bg-primary/15', text: 'text-primary', border: 'border-primary/25', icon: Shield },
-    RECEIVED: { bg: 'bg-cyan-400/10', text: 'text-cyan-400', border: 'border-cyan-400/20', icon: null },
-    AUDIT:    { bg: 'bg-yellow-500/15', text: 'text-yellow-500', border: 'border-yellow-500/25', icon: AlertTriangle },
-    PENDING:  { bg: 'bg-white/[0.03]', text: 'text-white/30', border: 'border-white/[0.06]', icon: null },
-  }[status] || { bg: '', text: 'text-white/30', border: 'border-white/5', icon: null };
-
-  const Icon = config.icon;
-
-  return (
-    <div className={cn(
-      "inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-[8px] font-bold uppercase tracking-wider transition-all duration-700",
-      config.bg, config.text, config.border
-    )}>
-      {Icon && <Icon className="size-2.5" />}
-      <span>{status}</span>
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════
-// PROGRESS RING — circular progress indicator
-// ═══════════════════════════════════════════════════════════════
-
-function ProgressRing({ progress, verified, total }: { progress: number; verified: number; total: number }) {
-  const radius = 28;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (progress / 100) * circumference;
-
-  return (
-    <div className="relative size-[72px] flex items-center justify-center shrink-0">
-      <svg className="absolute inset-0 -rotate-90" viewBox="0 0 64 64">
-        <circle cx="32" cy="32" r={radius} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="3" />
-        <circle
-          cx="32" cy="32" r={radius} fill="none"
-          stroke="rgba(0,124,90,0.6)"
-          strokeWidth="3"
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          strokeDashoffset={strokeDashoffset}
-          className="transition-all duration-300 ease-linear"
-        />
-      </svg>
-      <div className="text-center">
-        <div className="text-[14px] font-mono font-bold text-primary">{verified}</div>
-        <div className="text-[7px] font-mono text-white/25">/{total}</div>
-      </div>
-    </div>
-  );
-}
-
 // ═══════════════════════════════════════════════════════════════
 // MAIN COMPONENT
 // ═══════════════════════════════════════════════════════════════
 
 export function FeasibilitySection() {
   const [elapsed, setElapsed] = useState(0);
-  const [hoveredDoc, setHoveredDoc] = useState<number | null>(null);
   const [vaultOpen, setVaultOpen] = useState(false);
   const startRef = useRef(Date.now());
   const containerRef = useRef<HTMLDivElement>(null);
   const phaseCounterRef = useRef(0);
   const prevPhaseRef = useRef(-1);
-  const prevStatusesRef = useRef<string[]>(DOCS.map(() => 'PENDING'));
-  const [flashingRows, setFlashingRows] = useState<Set<number>>(new Set());
 
   const toggleVault = useCallback(() => setVaultOpen(prev => !prev), []);
 
@@ -276,23 +209,6 @@ export function FeasibilitySection() {
     }, 50);
     return () => clearInterval(tick);
   }, []);
-
-  // Track status transitions and flash rows
-  useEffect(() => {
-    const currentStatuses = DOCS.map(d => getDocStatus(d, elapsed));
-    const changed: number[] = [];
-    for (let i = 0; i < currentStatuses.length; i++) {
-      if (currentStatuses[i] !== prevStatusesRef.current[i]) {
-        changed.push(i);
-      }
-    }
-    if (changed.length > 0) {
-      prevStatusesRef.current = currentStatuses;
-      setFlashingRows(new Set(changed));
-      const timer = setTimeout(() => setFlashingRows(new Set()), 1200);
-      return () => clearTimeout(timer);
-    }
-  }, [elapsed]);
 
   const overlayStage = 3;
 
@@ -325,18 +241,12 @@ export function FeasibilitySection() {
 
   const verifiedCount = counts['VERIFIED'] || 0;
   const totalDocs = DOCS.length;
-  const activeDocIndices = PHASE_ACTIVE_DOCS[phase.name] || [];
   const cycleProgress = Math.round((elapsed / TOTAL_CYCLE) * 100);
 
   return (
-    <div ref={containerRef} className="contents">
-      <div className="flex items-center gap-3 shrink-0">
-        <MapIcon className="size-4 text-primary" />
-        <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">06_Instant_Feasibility</h2>
-      </div>
-
+    <div ref={containerRef} className="flex-1 flex flex-col gap-1 min-h-0">
       {/* ═══ MAIN LAYOUT: Full-width Map + Floating Vault ═══ */}
-      <div className="flex-1 overflow-hidden flex flex-col gap-3 md:gap-5 relative">
+      <div className="flex-1 overflow-hidden flex flex-col relative min-h-0">
 
         {/* ═══ TACTICAL MAP (full width) ═══ */}
         <Card className={cn(
@@ -377,7 +287,7 @@ export function FeasibilitySection() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=-118.2475,34.0495,-118.2395,34.0555&bboxSR=4326&size=1600,800&format=png&f=image"
+                src="/satellite-la.png"
                 alt="Aerial site view"
                 className="absolute inset-0 w-full h-full object-cover"
                 loading="eager"
@@ -549,33 +459,33 @@ export function FeasibilitySection() {
         <button
           onClick={toggleVault}
           className={cn(
-            "absolute bottom-4 right-4 z-40 group flex items-center gap-2 px-3 py-2 rounded",
-            "bg-[#0A0A0F] border transition-all duration-500",
+            "absolute bottom-10 right-4 z-40 group flex items-center gap-2 px-3 py-2 rounded",
+            "bg-black/40 backdrop-blur-sm border transition-all duration-500",
             "hover:scale-[1.02] active:scale-[0.98]",
             vaultOpen
-              ? "border-primary/50 shadow-[0_0_25px_-4px_rgba(0,124,90,0.4)]"
-              : "border-primary/30 shadow-[0_0_20px_-2px_rgba(0,124,90,0.25),0_0_40px_-4px_rgba(0,124,90,0.15)] hover:shadow-[0_0_30px_-2px_rgba(0,124,90,0.4),0_0_60px_-4px_rgba(0,124,90,0.2)] hover:border-primary/50 animate-[vault-glow_2s_ease-in-out_infinite]"
+              ? "border-cyan-400/50 shadow-[0_0_25px_-4px_rgba(34,211,238,0.3)]"
+              : "border-cyan-400/30 shadow-[0_0_20px_-2px_rgba(34,211,238,0.2),0_0_40px_-4px_rgba(34,211,238,0.1)] hover:shadow-[0_0_30px_-2px_rgba(34,211,238,0.35),0_0_60px_-4px_rgba(34,211,238,0.15)] hover:border-cyan-400/50 animate-[vault-glow-teal_2s_ease-in-out_infinite]"
           )}
         >
           <div className={cn(
             "size-2 rounded-full transition-colors",
-            vaultOpen ? "bg-primary animate-pulse" : "bg-primary/80 animate-pulse"
+            vaultOpen ? "bg-cyan-400 animate-pulse" : "bg-cyan-400/80 animate-pulse"
           )} />
-          <span className="text-[9px] font-mono font-bold uppercase tracking-[0.25em] text-primary">
+          <span className="text-[9px] font-mono font-bold uppercase tracking-[0.25em] text-cyan-400">
             Feasibility_Vault
           </span>
           <div className="flex items-center gap-1 ml-1">
-            <span className="text-[8px] font-mono text-primary/60">{verifiedCount}/{totalDocs}</span>
+            <span className="text-[8px] font-mono text-cyan-400/60">{verifiedCount}/{totalDocs}</span>
             <ChevronUp className={cn(
-              "size-3 text-primary/60 transition-transform duration-300",
+              "size-3 text-cyan-400/60 transition-transform duration-300",
               vaultOpen && "rotate-180"
             )} />
           </div>
         </button>
 
-        {/* ═══ FEASIBILITY VAULT — HUD Modal (bottom-right popup) ═══ */}
+        {/* ═══ FEASIBILITY VAULT — Compact HUD (bottom-right, one doc at a time) ═══ */}
         <div className={cn(
-          "absolute bottom-14 right-4 z-50 w-[340px] sm:w-[400px] md:w-[440px]",
+          "absolute bottom-20 right-4 z-50 w-[320px] sm:w-[380px]",
           "transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
           "origin-bottom-right",
           vaultOpen
@@ -583,144 +493,59 @@ export function FeasibilitySection() {
             : "opacity-0 translate-y-4 scale-95 pointer-events-none"
         )}>
           {/* Corner brackets — military HUD frame */}
-          <div className="absolute -top-1 -left-1 w-3 h-3 border-t border-l border-primary/50" />
-          <div className="absolute -top-1 -right-1 w-3 h-3 border-t border-r border-primary/50" />
-          <div className="absolute -bottom-1 -left-1 w-3 h-3 border-b border-l border-primary/50" />
-          <div className="absolute -bottom-1 -right-1 w-3 h-3 border-b border-r border-primary/50" />
+          <div className="absolute -top-1 -left-1 w-2.5 h-2.5 border-t border-l border-primary/60" />
+          <div className="absolute -top-1 -right-1 w-2.5 h-2.5 border-t border-r border-primary/60" />
+          <div className="absolute -bottom-1 -left-1 w-2.5 h-2.5 border-b border-l border-primary/60" />
+          <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 border-b border-r border-primary/60" />
 
-          <Card className={cn(
-            "bg-[#0A0A0F] border-primary/20 overflow-hidden flex flex-col max-h-[420px]",
-            "shadow-[0_0_60px_-12px_rgba(0,124,90,0.25),0_0_30px_-8px_rgba(0,0,0,0.9),inset_0_1px_0_0_rgba(0,124,90,0.08)]",
-            phase.name === 'COMPLETE' && "border-primary/35 shadow-[0_0_60px_-8px_rgba(0,124,90,0.3)]"
+          <div className={cn(
+            "bg-black/40 backdrop-blur-sm border border-primary/20 overflow-hidden",
+            "shadow-[0_0_30px_-8px_rgba(0,124,90,0.15)]"
           )}>
-            {/* Header */}
-            <div className="border-b border-primary/10 bg-[#0A0A0F] py-2 px-3 shrink-0">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="size-1.5 rounded-full bg-primary animate-pulse" />
-                  <span className="text-[9px] font-mono font-bold uppercase tracking-[0.3em] text-primary/70">Feasibility_Data_Room</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1.5 text-[7px] font-mono">
-                    {counts['VERIFIED'] ? <span className="text-primary">{counts['VERIFIED']} VER</span> : null}
-                    {counts['AUDIT'] ? <><span className="text-white/10">|</span><span className="text-yellow-500/70">{counts['AUDIT']} AUD</span></> : null}
-                    {counts['PENDING'] ? <><span className="text-white/10">|</span><span className="text-white/25">{counts['PENDING']} PND</span></> : null}
-                  </div>
-                  <button onClick={toggleVault} className="text-white/20 hover:text-white/50 transition-colors ml-1">
-                    <X className="size-3" />
-                  </button>
-                </div>
+            {/* Header bar */}
+            <div className="flex items-center justify-between px-3 py-1.5 border-b border-white/[0.06]">
+              <div className="flex items-center gap-2">
+                <div className="size-1.5 rounded-full bg-green-400 animate-pulse" />
+                <span className="text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-white/50">Data_Room</span>
               </div>
-              {/* Scan line accent */}
-              <div className="mt-1.5 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+              <div className="flex items-center gap-2">
+                <span className="text-[8px] font-mono text-white/30">{verifiedCount}/{totalDocs}</span>
+                <button onClick={toggleVault} className="text-white/20 hover:text-white/40 transition-colors">
+                  <X className="size-3" />
+                </button>
+              </div>
             </div>
 
-            {/* Document list */}
-            <div className="flex-1 overflow-auto no-scrollbar">
-              <Table>
-                <TableHeader className="bg-[#0A0A0F] sticky top-0 z-10">
-                  <TableRow className="border-primary/5 hover:bg-transparent">
-                    <TableHead className="text-[8px] font-bold uppercase tracking-widest text-primary/30 py-1.5">Document_ID</TableHead>
-                    <TableHead className="text-[8px] font-bold uppercase tracking-widest text-primary/30 hidden sm:table-cell py-1.5">Sector</TableHead>
-                    <TableHead className="text-[8px] font-bold uppercase tracking-widest text-primary/30 text-right py-1.5">Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {DOCS.map((doc, i) => {
-                    const status = getDocStatus(doc, elapsed);
-                    const isActive = activeDocIndices.includes(i);
-                    const isFlashing = flashingRows.has(i);
-                    const isHovered = hoveredDoc === i;
-                    return (
-                      <TableRow
-                        key={i}
-                        onMouseEnter={() => setHoveredDoc(i)}
-                        onMouseLeave={() => setHoveredDoc(null)}
-                        className={cn(
-                          "border-primary/5 transition-all duration-500 cursor-default",
-                          isFlashing && status === 'VERIFIED' && "animate-pulse bg-primary/10",
-                          isFlashing && status === 'RECEIVED' && "animate-pulse bg-cyan-400/10",
-                          isFlashing && status === 'AUDIT' && "animate-pulse bg-yellow-500/10",
-                          !isFlashing && status === 'VERIFIED' && 'bg-primary/[0.04]',
-                          !isFlashing && status === 'RECEIVED' && 'bg-cyan-400/[0.04]',
-                          !isFlashing && status === 'AUDIT' && 'bg-yellow-500/[0.04]',
-                          isActive && !isFlashing && "bg-white/[0.03]",
-                          isHovered && "!bg-primary/[0.08]"
-                        )}
-                      >
-                        <TableCell className="py-2">
-                          <div className="flex items-center gap-1.5">
-                            <div className={cn(
-                              "size-1 rounded-full shrink-0 transition-all duration-500",
-                              isActive ? "bg-primary animate-pulse" : "bg-transparent"
-                            )} />
-                            <FileText className={cn(
-                              "size-2.5 shrink-0 transition-colors duration-700",
-                              status === 'VERIFIED' ? 'text-primary/50' :
-                              status === 'RECEIVED' ? 'text-cyan-400/40' :
-                              status === 'AUDIT' ? 'text-yellow-500/40' : 'text-white/10'
-                            )} />
-                            <div className="flex flex-col">
-                              <span className={cn(
-                                "text-[8px] md:text-[9px] font-mono transition-colors duration-700 leading-tight",
-                                status === 'PENDING' ? 'text-white/30' : 'text-white/70',
-                                isHovered && 'text-white'
-                              )}>{doc.id}</span>
-                              <span className="text-[6px] font-mono text-white/15 uppercase tracking-wider sm:hidden mt-0.5">{doc.cat}</span>
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          <span className={cn(
-                            "text-[7px] font-mono uppercase tracking-wider transition-colors duration-500",
-                            isHovered ? "text-white/40" : "text-white/20"
-                          )}>{doc.cat}</span>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <StatusBadge status={status} />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </div>
+            {/* Single document display — cycles through docs */}
+            {(() => {
+              const currentDocIdx = Math.floor(elapsed / 2500) % DOCS.length;
+              const doc = DOCS[currentDocIdx];
+              const status = getDocStatus(doc, elapsed);
+              const statusColor = status === 'VERIFIED' ? 'text-green-400' :
+                status === 'RECEIVED' ? 'text-white' :
+                status === 'AUDIT' ? 'text-yellow-400' : 'text-white/30';
+              const statusBg = status === 'VERIFIED' ? 'bg-green-400/15 border-green-400/30' :
+                status === 'RECEIVED' ? 'bg-white/10 border-white/20' :
+                status === 'AUDIT' ? 'bg-yellow-400/15 border-yellow-400/30' : 'bg-white/[0.03] border-white/10';
+              const iconColor = status === 'VERIFIED' ? 'text-green-400' :
+                status === 'RECEIVED' ? 'text-white/60' :
+                status === 'AUDIT' ? 'text-yellow-400' : 'text-white/20';
 
-            {/* Footer: Progress ring + bar */}
-            <div className="shrink-0 border-t border-primary/10 bg-[#0A0A0F] px-3 py-2.5">
-              <div className="flex items-center gap-3">
-                <ProgressRing progress={cycleProgress} verified={verifiedCount} total={totalDocs} />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-[7px] font-mono text-primary/30 uppercase tracking-wider">Scan Cycle</span>
-                    <span className="text-[7px] font-mono text-primary/50">{cycleProgress}%</span>
-                  </div>
-                  <div className="h-0.5 bg-white/[0.04] rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-primary/40 to-primary/70 rounded-full transition-all duration-300 ease-linear"
-                      style={{ width: `${cycleProgress}%` }}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between mt-1.5">
-                    <span className={cn(
-                      "text-[6px] font-mono uppercase tracking-wider transition-colors duration-500",
-                      phase.lockTarget ? "text-red-500/50" : "text-white/15"
-                    )}>
-                      {phase.name}
-                    </span>
-                    <div className="flex items-center gap-1">
-                      {PHASES.map((p, pi) => (
-                        <div key={pi} className={cn(
-                          "size-0.5 rounded-full transition-all duration-500",
-                          pi === phaseIdx ? (p.lockTarget ? "bg-red-500 scale-150" : "bg-primary scale-150") : "bg-white/10"
-                        )} />
-                      ))}
+              return (
+                <div className="px-3 py-2" key={currentDocIdx}>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <FileText className={cn("size-3.5 shrink-0", iconColor)} />
+                      <span className="text-[10px] font-mono font-bold text-white/85 leading-tight truncate">{doc.id}</span>
+                    </div>
+                    <div className={cn("px-2 py-0.5 border text-[8px] font-mono font-bold uppercase tracking-wider shrink-0 ml-2", statusBg, statusColor)}>
+                      {status}
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </Card>
+              );
+            })()}
+          </div>
         </div>
       </div>
     </div>
