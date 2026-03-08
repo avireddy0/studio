@@ -135,6 +135,25 @@ export function DashboardHeader({ title }: { title?: string }) {
   const [mounted, setMounted] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [droneHidden, setDroneHidden] = useState(false);
+  const [titleHidden, setTitleHidden] = useState(false);
+
+  useEffect(() => {
+    const hide = () => setDroneHidden(true);
+    const show = () => setDroneHidden(false);
+    const hideTitle = () => setTitleHidden(true);
+    const showTitle = () => setTitleHidden(false);
+    window.addEventListener('hide-header-drone', hide);
+    window.addEventListener('show-header-drone', show);
+    window.addEventListener('hide-header-title', hideTitle);
+    window.addEventListener('show-header-title', showTitle);
+    return () => {
+      window.removeEventListener('hide-header-drone', hide);
+      window.removeEventListener('show-header-drone', show);
+      window.removeEventListener('hide-header-title', hideTitle);
+      window.removeEventListener('show-header-title', showTitle);
+    };
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -212,8 +231,12 @@ export function DashboardHeader({ title }: { title?: string }) {
       {/* Center — logo + nav */}
       <div className="flex items-center gap-8">
         <Link href="/" className="flex items-center gap-3 group">
-            <DroneIcon className={cn("w-6 h-5 transition-colors", isDarkSection ? "text-primary" : "text-black")} />
-            <AnimatedTitle isDark={isDarkSection} />
+            <span data-header-drone className={cn("inline-flex transition-opacity duration-300", droneHidden && "opacity-0")}>
+              <DroneIcon className={cn("w-6 h-5 transition-colors", isDarkSection ? "text-primary" : "text-black")} />
+            </span>
+            <span className={cn("transition-opacity duration-500", titleHidden && "opacity-0")}>
+              <AnimatedTitle isDark={isDarkSection} />
+            </span>
         </Link>
 
         <nav className={cn("hidden lg:flex items-center gap-6 border-l pl-8", borderColor)}>

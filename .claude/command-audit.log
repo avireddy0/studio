@@ -2582,3 +2582,154 @@ curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
 curl -s http://localhost:9002 2>&1 | head -50
 lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
 sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+npm run build 2>&1 | tail -20
+ls /Users/avireddy/GitHub/studio/src/app/\(dashboard\)/ingestion/ 2>/dev/null
+npm run build 2>&1 | grep -E "error|Error|✓ Compiled|Build error" | head -10
+npm run build 2>&1 | tail -25
+npm run build 2>&1 | tail -10
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl boot "$UDID" 2>/dev/null; open -a Simulator
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null && sleep 8 && xcrun simctl io "$UDID" screenshot /tmp/closing.png
+npm run build 2>&1 | tail -30
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null && sleep 8 && xcrun simctl io "$UDID" screenshot /tmp/closing2.png
+cat package.json | grep -E "google|genai|genkit"
+echo "GOOGLE_API_KEY: ${GOOGLE_API_KEY:+SET}" && echo "GEMINI_API_KEY: ${GEMINI_API_KEY:+SET}" && echo "GOOGLE_GENAI_API_KEY: ${GOOGLE_GENAI_API_KEY:+SET}" && ls -la .env* 2>/dev/null; cat .env.local 2>/dev/null | grep -i "api_key\|genai\|gemini" || echo "No .env.local"
+gcloud auth application-default print-access-token 2>/dev/null | head -c 20 && echo "...TOKEN_EXISTS" || echo "NO_ADC_TOKEN"
+npm install @google/genai 2>&1 | tail -5
+ls /Users/avireddy/GitHub/studio/public/ 2>/dev/null
+node scripts/generate-drone-video.mjs 2>&1
+node scripts/generate-drone-video.mjs 2>&1
+node scripts/generate-drone-video.mjs 2>&1
+file public/drone-landing.mp4 && ls -lh public/drone-landing.mp4
+npm run build 2>&1 | tail -15
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+sleep 10 && UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null && sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/closing3.png
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null && sleep 10 && xcrun simctl io "$UDID" screenshot /tmp/closing4.png
+npm run build 2>&1 | tail -10
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 8 && UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null && sleep 4 && xcrun simctl io "$UDID" screenshot /tmp/closing-mid.png && sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/closing-final.png
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+curl -s http://localhost:9002 2>&1 | head -20
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 2 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/home-check.png
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 10 && UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 2 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null && sleep 10 && xcrun simctl io "$UDID" screenshot /tmp/closing5.png
+cat /private/tmp/claude-501/-Users-avireddy-GitHub-studio/tasks/blai1edh7.output 2>/dev/null | tail -30
+curl -s http://localhost:9002/?s=closing 2>&1 | grep -i "error\|500" | head -5
+curl -s "http://localhost:9002/?s=closing" 2>&1 | grep -i "error\|500" | head -5
+npm run build 2>&1 | tail -30
+lsof -ti:9002 2>/dev/null | head -5
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+curl -s -o /dev/null -w "%{http_code}" "http://localhost:9002/?s=closing"
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev 2>&1 &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+cat /private/tmp/claude-501/-Users-avireddy-GitHub-studio/tasks/b3po824mz.output | tail -30
+cat /private/tmp/claude-501/-Users-avireddy-GitHub-studio/tasks/b6ul71c3g.output | tail -20
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+npm run build 2>&1 | tail -10
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 10 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true
+sleep 1
+xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null
+sleep 8
+xcrun simctl io "$UDID" screenshot /tmp/closing-flight.png
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true
+sleep 1
+xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null
+# Capture at different points in the animation
+sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/closing-mid.png
+sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/closing-end.png
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true
+sleep 1
+xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null
+sleep 4 && xcrun simctl io "$UDID" screenshot /tmp/closing-spline-mid.png
+sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/closing-spline-end.png
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true
+sleep 1
+xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null
+# Early flight — 3s in
+sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/closing-v3-early.png
+# Mid descent — 6s in
+sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/closing-v3-mid.png
+# Dust + settling — 9s in
+sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/closing-v3-dust.png
+# Final landed state — 12s in
+sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/closing-v3-end.png
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6"
+xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true
+sleep 1
+xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null
+sleep 1
+xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null
+# Early S-curve (4s)
+sleep 4 && xcrun simctl io "$UDID" screenshot /tmp/closing-physics-1.png
+# Mid flight (8s)
+sleep 4 && xcrun simctl io "$UDID" screenshot /tmp/closing-physics-2.png
+# Near landing (12s)
+sleep 4 && xcrun simctl io "$UDID" screenshot /tmp/closing-physics-3.png
+# Final (16s)
+sleep 4 && xcrun simctl io "$UDID" screenshot /tmp/closing-physics-4.png
+npm run build 2>&1 | tail -30
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 6 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null && sleep 8 && xcrun simctl io "$UDID" screenshot /tmp/closing-stable-1.png
+sleep 10 && UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl io "$UDID" screenshot /tmp/closing-stable-2.png
+sleep 4 && UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl io "$UDID" screenshot /tmp/closing-stable-3.png
+npm run build 2>&1 | tail -10
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 6 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && sleep 2 && xcrun simctl io "$UDID" screenshot /tmp/closing-hover.png && sleep 12 && xcrun simctl io "$UDID" screenshot /tmp/closing-dust.png && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/closing-final.png
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 6 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && sleep 2 && xcrun simctl io "$UDID" screenshot /tmp/hover-hold.png && sleep 2 && xcrun simctl io "$UDID" screenshot /tmp/title-gone.png && sleep 14 && xcrun simctl io "$UDID" screenshot /tmp/final-v2.png
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null && sleep 1 && xcrun simctl io "$UDID" screenshot /tmp/hover-1s.png && sleep 1.5 && xcrun simctl io "$UDID" screenshot /tmp/hover-2s.png && sleep 2 && xcrun simctl io "$UDID" screenshot /tmp/depart-5s.png
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 6 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002" 2>/dev/null && sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/hero-start.png
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null && sleep 1.5 && xcrun simctl io "$UDID" screenshot /tmp/ghost-hover.png && sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/mid-flight.png && sleep 10 && xcrun simctl io "$UDID" screenshot /tmp/landing-sync.png
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 6 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 6 && UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null && sleep 13 && xcrun simctl io "$UDID" screenshot /tmp/typing-flight.png && sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/landing-flash.png && sleep 3 && xcrun simctl io "$UDID" screenshot /tmp/final-settled.png
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 6 && UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null && sleep 18 && xcrun simctl io "$UDID" screenshot /tmp/drop-sync.png && sleep 4 && xcrun simctl io "$UDID" screenshot /tmp/final-clean.png
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 6 && UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null && sleep 10 && xcrun simctl io "$UDID" screenshot /tmp/near-land.png && sleep 4 && xcrun simctl io "$UDID" screenshot /tmp/settled-v2.png
