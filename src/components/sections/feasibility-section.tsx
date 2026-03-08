@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Map as MapIcon, FileText, Target, Shield, AlertTriangle } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Map as MapIcon, FileText, Target, Shield, AlertTriangle, X, ChevronUp } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
@@ -253,12 +253,21 @@ function ProgressRing({ progress, verified, total }: { progress: number; verifie
 export function FeasibilitySection() {
   const [elapsed, setElapsed] = useState(0);
   const [hoveredDoc, setHoveredDoc] = useState<number | null>(null);
+  const [vaultOpen, setVaultOpen] = useState(false);
   const startRef = useRef(Date.now());
   const containerRef = useRef<HTMLDivElement>(null);
   const phaseCounterRef = useRef(0);
   const prevPhaseRef = useRef(-1);
   const prevStatusesRef = useRef<string[]>(DOCS.map(() => 'PENDING'));
   const [flashingRows, setFlashingRows] = useState<Set<number>>(new Set());
+
+  const toggleVault = useCallback(() => setVaultOpen(prev => !prev), []);
+
+  // Auto-open vault after 3 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => setVaultOpen(true), 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     startRef.current = Date.now();
@@ -326,12 +335,12 @@ export function FeasibilitySection() {
         <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">06_Instant_Feasibility</h2>
       </div>
 
-      {/* ═══ MAIN LAYOUT: Map + Vault ═══ */}
-      <div className="flex-1 overflow-hidden flex flex-col xl:flex-row gap-3 md:gap-5">
+      {/* ═══ MAIN LAYOUT: Full-width Map + Floating Vault ═══ */}
+      <div className="flex-1 overflow-hidden flex flex-col gap-3 md:gap-5 relative">
 
-        {/* ═══ TACTICAL MAP ═══ */}
+        {/* ═══ TACTICAL MAP (full width) ═══ */}
         <Card className={cn(
-          "bg-[#12121A] border-[#1E1E2E] relative overflow-hidden flex-[3] min-h-[280px] max-h-[520px] flex flex-col transition-shadow duration-1000",
+          "bg-[#12121A] border-[#1E1E2E] relative overflow-hidden flex-1 min-h-[280px] flex flex-col transition-shadow duration-1000",
           phase.lockTarget && "shadow-[0_0_40px_-12px_rgba(0,124,90,0.15)]"
         )}>
           <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-2.5 relative z-20 shrink-0">
@@ -536,133 +545,183 @@ export function FeasibilitySection() {
           </CardContent>
         </Card>
 
-        {/* ═══ FEASIBILITY DATA ROOM ═══ */}
-        <Card className={cn(
-          "bg-[#12121A] border-[#1E1E2E] overflow-hidden flex flex-col transition-shadow duration-1000",
-          "xl:w-[420px] xl:shrink-0 flex-1",
-          phase.name === 'COMPLETE' && "shadow-[0_0_30px_-10px_rgba(0,124,90,0.12)]"
+        {/* ═══ VAULT TRIGGER — floating HUD button (bottom-right) ═══ */}
+        <button
+          onClick={toggleVault}
+          className={cn(
+            "absolute bottom-4 right-4 z-40 group flex items-center gap-2 px-3 py-2 rounded",
+            "bg-[#0A0A0F] border transition-all duration-500",
+            "hover:scale-[1.02] active:scale-[0.98]",
+            vaultOpen
+              ? "border-primary/50 shadow-[0_0_25px_-4px_rgba(0,124,90,0.4)]"
+              : "border-primary/30 shadow-[0_0_20px_-2px_rgba(0,124,90,0.25),0_0_40px_-4px_rgba(0,124,90,0.15)] hover:shadow-[0_0_30px_-2px_rgba(0,124,90,0.4),0_0_60px_-4px_rgba(0,124,90,0.2)] hover:border-primary/50 animate-[vault-glow_2s_ease-in-out_infinite]"
+          )}
+        >
+          <div className={cn(
+            "size-2 rounded-full transition-colors",
+            vaultOpen ? "bg-primary animate-pulse" : "bg-primary/80 animate-pulse"
+          )} />
+          <span className="text-[9px] font-mono font-bold uppercase tracking-[0.25em] text-primary">
+            Feasibility_Vault
+          </span>
+          <div className="flex items-center gap-1 ml-1">
+            <span className="text-[8px] font-mono text-primary/60">{verifiedCount}/{totalDocs}</span>
+            <ChevronUp className={cn(
+              "size-3 text-primary/60 transition-transform duration-300",
+              vaultOpen && "rotate-180"
+            )} />
+          </div>
+        </button>
+
+        {/* ═══ FEASIBILITY VAULT — HUD Modal (bottom-right popup) ═══ */}
+        <div className={cn(
+          "absolute bottom-14 right-4 z-50 w-[340px] sm:w-[400px] md:w-[440px]",
+          "transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+          "origin-bottom-right",
+          vaultOpen
+            ? "opacity-100 translate-y-0 scale-100"
+            : "opacity-0 translate-y-4 scale-95 pointer-events-none"
         )}>
-          <CardHeader className="border-b border-[#1E1E2E]/50 bg-[#0A0A0F]/50 py-2.5 px-3 md:px-4 shrink-0">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <CardTitle className="text-[10px] tracking-[0.3em]">Feasibility_Data_Room</CardTitle>
+          {/* Corner brackets — military HUD frame */}
+          <div className="absolute -top-1 -left-1 w-3 h-3 border-t border-l border-primary/50" />
+          <div className="absolute -top-1 -right-1 w-3 h-3 border-t border-r border-primary/50" />
+          <div className="absolute -bottom-1 -left-1 w-3 h-3 border-b border-l border-primary/50" />
+          <div className="absolute -bottom-1 -right-1 w-3 h-3 border-b border-r border-primary/50" />
+
+          <Card className={cn(
+            "bg-[#0A0A0F] border-primary/20 overflow-hidden flex flex-col max-h-[420px]",
+            "shadow-[0_0_60px_-12px_rgba(0,124,90,0.25),0_0_30px_-8px_rgba(0,0,0,0.9),inset_0_1px_0_0_rgba(0,124,90,0.08)]",
+            phase.name === 'COMPLETE' && "border-primary/35 shadow-[0_0_60px_-8px_rgba(0,124,90,0.3)]"
+          )}>
+            {/* Header */}
+            <div className="border-b border-primary/10 bg-[#0A0A0F] py-2 px-3 shrink-0">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="size-1.5 rounded-full bg-primary animate-pulse" />
+                  <span className="text-[9px] font-mono font-bold uppercase tracking-[0.3em] text-primary/70">Feasibility_Data_Room</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 text-[7px] font-mono">
+                    {counts['VERIFIED'] ? <span className="text-primary">{counts['VERIFIED']} VER</span> : null}
+                    {counts['AUDIT'] ? <><span className="text-white/10">|</span><span className="text-yellow-500/70">{counts['AUDIT']} AUD</span></> : null}
+                    {counts['PENDING'] ? <><span className="text-white/10">|</span><span className="text-white/25">{counts['PENDING']} PND</span></> : null}
+                  </div>
+                  <button onClick={toggleVault} className="text-white/20 hover:text-white/50 transition-colors ml-1">
+                    <X className="size-3" />
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center gap-2 text-[8px] font-mono">
-                {counts['VERIFIED'] ? <span className="text-primary">{counts['VERIFIED']} VER</span> : null}
-                {counts['AUDIT'] ? <><span className="text-white/10">|</span><span className="text-yellow-500/70">{counts['AUDIT']} AUD</span></> : null}
-                {counts['RECEIVED'] ? <><span className="text-white/10">|</span><span className="text-cyan-400/60">{counts['RECEIVED']} RCV</span></> : null}
-                {counts['PENDING'] ? <><span className="text-white/10">|</span><span className="text-white/25">{counts['PENDING']} PND</span></> : null}
-              </div>
+              {/* Scan line accent */}
+              <div className="mt-1.5 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
             </div>
-          </CardHeader>
 
-          <CardContent className="p-0 flex-1 overflow-auto no-scrollbar">
-            <Table>
-              <TableHeader className="bg-[#0A0A0F] sticky top-0 z-10">
-                <TableRow className="border-[#1E1E2E] hover:bg-transparent">
-                  <TableHead className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">Document_ID</TableHead>
-                  <TableHead className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground hidden sm:table-cell">Sector</TableHead>
-                  <TableHead className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground text-right">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {DOCS.map((doc, i) => {
-                  const status = getDocStatus(doc, elapsed);
-                  const isActive = activeDocIndices.includes(i);
-                  const isFlashing = flashingRows.has(i);
-                  const isHovered = hoveredDoc === i;
-                  return (
-                    <TableRow
-                      key={i}
-                      onMouseEnter={() => setHoveredDoc(i)}
-                      onMouseLeave={() => setHoveredDoc(null)}
-                      className={cn(
-                        "border-[#1E1E2E] transition-all duration-500 cursor-default group",
-                        isFlashing && status === 'VERIFIED' && "animate-pulse bg-primary/10",
-                        isFlashing && status === 'RECEIVED' && "animate-pulse bg-cyan-400/10",
-                        isFlashing && status === 'AUDIT' && "animate-pulse bg-yellow-500/10",
-                        !isFlashing && status === 'VERIFIED' && 'bg-primary/[0.04]',
-                        !isFlashing && status === 'RECEIVED' && 'bg-cyan-400/[0.04]',
-                        !isFlashing && status === 'AUDIT' && 'bg-yellow-500/[0.04]',
-                        isActive && !isFlashing && "bg-white/[0.03]",
-                        isHovered && "!bg-white/[0.06]"
-                      )}
-                    >
-                      <TableCell className="py-2.5 md:py-3">
-                        <div className="flex items-center gap-2">
-                          {/* Active scanning indicator */}
-                          <div className={cn(
-                            "size-1 rounded-full shrink-0 transition-all duration-500",
-                            isActive ? "bg-primary animate-pulse" : "bg-transparent"
-                          )} />
-                          <FileText className={cn(
-                            "size-3 shrink-0 transition-colors duration-700",
-                            status === 'VERIFIED' ? 'text-primary/50' :
-                            status === 'RECEIVED' ? 'text-cyan-400/40' :
-                            status === 'AUDIT' ? 'text-yellow-500/40' : 'text-white/10'
-                          )} />
-                          <div className="flex flex-col">
-                            <span className={cn(
-                              "text-[9px] md:text-[10px] font-mono transition-colors duration-700 leading-tight",
-                              status === 'PENDING' ? 'text-white/30' : 'text-white/80',
-                              isHovered && 'text-white'
-                            )}>{doc.id}</span>
-                            {/* Show category on mobile below the name */}
-                            <span className="text-[7px] font-mono text-white/20 uppercase tracking-wider sm:hidden mt-0.5">{doc.cat}</span>
+            {/* Document list */}
+            <div className="flex-1 overflow-auto no-scrollbar">
+              <Table>
+                <TableHeader className="bg-[#0A0A0F] sticky top-0 z-10">
+                  <TableRow className="border-primary/5 hover:bg-transparent">
+                    <TableHead className="text-[8px] font-bold uppercase tracking-widest text-primary/30 py-1.5">Document_ID</TableHead>
+                    <TableHead className="text-[8px] font-bold uppercase tracking-widest text-primary/30 hidden sm:table-cell py-1.5">Sector</TableHead>
+                    <TableHead className="text-[8px] font-bold uppercase tracking-widest text-primary/30 text-right py-1.5">Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {DOCS.map((doc, i) => {
+                    const status = getDocStatus(doc, elapsed);
+                    const isActive = activeDocIndices.includes(i);
+                    const isFlashing = flashingRows.has(i);
+                    const isHovered = hoveredDoc === i;
+                    return (
+                      <TableRow
+                        key={i}
+                        onMouseEnter={() => setHoveredDoc(i)}
+                        onMouseLeave={() => setHoveredDoc(null)}
+                        className={cn(
+                          "border-primary/5 transition-all duration-500 cursor-default",
+                          isFlashing && status === 'VERIFIED' && "animate-pulse bg-primary/10",
+                          isFlashing && status === 'RECEIVED' && "animate-pulse bg-cyan-400/10",
+                          isFlashing && status === 'AUDIT' && "animate-pulse bg-yellow-500/10",
+                          !isFlashing && status === 'VERIFIED' && 'bg-primary/[0.04]',
+                          !isFlashing && status === 'RECEIVED' && 'bg-cyan-400/[0.04]',
+                          !isFlashing && status === 'AUDIT' && 'bg-yellow-500/[0.04]',
+                          isActive && !isFlashing && "bg-white/[0.03]",
+                          isHovered && "!bg-primary/[0.08]"
+                        )}
+                      >
+                        <TableCell className="py-2">
+                          <div className="flex items-center gap-1.5">
+                            <div className={cn(
+                              "size-1 rounded-full shrink-0 transition-all duration-500",
+                              isActive ? "bg-primary animate-pulse" : "bg-transparent"
+                            )} />
+                            <FileText className={cn(
+                              "size-2.5 shrink-0 transition-colors duration-700",
+                              status === 'VERIFIED' ? 'text-primary/50' :
+                              status === 'RECEIVED' ? 'text-cyan-400/40' :
+                              status === 'AUDIT' ? 'text-yellow-500/40' : 'text-white/10'
+                            )} />
+                            <div className="flex flex-col">
+                              <span className={cn(
+                                "text-[8px] md:text-[9px] font-mono transition-colors duration-700 leading-tight",
+                                status === 'PENDING' ? 'text-white/30' : 'text-white/70',
+                                isHovered && 'text-white'
+                              )}>{doc.id}</span>
+                              <span className="text-[6px] font-mono text-white/15 uppercase tracking-wider sm:hidden mt-0.5">{doc.cat}</span>
+                            </div>
                           </div>
-                        </div>
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        <span className={cn(
-                          "text-[8px] font-mono uppercase tracking-wider transition-colors duration-500",
-                          isHovered ? "text-white/40" : "text-white/25"
-                        )}>{doc.cat}</span>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <StatusBadge status={status} />
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </CardContent>
+                        </TableCell>
+                        <TableCell className="hidden sm:table-cell">
+                          <span className={cn(
+                            "text-[7px] font-mono uppercase tracking-wider transition-colors duration-500",
+                            isHovered ? "text-white/40" : "text-white/20"
+                          )}>{doc.cat}</span>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <StatusBadge status={status} />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
 
-          {/* Footer: Progress ring + bar */}
-          <div className="shrink-0 border-t border-[#1E1E2E]/50 bg-[#0A0A0F]/50 px-3 md:px-4 py-3">
-            <div className="flex items-center gap-3">
-              <ProgressRing progress={cycleProgress} verified={verifiedCount} total={totalDocs} />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[8px] font-mono text-white/30 uppercase tracking-wider">Scan Cycle</span>
-                  <span className="text-[8px] font-mono text-primary/60">{cycleProgress}%</span>
-                </div>
-                <div className="h-1 bg-white/[0.04] rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-primary/40 to-primary/70 rounded-full transition-all duration-300 ease-linear"
-                    style={{ width: `${cycleProgress}%` }}
-                  />
-                </div>
-                <div className="flex items-center justify-between mt-2">
-                  <span className={cn(
-                    "text-[7px] font-mono uppercase tracking-wider transition-colors duration-500",
-                    phase.lockTarget ? "text-red-500/50" : "text-white/20"
-                  )}>
-                    {phase.name}
-                  </span>
-                  <div className="flex items-center gap-1.5">
-                    {PHASES.map((p, pi) => (
-                      <div key={pi} className={cn(
-                        "size-1 rounded-full transition-all duration-500",
-                        pi === phaseIdx ? (p.lockTarget ? "bg-red-500 scale-125" : "bg-primary scale-125") : "bg-white/10"
-                      )} />
-                    ))}
+            {/* Footer: Progress ring + bar */}
+            <div className="shrink-0 border-t border-primary/10 bg-[#0A0A0F] px-3 py-2.5">
+              <div className="flex items-center gap-3">
+                <ProgressRing progress={cycleProgress} verified={verifiedCount} total={totalDocs} />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[7px] font-mono text-primary/30 uppercase tracking-wider">Scan Cycle</span>
+                    <span className="text-[7px] font-mono text-primary/50">{cycleProgress}%</span>
+                  </div>
+                  <div className="h-0.5 bg-white/[0.04] rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-primary/40 to-primary/70 rounded-full transition-all duration-300 ease-linear"
+                      style={{ width: `${cycleProgress}%` }}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between mt-1.5">
+                    <span className={cn(
+                      "text-[6px] font-mono uppercase tracking-wider transition-colors duration-500",
+                      phase.lockTarget ? "text-red-500/50" : "text-white/15"
+                    )}>
+                      {phase.name}
+                    </span>
+                    <div className="flex items-center gap-1">
+                      {PHASES.map((p, pi) => (
+                        <div key={pi} className={cn(
+                          "size-0.5 rounded-full transition-all duration-500",
+                          pi === phaseIdx ? (p.lockTarget ? "bg-red-500 scale-150" : "bg-primary scale-150") : "bg-white/10"
+                        )} />
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </Card>
+          </Card>
+        </div>
       </div>
     </div>
   );

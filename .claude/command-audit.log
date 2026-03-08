@@ -2474,3 +2474,20 @@ lsof -ti:9002 | xargs kill -9 2>/dev/null; rm -rf /Users/avireddy/GitHub/studio/
 sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
 UDID="4509C5F7-3DAB-4DE5-BCD6-B1F161BD3138" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 7 && xcrun simctl io "$UDID" screenshot /tmp/ipad-v5.png
 git status
+echo "test"
+git log --oneline -5
+curl -s -o /dev/null -w "%{http_code}" "https://studio--studio-7741937329-54916.us-central1.hosted.app/" 2>&1
+curl -s "https://studio--studio-7741937329-54916.us-central1.hosted.app/" 2>&1 | head -50
+curl -s -o /dev/null -w "%{http_code}" "https://demo.envsn.com/" 2>&1
+npm run build 2>&1 | tail -30
+rm -rf /Users/avireddy/GitHub/studio/.next && npm run build 2>&1 | tail -25
+curl -s -D - "https://demo.envsn.com/" 2>&1 | head -20
+gcloud run services list --project=studio-7741937329-54916 --format='table(name,status.url,status.conditions.status)' 2>&1
+gcloud logging read 'resource.type="cloud_run_revision" AND severity>=ERROR' --project=studio-7741937329-54916 --limit=10 --format='table(timestamp,textPayload)' 2>&1 | head -40
+gcloud billing accounts list 2>&1
+gcloud billing projects link studio-7741937329-54916 --billing-account=014983-E1CDD1-6659CF 2>&1
+npm run build 2>&1 | tail -30
+lsof -ti:9002 | xargs kill -9 2>/dev/null; nohup npm run dev > /tmp/studio-dev.log 2>&1 &
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+npm run build 2>&1 | tail -10
+npm run build 2>&1 | tail -10

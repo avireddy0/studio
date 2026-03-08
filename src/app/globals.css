@@ -54,7 +54,7 @@
     @apply border-border rounded-none;
   }
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/30 overflow-hidden;
@@ -182,4 +182,14 @@
 }
 .translate-z-low {
   transform: translateZ(-100px);
+}
+
+/* VAULT GLOW — pulsing glow on Feasibility Vault button */
+@keyframes vault-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px -2px rgba(0,124,90,0.25), 0 0 40px -4px rgba(0,124,90,0.15);
+  }
+  50% {
+    box-shadow: 0 0 30px -2px rgba(0,124,90,0.45), 0 0 60px -4px rgba(0,124,90,0.25);
+  }
 }

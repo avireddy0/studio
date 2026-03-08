@@ -213,7 +213,7 @@ export default function UnifiedPage() {
   return (
     <div
         id="main-scroll-container"
-        className="flex flex-col w-full selection:bg-primary/20 font-sans snap-y snap-proximity overflow-y-auto h-[calc(100vh-64px)] no-scrollbar scroll-smooth"
+        className="flex flex-col w-full selection:bg-primary/20 font-sans snap-y snap-mandatory overflow-y-auto h-[calc(100vh-64px)] no-scrollbar"
     >
 
       {/* SECTION 01: INSTITUTIONAL HERO (WHITE) */}
@@ -337,7 +337,7 @@ export default function UnifiedPage() {
       </section>
 
       {/* SECTION 07: SKY SCRAPE — SITE + DOCUMENTS (OBSIDIAN) */}
-      <section id="site-docs" className="snap-start relative min-h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center p-4 sm:p-6 md:p-12 shrink-0">
+      <section id="site-docs" className="snap-start relative h-[calc(100vh-64px)] w-full bg-[#0A0A0F] text-white flex flex-col items-center p-4 sm:p-6 md:p-12 shrink-0 overflow-hidden">
         <div className="absolute inset-0 tactical-grid pointer-events-none opacity-[0.03] z-0" />
         <div className="relative z-10 w-full max-w-7xl flex flex-col gap-4 md:gap-8">
             <div className="shrink-0">
