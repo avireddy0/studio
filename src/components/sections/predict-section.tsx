@@ -590,7 +590,7 @@ export function PredictSection() {
       <div className="shrink-0 mb-3 md:mb-5">
         <div className="flex items-center gap-3 mb-1.5">
           <Radio className="size-4 text-primary" />
-          <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/30">06_Predictive_Intelligence</h2>
+          <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/30">06_Sentiment_Analysis</h2>
         </div>
         <h3 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter leading-tight text-black">Predictive Intelligence.</h3>
         <p className="text-black/50 max-w-xl text-sm sm:text-base font-medium mt-1.5">

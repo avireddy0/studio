@@ -126,18 +126,18 @@ export function TacticalBimOverlay() {
           ))}
         </div>
 
-        {/* Bottom: 4D Timeline */}
+        {/* Bottom: Construction Timeline */}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-6 pb-3 px-4">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-white/60">4D_Timeline</span>
+            <span className="text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-white/60">Q1 2024</span>
             <div className="flex-1 h-px bg-white/[0.1]" />
-            <span className="text-[9px] font-mono text-white/50 font-bold">Q1 2024 — Q4 2026</span>
+            <span className="text-[9px] font-mono text-white/50 font-bold">Q4 2026</span>
           </div>
           <div className="relative h-1.5 bg-white/[0.06] overflow-visible">
             <div className="absolute inset-y-0 left-0 bg-primary/50" style={{ width: '38%' }} />
             {[
-              { pos: '0%' }, { pos: '15%' }, { pos: '32%' },
-              { pos: '55%' }, { pos: '72%' }, { pos: '88%' },
+              { pos: '0%' }, { pos: '18%' }, { pos: '36%' },
+              { pos: '55%' }, { pos: '73%' }, { pos: '91%' },
             ].map((m, i) => (
               <div key={i} className="absolute top-0 bottom-0" style={{ left: m.pos }}>
                 <div className={cn("w-px h-full", parseFloat(m.pos) <= 38 ? "bg-primary/70" : "bg-white/15")} />
@@ -149,8 +149,8 @@ export function TacticalBimOverlay() {
           </div>
           <div className="flex justify-between mt-1.5">
             {[
-              { label: 'SITE', done: true }, { label: 'FNDN', done: true }, { label: 'STRUCT', done: true },
-              { label: 'ENVEL', done: false }, { label: 'MEP', done: false }, { label: 'FINISH', done: false },
+              { label: 'Q1 \'24', done: true }, { label: 'Q3 \'24', done: true }, { label: 'Q1 \'25', done: true },
+              { label: 'Q3 \'25', done: false }, { label: 'Q1 \'26', done: false }, { label: 'Q4 \'26', done: false },
             ].map((m, i) => (
               <span key={i} className={cn("text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider", m.done ? "text-white/80" : "text-white/30")}>
                 {m.label}

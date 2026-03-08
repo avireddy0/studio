@@ -123,7 +123,7 @@ export function ContextSummarizer() {
     <div ref={containerRef} className="relative w-full h-full flex flex-col overflow-hidden">
       {/* Header */}
       <div className="shrink-0 mb-3 md:mb-4">
-        <h2 className="text-2xl sm:text-3xl md:text-5xl font-semibold tracking-tighter text-zinc-900 leading-tight mb-1.5 md:mb-2">
+        <h2 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter text-zinc-900 leading-tight mb-1.5 md:mb-2">
           Context is Everything.
         </h2>
         <p className="text-zinc-400 text-xs md:text-sm font-medium max-w-xl leading-relaxed">

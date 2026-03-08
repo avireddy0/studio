@@ -196,10 +196,22 @@ export function FeasibilitySection() {
 
   const toggleVault = useCallback(() => setVaultOpen(prev => !prev), []);
 
-  // Auto-open vault after 3 seconds
+  // Auto-open vault 3s after section scrolls into view
   useEffect(() => {
-    const timer = setTimeout(() => setVaultOpen(true), 3000);
-    return () => clearTimeout(timer);
+    const el = containerRef.current;
+    if (!el) return;
+    let timer: ReturnType<typeof setTimeout>;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          timer = setTimeout(() => setVaultOpen(true), 3000);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => { observer.disconnect(); clearTimeout(timer); };
   }, []);
 
   useEffect(() => {

@@ -231,7 +231,7 @@ export default function UnifiedPage() {
               <div className="space-y-2 sm:space-y-4 shrink-0">
                   <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
                       <Database className="size-3 sm:size-4 text-primary" />
-                      <h2 className="text-[9px] sm:text-[10px] font-bold tracking-[0.3em] sm:tracking-[0.4em] uppercase text-white/40">02_Data_Ingestion_Pipeline</h2>
+                      <h2 className="text-[9px] sm:text-[10px] font-bold tracking-[0.3em] sm:tracking-[0.4em] uppercase text-white/40">02_Unified_Dataflow</h2>
                   </div>
                   <h3 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">From Chaos to Control.</h3>
                   <p className="text-sm sm:text-base md:text-lg text-white/60 max-w-2xl leading-relaxed font-medium">
@@ -251,7 +251,7 @@ export default function UnifiedPage() {
         <div className="relative z-10 w-full max-w-7xl h-full flex flex-col">
             <div className="flex items-center gap-3 mb-3 md:mb-6 shrink-0">
                 <Terminal className="size-4 text-primary" />
-                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/40">03_Intelligence_Terminal_Core</h2>
+                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/40">03_Construction_Intelligence</h2>
             </div>
 
             <div className="mb-4 md:mb-8 shrink-0">
@@ -281,7 +281,7 @@ export default function UnifiedPage() {
           <div className="relative z-10 w-full max-w-7xl flex flex-col h-full">
               <div className="flex items-center gap-3 mb-3 md:mb-6 shrink-0">
                   <Zap className="size-4 text-[#007C5A]" />
-                  <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-zinc-400">04_Context_Fusion_Engine</h2>
+                  <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-zinc-400">04_Context_Engine</h2>
               </div>
               <ContextSummarizer />
           </div>
@@ -294,7 +294,7 @@ export default function UnifiedPage() {
             <div className="shrink-0 space-y-2">
               <div className="flex items-center gap-3 mb-2">
                 <Layers className="size-4 text-primary" />
-                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">05_Tactical_Lidar_Bim</h2>
+                <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">05_Digital_Twin_Overlay</h2>
               </div>
               <h3 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tighter leading-tight">Expectations Meet Reality.</h3>
               <p className="text-white/50 max-w-xl text-sm sm:text-base font-medium mt-2">

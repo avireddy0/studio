@@ -2491,3 +2491,94 @@ lsof -ti:9002 | xargs kill -9 2>/dev/null; nohup npm run dev > /tmp/studio-dev.l
 sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
 npm run build 2>&1 | tail -10
 npm run build 2>&1 | tail -10
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/vault-hud.png
+lsof -ti:9002 | xargs kill -9 2>/dev/null; rm -rf /Users/avireddy/GitHub/studio/.next && nohup npm run dev --prefix /Users/avireddy/GitHub/studio > /tmp/studio-dev.log 2>&1 &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/vault-hud2.png
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 2 && xcrun simctl io "$UDID" screenshot /tmp/vault-glow.png
+curl -s -o /Users/avireddy/GitHub/studio/public/satellite-la.png "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=-118.2475,34.0495,-118.2395,34.0555&bboxSR=4326&size=1600,800&format=png&f=image" && ls -lh /Users/avireddy/GitHub/studio/public/satellite-la.png
+npm run build --prefix /Users/avireddy/GitHub/studio 2>&1 | tail -10
+lsof -ti:9002 | xargs kill -9 2>/dev/null; rm -rf /Users/avireddy/GitHub/studio/.next && nohup npm run dev --prefix /Users/avireddy/GitHub/studio > /tmp/studio-dev.log 2>&1 &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+npm run build --prefix /Users/avireddy/GitHub/studio 2>&1 | tail -15
+lsof -ti:9002 | xargs kill -9 2>/dev/null; rm -rf /Users/avireddy/GitHub/studio/.next && nohup npm run dev --prefix /Users/avireddy/GitHub/studio > /tmp/studio-dev.log 2>&1 &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+npm run build --prefix /Users/avireddy/GitHub/studio 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; rm -rf /Users/avireddy/GitHub/studio/.next && nohup npm run dev --prefix /Users/avireddy/GitHub/studio > /tmp/studio-dev.log 2>&1 &
+sleep 8 && UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 5 && xcrun simctl io "$UDID" screenshot /tmp/vault-v3.png
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+tail -5 /tmp/studio-dev.log
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/vault-v4.png
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/vault-teal.png
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/vault-raised.png
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/vault-clean.png
+npm run build --prefix /Users/avireddy/GitHub/studio 2>&1 | tail -5
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/vault-v5.png
+lsof -ti:9002 | xargs kill -9 2>/dev/null; rm -rf /Users/avireddy/GitHub/studio/.next && nohup npm run dev --prefix /Users/avireddy/GitHub/studio > /tmp/studio-dev.log 2>&1 &
+sleep 12 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null; sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 7 && xcrun simctl io "$UDID" screenshot /tmp/vault-v6.png
+npm run build 2>&1 | tail -20
+npm run build 2>&1 | tail -5
+npm run build 2>&1 | tail -5
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=tactical-bim" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/bim-section.png
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/skyscrape-section.png
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 10 && UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=site-docs" 2>/dev/null && sleep 8 && xcrun simctl io "$UDID" screenshot /tmp/skyscrape-section2.png
+npm run build 2>&1 | tail -5
+npm run build 2>&1 | tail -10
+lsof -ti:9002 | xargs kill -9 2>/dev/null; rm -rf /Users/avireddy/GitHub/studio/.next; npm run dev &
+sleep 12 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=tactical-bim" 2>/dev/null && sleep 8 && xcrun simctl io "$UDID" screenshot /tmp/bim-v2.png
+git status
+git diff --stat
+git log --oneline -5
+npm run build 2>&1 | tail -5
+npm run build 2>&1 | tail -3
+npm run build 2>&1 | tail -3
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 10 && UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=tactical-bim" 2>/dev/null && sleep 8 && xcrun simctl io "$UDID" screenshot /tmp/bim-v3.png
+git add 'src/app/(dashboard)/page.tsx' src/app/globals.css src/app/layout.tsx src/components/sections/feasibility-section.tsx src/components/visualizations/tactical-bim-overlay.tsx public/satellite-la.png
+git commit -m "$(cat <<'EOF'
+feat: redesign BIM section with 4D timeline, floating vault, and drawer stats
+
+- Section 05: Add "Expectations Meet Reality" title/subtitle, full-width BIM
+  with left-side drawer stats and 4D construction timeline overlay
+- Section 07: Restore breathing room to title/subtitle, increase vault
+  legibility (larger text, wider modal)
+- Feasibility vault: Transparent HUD popup with cycling document status
+- Scroll snap: Switch to snap-mandatory, remove scroll-smooth for fluid feel
+- Satellite map: Serve locally from /satellite-la.png for instant loading
+- Remove ArcGIS preconnect/preload from layout
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)"
+git push
+npm run build 2>&1 | tail -3
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 10 && UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=tactical-bim" 2>/dev/null && sleep 10 && xcrun simctl io "$UDID" screenshot /tmp/bim-glass.png
+npm run build 2>&1 | tail -3
+npm run build 2>&1 | tail -3
+git add src/components/visualizations/tactical-bim-overlay.tsx src/components/visualizations/bim-scene.tsx && git commit -m "$(cat <<'EOF'
+feat: glassmorphism staircase stats + neutral night sky on BIM
+
+- Stats redesigned as frosted glass staircase steps fanning wider top to bottom
+- Environment lightformers changed from green rim to neutral cool tones
+- Reduced sky dome green cast for darker, more realistic night environment
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+lsof -ti:9002 2>/dev/null
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+npm run build 2>&1 | tail -30
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+curl -s http://localhost:9002 2>&1 | head -50
+lsof -ti:9002 | xargs kill -9 2>/dev/null; npm run dev &
+sleep 8 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
