@@ -576,23 +576,23 @@ export default function BimScene({
       <color attach="background" args={['#050508']} />
       <fog attach="fog" args={['#050508', 65, 160]} />
 
-      {/* Custom studio environment with visible night sky */}
+      {/* Custom studio environment — dark night sky, no green cast */}
       <Environment background resolution={512}>
-        {/* Night sky dome — deep blue-black gradient */}
-        <Lightformer intensity={0.08} position={[0, 50, 0]} scale={[120, 1, 120]} color="#0a0e1a" form="ring" />
-        <Lightformer intensity={0.05} position={[0, 30, 0]} scale={[100, 1, 100]} color="#0d1225" form="ring" />
+        {/* Night sky dome — deep blue-black */}
+        <Lightformer intensity={0.06} position={[0, 50, 0]} scale={[120, 1, 120]} color="#080c18" form="ring" />
+        <Lightformer intensity={0.04} position={[0, 30, 0]} scale={[100, 1, 100]} color="#0a0e1c" form="ring" />
         {/* Horizon glow — subtle warm city light pollution */}
-        <Lightformer intensity={0.15} position={[0, 2, -60]} scale={[120, 6, 1]} color="#1a1510" />
-        <Lightformer intensity={0.1} position={[60, 3, 0]} scale={[1, 5, 80]} color="#141018" />
-        <Lightformer intensity={0.1} position={[-60, 3, 0]} scale={[1, 5, 80]} color="#101418" />
+        <Lightformer intensity={0.12} position={[0, 2, -60]} scale={[120, 6, 1]} color="#18140e" />
+        <Lightformer intensity={0.08} position={[60, 3, 0]} scale={[1, 5, 80]} color="#100e16" />
+        <Lightformer intensity={0.08} position={[-60, 3, 0]} scale={[1, 5, 80]} color="#0e1216" />
         {/* Key — large warm panel from above (construction site lighting) */}
         <Lightformer intensity={3} position={[10, 35, 10]} scale={[25, 8, 1]} color="#fff8ee" />
         {/* Fill — cool from left */}
         <Lightformer intensity={1.2} position={[-18, 12, -5]} scale={[12, 15, 1]} color="#88bbff" />
-        {/* Rim — green accent from behind */}
-        <Lightformer intensity={1} position={[0, 8, -25]} scale={[35, 8, 1]} color="#007C5A" />
+        {/* Rim — subtle cool accent from behind (not green) */}
+        <Lightformer intensity={0.6} position={[0, 8, -25]} scale={[35, 8, 1]} color="#334455" />
         {/* Ground bounce — warm */}
-        <Lightformer intensity={0.5} position={[0, -3, 0]} scale={[40, 1, 40]} color="#332211" form="ring" />
+        <Lightformer intensity={0.4} position={[0, -3, 0]} scale={[40, 1, 40]} color="#2a1c0e" form="ring" />
         {/* Side accent — catching crane and columns */}
         <Lightformer intensity={0.8} position={[20, 15, 15]} scale={[8, 20, 1]} color="#ffffff" />
       </Environment>

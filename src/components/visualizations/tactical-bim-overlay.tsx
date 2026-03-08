@@ -108,23 +108,20 @@ export function TacticalBimOverlay() {
           </div>
         </div>
 
-        {/* Left: Stats drawers — fan out sequentially */}
-        <div className="absolute left-0 bottom-16 sm:bottom-20 flex flex-col gap-0 pointer-events-auto">
+        {/* Left: Glass staircase stats — each step wider */}
+        <div className="absolute left-0 bottom-16 sm:bottom-20 flex flex-col items-start gap-0.5 pointer-events-auto">
           {[
-            { label: 'OVERALL', value: '74.2%', sub: '+1.2%', color: 'border-primary', subColor: 'text-primary', indent: 'pl-3' },
-            { label: 'ACTIVE', value: 'F5 45%', sub: '', color: 'border-amber-500', subColor: 'text-amber-500', indent: 'pl-5' },
-            { label: 'CLASHES', value: '0', sub: 'Clear', color: 'border-cyan-400', subColor: 'text-primary', indent: 'pl-7' },
+            { label: 'PROG', value: '74.2%', color: 'text-primary', dot: 'bg-primary', w: 'w-20 sm:w-24' },
+            { label: 'ACTIVE', value: 'F5', color: 'text-amber-400', dot: 'bg-amber-400', w: 'w-24 sm:w-30' },
+            { label: 'CLASH', value: '0', color: 'text-cyan-400', dot: 'bg-cyan-400', w: 'w-28 sm:w-36' },
           ].map((m, i) => (
             <div
               key={i}
-              className={cn("bg-black/85 backdrop-blur-md border-l-2 pr-3 py-1.5 mb-px", m.color, m.indent)}
-              style={{ animationDelay: `${i * 0.15}s` }}
+              className={cn("bg-white/[0.04] backdrop-blur-md border border-white/[0.06] px-2 py-1 flex items-center gap-1.5", m.w)}
             >
-              <p className="text-[8px] text-white/35 uppercase tracking-widest leading-none font-bold">{m.label}</p>
-              <div className="flex items-baseline gap-1 mt-0.5">
-                <span className="text-base font-mono font-bold text-white leading-none">{m.value}</span>
-                {m.sub && <span className={cn("text-[8px] font-bold leading-none", m.subColor)}>{m.sub}</span>}
-              </div>
+              <div className={cn("size-1.5 rounded-full shrink-0", m.dot)} />
+              <span className="text-[7px] font-mono text-white/40 uppercase tracking-wider truncate">{m.label}</span>
+              <span className={cn("text-xs font-mono font-bold leading-none ml-auto shrink-0", m.color)}>{m.value}</span>
             </div>
           ))}
         </div>
