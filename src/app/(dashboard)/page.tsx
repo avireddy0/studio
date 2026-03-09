@@ -92,21 +92,22 @@ const CLOSING_FULL = "ENVISION OVERSIGHT";
 const CLOSING_DROP = new Set([10, 11, 12, 14, 15, 16, 17]);
 const CLOSING_DROP_ORDER = [10, 11, 12, 14, 15, 16, 17];
 
-// Clean 2D dust — small sharp particles radiate outward, no ovals or rings
+// VTOL rotor wash — downwash deflects off ground, particles radiate outward and upward
 function DustParticles({ active }: { active: boolean }) {
-  // Rotor wash — dust rises upward from drone perimeter like a ramp, then dissipates
   const particles = useRef(
-    Array.from({ length: 28 }, (_, i) => {
-      const side = i < 14 ? -1 : 1;
-      const idx = i % 14;
-      const startX = side * (15 + idx * 3 + Math.random() * 5);
-      const endX = side * (30 + idx * 5 + Math.random() * 20);
-      const endY = -(25 + Math.random() * 45);
+    Array.from({ length: 48 }, (_, i) => {
+      // Full 360° radial distribution (VTOL downwash spreads in all directions)
+      const angle = (i / 48) * Math.PI * 2 + (Math.random() - 0.5) * 0.3;
+      const innerR = 14 + Math.random() * 10;
+      const outerR = 40 + Math.random() * 35;
+      const startX = Math.cos(angle) * innerR;
+      const endX = Math.cos(angle) * outerR;
+      const endY = -(15 + Math.random() * 50); // rise upward (ground deflection)
       return {
         id: i, startX, endX, endY,
-        size: 1.5 + Math.random() * 2,
-        delay: idx * 30 + Math.random() * 150,
-        duration: 800 + Math.random() * 600,
+        size: 3 + Math.random() * 3,
+        delay: Math.random() * 250,
+        duration: 600 + Math.random() * 800,
       };
     })
   ).current;
@@ -114,15 +115,15 @@ function DustParticles({ active }: { active: boolean }) {
   if (!active) return null;
 
   return (
-    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-8 pointer-events-none">
+    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-6 pointer-events-none">
       {particles.map(p => (
         <div
           key={`d-${p.id}`}
-          className="absolute rounded-full bg-black/20"
+          className="absolute rounded-full bg-neutral-400"
           style={{
             width: p.size,
             height: p.size,
-            animation: `dustRise ${p.duration}ms cubic-bezier(0.2, 0.6, 0.3, 1) ${p.delay}ms forwards`,
+            animation: `dustRise ${p.duration}ms cubic-bezier(0.15, 0.5, 0.3, 1) ${p.delay}ms both`,
             ['--startX' as string]: `${p.startX}px`,
             ['--endX' as string]: `${p.endX}px`,
             ['--endY' as string]: `${p.endY}px`,
@@ -161,10 +162,12 @@ function ClosingSequence() {
   const [landed, setLanded] = useState(false);
   const [propSpeed, setPropSpeed] = useState<'off' | 'fast' | 'slow'>('off');
   const [dustActive, setDustActive] = useState(false);
+  const [lidarActive, setLidarActive] = useState(false);
   const [shadowProgress, setShadowProgress] = useState(0);
   const [typePhase, setTypePhase] = useState<'idle' | 'typing' | 'pause' | 'dropping' | 'done'>('idle');
   const [charIndex, setCharIndex] = useState(0);
   const [powerOn, setPowerOn] = useState(false);
+  const lidarRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -197,136 +200,140 @@ function ClosingSequence() {
     setPropSpeed('fast');
 
     const t: ReturnType<typeof setTimeout>[] = [];
-    // Lift up from header — deliberate hover (like a real takeoff)
-    t.push(setTimeout(() => setGhostPhase('hovering'), 300));
-    // Hold hover for 2.5 seconds, then depart
-    t.push(setTimeout(() => setGhostPhase('exiting'), 2800));
-    t.push(setTimeout(() => setGhostPhase('gone'), 4000));
-    t.push(setTimeout(() => setFlying(true), 4000));
-    // Text types during flight — "ENVISION OVERSIGHT" visible before landing
-    t.push(setTimeout(() => setTypePhase('typing'), 7000));
-    // Dust as drone nears ground
-    t.push(setTimeout(() => setDustActive(true), 10000));
-    // Dust fades out
-    t.push(setTimeout(() => setDustActive(false), 12200));
+    // VTOL: drone separates from header, hovers visibly
+    t.push(setTimeout(() => setGhostPhase('hovering'), 200));
+    // Hold hover 1.8s — dramatic pause before departure
+    t.push(setTimeout(() => setGhostPhase('exiting'), 2000));
+    t.push(setTimeout(() => setGhostPhase('gone'), 3000));
+    t.push(setTimeout(() => setFlying(true), 3000));
+    // Text types during flight
+    t.push(setTimeout(() => setTypePhase('typing'), 3800));
+    // LiDAR scan activates during descent approach
+    t.push(setTimeout(() => setLidarActive(true), 6000));
+    // Dust as rotor wash hits ground during vertical descent
+    t.push(setTimeout(() => setDustActive(true), 7000));
     // Props decelerate
-    t.push(setTimeout(() => setPropSpeed('slow'), 11000));
-    // TOUCHDOWN — dramatic letter-drop + green light flash, all at once
+    t.push(setTimeout(() => setPropSpeed('slow'), 7400));
+    // TOUCHDOWN — LiDAR off, letter-drop + green light flash
     t.push(setTimeout(() => {
+      setLidarActive(false);
       setLanded(true); setFlying(false); setPropSpeed('off');
       setTypePhase('dropping');
-    }, 12000));
+    }, 8000));
+    // Dust fades naturally via dustRise keyframe (animates to opacity:0)
     return () => t.forEach(clearTimeout);
   }, [inView]);
 
-  // Physics-based flight simulation — real forces: gravity, thrust, drag, angular momentum
+  // Physics: enters from left (after departing header), S-curve flight, then VTOL vertical descent to land
   useEffect(() => {
     if (!flying || !droneRef.current) return;
 
-    // State: position, velocity, angle
-    let x = -320, y = -220;     // start off-screen left, high
-    let vx = 70, vy = 5;         // initial velocity: gentler entry
-    let angle = -10;              // initial bank angle (degrees)
+    // Enter from left side (matching ghost exit direction)
+    let x = -180, y = -80;       // off-screen left, slightly above center
+    let vx = 130, vy = 5;        // fast confident entry from left
+    let angle = -5;               // slight bank into the entry
 
-    // Target position (center of section)
     const tx = 0, ty = 0;
 
-    // Physics constants — stable, well-tuned DJI-like flight controller
-    const GRAVITY = 22;           // px/s² — light gravity, floaty
-    const DRAG = 0.98;            // velocity damping — smooth deceleration
-    const THRUST_POWER = 400;     // max thrust px/s² — gentle
-    const ANGULAR_DRAG = 0.85;    // heavy rotation damping — very stable
-    const MAX_BANK = 6;           // max tilt degrees — barely noticeable, pro pilot
-    const GROUND_EFFECT = 35;     // y threshold where ground effect kicks in
-    const dt = 1 / 60;            // 60fps timestep
+    // Physics constants
+    const GRAVITY = 24;
+    const DRAG = 0.965;
+    const THRUST_POWER = 500;
+    const MAX_BANK = 12;
+    const GROUND_EFFECT = 35;
 
-    // Flight phases by time
-    const totalTime = 8000;       // 8 seconds — crisp purposeful flight
+    const totalTime = 5000;
     const startTime = performance.now();
     let lastTime = startTime;
+
+    const blend = (t: number, center: number, width: number) =>
+      Math.max(0, 1 - Math.abs(t - center) / width);
 
     let rafId: number;
     const frame = (now: number) => {
       const elapsed = now - startTime;
-      const raw = Math.min(1, elapsed / totalTime);
-
-      // Adaptive dt for frame-rate independence
+      const t = Math.min(1, elapsed / totalTime);
       const frameDt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
 
-      // Phase-based thrust targets (simulates pilot input)
       let thrustX = 0, thrustY = 0;
 
-      if (raw < 0.18) {
-        // Phase 1: Gentle entry from left — cruising right
-        thrustX = THRUST_POWER * 0.45;
-        thrustY = -GRAVITY * 1.2;
-      } else if (raw < 0.3) {
-        // Phase 2: Ease off lateral thrust, begin banking — graceful arc
-        thrustX = THRUST_POWER * 0.1;
-        thrustY = -GRAVITY * 0.95;
-      } else if (raw < 0.5) {
-        // Phase 3: Swoop back left — the S-curve return, gentle descent
-        thrustX = -THRUST_POWER * 0.3;
-        thrustY = -GRAVITY * 0.75;
-      } else if (raw < 0.65) {
-        // Phase 4: Correct back toward center — smooth steering
-        const errX = tx - x;
-        const errY = (ty - 50) - y;
-        thrustX = errX * 2;
-        thrustY = errY * 1.8 - GRAVITY * 0.5;
-      } else if (raw < 0.8) {
-        // Phase 5: Controlled hover approach — PD controller, gentle
-        const errX = tx - x;
-        const errY = (ty - 20) - y;
-        const dampX = -vx * 3.5;
-        const dampY = -vy * 4;
-        thrustX = errX * 3 + dampX;
-        thrustY = errY * 2.5 + dampY - GRAVITY * 0.4;
-      } else {
-        // Phase 6: Final precision descent — very gentle PD
-        const errX = tx - x;
-        const errY = ty - y;
-        const dampX = -vx * 5;
-        const dampY = -vy * 6;
-        thrustX = errX * 4 + dampX;
-        thrustY = errY * 3 + dampY - GRAVITY * 0.3;
+      // Phase 1 (0-0.15): Sweep in from left, climbing
+      const entry = blend(t, 0.1, 0.15);
+      thrustX += entry * THRUST_POWER * 0.4;
+      thrustY += entry * -GRAVITY * 1.5;
 
-        // Ground effect — air cushion near surface
+      // Phase 2 (0.15-0.30): Arc — bank left, theatrical S-curve
+      const arc = blend(t, 0.25, 0.12);
+      thrustX += arc * -THRUST_POWER * 0.5;
+      thrustY += arc * -GRAVITY * 1.1;
+
+      // Phase 3 (0.30-0.45): Return sweep toward center
+      const ret = blend(t, 0.42, 0.12);
+      thrustX += ret * THRUST_POWER * 0.25;
+      thrustY += ret * -GRAVITY * 0.7;
+
+      // Phase 4 (0.45-0.65): Station-keeping — position directly above landing zone
+      if (t > 0.45 && t <= 0.65) {
+        const station = Math.min(1, (t - 0.45) / 0.15);
+        const hoverY = -80;
+        const errX = tx - x;
+        const errY = hoverY - y;
+        const kp = 3 + station * 6;
+        const kd = 3 + station * 6;
+        thrustX += station * (errX * kp - vx * kd);
+        thrustY += station * (errY * kp - vy * kd - GRAVITY);
+      }
+
+      // Phase 5 (0.65-1.0): VTOL DESCENT — pure vertical landing
+      // Drone locks horizontal position, descends straight down with deceleration
+      if (t > 0.6) {
+        const descent = Math.min(1, (t - 0.6) / 0.4);
+        const easeDesc = descent * descent * (3 - 2 * descent);
+        const targetY = -80 + (ty - (-80)) * easeDesc;
+        const errX = tx - x;
+        const errY = targetY - y;
+
+        // Very stiff horizontal hold — VTOL locks position
+        thrustX = errX * 14 - vx * 16;
+
+        // Controlled vertical descent with deceleration near ground
+        thrustY = errY * 6 - vy * 10 - GRAVITY * 0.3;
+
+        // Ground effect cushion
         if (y > -GROUND_EFFECT) {
-          const groundFactor = 1 - (y + GROUND_EFFECT) / GROUND_EFFECT;
-          thrustY -= groundFactor * 150;
+          const gf = 1 - (y + GROUND_EFFECT) / GROUND_EFFECT;
+          thrustY -= gf * 200 * descent;
         }
       }
 
-      // Clamp thrust
+      // Clamp
       thrustX = Math.max(-THRUST_POWER, Math.min(THRUST_POWER, thrustX));
       thrustY = Math.max(-THRUST_POWER * 1.5, Math.min(THRUST_POWER, thrustY));
 
-      // Apply forces
-      vx += (thrustX + 0) * frameDt;              // no wind for now
-      vy += (thrustY + GRAVITY) * frameDt;          // gravity always pulls down
-
-      // Drag
+      // Physics integration
+      vx += thrustX * frameDt;
+      vy += (thrustY + GRAVITY) * frameDt;
       vx *= Math.pow(DRAG, frameDt * 60);
       vy *= Math.pow(DRAG, frameDt * 60);
-
-      // Update position
       x += vx * frameDt;
       y += vy * frameDt;
 
-      // Bank angle — subtle tilt into movement, heavily damped for precision feel
-      const targetAngle = Math.max(-MAX_BANK, Math.min(MAX_BANK, -(thrustX / THRUST_POWER) * MAX_BANK * 0.8));
-      // Slow spring toward target angle — no overshoot
-      angle += (targetAngle - angle) * 2.5 * frameDt;
+      // Bank angle — proportional to lateral velocity (VTOL tilts into movement)
+      const targetAngle = Math.max(-MAX_BANK, Math.min(MAX_BANK,
+        -(thrustX / THRUST_POWER) * MAX_BANK));
+      // During descent (t > 0.65), rapidly level out
+      const levelFactor = t > 0.65 ? Math.min(1, (t - 0.65) / 0.1) : 0;
+      const effectiveTarget = targetAngle * (1 - levelFactor * 0.9);
+      angle += (effectiveTarget - angle) * 3.5 * frameDt;
 
-      // Scale based on progress (distant = small, close = full)
-      const scale = 0.35 + raw * 0.65;
+      // Scale: starts smaller (distant), grows to full as it approaches
+      const scale = 0.4 + Math.min(0.6, t * 0.8);
 
-      // Final landing snap — last 5%, ease to exact position
-      if (raw > 0.95) {
-        const snap = (raw - 0.95) / 0.05;
-        const ease = snap * snap * (3 - 2 * snap); // smoothstep
+      // Final snap to exact center
+      if (t > 0.95) {
+        const snap = (t - 0.95) / 0.05;
+        const ease = snap * snap * (3 - 2 * snap);
         x = x * (1 - ease);
         y = y * (1 - ease);
         angle = angle * (1 - ease);
@@ -334,11 +341,44 @@ function ClosingSequence() {
 
       if (droneRef.current) {
         droneRef.current.style.transform = `translate(${x}px, ${y}px) scale(${Math.min(1, scale)}) rotate(${angle}deg)`;
-        droneRef.current.style.opacity = raw > 0.01 ? '1' : '0';
+        droneRef.current.style.opacity = t > 0.01 ? '1' : '0';
       }
-      setShadowProgress(Math.max(0, 1 - Math.pow(1 - raw, 2.5)));
 
-      if (raw < 1) {
+      // Update LiDAR scan height dynamically based on altitude
+      if (lidarRef.current && t > 0.55) {
+        const altitude = Math.max(0, -y);
+        const scanH = Math.min(120, Math.max(20, altitude - 5));
+        const coneW = scanH * 0.35;
+        lidarRef.current.setAttribute('viewBox', `0 0 80 ${scanH}`);
+        lidarRef.current.style.height = `${scanH}px`;
+        const cone = lidarRef.current.querySelector('#lidarCone') as SVGPolygonElement;
+        if (cone) cone.setAttribute('points', `40,0 ${40 - coneW},${scanH} ${40 + coneW},${scanH}`);
+        const fill = lidarRef.current.querySelector('#lidarFill') as SVGPolygonElement;
+        if (fill) fill.setAttribute('points', `40,0 ${40 - coneW},${scanH} ${40 + coneW},${scanH}`);
+        // Update scan line positions
+        const lines = lidarRef.current.querySelectorAll('.lidar-hline');
+        lines.forEach((line, i) => {
+          const ly = scanH * ((i + 1) / (lines.length + 1));
+          const lw = (ly / scanH) * coneW * 2;
+          line.setAttribute('x1', `${40 - lw / 2}`);
+          line.setAttribute('x2', `${40 + lw / 2}`);
+          line.setAttribute('y1', `${ly}`);
+          line.setAttribute('y2', `${ly}`);
+        });
+        // Update target circle position
+        const target = lidarRef.current.querySelector('#lidarTarget') as SVGCircleElement;
+        if (target) { target.setAttribute('cy', `${scanH - 3}`); target.setAttribute('cx', '40'); }
+        const targetPulse = lidarRef.current.querySelector('#lidarPulse') as SVGCircleElement;
+        if (targetPulse) { targetPulse.setAttribute('cy', `${scanH - 3}`); targetPulse.setAttribute('cx', '40'); }
+        const crossH = lidarRef.current.querySelector('#lidarCrossH') as SVGLineElement;
+        if (crossH) { crossH.setAttribute('y1', `${scanH - 3}`); crossH.setAttribute('y2', `${scanH - 3}`); crossH.setAttribute('x1', `${40 - 10}`); crossH.setAttribute('x2', `${40 + 10}`); }
+        const crossV = lidarRef.current.querySelector('#lidarCrossV') as SVGLineElement;
+        if (crossV) { crossV.setAttribute('x1', '40'); crossV.setAttribute('x2', '40'); crossV.setAttribute('y1', `${scanH - 13}`); crossV.setAttribute('y2', `${scanH + 2}`); }
+      }
+
+      setShadowProgress(Math.max(0, 1 - Math.pow(1 - t, 2.5)));
+
+      if (t < 1) {
         rafId = requestAnimationFrame(frame);
       }
     };
@@ -385,26 +425,27 @@ function ClosingSequence() {
       };
     }
     if (ghostPhase === 'hovering') {
-      // Lift up ~12px from header — subtle hover, stays in frame on mobile
+      // VTOL: lift straight up ~25px — visible vertical hover without going behind Dynamic Island
+      // VTOL hover: drone lifts off header, drops into visible viewport, grows in size
       return {
         position: 'fixed' as const,
-        top: ghostPos.top - 12,
-        left: ghostPos.left,
-        width: ghostPos.width,
-        height: ghostPos.height,
+        top: ghostPos.top + 70,
+        left: ghostPos.left - ghostPos.width * 0.35,
+        width: ghostPos.width * 1.7,
+        height: ghostPos.height * 1.7,
         opacity: 1,
-        transition: 'top 600ms cubic-bezier(0.2, 0, 0.4, 1)',
+        transition: 'all 800ms cubic-bezier(0.2, 0, 0.3, 1)',
         zIndex: 100,
         pointerEvents: 'none' as const,
       };
     }
-    // exiting — fly off-screen left and down
+    // exiting — fly off-screen left
     return {
       position: 'fixed' as const,
-      top: ghostPos.top + 200,
-      left: -150,
-      width: ghostPos.width,
-      height: ghostPos.height,
+      top: ghostPos.top + 250,
+      left: -200,
+      width: ghostPos.width * 1.7,
+      height: ghostPos.height * 1.7,
       opacity: 0,
       transition: 'all 1000ms cubic-bezier(0.4, 0, 0.2, 1)',
       zIndex: 100,
@@ -433,10 +474,20 @@ function ClosingSequence() {
           100% { transform: rotate(770deg); }
         }
         @keyframes dustRise {
-          0% { left: var(--startX); top: 8px; opacity: 0.5; }
-          40% { opacity: 0.4; }
-          70% { opacity: 0.2; }
+          0% { left: var(--startX); top: 8px; opacity: 0.6; }
+          30% { opacity: 0.5; }
+          60% { opacity: 0.3; }
           100% { left: var(--endX); top: var(--endY); opacity: 0; }
+        }
+        @keyframes lidarSweep {
+          0% { transform: translateY(8px); opacity: 0.15; }
+          50% { transform: translateY(70px); opacity: 0.35; }
+          100% { transform: translateY(8px); opacity: 0.15; }
+        }
+        @keyframes lidarPulse {
+          0% { r: 4; opacity: 0.5; }
+          50% { r: 10; opacity: 0.15; }
+          100% { r: 4; opacity: 0.5; }
         }
         @keyframes powerFlash {
           0% { opacity: 0; transform: scale(0.3); box-shadow: 0 0 0 rgba(0,124,90,0); }
@@ -482,6 +533,40 @@ function ClosingSequence() {
             filter: `blur(${Math.max(1, 6 - shadowProgress * 5)}px)`,
           }}
         />
+        {/* LiDAR scan — red laser cone projecting downward during VTOL descent */}
+        {lidarActive && (
+          <svg
+            ref={lidarRef}
+            className="absolute left-1/2 -translate-x-1/2 pointer-events-none"
+            style={{ top: '100%', marginTop: 2 }}
+            width="80" height="90" viewBox="0 0 80 90"
+          >
+            <defs>
+              <linearGradient id="lidarGrad" x1="40" y1="0" x2="40" y2="90" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#DC2626" stopOpacity="0.1" />
+                <stop offset="100%" stopColor="#DC2626" stopOpacity="0.02" />
+              </linearGradient>
+            </defs>
+            {/* Cone fill */}
+            <polygon id="lidarFill" points="40,0 12,85 68,85" fill="url(#lidarGrad)" />
+            {/* Cone edges */}
+            <polygon id="lidarCone" points="40,0 12,85 68,85" fill="none" stroke="#DC2626" strokeWidth="0.4" opacity="0.3" />
+            {/* Horizontal scan lines */}
+            <line className="lidar-hline" x1="30" y1="22" x2="50" y2="22" stroke="#DC2626" strokeWidth="0.3" opacity="0.2" strokeDasharray="1.5 3" />
+            <line className="lidar-hline" x1="24" y1="42" x2="56" y2="42" stroke="#DC2626" strokeWidth="0.3" opacity="0.25" strokeDasharray="1.5 3" />
+            <line className="lidar-hline" x1="18" y1="62" x2="62" y2="62" stroke="#DC2626" strokeWidth="0.3" opacity="0.3" strokeDasharray="1.5 3" />
+            {/* Sweep bar */}
+            <rect x="15" y="0" width="50" height="1.5" rx="0.5" fill="#DC2626" opacity="0.25"
+              style={{ animation: 'lidarSweep 1s ease-in-out infinite' }} />
+            {/* Target crosshair at bottom */}
+            <line id="lidarCrossH" x1="30" y1="82" x2="50" y2="82" stroke="#DC2626" strokeWidth="0.3" opacity="0.5" />
+            <line id="lidarCrossV" x1="40" y1="72" x2="40" y2="87" stroke="#DC2626" strokeWidth="0.3" opacity="0.5" />
+            {/* Target circles */}
+            <circle id="lidarTarget" cx="40" cy="82" r="1.5" fill="#DC2626" opacity="0.6" />
+            <circle id="lidarPulse" cx="40" cy="82" r="6" fill="none" stroke="#DC2626" strokeWidth="0.4" opacity="0.3"
+              style={{ animation: 'lidarPulse 1.2s ease-out infinite' }} />
+          </svg>
+        )}
         <DustParticles active={dustActive} />
       </div>
 
