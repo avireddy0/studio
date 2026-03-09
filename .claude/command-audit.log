@@ -2769,3 +2769,11 @@ git diff --stat
 git log --oneline -5
 git diff 'src/app/(dashboard)/page.tsx' | head -50
 git diff HEAD -- 'src/app/(dashboard)/page.tsx' | head -20
+git log --oneline -1 -- 'src/app/(dashboard)/page.tsx'
+git show 077ec10 --stat
+grep -c "lidarActive" 'src/app/(dashboard)/page.tsx'
+grep -c "VTOL" 'src/app/(dashboard)/page.tsx'
+git diff --stat HEAD
+git log --oneline -3 -- 'src/app/(dashboard)/page.tsx'
+git show 077ec10 -- 'src/app/(dashboard)/page.tsx' | grep -c "lidarActive"
+git show 077ec10 -- 'src/app/(dashboard)/page.tsx' | grep -c "ghostPos.top + 70"
