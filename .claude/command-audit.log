@@ -2763,3 +2763,9 @@ UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" co
 lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
 sleep 6 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
 UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null && sleep 1.2 && xcrun simctl io "$UDID" screenshot /tmp/gh-a.png 2>/dev/null && sleep 0.8 && xcrun simctl io "$UDID" screenshot /tmp/gh-b.png 2>/dev/null && sleep 0.8 && xcrun simctl io "$UDID" screenshot /tmp/gh-c.png 2>/dev/null
+npm run build 2>&1 | tail -5
+git status
+git diff --stat
+git log --oneline -5
+git diff 'src/app/(dashboard)/page.tsx' | head -50
+git diff HEAD -- 'src/app/(dashboard)/page.tsx' | head -20
