@@ -576,10 +576,13 @@ function ClosingSequence() {
         typePhase === 'idle' ? "opacity-0" : "opacity-100"
       )}>
         <div className="flex items-center justify-center gap-3">
-          <span className={cn(
-            "text-2xl sm:text-4xl md:text-5xl font-bold uppercase transition-colors duration-500",
-            isGreen ? 'text-primary' : 'text-black'
-          )}>
+          <span
+            className={cn(
+              "font-bold uppercase transition-colors duration-500 whitespace-nowrap",
+              isGreen ? 'text-primary' : 'text-black'
+            )}
+            style={{ fontSize: 'clamp(1rem, 4.8vw, 3rem)' }}
+          >
             {CLOSING_FULL.split('').map((char, i) => {
               const shouldDrop = CLOSING_DROP.has(i);
               const dropped = isDropping && shouldDrop;
