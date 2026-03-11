@@ -129,9 +129,9 @@ export function TacticalBimOverlay() {
         {/* Bottom: Construction Timeline */}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-6 pb-3 px-4">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-white/60">Q1 2024</span>
+            <span className="text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-white/60">Q1 2026</span>
             <div className="flex-1 h-px bg-white/[0.1]" />
-            <span className="text-[9px] font-mono text-white/50 font-bold">Q4 2026</span>
+            <span className="text-[9px] font-mono text-white/50 font-bold">Q4 2028</span>
           </div>
           <div className="relative h-1.5 bg-white/[0.06] overflow-visible">
             <div className="absolute inset-y-0 left-0 bg-primary/50" style={{ width: '38%' }} />

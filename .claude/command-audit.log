@@ -2777,3 +2777,28 @@ git diff --stat HEAD
 git log --oneline -3 -- 'src/app/(dashboard)/page.tsx'
 git show 077ec10 -- 'src/app/(dashboard)/page.tsx' | grep -c "lidarActive"
 git show 077ec10 -- 'src/app/(dashboard)/page.tsx' | grep -c "ghostPos.top + 70"
+git show 077ec10 -- 'src/app/(dashboard)/page.tsx' | grep "DC2626" | head -3
+git log --oneline origin/main..HEAD
+lsof -ti:9002 | head -1
+UDID="6D376F1D-2AB6-4314-ABA7-E874D263C943" && xcrun simctl boot "$UDID" 2>/dev/null; sleep 2 && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null && sleep 10 && xcrun simctl io "$UDID" screenshot /tmp/small-closing.png 2>/dev/null
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null && sleep 10 && xcrun simctl io "$UDID" screenshot /tmp/std-closing.png 2>/dev/null
+lsof -ti:9002 | xargs kill -9 2>/dev/null; sleep 1; npm run dev &
+sleep 6 && curl -s -o /dev/null -w "%{http_code}" http://localhost:9002
+xcrun simctl boot 1311D811-5479-4E95-B2FD-67CD57CE77F6 2>/dev/null; sleep 3 && open -a Simulator
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari && sleep 2 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" && sleep 12 && xcrun simctl io "$UDID" screenshot /tmp/resp-std.png
+UDID="1311D811-5479-4E95-B2FD-67CD57CE77F6" && xcrun simctl terminate "$UDID" com.apple.mobilesafari 2>/dev/null || true && sleep 1 && xcrun simctl launch "$UDID" com.apple.mobilesafari 2>/dev/null && sleep 1 && xcrun simctl openurl "$UDID" "http://localhost:9002/?s=closing" 2>/dev/null && sleep 6 && xcrun simctl io "$UDID" screenshot /tmp/resp-typing.png 2>/dev/null
+git status
+git diff 'src/app/(dashboard)/page.tsx'
+npm run build 2>&1 | tail -3
+git add 'src/app/(dashboard)/page.tsx' && git commit -m "$(cat <<'EOF'
+fix: make closing section typewriter text responsive with clamp()
+
+Replace fixed breakpoint font sizes with fluid clamp(1rem, 4.8vw, 3rem)
+and whitespace-nowrap to keep "ENVISION OVERSIGHT" on one line across
+all viewport widths.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+EOF
+)" && git push
+npm run build 2>&1 | tail -20
+npm run build 2>&1 | tail -5

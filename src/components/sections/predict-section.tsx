@@ -603,7 +603,7 @@ export function PredictSection() {
       <style>{`
         @keyframes faceScanSweep { 0%, 100% { top: 0%; } 50% { top: 100%; } }
         @keyframes hudScanLine { 0% { top: -2px; } 100% { top: 100%; } }
-        @keyframes captionSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes captionSlideIn { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes glitchFlicker { 0%, 94%, 100% { opacity: 1; } 95% { opacity: 0.2; } 96% { opacity: 0.9; } 97% { opacity: 0.3; } 98% { opacity: 0.7; } }
       `}</style>
 
@@ -614,7 +614,7 @@ export function PredictSection() {
           <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black/30">06_Sentiment_Analysis</h2>
         </div>
         <h3 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter leading-tight text-black">Predictive Intelligence.</h3>
-        <p className="text-black/50 max-w-xl text-sm sm:text-base font-medium mt-1.5">
+        <p className="text-black/50 max-w-xl text-sm sm:text-base font-medium mt-1.5 whitespace-nowrap overflow-hidden text-ellipsis">
           Monitor municipal proceedings and media signals. Detect sentiment shifts before they become project risks.
         </p>
       </div>
@@ -807,14 +807,15 @@ export function PredictSection() {
               "absolute inset-0 overflow-hidden transition-all duration-600 ease-out z-10",
               alertVisible ? "opacity-0 scale-[0.97] blur-sm pointer-events-none" : "opacity-100"
             )}>
-              {/* Top fade mask */}
-              <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-white via-white/80 to-transparent z-10 pointer-events-none" />
+              {/* Bottom fade mask */}
+              <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white via-white/80 to-transparent z-10 pointer-events-none" />
 
-              {/* Captions anchored to bottom, push upward */}
-              <div className="absolute inset-0 flex flex-col justify-end px-3 pb-3 gap-1.5">
+              {/* Captions flow top-down */}
+              <div className="absolute inset-0 flex flex-col justify-start px-3 pt-3 gap-1.5 overflow-hidden">
                 {CAPTIONS.slice(0, visibleCaptions).map((caption, i) => {
                   const age = Math.max(0, visibleCaptions - 1 - i);
                   const isNewest = i === visibleCaptions - 1;
+                  const distFromBottom = visibleCaptions - 1 - i;
                   return (
                     <div
                       key={i}
@@ -824,7 +825,7 @@ export function PredictSection() {
                         caption.sentiment < -0.3 ? "border-l-amber-500 bg-amber-50" : "border-l-black/[0.08] bg-black/[0.02]"
                       )}
                       style={{
-                        opacity: Math.max(0.15, 1 - age * 0.2),
+                        opacity: Math.max(0.15, 1 - distFromBottom * 0.2),
                         animation: isNewest ? 'captionSlideIn 400ms ease-out' : undefined,
                       }}
                     >
@@ -848,7 +849,7 @@ export function PredictSection() {
                 {/* Processing indicator */}
                 <div className={cn(
                   "shrink-0 flex items-center gap-2 py-2 pl-3 transition-all duration-500",
-                  processing ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  processing ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
                 )}>
                   <div className="flex gap-0.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-bounce" style={{ animationDelay: '0ms' }} />
